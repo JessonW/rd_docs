@@ -238,7 +238,7 @@
 </tbody>
 </table>
 <h2 id="ac_messagehead">AC_MessageHead</h2>
-<p><img alt="device_AC_MessageHead" src="../pic/framework/AC_MessageHead.png" /> </p>
+<p><img alt="device_AC_MessageHead" src="../../pic/framework/AC_MessageHead.png" /> </p>
 <p>格式定义如下所示： </p>
 <pre><code>typedef struct
 {
@@ -448,10 +448,10 @@
 </tbody>
 </table>
 <h2 id="ac_messagepayload">AC_MessagePayload</h2>
-<p><img alt="device_AC_MessagePayload" src="../pic/framework/AC_MessagePayload.png" /> </p>
+<p><img alt="device_AC_MessagePayload" src="../../pic/framework/AC_MessagePayload.png" /> </p>
 <p>AC_MessagePayload中的AC_MessageOptHead和AC_MessageOption是成对出现的可选项。由AC_MessageHead中的OptNum来定义这对可选项的数目。当OptNum为0时，AC_MessagePayload中就不存在此可选项。当OptNum大于0时，AC_MessageOptHead和AC_MessageOption在AC_MessagePayload中按照顺序依次排列。</p>
 <h3 id="ac_messageopthead">AC_MessageOptHead</h3>
-<p><img alt="device_AC_MessageOptHead" src="../pic/framework/AC_MessageOptHead.png" /> </p>
+<p><img alt="device_AC_MessageOptHead" src="../../pic/framework/AC_MessageOptHead.png" /> </p>
 <p>格式定义如下所示：</p>
 <pre><code>typedef struct
 {
@@ -511,7 +511,7 @@
 </tbody>
 </table>
 <h3 id="ac_messageoption">AC_MessageOption</h3>
-<p><img alt="device_AC_MessageOption" src="../pic/framework/AC_MessageOption.png" /> </p>
+<p><img alt="device_AC_MessageOption" src="../../pic/framework/AC_MessageOption.png" /> </p>
 <p>AC_MessageOption是由AC_MessageOptHead定义的Option的内容。</p>
 <p><strong>AC_OPT_TRANSPORT消息</strong></p>
 <p>该消息用于将设备ID和消息一并上传，用来进行针对指定设备的控制管理。 消息定义如下：</p>
@@ -529,7 +529,7 @@ AC_MessagePayload
 </code></pre>
 
 <h3 id="ac_messagepayload_1">AC_MessagePayload</h3>
-<p><img alt="device_AC_MessagePayload2" src="../pic/framework/AC_MessagePayload2.png" /> </p>
+<p><img alt="device_AC_MessagePayload2" src="../../pic/framework/AC_MessagePayload2.png" /> </p>
 <p>是由AC_MessageHead中的MsgCode定义的消息类型的具体内容。各个类型的消息的具体内容如下：</p>
 <p><strong><em>Message code 0:  AC_CODE_EQ_BEGIN</em></strong> </p>
 <p>设备启动消息，无实际消息内容。设备启动后，择机发送该消息，用以探测wifi模块是否启动完成。</p>
