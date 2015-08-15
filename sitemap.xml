@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>None/introduction/introduction/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/user_interaction/user_interaction/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>None/develop_guide/android/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/iOS/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/wechat/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/cloud/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/device/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>None/framework/android/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/framework/iOS/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/framework/wechat/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/framework/cloud/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/framework/device/</loc>
+     <lastmod>2015-08-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+</urlset>
