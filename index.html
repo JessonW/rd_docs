@@ -7,14 +7,14 @@
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <link rel="shortcut icon" href="./img/favicon.ico">
 
-	<title>基本介绍 - AbleCloud 开发文档</title>
+	<title>AbleCloud 开发文档</title>
 
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -25,7 +25,7 @@
         
     </head>
 
-    <body>
+    <body class="homepage">
 
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../..">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href=".">AbleCloud 开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -53,20 +53,20 @@
                 <ul class="nav navbar-nav">
                 
                 
-                    <li >
-                        <a href="../..">Home</a>
-                    </li>
-                
-                
-                
                     <li class="active">
-                        <a href="./">基本介绍</a>
+                        <a href=".">Home</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/user_interaction/">用户交互</a>
+                        <a href="introduction/introduction/">基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="user_interaction/user_interaction/">用户交互</a>
                     </li>
                 
                 
@@ -77,31 +77,31 @@
                         
                             
 <li >
-    <a href="../../develop_guide/android/">安卓</a>
+    <a href="develop_guide/android/">安卓</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../develop_guide/iOS/">iOS</a>
+    <a href="develop_guide/iOS/">iOS</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../develop_guide/wechat/">微信</a>
+    <a href="develop_guide/wechat/">微信</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../develop_guide/cloud/">云端服务</a>
+    <a href="develop_guide/cloud/">云端服务</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../develop_guide/device/">设备</a>
+    <a href="develop_guide/device/">设备</a>
 </li>
 
                         
@@ -116,31 +116,31 @@
                         
                             
 <li >
-    <a href="../../framework/android/">安卓</a>
+    <a href="framework/android/">安卓</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/iOS/">iOS</a>
+    <a href="framework/iOS/">iOS</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/wechat/">微信</a>
+    <a href="framework/wechat/">微信</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/cloud/">云端服务</a>
+    <a href="framework/cloud/">云端服务</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/device/">设备</a>
+    <a href="framework/device/">设备</a>
 </li>
 
                         
@@ -158,13 +158,13 @@
                     </a>
                 </li>
                 
-                    <li >
-                        <a rel="next" href="../..">
+                    <li class="disabled">
+                        <a rel="next" >
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../user_interaction/user_interaction/">
+                        <a rel="prev" href="introduction/introduction/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -223,7 +223,7 @@
 <h1 id="_1">接入流程</h1>
 <h1 id="_2">基本概念</h1>
 <h2 id="_3">智能硬件架构模型</h2>
-<p><img alt="arch" src="../pic/introduction/introduction_architecture.png" /> </p>
+<p><img alt="arch" src="./pic/introduction/introduction_architecture.png" /> </p>
 <p>上图是目前常见的智能硬件联网解决方案，从图中可以看到，整个硬件联网闭环存在三条消息流，分别表示不同的消息传递方式。</p>
 <p><strong>远程控制 --</strong>
 如图中绿色箭头所示，用户在终端(如智能手机上)，发送控制命令到AbleCloud的云端，云端再将消息发往具体的某一设备，实现远程控制。
@@ -394,13 +394,13 @@ Ablecloud会为每个产品分配一个产品域(Domain+SubDomain)信息（8字�
 AbleCloud支持三种设备的数据类型：</p>
 <ul>
 <li>一种是JSON格式的，适合MCU支持JSON解析的设备；</li>
-<li>一种是KLV格式的，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：<a href="../../framework/device/#KLV">开发框架-设备-KLV</a>；</li>
+<li>一种是KLV格式的，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：<a href="../framework/device.md#KLV">开发框架-设备-KLV</a>；</li>
 <li>一种是二进制码流，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。</li>
 </ul>
 <p>在云端定义好设备端各个功能点的数据包以后，设备和APP直接的数据交互（无论是经过本地局域网还是云端）都必须采用数据包定义的内容进行，具体数据包的格式定义参考：开发框架-设备-通信。数据点和数据包包只能够定义设备上的数据，而除了数据包之外的APP和云端的交互由厂商的自定义服务完成，同时该部分数据格式由厂商自己定义。</p>
 <h2 id="_13">二、功能开发</h2>
 <h3 id="21">2.1 设备开发</h3>
-<p>为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见<a href="./###独立设备">基本介绍-功能介绍-设备管理-独立设备</a>。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。</p>
+<p>为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见<a href="introduction.md###独立设备">基本介绍-功能介绍-设备管理-独立设备</a>。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。</p>
 <p>对于“设备绑定”、“本地通信密钥交换”、“OTA”等功能，设备需要和云端进行固定格式的交互并实现对云端相应指令的响应。对于网关类型的设备，为了实现对网关下面子设备的独立管理，也需要设备端（网关）实现相应的指令（少于5个）。</p>
 <p>对于设备和本地APP、设备和云端的数据交互，设备只需按照定义产品时生成的数据格式，进行发送和解析即可。</p>
 <h3 id="22-app">2.2 APP开发</h3>
@@ -529,7 +529,7 @@ AbleCloud支持三种设备的数据类型：</p>
 <li>厂商可以自己决定数据是记录在设备ID下还是用户ID下。对于医疗类和人相关的设备，建议记录在用户ID下</li>
 </ol>
 <h3 id="_19">网关设备</h3>
-<p><img alt="gateway" src="../pic/introduction/introduction_gatewaydevice.png" /> 
+<p><img alt="gateway" src="./pic/introduction/introduction_gatewaydevice.png" /> 
 网关型设备是指结构如下图所示包括网关和子设备类型的设备。</p>
 <p>其中网关是只能够通过TCP/IP协议和云端通信并且能够将其他协议转换为TCP/IP协议的设备。网关与子设备通信可以是Zigbee、蓝牙、RF、Zwave、易能森、PLC等任意协议。AbleCloud只能够直接管理到网关，并不能够和网关下面的子设备直接通信。若要对网关下面的子设备作为独立设备进行管理，需要网关将子设备的ID信息按照约定的格式和云端交互。</p>
 <p>子设备在云端需要独立定义，子设备有独立的产品名称和subdomain用以取费子设备类型。</p>
@@ -556,7 +556,7 @@ AbleCloud支持三种设备的数据类型：</p>
 <p>考虑到用户管理的设备量变多的时候的分组管理需求，AbleCloud开发了home模型。
 AbleCloud的home模型在权限管理上继承之前的WiFi设备以及网关型设备，这也正好和HomeKit的权限管理方式一致——基于管理员的权限管理。
 home模型的组层次如下图所示：</p>
-<p><img alt="home" src="../pic/introduction/introduction_home.png" /> </p>
+<p><img alt="home" src="./pic/introduction/introduction_home.png" /> </p>
 <p><strong>说明：</strong></p>
 <ul>
 <li>home是有管理权限的组。创建home的人成为该home的管理员。类似于网关，home的管理员是下面所有设备的管理员。管理员可以将home授权给普通用户，这时候，home下面的所有设备都授权给该用户。Home的管理员只能够将新设备或者自己有管理权限的设备放到home里。普通用户不能够在home中添加或者删除设备。</li>
@@ -579,13 +579,13 @@ home模型的组层次如下图所示：</p>
 <p>AbleCloud的消息推送支持国内多家主流推送服务，目前主要推荐使用友盟推送。</p>
 <p>下面以友盟推送为例，介绍开发者使用流程。</p>
 <p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示</p>
-<p><img alt="push1" src="../pic/introduction/introduction_push1.png" /> </p>
+<p><img alt="push1" src="./pic/introduction/introduction_push1.png" /> </p>
 <p>记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。</p>
-<p><img alt="push1" src="../pic/introduction/introduction_push2.png" /> </p>
+<p><img alt="push1" src="./pic/introduction/introduction_push2.png" /> </p>
 <p>友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。</p>
 <h2 id="_21">和云端通信</h2>
 <p>云端通信指的是APP到云端、设备到云端的通信。分别对应下图中的绿色和紫色线所标注的数据流。</p>
-<p><img alt="cloudcommunication" src="../pic/introduction/introduction_cloudcommunication.png" /> </p>
+<p><img alt="cloudcommunication" src="./pic/introduction/introduction_cloudcommunication.png" /> </p>
 <p>除了和设备的交互的数据，APP可能还需要和云端交互一些非设备数据或者处理后的数据，这部分交互和处理需要由云端的用户自定义服务完成，该部分数据格式由厂商自己定义。所以为了统一，建议安卓、iOS、微信，全部采用有符号格式。比如一个十进制整数，当小于127时可以采用8bit数据表示，当大于127小于256时，就必须用16bit表示了。当前支持的交互数据类型包括：</p>
 <table>
 <thead>
@@ -639,7 +639,7 @@ home模型的组层次如下图所示：</p>
 </tbody>
 </table>
 <p>云端通信的通信类型见下图：</p>
-<p><img alt="cloudintaraction" src="../pic/introduction/introduction_cloudinteraction.png" /> </p>
+<p><img alt="cloudintaraction" src="./pic/introduction/introduction_cloudinteraction.png" /> </p>
 <p>对于前三个：APP请求设备数据、设备数据上报到APP和设备数据主动上报到云端进行存储，AbleCloud的通用服务已经实现该功能，移动应用开发人员只需要调用SDK就可以实现功能。对于APP请求设备数据，可以是有返回值的请求，也可以是纯控制指令，无返回值。</p>
 <p>对于APP向云端请求数据（无论是设备上报的历史数据还是厂商的其他应用数据）和设备向云端请求数据，都需要写云端自定义服务实现相应功能。</p>
 <p>对于特殊消息，请参考相关开发文档。</p>
@@ -667,12 +667,12 @@ home模型的组层次如下图所示：</p>
             <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script>var base_url = '.';</script>
+        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
+        <script src="./js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">
@@ -701,3 +701,8 @@ home模型的组层次如下图所示：</p>
 
     </body>
 </html>
+
+<!--
+MkDocs version : 0.14.0
+Build Date UTC : 2015-08-15 08:01:02.628000
+-->
