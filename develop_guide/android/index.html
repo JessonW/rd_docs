@@ -287,7 +287,7 @@
 </code></pre>
 
 <h2 id="2">2、第三方登录</h2>
-<p><img alt="account_Oauth" src="../../pic/develop_guide/Oauth.png" /></p>
+<p><img alt="account_Oauth" src="../../pic/develop_guide/account_Oauth.png" /></p>
 <p>1、直接使用第三方登录</p>
 <pre><code class="java">    //APP端在完成OAuth认证登陆之后获取openId和accessToken
     AC.accountMgr().loginWithOpenId(ACThirdPlatform.QQ, openId, accessToken, new PayloadCallback&lt;ACUserInfo&gt;() {
@@ -379,7 +379,7 @@ public void error(ACException e) {
 <p>建议的用户交互参见<a href="../../user_interaction/#home模型">用户交互-home模型</a></p>
 <h3 id="home_1">home模型下添加独立设备</h3>
 <p>建议的流程如下：</p>
-<p><img alt="DM_home_WiFi" src="../.../pic/develop_guide/DM_home_WiFi.png" /></p>
+<p><img alt="DM_home_WiFi" src="../../pic/develop_guide/DM_home_WiFi.png" /></p>
 <p><font color="red"><strong>东生补充开发指导</strong></font></p>
 <h3 id="home_2">home模型下添加网关型设备且网关没有二维码</h3>
 <p>网关没有二维码时，一般是网管在连接云端以后在局域网广播自己的物理ID。APP接收广播然后绑定设备。</p>
@@ -392,7 +392,7 @@ public void error(ACException e) {
 <h1 id="ota">OTA</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
 <p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
-<p><img alt="OTA" src="../pic/develop_guide/OTA.png" /></p>
+<p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
 <p>开发OTA之前需要在开发环境中配置友盟的推送服务，配置方法参见：<a href="../../framework/android#环境配置">开发框架-安卓-环境配置</a></p>
 <p>1、在应用的主Activity onCreate() 函数中开启推送服务</p>
 <pre><code class="java">AC.notificationMgr().init();
