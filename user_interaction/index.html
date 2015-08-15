@@ -247,32 +247,32 @@
 <p>以WiFi设备为例，可以通过让设备在局域网内广播自己的ID，手机在局域网接收到设备的广播然后完成绑定。建议的用户交互流程如下：</p>
 <p><img alt="DM_WiFi1" src="../pic/user_interaction/DM_WiFi1.png" /> </p>
 <p>客户端为微信时，绑定不要求设备在线（与APP相比，微信的特殊之处）,微信的绑定流程如下所示：</p>
-<p><img alt="DM_WiFi1" src="../pic/user_interaction/DM_WiFi1.png" /> </p>
+<p><img alt="DM_WiFi2" src="../pic/user_interaction/DM_WiFi2.png" /> </p>
 <h3 id="2">2、设备分享</h3>
 <p>第一个绑定的用户绑定成功后成为该设备的管理员，可以通过生成设备分享二维码或者邀请其他用户的方式分享设备的使用权。</p>
 <p><strong>1、管理员分享</strong></p>
-<p><img alt="DM_WiFi1" src="../pic/user_interaction/DM_WiFi1.png" /> </p>
+<p><img alt="DM_WiFi3" src="../pic/user_interaction/DM_WiFi3.png" /> </p>
 <p><strong>2、管理员邀请</strong></p>
-<p><img alt="DM_WiFi1" src="../pic/user_interaction/DM_WiFi1.png" /> </p>
+<p><img alt="DM_WiFi4" src="../pic/user_interaction/DM_WiFi4.png" /> </p>
 <p>对于使用二维码分享方式分享设备使用权的，开发者可以自己定义二维码有效期，过了有效期再扫描的时候也不能够获得设备使用权。
 对于使用邀请方式分享的，要求被邀请人已经注册。
 客户端为微信时，目前AbleCloud只能够支持管理员分享的方式分享设备。</p>
 <h2 id="_4">网关型设备管理</h2>
 <h3 id="1_1">1、绑定网关</h3>
 <p>对于一台（或一套）新设备，首先要绑定网关才能够使用，第一个绑定的人成为管理员。和WiFi设备的绑定一样，为了防止被恶意攻击，要求网关云端在线（微信不需要）。如果网关是通过WiFi连接无线路由器的，绑定网关的建议操作流程和绑定WiFi设备是一样的，参考“用户交互-WiFi设备”。对于网关是通过以太网连接路由器的场景，建议的用户交互流程如下：</p>
-<p><img alt="DM_gateway1" src="../pic/user_interaction/gateway1.png" /> </p>
+<p><img alt="DM_gateway1" src="../pic/user_interaction/DM_gateway1.png" /> </p>
 <p>客户端为微信、网关为WiFi设备时，同WiFi设备的流程一样：网关通过以太网连接路由器时，直接扫描网关上的二维码就完成了设备的绑定（不要求网关在线），流程如下：</p>
-<p><img alt="DM_gateway2" src="../pic/user_interaction/gateway2.png" />  </p>
+<p><img alt="DM_gateway2" src="../pic/user_interaction/DM_gateway2.png" />  </p>
 <h3 id="2_1">2、绑定子设备</h3>
 <p>子设备作为独立设备时，同样有所有权问题，所以为了保证安全，同样要求子设备绑定时子设备是云端在线的（子设备能够连接上网关时基本都是云端在线的）。</p>
-<p><img alt="DM_gateway3" src="../pic/user_interaction/gateway3.png" /> </p>
+<p><img alt="DM_gateway3" src="../pic/user_interaction/DM_gateway3.png" /> </p>
 <p>客户端为微信时，操作流程是一样的。</p>
 <h3 id="3">3、设备分享</h3>
 <p>第一个绑定的用户绑定成功后成为该设备的管理员，可以通过生成设备分享二维码或者邀请其他用户的方式分享设备的使用权。对于网关型设备，管理员可以分享网关，此时网关即下面所有的子设备的使用权全部分享出去；也可以只分享子设备，此时被分享用户只有子设备的使用权。开发者也可以开发普通用户向管理员申请权限的功能，管理员同意后普通用户即有了设备的使用权。</p>
 <p><strong>1、管理员分享</strong></p>
-<p><img alt="DM_gateway4" src="../pic/user_interaction/gateway4.png" /> </p>
+<p><img alt="DM_gateway4" src="../pic/user_interaction/DM_gateway4.png" /> </p>
 <p><strong>2、管理员邀请</strong></p>
-<p><img alt="DM_gateway5" src="../pic/user_interaction/gateway5.png" /> </p>
+<p><img alt="DM_gateway5" src="../pic/user_interaction/DM_gateway5.png" /> </p>
 <p>对于使用二维码分享方式分享设备  用权的，开发者可以自己定义二维码有效期，过了有效期再扫描的时候也不能够获得设备使用权。
 对于使用邀请方式分享的，要求被邀请人要求已经注册。
 客户端为微信时，目前AbleCloud只能够支持“管理员分享”的模式分享设备。</p>
