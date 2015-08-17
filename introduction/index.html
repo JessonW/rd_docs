@@ -210,6 +210,11 @@
             <li><a href="#_23">局域网通信</a></li>
         
     
+        <li class="main "><a href="#_24">第三方云对接</a></li>
+        
+            <li><a href="#_25">微信</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -655,7 +660,11 @@ home模型的组层次如下图所示：</p>
 <li>管理员将设备分享给其他用户，其他用户绑定设备，从云端获得localkey</li>
 <li>管理员将某用户解绑，该用户启动app的时候，sdk自动到云端更新localkey，原localkey失效</li>
 </ol>
-<p>localKey对开发者不可见，由SDK自动维护。</p></div>
+<p>localKey对开发者不可见，由SDK自动维护。</p>
+<h1 id="_24">第三方云对接</h1>
+<p>为了方便硬件厂商使用其它云厂商的已有资源，如终端优势，渠道优势等，AbleCloud实现了和其它云厂商的对接。这样一来，硬件厂商已经接入AbleCloud硬件很方便就能和第三方打通，并且硬件厂商可以同时拥有多个云厂商的资源，不用再一家一家的实现对接，因为这些和第三方云的对接工作，已经由AbleCloud完成了。 当前，AbleCloud实现了和微信、京东云的对接，后续会对接更多的第三方云。</p>
+<h2 id="_25">微信</h2>
+<p>AbleCloud打通了和微信的接入，实现了双方的云端对接，开启了微信硬件开发的全新模式。在该模式下，结合AbleCloud提供的jssdk，厂商可以在您的微信公众号里实现和native app几乎一样的智能硬件相关功能特性，并且保证足够的安全性。本文介绍连接微信公众平台mp和AbleCloud云平台的关键服务开发框架ac-weixin-server。 基于ac-weixin-server，您只需要关注常规的公众号开发内容，所有与AbleCloud云端交互的逻辑均已在该框架中完成，对设备的授权、控制等操作，直接在HTML页面中调用AbleCloud提供的jssdk即可。jssdk的接口说明请参见jssdk手册。</p></div>
             
         </div>
 
