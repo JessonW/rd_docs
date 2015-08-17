@@ -350,7 +350,7 @@ weixin_mp_message_handler_class是您自定义的微信公众号核心消息处�
 <p>真正线上启动，需要用nohup等将服务放后台，如<code>nohup sh start.sh &amp;</code>,并且可能需要使用supervisor配合，防止进程异常退出。</p>
 <h3 id="7">7、修改公众号接口配置信息</h3>
 <p>在微信公众平台修改<em>接口配置信息</em>，如下图所示:</p>
-<p><img alt="modify_config" src="../../../pic/framework/wechat/modify_config.png" /></p>
+<p><img alt="modify_config" src="../../pic/framework/wechat/modify_config.png" /></p>
 <p>点击<strong>提交</strong>，正常情况下，会收到微信公众平台提示验证成功。如果验证失败，请查看log目录下的日志。</p>
 <blockquote>
 <p><font color="brown"><strong>注：</strong>这里填写的token要和配置文件中的token一致。并且URL的URI部分（除去域名）必须是<code>/weixin/message</code>，域名部分则是您服务器所申请的域名。</font></p>
