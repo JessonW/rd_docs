@@ -105,7 +105,7 @@
                 
                 
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发框架 <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
@@ -394,6 +394,11 @@
 <td>26</td>
 <td>AC_CODE_ZOTA_END</td>
 <td>Wifi 升级OTA结束</td>
+</tr>
+<tr>
+<td>36</td>
+<td>AC_CODE_UNBIND</td>
+<td>解除设备的绑定</td>
 </tr>
 <tr>
 <td>45</td>
@@ -712,6 +717,8 @@ AC_MessagePayload
 <p>消息格式同AC_CODE_OTA_FILE_END。</p>
 <p><strong><em>Message code 26:  AC_CODE_ZOTA_END</em></strong></p>
 <p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。</p>
+<p><strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
+<p>该消息用以设备解除自己绑定。相当于管理员删除设备。</p>
 <p><strong><em>Message code 45:  AC_CODE_GATEWAY_CTRL</em></strong></p>
 <p>该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
 <p>消息格式定义如下：</p>
