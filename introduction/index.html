@@ -460,13 +460,17 @@ AbleCloud提供两种帐号系统：</p>
 <li>普通帐号在登陆后，可以绑定多个第三方帐号（微信、微博、QQ等）。绑定第三方帐号成功后，可以通过第三方帐号直接登陆系统，并获取此普通帐号的相关数据，比如获取设备列表信息。普通帐号绑定第三方帐号时，不允许绑定一个已经注册或者已经被绑定的第三方帐号；</li>
 <li>系统支持第三方帐号的直接注册登陆，APP端在完成OAuth认证登陆之后，可以直接进行设备管理。同时，登陆后的第三方帐号可以绑定一个未被注册的普通帐号，绑定普通帐号成功后，可以通过普通帐号直接登陆系统，并获取此第三方帐号的相关数据，比如获取设备列表。</li>
 </ul>
-<p><strong>3、帐号附加属性</strong>
-AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。如果厂商的APP中需要用户填写更多信息，如性别，年龄等，需要用到帐号附加属性。为了简化用户的注册流程，一般帐号的附加属性一般都是在用户完成注册以后补充填写，在帐号的注册过程中不填写。建议的用户交互流程参考 <a href="../user_interaction/#帐号附加属性">用户交互-帐号附加属性</a></p>
-<p>若要使用帐号的附加属性，首先需要在厂商的帐号系统中进行定义。</p>
-<p>如下图所示：</p>
+<p><strong>3、帐号附加属性</strong></p>
+<p>AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。如果厂商的APP中需要用户填写更多信息，如性别，年龄等，需要用到帐号附加属性。若要使用帐号的附加属性，首先需要在管理后台的帐号管理中进行定义。如下图所示：</p>
 <p><img alt="account_appendix" src="../pic/introduction/introduction_account_appendix.png" /> </p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的附加属性接口中需要作为参数。</p>
-<p>对应用户的头像或者文件的存储，请参考 <a href="./##文件存储">基本介绍-功能介绍-文件存储</a></p>
+<p>在当前主流的设计中，为了简化用户的注册流程，帐号的附加属性一般都是在用户完成注册以后补充填写，在帐号的注册过程中不填写。</p>
+<p>建议的用户交互流程参考 <a href="../user_interaction/#帐号附加属性">用户交互-帐号附加属性</a></p>
+<p>如果需要存储用户的头像，请参考 <a href="./##文件存储">基本介绍-功能介绍-文件存储</a></p>
+<p>开发指导参考：</p>
+<p><a href="../develop_guide/android/#帐号管理">开发指导-安卓-帐号管理</a></p>
+<p><a href="../develop_guide/iOS/#独帐号管理">开发指导-iOS-帐号管理</a></p>
+<p><a href="../develop_guide/wechat/#帐号管理">开发指导-微信-帐号管理</a></p>
 <h2 id="_17">设备管理</h2>
 <p>用户通过使用终端注册获得了用户的ID。为了完成用户和设备之间的关联关系的确认，设备端也需要</p>
 <h3 id="_18">独立设备管理</h3>
@@ -558,9 +562,9 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 <p>对于蜂窝网络设备，没有局域网，需要APP扫描设备的物理ID（一般是二维码）来完成设备的绑定。</p>
 <p>建议的用户交互参考<a href="../user_interaction/#独立设备管理">用户交互-独立设备管理</a> </p>
 <p>开发指导参考：</p>
-<p><a href="../develop_guide/android/#独立设备管理">开发指导-安卓-独立设备管理</a>
-<a href="../develop_guide/iOS/#独立设备管理">开发指导-iOS-独立设备管理</a>
-<a href="../develop_guide/wechat/#独立设备管理">开发指导-微信-独立设备管理</a></p>
+<p><a href="../develop_guide/android/#独立设备管理">开发指导-安卓-独立设备管理</a></p>
+<p><a href="../develop_guide/iOS/#独立设备管理">开发指导-iOS-独立设备管理</a></p>
+<p><a href="../develop_guide/wechat/#独立设备管理">开发指导-微信-独立设备管理</a></p>
 <p><a href="../develop_guide/device/#独立设备管理">开发指导-设备-独立设备管理</a></p>
 <h3 id="_19">网关型设备管理</h3>
 <p><img alt="gateway" src="../pic/introduction/introduction_gatewaydevice.png" /> </p>
@@ -588,9 +592,10 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 </ol>
 <p>建议的用户交互参考<a href="../user_interaction/#网关型设备管理">用户交互-网关型设备管理</a> </p>
 <p>开发指导参考：</p>
-<p><a href="../develop_guide/android/#网关型设备管理">开发指导-安卓-网关型设备管理</a>
-<a href="../develop_guide/iOS/#网关型设备管理">开发指导-iOS-网关型设备管理</a>
-<a href="../develop_guide/wechat/#网关型设备管理">开发指导-微信-网关型设备管理</a></p>
+<p><a href="../develop_guide/android/#网关型设备管理">开发指导-安卓-网关型设备管理</a></p>
+<p><a href="../develop_guide/iOS/#网关型设备管理">开发指导-iOS-网关型设备管理</a></p>
+<p><a href="../develop_guide/wechat/#网关型设备管理">开发指导-微信-网关型设备管理</a></p>
+<p><a href="../develop_guide/device/#网关型设备管理">开发指导-设备-网关型设备管理</a></p>
 <h3 id="home">home模型</h3>
 <p>考虑到用户管理的设备量变多的时候的分组管理需求，AbleCloud开发了home模型。
 AbleCloud的home模型在权限管理上继承之前的WiFi设备以及网关型设备，这也正好和HomeKit的权限管理方式一致——基于管理员的权限管理。
@@ -614,15 +619,15 @@ home模型的组层次如下图所示：</p>
 <a href="../develop_guide/wechat/#home模型">开发指导-微信-home模型</a></p>
 <h3 id="_20">设备附加属性</h3>
 <p>AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户在APP等客户端中填写更多和设备关联的信息，如设备关联手机号、家庭住址、地理位置等，就需要用到设备的附加属性。为了简化设备绑定流程，一般设备附加属性需要在设备绑定完成后补充填写，在帐号的注册过程中不填写。建议的用户交互流程参考 <a href="../user_interaction/#设备附加属性">用户交互-设备附加属性</a> 。</p>
-<p>开发指导参考：</p>
-<p><a href="../develop_guide/android/#设备附加属性">开发指导-安卓-设备附加属性</a>
-<a href="../develop_guide/iOS/#设备附加属性">开发指导-iOS-设备附加属性</a>
-<a href="../develop_guide/wechat/#设备附加属性">开发指导-微信-设备附加属性</a></p>
 <p>若要使用设备的附加属性，首先需要在产品管理中进行定义。</p>
 <p>产品管理中选择要管理的产品，在产品属性页面创建该产品的设备的附加属性</p>
 <p>如下图所示：</p>
 <p><img alt="device_appendix" src="../pic/introduction/introduction_device_appendix.png" /> </p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的附加属性接口中需要作为参数。</p>
+<p>开发指导参考：</p>
+<p><a href="../develop_guide/android/#设备附加属性">开发指导-安卓-设备附加属性</a></p>
+<p><a href="../develop_guide/iOS/#设备附加属性">开发指导-iOS-设备附加属性</a></p>
+<p><a href="../develop_guide/wechat/#设备附加属性">开发指导-微信-设备附加属性</a></p>
 <h2 id="ota">OTA</h2>
 <p>OTA（Over－the－Air Technology），即空中下载技术。
 在智能硬件领域，当设备固件需要升级的时候，可以借助OTA实现远程升级。</p>
@@ -637,9 +642,9 @@ home模型的组层次如下图所示：</p>
 <p>如果开发者希望强制用户升级，即弹出的升级确认中只有确定没有取消，可以在OTA的版本号中做出标识，APP对标识进行识别。例如，OTA修正版本号为99的是强制升级版本。APP检查到升级版本号的修正版本为99的OTA时，弹出的OTA升级确认消息中就只有确定选项。</p>
 <p>建议用户交互流程参考 <a href="../user_interaction/#OTA">用户交互-OTA</a></p>
 <p>开发指导参考：</p>
-<p><a href="../develop_guide/android/#OTA">开发指导-安卓-OTA</a>
-<a href="../develop_guide/iOS/#OTA">开发指导-iOS-OTA</a>
-<a href="../develop_guide/wechat/#OTA">开发指导-微信-OTA</a></p>
+<p><a href="../develop_guide/android/#OTA">开发指导-安卓-OTA</a></p>
+<p><a href="../develop_guide/iOS/#OTA">开发指导-iOS-OTA</a></p>
+<p><a href="../develop_guide/wechat/#OTA">开发指导-微信-OTA</a></p>
 <h2 id="_21">推送</h2>
 <p>消息推送，是帮助开发者建立与用户直接沟通的渠道。即将智能设备的状态更新或者用户群组活动消息主动推送给终端用户，让用户第一时间获取到相关信息。</p>
 <p>AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发通知， 一种是和设备状态相关的消息推送，一种是和用户相关的消息推送。</p>
