@@ -54,31 +54,31 @@
     
         
     <url>
-     <loc>None/framework/android/</loc>
+     <loc>None/reference/android/</loc>
      <lastmod>2015-08-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/framework/iOS/</loc>
+     <loc>None/reference/iOS/</loc>
      <lastmod>2015-08-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/framework/wechat/</loc>
+     <loc>None/reference/wechat/</loc>
      <lastmod>2015-08-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/framework/cloud/</loc>
+     <loc>None/reference/cloud/</loc>
      <lastmod>2015-08-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/framework/device/</loc>
+     <loc>None/reference/device/</loc>
      <lastmod>2015-08-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
