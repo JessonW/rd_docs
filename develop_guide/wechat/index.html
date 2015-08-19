@@ -195,7 +195,8 @@
         
             <li><a href="#_18">设备解绑</a></li>
         
-            <li><a href="#-_1">设备管理-网关设备</a></li>
+    
+        <li class="main "><a href="#-_1">设备管理-网关设备</a></li>
         
             <li><a href="#_20">绑定网关</a></li>
         
@@ -314,7 +315,7 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 <pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE)；
 </code></pre>
 
-<h2 id="-_1">设备管理-网关设备</h2>
+<h1 id="-_1">设备管理-网关设备</h1>
 <h2 id="_20">绑定网关</h2>
 <h3 id="_21">微信官方授权设备</h3>
 <p>参考微信硬件平台（http://iot.weixin.qq.com/）如何对硬件设备进行授权</p>
@@ -433,10 +434,12 @@ $deviceId设备逻辑id。</p>
 <h1 id="_44">和云端通信</h1>
 <h2 id="_45">上报数据到云端</h2>
 <h3 id="acrequest">实例化ACRequest对象</h3>
-<p><code>php
-$request=new  ACRequest($serviceName, $methodName, $serviceVersion = 1);</code></p>
-<h3 id="json">设置json格式的消息内容</h3>
-<pre><code class="php">$request –&gt;setPayloadAsJSON($payload);
+<pre><code class="php">$request=new  ACRequest($serviceName, $methodName, $serviceVersion = 1);
+ ```
+
+###设置json格式的消息内容
+```php
+$request –&gt;setPayloadAsJSON($payload);
 </code></pre>
 
 <p>$payload string类型的数据,为上传到云端的消息内容，必须是json格式</p>
