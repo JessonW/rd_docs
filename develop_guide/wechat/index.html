@@ -180,20 +180,313 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#_1">帐号管理</a></li>
+        
+            <li><a href="#_2">绑定手机号</a></li>
+        
+    
+        <li class="main "><a href="#-">设备管理-独立设备</a></li>
+        
+            <li><a href="#_7">设备绑定</a></li>
+        
+            <li><a href="#_14">设备激活</a></li>
+        
+            <li><a href="#_15">设备分享</a></li>
+        
+            <li><a href="#_18">设备解绑</a></li>
+        
+            <li><a href="#-_1">设备管理-网关设备</a></li>
+        
+            <li><a href="#_20">绑定网关</a></li>
+        
+            <li><a href="#_27">分享网关设备</a></li>
+        
+            <li><a href="#_30">网关激活</a></li>
+        
+            <li><a href="#_31">绑定子设备</a></li>
+        
+            <li><a href="#_37">设备解绑</a></li>
+        
+    
+        <li class="main "><a href="#ota">OTA</a></li>
+        
+            <li><a href="#_41">检查更新</a></li>
+        
+            <li><a href="#_43">确认升级</a></li>
+        
+    
+        <li class="main "><a href="#_44">和云端通信</a></li>
+        
+            <li><a href="#_45">上报数据到云端</a></li>
+        
+    
+        <li class="main "><a href="#_48">定时任务</a></li>
+        
+            <li><a href="#_49">添加定时任务</a></li>
+        
+            <li><a href="#_51">启动定时任务</a></li>
+        
+            <li><a href="#_54">停止定时任务</a></li>
+        
+            <li><a href="#_55">修改定时任务</a></li>
+        
+            <li><a href="#_57">删除定时任务</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>*theme_dir: ac_theme</p>
-<p>copyright: 2015, 北京智云奇点科技有限公司
-;jasd;kljfasdj;kldasflj;kfda;ljfd
-拉斯科格鲁卡公司第六届啊送给大家
-拉萨的客观来讲卡的睡个懒觉卡死规定
-llalsdkgj
-拉萨的苦尽甘来但是结果</p>
-<p>lskdjg</p>
-<p>拉斯科的经过拉丝记大过</p>
-<p>拉斯科的经过拉丝记大过</p></div>
+<h1 id="_1">帐号管理</h1>
+<h2 id="_2">绑定手机号</h2>
+<h3 id="_3">获取账号管理对象</h3>
+<pre><code class="php">$accountServcie=ACClient::getAccountService();
+</code></pre>
+
+<h3 id="_4">发送验证码</h3>
+<pre><code class="php">$accountServcie-&gt;sendVerifyCode($phone);
+</code></pre>
+
+<p>$phone 字符串，是用户的手机号。</p>
+<h3 id="_5">绑定手机号</h3>
+<h3 id="acbridgewechat">获取ACBridgeWeChat对象</h3>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h3 id="_6">提交验证码，绑定手机号</h3>
+<pre><code class="php">$wxBridge-&gt;setPhone($openid,$phone, $verifyCode)；
+</code></pre>
+
+<p>$verifyCode 字符串，是用户修改手机号码的验证码
+$openId 字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取openid。</p>
+<h1 id="-">设备管理-独立设备</h1>
+<h2 id="_7">设备绑定</h2>
+<h3 id="_8">微信官方授权设备</h3>
+<p>参考微信硬件平台（http://iot.weixin.qq.com/）如何对硬件设备进行授权。</p>
+<h3 id="_9">生成设备二维码</h3>
+<h4 id="acbridgewechat_1">实例化ACBridgeWeChat对象</h4>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h3 id="_10">生成设备二维码码串</h3>
+<pre><code class="php">$wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId );
+</code></pre>
+
+<h3 id="_11">利用二维码生生工具上一步中得到的码串生成二维码</h3>
+<p>例如草料二维码生成工具（http://cli.im/）</p>
+<h3 id="_12">处理微信推送扫码信息</h3>
+<p>在微信推送的device_event 的 bind事件中调用ablecloud sdk的响应函数</p>
+<pre><code class="php">$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName);
+</code></pre>
+
+<h3 id="_13">扫描二维码关注公众号，绑定设备</h3>
+<p>第一个用微信扫描二维码的人，将会绑定设备，成为设备的管理员。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。Ablecloud对于已有用户绑定的设备，其它用户想要得到设备的管理权需要设备的管理员分享设备，才能拥有设备的管理权。</p>
+<h2 id="_14">设备激活</h2>
+<h3 id="airkiss">调起微信airkiss页面</h3>
+<p>在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待设备连接云端。
+微信airkiss相关内容请参参考微信官方文档。</p>
+<h2 id="_15">设备分享</h2>
+<h3 id="acbridgewechat_2">实例化ACBridgeWeChat对象</h3>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h3 id="user">实例化user对象</h3>
+<pre><code class="php">$user=$wxBridge-&gt;getUser($openid);
+</code></pre>
+
+<h3 id="acdeviceservice">实例化ACDeviceService</h3>
+<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
+</code></pre>
+
+<h3 id="_16">得到已绑定设备信息。</h3>
+<pre><code class="php">$devices=$acDeviceService-&gt;listDevices($user);
+</code></pre>
+
+<p>从返回的信息中，可以得到与设备相关的信息。</p>
+<h3 id="_17">分享设备，生成分享的二维码码串</h3>
+<p>$wxBridge -&gt;getDeviceQRCode($physicalId, TRUE, $openId , 300)；
+拿到码串后，开发者可以本地用js去生成二维码图片。</p>
+<h2 id="_18">设备解绑</h2>
+<h3 id="_19">解除用户与设备绑定</h3>
+<pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE)；
+</code></pre>
+
+<h2 id="-_1">设备管理-网关设备</h2>
+<h2 id="_20">绑定网关</h2>
+<h3 id="_21">微信官方授权设备</h3>
+<p>参考微信硬件平台（http://iot.weixin.qq.com/）如何对硬件设备进行授权</p>
+<h3 id="_22">生成网关设备二维码</h3>
+<h4 id="acbridgewechat_3">实例化ACBridgeWeChat对象</h4>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h3 id="_23">生成网关设备二维码码串</h3>
+<pre><code class="php">$wxBridge-&gt;getDeviceQRCode($physicalId, $withACShareCode = FALSE, $openId = '', $timeout = 300);
+</code></pre>
+
+<h3 id="_24">利用二维码生生工具上一步中得到的码串生成二维码</h3>
+<p>例如草料二维码生成工具（http://cli.im/）</p>
+<h3 id="_25">处理微信推送扫码信息</h3>
+<p>在微信推送的device_event 的 bind事件中调用ablecloud sdk的响应函数</p>
+<pre><code class="php">$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName);
+</code></pre>
+
+<h3 id="_26">扫描二维码关注公众号，绑定网关设备</h3>
+<p>第一个用微信扫描二维码的人，将会绑定设备，成为网关设备的拥有者。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。</p>
+<h2 id="_27">分享网关设备</h2>
+<h3 id="acbridgewechat_4">实例化ACBridgeWeChat对象</h3>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h3 id="user_1">实例化user对象</h3>
+<pre><code class="php">$user=$wxBridge-&gt;getUser($openid);
+</code></pre>
+
+<h3 id="acdeviceservice_1">实例化ACDeviceService</h3>
+<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
+</code></pre>
+
+<h3 id="_28">得到已绑定设备信息。</h3>
+<pre><code class="php">$devices=$acDeviceService-&gt;listDevices($user);
+</code></pre>
+
+<p>从返回的信息中，可以得到与设备相关的信息。</p>
+<h3 id="_29">分享设备，生成分享的二维码码串。</h3>
+<pre><code class="php">$wxBridge -&gt;getDeviceQRCode($physicalId, TRUE, $openId , 300)；
+</code></pre>
+
+<p>拿到码串后，开发者可以本地用js去生成二维码图片。</p>
+<h2 id="_30">网关激活</h2>
+<h3 id="airkiss_1">调起微信airkiss页面</h3>
+<p>在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待连接。
+微信airkiss相关内容请参参考微信官方文档。</p>
+<h2 id="_31">绑定子设备</h2>
+<h3 id="_32">开启网关接入</h3>
+<h4 id="acdeviceservice_2">实例化ACDeviceService</h4>
+<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
+</code></pre>
+
+<h4 id="user_2">实例化user对象</h4>
+<p>用关注公众号用户的openid，去实例化user对象。如何去获取用户的openid详见微信官方参考文档。</p>
+<h4 id="gateway">列举已绑定gateway列表</h4>
+<pre><code class="php">$gateways=$acDeviceService-&gt;listGateways($user);
+</code></pre>
+
+<p>从返回的信息可以得到gateway的相关信息。</p>
+<h4 id="_33">开启网关接入功能</h4>
+<pre><code class="php">$acDeviceService -&gt;openGatewayMatch($deviceId, $user, $timeout = 300)
+</code></pre>
+
+<p>操作成功开启网关设备允许新的子设备接入的功能。</p>
+<h3 id="_34">绑定子设备</h3>
+<h4 id="_35">列举新的子设备</h4>
+<pre><code class="php">$acDeviceService –&gt;listNewSubDevicesFromGateway($user, $gatewayId)；
+</code></pre>
+
+<p>从返回的信息中可以得到子设备的相关信息。</p>
+<h4 id="gateway_1">绑定新的子设备到gateway</h4>
+<pre><code class="php">$acDeviceService–&gt;addSubDeviceToGateway($user,$gatewayId,$physicalId, $name)
+</code></pre>
+
+<h3 id="_36">关闭网关接入功能</h3>
+<pre><code class="php">$acDeviceService -&gt;closeGatewayMatch($deviceId, $user);
+</code></pre>
+
+<p>操作成功关闭网关设备允许新的子设备接入的功能。
+$deviceId设备逻辑id。</p>
+<h2 id="_37">设备解绑</h2>
+<h3 id="_38">解绑网关</h3>
+<h4 id="acbridgewechat_5">实例化ACBridgeWeChat对象</h4>
+<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+</code></pre>
+
+<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
+<h4 id="_39">解绑网关</h4>
+<pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, $isGateway = TRUE)
+</code></pre>
+
+<h3 id="_40">解绑子设备</h3>
+<pre><code class="php">$acDeviceService–&gt;deleteSubDeviceFromGateway($user, $deviceId)
+</code></pre>
+
+<h1 id="ota">OTA</h1>
+<h2 id="_41">检查更新</h2>
+<h3 id="acotaservice">实例化ACOtaService</h3>
+<pre><code class="php">$otaService=ACClient::getOtaService();
+</code></pre>
+
+<h3 id="_42">检查更新</h3>
+<pre><code class="php">$otaService-&gt; checkUpdate($user, $deviceId);
+</code></pre>
+
+<p>通过返回的版本信息，可以来判断是否有新版本需要升级。</p>
+<h2 id="_43">确认升级</h2>
+<pre><code class="php">$otaService-&gt;confirmUpdate($user, $deviceId, $toVersion);
+</code></pre>
+
+<p>调用这个方法可以升级设备的固件</p>
+<h1 id="_44">和云端通信</h1>
+<h2 id="_45">上报数据到云端</h2>
+<h3 id="acrequest">实例化ACRequest对象</h3>
+<p><code>php
+$request=new  ACRequest($serviceName, $methodName, $serviceVersion = 1);</code></p>
+<h3 id="json">设置json格式的消息内容</h3>
+<pre><code class="php">$request –&gt;setPayloadAsJSON($payload);
+</code></pre>
+
+<p>$payload string类型的数据,为上传到云端的消息内容，必须是json格式</p>
+<h3 id="_46">设置二进制格式的消息内容</h3>
+<pre><code class="php">$request –&gt;setPayloadAsJSON($payload);
+</code></pre>
+
+<p>$payload string类型的数据,为上传到云端的消息内容，必须是二进制格式</p>
+<h3 id="_47">上传数据到云端</h3>
+<pre><code class="php">ACClient-&gt; sendToService($request);
+</code></pre>
+
+<h1 id="_48">定时任务</h1>
+<h2 id="_49">添加定时任务</h2>
+<h3 id="actimertaskservice">获取ACTimerTaskService对象</h3>
+<pre><code class="php">$acTimerTaskService=ACClient-&gt;getTimerTaskService();
+</code></pre>
+
+<h3 id="_50">新增定时任务</h3>
+<pre><code class="php">$acTimerTaskService -&gt;addTask($task, $user)
+</code></pre>
+
+<p>$task为ACTimerTask对象，表示要新添加的任务。
+$user 为ACUser对象，表示定义该任务的用户。
+返回TRUE表示操作成功，否则表示操作失败。失败时，可调用getLastError()获取错误信息。</p>
+<h2 id="_51">启动定时任务</h2>
+<h3 id="_52">列举定时任务</h3>
+<pre><code class="php">$acTimerTaskService -&gt;listTasks($user, $deviceId);
+</code></pre>
+
+<p>$deviceId 整数，是设备的逻辑ID。操作成功时，返回一个数组，数组的元素是ACTimerTask对象。</p>
+<h3 id="_53">启动定时任务</h3>
+<pre><code class="php">$acTimerTaskService -&gt;startTask($user, $deviceId, $taskId)
+</code></pre>
+
+<p>$taskId 整数，是要被启动的任务的ID。</p>
+<h2 id="_54">停止定时任务</h2>
+<pre><code class="php">$acTimerTaskService -&gt;stopTask($user, $deviceId, $taskId)
+</code></pre>
+
+<h2 id="_55">修改定时任务</h2>
+<h3 id="_56">修改定时任务</h3>
+<pre><code class="php">$acTimerTaskService -&gt;modifyTask($taskId, $task, $user)
+</code></pre>
+
+<p>$task ACTimerTask对象，表示任务的新内容。</p>
+<h2 id="_57">删除定时任务</h2>
+<h3 id="_58">删除定时任务</h3>
+<pre><code class="php">$acTimerTaskService -&gt;deleteTask($user, $deviceId, $taskId)；
+</code></pre></div>
             
         </div>
 
