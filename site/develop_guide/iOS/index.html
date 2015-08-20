@@ -43,7 +43,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -54,13 +54,13 @@
                 
                 
                     <li >
-                        <a href="../../introduction/introduction/">基本介绍</a>
+                        <a href="../../introduction/">基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/">用户交互</a>
                     </li>
                 
                 
@@ -99,42 +99,48 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../third_proxy/">第三方云对接</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
                 
                 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发框架 <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../../framework/android/">安卓</a>
+    <a href="../../reference/android/">安卓</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/iOS/">iOS</a>
+    <a href="../../reference/iOS/">iOS</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/wechat/">微信</a>
+    <a href="../../reference/wechat/">微信</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/cloud/">云端服务</a>
+    <a href="../../reference/cloud/">云端服务</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../framework/device/">设备</a>
+    <a href="../../reference/device/">设备</a>
 </li>
 
                         
@@ -218,9 +224,9 @@
 
 <p><strong>iOS的开发的环境配置参考<a href="../../framework/iOS#开发环境配置">开发框架-iOS-开发环境配置</a></strong></p>
 <h1 id="_1">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../../user_interaction/user_interaction/#账号管理">用户交互-帐号管理</a></p>
+<p>建议的用户交互流程见 <a href="../../user_interaction/#账号管理">用户交互-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
-<p><img alt="account_register" src="../pic/develop_guide/account_register.png" /></p>
+<p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font> </p>
 <p><strong>获取账号管理对象</strong></p>
 <pre><code class="ObjC">
@@ -244,7 +250,7 @@
 </code></pre>
 
 <h2 id="2">2、第三方登录</h2>
-<p><img alt="account_Oauth" src="../pic/develop_guide/Oauth.png" /></p>
+<p><img alt="account_Oauth" src="../../pic/develop_guide/account_Oauth.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font> </p>
 <p>1、直接使用第三方登录</p>
 <pre><code class="ObjC">
@@ -257,32 +263,32 @@
 <h1 id="_2">设备管理</h1>
 <h2 id="_3">独立设备</h2>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。</p>
-<p><img alt="DM_wifi" src="../pic/develop_guide/DM_WiFi.png" /></p>
+<p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="_4">网关设备</h2>
 <p>网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：</p>
-<p><img alt="DM_gateway" src="../pic/develop_guide/DM_gateway.png" /></p>
+<p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="home">home模型</h2>
-<p>说明参见<a href="../../introduction/introduction/#功能介绍##home模型">基本介绍-功能介绍-home模型</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/user_interaction/#home模型">用户交互-home模型</a></p>
+<p>说明参见<a href="../../introduction/#功能介绍##home模型">基本介绍-功能介绍-home模型</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#home模型">用户交互-home模型</a></p>
 <h3 id="home_1">home模型下添加独立设备</h3>
 <p>建议的流程如下：</p>
-<p><img alt="DM_home_WiFi" src="../pic/develop_guide/DM_home_WiFi.png" /></p>
+<p><img alt="DM_home_WiFi" src="../../pic/develop_guide/DM_home_WiFi.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h3 id="home_2">home模型下添加网关型设备且网关没有二维码</h3>
 <p>网关没有二维码时，一般是网管在连接云端以后在局域网广播自己的物理ID。APP接收广播然后绑定设备。</p>
-<p><img alt="DM_home_gateway" src="../pic/develop_guide/DM_home_gateway.png" /></p>
+<p><img alt="DM_home_gateway" src="../../pic/develop_guide/DM_home_gateway.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h3 id="home_3">home模型下添加网关型设备且网关有二维码</h3>
 <p>网关有二维码时，不需要通过接收广播来获取设备物理ID。流程如下：</p>
-<p><img alt="DM_home_gateway2" src="../pic/develop_guide/DM_home_gateway2.png" /></p>
+<p><img alt="DM_home_gateway2" src="../../pic/develop_guide/DM_home_gateway2.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="ota">OTA</h1>
-<p>说明参见<a href="../../introduction/introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/user_interaction/#OTA">用户交互-OTA</a></p>
-<p><img alt="OTA" src="../pic/develop_guide/OTA.png" /></p>
+<p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
+<p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font> </p>
 <p>开发OTA之前需要在开发环境中配置友盟的推送服务，配置方法参见：<a href="../../framework/android#环境配置">开发框架-安卓-环境配置</a></p>
 <p>1、在应用的主Activity onCreate() 函数中开启推送服务</p>
@@ -307,15 +313,15 @@
 <h1 id="_6">实时消息</h1>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="_7">和云端通信</h1>
-<p>说明参见<a href="../../introduction/introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/user_interaction/#云端通信">用户交互-和云端通信</a></p>
+<p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#云端通信">用户交互-和云端通信</a></p>
 <h2 id="1_1">1、发送到设备</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="2_1">2、发送到服务</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="_8">局域网通信</h1>
-<p>说明参见<a href="../../introduction/introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/user_interaction/#局域网通信">用户交互-局域网通信</a></p>
+<p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="_9">定时任务</h1></div>
             
