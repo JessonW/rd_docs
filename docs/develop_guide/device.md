@@ -17,7 +17,11 @@
 
 #配置设备基本信息
 打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID
-如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不用更新
+
+如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不填写。
+如下图所示：
+
+![](../pic/develop_guide/device_config.png)
 
 #设备激活
 

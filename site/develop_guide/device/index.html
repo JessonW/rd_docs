@@ -250,9 +250,10 @@
 <li>设备域信息：（两个字节的domain加上6个字节的subdomain）</li>
 </ul>
 <h1 id="_2">配置设备基本信息</h1>
-<hr />
-<p><font color= "red"> 补充说明怎么配置设备的subdomianID,设备物理ID等设备功能开发前需要做的事情 </font></p>
-<hr />
+<p>打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID</p>
+<p>如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不填写。
+如下图所示：</p>
+<p><img alt="" src="../../pic/develop_guide/device_config.png" /></p>
 <h1 id="_3">设备激活</h1>
 <p>在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
 <h2 id="wifi">通过WiFi连接到云的设备（包括独立设备和网关)</h2>
@@ -265,7 +266,7 @@
 <p>1)  用户首次绑定配置家庭路由器的密码
 2)  更新路由器密码</p>
 <p>这里智能灯演示系统是通过MCU按键进入Smartconfig状态，其示例如下：</p>
-<pre><code class="java">void KeyIntHandle(void)
+<pre><code class="c">void KeyIntHandle(void)
 {
     unsigned long ulStatus;
     ulStatus = GPIOIntStatus(GPIO_PORTF_BASE, true); 
@@ -311,13 +312,9 @@
 </code></pre>
 
 <h2 id="_4">通过蜂窝网络连接到云端的设备</h2>
-<hr />
-<p><font color= "red"> 补充说明通过蜂窝网络连接到云端的设备怎么做设备激活 </font></p>
-<hr />
+<p>蜂窝网络判断用户打开数据并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
 <h2 id="_5">通过以太网连接到云端的设备</h2>
-<hr />
-<p><font color= "red"> 补充说明通过蜂窝网络连接到云端的设备怎么做设备激活 </font></p>
-<hr />
+<p>以太网判断本地网络已连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
 <h1 id="_6">设备绑定管理</h1>
 <p>对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成和用户的绑定。</p>
 <p>对于通过蜂窝网络连接到云端的设备，无法通过局域网将设备的信息广播给客户端（APP），所以，需要在设备上印刷二维码进行绑定。</p>
@@ -341,7 +338,7 @@
 <pre><code class="c">
     void AC_MgmtPermitJoin(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-
+       /*打开网络*/
        zAddrType_t dstAddr; 
        u8 duration = 0;
        dstAddr.addr.shortAddr = 0xfffc;
@@ -354,8 +351,10 @@
        {
            duration = AC_NtoHl(*(u32 *)pu8Playload);
        }
+       /*调用网关接口打开网络*/
        NLME_PermitJoiningRequest(duration);
        ZDP_MgmtPermitJoinReq( &amp;dstAddr, duration, TRUE, FALSE);
+       /*给云端回响应*/
        AC_SendAckMsg(pstruOptList,pstruMsg-&gt;MsgId);
     }
 
@@ -392,6 +391,7 @@
         u16 u16PayloadLen;
         u8 i = 0;
         memset(pu8DeviceListInfo,0,sizeof(ZC_SubDeviceList));
+        /*查询子设备列表*/
         for(i=0;i&lt;g_struDeviceStatus.num;i++)
         {
             if(g_struDeviceStatus.struSubDeviceInfo[i].u8IsOnline)
@@ -403,6 +403,7 @@
                 pu8DeviceListInfo-&gt;u8ClientNum++;
             }
         }
+        /*构造消息并发送设备列表*/
         u16PayloadLen = sizeof(ZC_SubDeviceList) + pu8DeviceListInfo-&gt;u8ClientNum*sizeof(ZC_SubDeviceInfo);
         AC_BuildMessage(AC_CODE_LIST_SUBDEVICES_RSP,pstruMsg-&gt;MsgId,
                         (u8*)pu8DeviceListInfo, u16PayloadLen,
@@ -417,7 +418,8 @@
 <h3 id="_11">云端查询子设备是否在线。</h3>
 <p>消息格式定义如下：
 云端下发到网关，查询子设备是否在线。</p>
-<pre><code class="c">    typedef struct
+<pre><code class="c">
+    typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
         u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
@@ -428,7 +430,7 @@
 <pre><code class="c">
     typedef struct
     {
-        u8 u8DeviceOnline;  //Online ?
+        u8 u8DeviceOnline;  //在线状态，1：在线，0：不在线
         u8 u8Pad[3];
     }ZC_DeviceOnline;
 
@@ -443,6 +445,7 @@
         ZC_DeviceOnline DeviceStatus = {0};
         u16 u16DataLen;
         u8 i = 0;
+        /*查询子设备是否在线*/
         for(i=0;i&lt;g_struDeviceStatus.num;i++)
         {
             if(osal_revmemcmp(((ZC_SubDeviceInfo*) pu8Playload)-&gt;DeviceId+8,g_struDeviceStatus.struSubDeviceInfo[i].ExtAddr,Z_EXTADDR_LEN))
@@ -454,7 +457,7 @@
                 }
             }
         }
-
+        /*构造消息并发送设备列表*/    
         AC_BuildMessage(AC_CODE_IS_DEVICEONLINE_RSP,pstruMsg-&gt;MsgId,
                         (u8*)&amp;DeviceStatus, sizeof(DeviceStatus),
                         NULL, 
@@ -488,7 +491,9 @@
         req.silent = false;
         req.removeChildren= false;
         osal_revmemcpy(req.extAddr,((ZC_SubDeviceInfo *)pu8Playload)-&gt;DeviceId+8,Z_EXTADDR_LEN);
+        /*网关移除子设备*/
         ret = NLME_LeaveReq(&amp;req );
+        /*发送执行结果/  
         if(ZSuccess==ret)
         {
             AC_SendAckMsg(pstruOptList,pstruMsg-&gt;MsgId);
@@ -519,6 +524,7 @@
 <pre><code class="c">
     void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*本例只升级本地设备，因而不记录文件数目*/
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);  
     }
 
@@ -544,11 +550,13 @@
         u32 ret =0;
         u32 i = 0;
         u32 blocklen = 0;
+        /*存储文件信息*/
         AC_OtaFileBeginReq *pstruOta = (AC_OtaFileBeginReq *)(pu8Playload);
         g_struOtaInfo.u32RecvOffset = 0;
         g_struOtaInfo.u32TotalLen = AC_HTONL(pstruOta-&gt;u32FileTotalLen);
         g_struOtaInfo.u8Crc[0] = pstruOta-&gt;u8TotalFileCrc[0];
         g_struOtaInfo.u8Crc[1] = pstruOta-&gt;u8TotalFileCrc[1];
+        /*擦除OTA区域*/
         blocklen =  (g_struOtaInfo.u32TotalLen + 4 + BLOCK_SIZE - 1)&amp;(~(BLOCK_SIZE - 1));//include length + data
         for(i = 0;i&lt;blocklen/BLOCK_SIZE;i++ )           
         {
@@ -556,8 +564,9 @@
             if(ret!= 0)
             break;
         }
+       /*烧入升级文件长度*/
         ret =  FlashProgram(&amp;g_struOtaInfo.u32TotalLen, (g_ui32TransferFileLenAddress) , 4);
-
+        /*回响应*/                     
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
     }
 
@@ -569,7 +578,7 @@
 <pre><code class="c">
     typedef struct
     {
-        u32 u32Offset;
+        u32 u32Offset;//文件块传输偏移
     }AC_OtaFileChunkReq;
 </code></pre>
 
@@ -581,7 +590,7 @@
         ZC_OtaFileChunkReq *pstruOta = (ZC_OtaFileChunkReq *)(pu8Playload);   
         u32 u32FileLen = AC_HTONS(pstruMsg-&gt;Payloadlen) - sizeof(ZC_OtaFileChunkReq);
         u32 u32RecvOffset = AC_HTONL(pstruOta-&gt;u32Offset);
-
+        /*判断云端下发的参数是否正确*/
         /*check para*/
         if ((u32RecvOffset != g_struOtaInfo.u32RecvOffset)
             || ((u32RecvOffset + u32FileLen) &gt; g_struOtaInfo.u32TotalLen)
@@ -591,7 +600,7 @@
             AC_SendErrMsg(pstruOptList,pstruMsg-&gt;MsgId, NULL, 0);
             return;
         }
-
+        /*将固件版本烧写到flash中*/
         u32RetVal = AC_FirmwareUpdate((u8*)(pstruOta + 1), u32RecvOffset, u32FileLen);
         //u32RetVal = ZC_RET_OK;
         AC_Printf(&quot;offset = %d, len = %d\n&quot;, u32RecvOffset, u32FileLen);
@@ -603,8 +612,9 @@
             return;
         }
 
-        /*update file offset*/
+        /*更新文件偏移*/
         g_struOtaInfo.u32RecvOffset = g_struOtaInfo.u32RecvOffset + u32FileLen;
+        /*回响应*/ 
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
     }
 
@@ -616,6 +626,7 @@
 <pre><code class="c">
     void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*回响应*/
         AC_Printf(&quot;Ota File End\n&quot;);
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
     }
@@ -632,7 +643,7 @@
          u32 u32OtaFlag = 0xAA55AA55;
          AC_Printf(&quot;Ota End\n&quot;);
 
-
+         /*回响应*/ 
          if (AC_RET_OK == u32RetVal)
          {
              AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
@@ -658,12 +669,13 @@
         u32 u32OtaFlag = 0xAA55AA55;
         AC_Printf(&quot;Ota Confirm\n&quot;);
 
-
+        /*更新ota升级标志位*/
         u32RetVal =  FlashProgram(&amp;u32OtaFlag, (g_ui32OtaFlagAddr) , 4);
-
+        /*回响应,跳转到boot区域启动ota升级流程*/
         if (AC_RET_OK == u32RetVal)
         {
             AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
+            sleep(10);
             AC_JumpToBootLoader();
         }
         else
@@ -678,22 +690,24 @@
 <h1 id="_14">和云端通信</h1>
 <h2 id="_15">设备上报消息</h2>
 <p>设备可以在定时或者根据外界条件触发的情况下将设备数据和状态主动上报到云端。其中上报的消息号必须大于等于200。</p>
-<hr />
-<p><font color= "red"> 补充说明这里上报了个什么。同时代码中添加注释 </font></p>
-<hr />
+<p>下面的例子是上报demo灯状态到云端。</p>
 <h3 id="_16">二进制</h3>
 <p>参考代码如下：</p>
 <pre><code class="c">
     void AC_SendStatus2Server()
     {
+        /*上报demo灯的状态*/
         STRU_LED_ONOFF struRsp;
         u16 u16DataLen;
+        /*读取demo灯状态*/
         struRsp.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         struRsp.u8LedOnOff = struRsp.u8LedOnOff&gt;&gt;2;
+        /*构造消息*/
         AC_BuildMessage(AC_CODE_BINARY_REPORT,0,
                         (u8*)&amp;struRsp, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);
     }
 </code></pre>
@@ -703,13 +717,19 @@
 <pre><code class="c">
     void AC_SendStatus2Server()
     {
-        u8 u8LedOnOff ;
-        u16 u16DataLen;
+         /*上报demo灯的状态*/
+         u8 u8LedOnOff ;
+         u16 u16DataLen;
+         /*KLV协议内存分配*/
          AC_KLV *pOut = AC_CreateObj();
+         /*读取demo灯状态*/
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff&gt;&gt;2;
+         /*构造KLV消息*/
          AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+         /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
+         /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
 </code></pre>
@@ -719,21 +739,27 @@
 <pre><code class="c">
     void AC_SendLedStatus2Server()
     {
+         /*上报demo灯的状态*/
         cJSON *root;
         char *out;
         u8 u8LedOnOff;
         u16 u16DataLen;
+         /*JSON协议内存分配*/
         root=cJSON_CreateObject();
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff&gt;&gt;2;
+         /*构造JSON消息体*/
         cJSON_AddNumberToObject(root,&quot;led&quot;,     u8LedOnOff);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
+        /*构造消息*/
         AC_BuildMessage(AC_CODE_JSON_REPORT,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen); 
+         /*JSON协议内存释放*/
         free(out);
     }
 
@@ -743,9 +769,7 @@
 <p>设备接收云端指令可以控制设备，并返回执行结果，其中控制指令和响应指令的消息号必须大于64且小于200。</p>
 <p>设备接收云端指令可以查询设备，并返回查询结果，其中查询指令和响应指令的消息号必须大于64且小于200。</p>
 <p>设备接收到云端指令必须回响应。</p>
-<hr />
-<p><font color= "red"> 补充说明这里接收到了云端什么指令。同时代码中添加注释 </font></p>
-<hr />
+<p>下面的例子是云端下发控制demo灯开关状态，收到指令回应响应。</p>
 <h3 id="_18">二进制</h3>
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
@@ -761,10 +785,12 @@
                 break;            
 
         }
+        /*构造消息*/
         AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg-&gt;MsgId,
                         (u8*)test, 5,
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);    
     }
 </code></pre>
@@ -786,7 +812,11 @@
                 break;            
 
         }
+        /*构造KLV消息*/
+        AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+        /*发送响应消息，用户自定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
+         /*KLV协议内存释放*/
         AC_FreeObj(pOut);    
     }
 </code></pre>
@@ -795,11 +825,13 @@
 <pre><code class="c">
     void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
-        //处理设备自定义控制消息
+        /*处理设备自定义控制消息*/
         u16 u16DataLen;
         u32 u32LedOnOff;
         char *out;
+        /*解析收到的JSON数据*/
         cJSON *root = cJSON_Parse(pu8Playload);
+        /*JSON协议内存分配*/
         root=cJSON_CreateObject();
         cJSON *format = cJSON_GetObjectItem(root,&quot;ledctl&quot;);
         u32LedOnOff = cJSON_GetObjectItem(format,&quot;led&quot;)-&gt;valueint;
@@ -810,17 +842,19 @@
                 AC_BlinkLed(u32LedOnOff);
                 break;
         }
+        /*构造JSON消息*/
         cJSON_AddStringToObject(root,&quot;status&quot;,      &quot;ok&quot;);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
+        /*发送JSON消息*/
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen); 
+         /*释放JSON消息*/
         free(out);   
-}
-
+     }
 </code></pre>
 
 <h2 id="_19">接口定义</h2>
@@ -828,10 +862,10 @@
 <p>函数定义</p>
 <p>void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);</p>
 <p>参数</p>
-<pre><code>字段|类型|说明
-  ----|----|----
-pu8Msg|u8 *|待发送的数据缓存
-u16DataLen|u16|待发送的数据长度
+<pre><code>|字段|类型|说明|
+|----|----|----|
+|pu8Msg|u8 *|待发送的数据缓存|
+|u16DataLen|u16|待发送的数据长度|
 </code></pre>
 <p>说明</p>
 <h3 id="_21">协议消息组包接口</h3>
@@ -899,15 +933,15 @@ u16DataLen|u16|待发送的数据长度
 </table>
 <p>s8 AC_GetKeyValue(u8 <em>pu8Playload, u16 u16PayloadLen, u8 u8Key,void </em>pValue,u16 <em>pu16Length,u8 </em>pu8Type)</p>
 <p>参数</p>
-<pre><code>字段|类型|说明
-  ----|----|----
-pu8Playload|u8 *|待解析的消息
-u16PayloadLen|u16|待解析的消息长度
-u8Key|u8|传入的关键字
-pValue|void *|该关键字对应的数据
-pu16Length|u16 *|该关键字对应的数据长度
-pu8Type|u8 *|该关键字对应的数据类型
+<pre><code>|字段|类型|说明|
+ | ----|----|----|
+|pu8Playload|u8 *|待解析的消息|
 </code></pre>
+<p>| u16PayloadLen|u16|待解析的消息长度|
+   | u8Key|u8|传入的关键字|
+   | pValue|void <em>|该关键字对应的数据|
+    |pu16Length|u16 </em>|该关键字对应的数据长度|
+  |  pu8Type|u8 *|该关键字对应的数据类型|</p>
 <h3 id="klv_2">KLV协议内存分配接口</h3>
 <p>函数定义</p>
 <p>AC_KLV * AC_CreateObj()</p>
@@ -920,14 +954,42 @@ pu8Type|u8 *|该关键字对应的数据类型
 <p>函数定义</p>
 <p>s8 AC_SetKeyValue(AC_KLV <em>pOut,u8 u8Key,u16 u16Length,u8 u8Type, void </em>pValue);</p>
 <p>参数</p>
-<pre><code>字段|类型|说明
-  ----|----|----
-pOut|AC_KLV *|待组包数据的消息
-u8Key|u8|传入的关键字
-pu16Length|u16 *|该关键字对应的数据长度
-pu8Type|u8 *|该关键字对应的数据类型
-pValue|void *|该关键字对应的数据
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pOut</td>
+<td>AC_KLV *</td>
+<td>待组包数据的消息</td>
+</tr>
+<tr>
+<td>u8Key</td>
+<td>u8</td>
+<td>传入的关键字</td>
+</tr>
+<tr>
+<td>pu16Length</td>
+<td>u16 *</td>
+<td>该关键字对应的数据长度</td>
+</tr>
+<tr>
+<td>pu8Type</td>
+<td>u8 *</td>
+<td>该关键字对应的数据类型</td>
+</tr>
+<tr>
+<td>pValue</td>
+<td>void *</td>
+<td>该关键字对应的数据</td>
+</tr>
+</tbody>
+</table>
 <h1 id="_22">局域网通信</h1>
 <p>WiFi设备和以太网设备可以和客户端（APP）进行局域网通信。
 AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p></div>

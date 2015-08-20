@@ -1,24 +1,37 @@
+#开发准备
+在进行微信开发前，需要到微信的硬件平台进行申请。具体的操作指导请参考 [开发指导-第三方云对接-微信](third_proxy.md#微信)
+
 #帐号管理
+
 ##绑定手机号
-###获取账号管理对象
+- 1.获取账号管理对象
+
 ```php
 $accountServcie=ACClient::getAccountService();
 ```
-###发送验证码
+
+- 2.发送验证码
+
 ```php
 $accountServcie->sendVerifyCode($phone);
 ```
+
 $phone 字符串，是用户的手机号。
-###绑定手机号
-###获取ACBridgeWeChat对象
+
+- 3.获取ACBridgeWeChat对象
+
 ```php
 $wxBridge = new ACBridgeWeChat($accessToken);
 ```
+
 $accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
-###提交验证码，绑定手机号
+
+- 4.提交验证码，绑定手机号
+ 
 ```php
 $wxBridge->setPhone($openid,$phone, $verifyCode)；
 ```
+
 $verifyCode 字符串，是用户修改手机号码的验证码
 $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取openid。
 
@@ -27,8 +40,9 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 #设备管理-独立设备
 ##设备绑定
 ###微信官方授权设备
-参考微信硬件平台（http://iot.weixin.qq.com/）如何对硬件设备进行授权。
-###生成设备二维码
+参考[微信硬件平台](http://iot.weixin.qq.com/)如何对硬件设备进行授权。
+
+
 ####实例化ACBridgeWeChat对象
 ```php
 $wxBridge = new ACBridgeWeChat($accessToken);
@@ -47,6 +61,8 @@ $device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName);
 ```
 ###扫描二维码关注公众号，绑定设备
 第一个用微信扫描二维码的人，将会绑定设备，成为设备的管理员。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。Ablecloud对于已有用户绑定的设备，其它用户想要得到设备的管理权需要设备的管理员分享设备，才能拥有设备的管理权。
+
+   
 ##设备激活
 ###调起微信airkiss页面
 在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待设备连接云端。
