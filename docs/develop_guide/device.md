@@ -16,14 +16,8 @@
 
 
 #配置设备基本信息
-
-----------
-
-<font color= "red"> 补充说明怎么配置设备的subdomianID,设备物理ID等设备功能开发前需要做的事情 </font>
-
-----------
-
-
+打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID
+如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不用更新
 
 #设备激活
 
@@ -49,7 +43,7 @@ WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手�
 
 这里智能灯演示系统是通过MCU按键进入Smartconfig状态，其示例如下：
 
-```java
+```c
 void KeyIntHandle(void)
 {
     unsigned long ulStatus;
@@ -101,11 +95,11 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 
 ##通过蜂窝网络连接到云端的设备
-----------
 
-<font color= "red"> 补充说明通过蜂窝网络连接到云端的设备怎么做设备激活 </font>
 
-----------
+蜂窝网络判断用户打开数据并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。
+
+
 
 
 
@@ -113,11 +107,8 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 ##通过以太网连接到云端的设备
 
-----------
 
-<font color= "red"> 补充说明通过蜂窝网络连接到云端的设备怎么做设备激活 </font>
-
-----------
+以太网判断本地网络已连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。
 
 
 
@@ -161,7 +152,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
     void AC_MgmtPermitJoin(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-    
+       /*打开网络*/
        zAddrType_t dstAddr; 
        u8 duration = 0;
        dstAddr.addr.shortAddr = 0xfffc;
@@ -174,8 +165,10 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
        {
            duration = AC_NtoHl(*(u32 *)pu8Playload);
        }
+       /*调用网关接口打开网络*/
        NLME_PermitJoiningRequest(duration);
        ZDP_MgmtPermitJoinReq( &dstAddr, duration, TRUE, FALSE);
+       /*给云端回响应*/
        AC_SendAckMsg(pstruOptList,pstruMsg->MsgId);
     }
 
@@ -215,6 +208,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         u16 u16PayloadLen;
         u8 i = 0;
         memset(pu8DeviceListInfo,0,sizeof(ZC_SubDeviceList));
+        /*查询子设备列表*/
         for(i=0;i<g_struDeviceStatus.num;i++)
         {
             if(g_struDeviceStatus.struSubDeviceInfo[i].u8IsOnline)
@@ -226,6 +220,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
                 pu8DeviceListInfo->u8ClientNum++;
             }
         }
+        /*构造消息并发送设备列表*/
         u16PayloadLen = sizeof(ZC_SubDeviceList) + pu8DeviceListInfo->u8ClientNum*sizeof(ZC_SubDeviceInfo);
         AC_BuildMessage(AC_CODE_LIST_SUBDEVICES_RSP,pstruMsg->MsgId,
                         (u8*)pu8DeviceListInfo, u16PayloadLen,
@@ -242,6 +237,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 消息格式定义如下：
 云端下发到网关，查询子设备是否在线。
 ```c
+
     typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
@@ -254,7 +250,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
     typedef struct
     {
-        u8 u8DeviceOnline;	//Online ?
+        u8 u8DeviceOnline;	//在线状态，1：在线，0：不在线
         u8 u8Pad[3];
     }ZC_DeviceOnline;
 
@@ -269,6 +265,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         ZC_DeviceOnline DeviceStatus = {0};
         u16 u16DataLen;
         u8 i = 0;
+        /*查询子设备是否在线*/
         for(i=0;i<g_struDeviceStatus.num;i++)
         {
             if(osal_revmemcmp(((ZC_SubDeviceInfo*) pu8Playload)->DeviceId+8,g_struDeviceStatus.struSubDeviceInfo[i].ExtAddr,Z_EXTADDR_LEN))
@@ -280,7 +277,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
                 }
             }
         }
-    
+        /*构造消息并发送设备列表*/    
         AC_BuildMessage(AC_CODE_IS_DEVICEONLINE_RSP,pstruMsg->MsgId,
                         (u8*)&DeviceStatus, sizeof(DeviceStatus),
                         NULL, 
@@ -320,7 +317,9 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         req.silent = false;
         req.removeChildren= false;
         osal_revmemcpy(req.extAddr,((ZC_SubDeviceInfo *)pu8Playload)->DeviceId+8,Z_EXTADDR_LEN);
+        /*网关移除子设备*/
         ret = NLME_LeaveReq(&req );
+        /*发送执行结果/  
         if(ZSuccess==ret)
         {
             AC_SendAckMsg(pstruOptList,pstruMsg->MsgId);
@@ -360,6 +359,7 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
 
     void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*本例只升级本地设备，因而不记录文件数目*/
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);  
     }
 
@@ -390,11 +390,13 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
         u32 ret =0;
         u32 i = 0;
         u32 blocklen = 0;
+        /*存储文件信息*/
         AC_OtaFileBeginReq *pstruOta = (AC_OtaFileBeginReq *)(pu8Playload);
         g_struOtaInfo.u32RecvOffset = 0;
         g_struOtaInfo.u32TotalLen = AC_HTONL(pstruOta->u32FileTotalLen);
         g_struOtaInfo.u8Crc[0] = pstruOta->u8TotalFileCrc[0];
         g_struOtaInfo.u8Crc[1] = pstruOta->u8TotalFileCrc[1];
+        /*擦除OTA区域*/
         blocklen =  (g_struOtaInfo.u32TotalLen + 4 + BLOCK_SIZE - 1)&(~(BLOCK_SIZE - 1));//include length + data
         for(i = 0;i<blocklen/BLOCK_SIZE;i++ )           
         {
@@ -402,8 +404,9 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
             if(ret!= 0)
             break;
         }
+       /*烧入升级文件长度*/
         ret =  FlashProgram(&g_struOtaInfo.u32TotalLen, (g_ui32TransferFileLenAddress) , 4);
-                           
+        /*回响应*/                     
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
     }
 
@@ -418,7 +421,7 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
 
     typedef struct
     {
-        u32 u32Offset;
+        u32 u32Offset;//文件块传输偏移
     }AC_OtaFileChunkReq;
 ```
 
@@ -432,7 +435,7 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
         ZC_OtaFileChunkReq *pstruOta = (ZC_OtaFileChunkReq *)(pu8Playload);   
         u32 u32FileLen = AC_HTONS(pstruMsg->Payloadlen) - sizeof(ZC_OtaFileChunkReq);
         u32 u32RecvOffset = AC_HTONL(pstruOta->u32Offset);
-        
+        /*判断云端下发的参数是否正确*/
         /*check para*/
         if ((u32RecvOffset != g_struOtaInfo.u32RecvOffset)
             || ((u32RecvOffset + u32FileLen) > g_struOtaInfo.u32TotalLen)
@@ -442,7 +445,7 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
             AC_SendErrMsg(pstruOptList,pstruMsg->MsgId, NULL, 0);
             return;
         }
-    
+        /*将固件版本烧写到flash中*/
         u32RetVal = AC_FirmwareUpdate((u8*)(pstruOta + 1), u32RecvOffset, u32FileLen);
         //u32RetVal = ZC_RET_OK;
         AC_Printf("offset = %d, len = %d\n", u32RecvOffset, u32FileLen);
@@ -454,8 +457,9 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
             return;
         }
     
-        /*update file offset*/
+        /*更新文件偏移*/
         g_struOtaInfo.u32RecvOffset = g_struOtaInfo.u32RecvOffset + u32FileLen;
+        /*回响应*/ 
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
     }
 
@@ -470,6 +474,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 
     void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*回响应*/
         AC_Printf("Ota File End\n");
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
     }
@@ -489,7 +494,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
          u32 u32OtaFlag = 0xAA55AA55;
          AC_Printf("Ota End\n");
      
-         
+         /*回响应*/ 
          if (AC_RET_OK == u32RetVal)
          {
              AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
@@ -519,12 +524,13 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
         u32 u32OtaFlag = 0xAA55AA55;
         AC_Printf("Ota Confirm\n");
     
-     
+        /*更新ota升级标志位*/
         u32RetVal =  FlashProgram(&u32OtaFlag, (g_ui32OtaFlagAddr) , 4);
-    
+        /*回响应,跳转到boot区域启动ota升级流程*/
         if (AC_RET_OK == u32RetVal)
         {
             AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
+            sleep(10);
             AC_JumpToBootLoader();
         }
         else
@@ -546,12 +552,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ##设备上报消息
 设备可以在定时或者根据外界条件触发的情况下将设备数据和状态主动上报到云端。其中上报的消息号必须大于等于200。
 
-
-----------
-
-<font color= "red"> 补充说明这里上报了个什么。同时代码中添加注释 </font>
-
-----------
+下面的例子是上报demo灯状态到云端。
 
 
 ###二进制
@@ -561,14 +562,18 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
     
     void AC_SendStatus2Server()
     {
+        /*上报demo灯的状态*/
         STRU_LED_ONOFF struRsp;
         u16 u16DataLen;
+        /*读取demo灯状态*/
         struRsp.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         struRsp.u8LedOnOff = struRsp.u8LedOnOff>>2;
+        /*构造消息*/
         AC_BuildMessage(AC_CODE_BINARY_REPORT,0,
                         (u8*)&struRsp, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);
     }
 ```
@@ -579,13 +584,19 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
     
     void AC_SendStatus2Server()
     {
-        u8 u8LedOnOff ;
-        u16 u16DataLen;
+         /*上报demo灯的状态*/
+         u8 u8LedOnOff ;
+         u16 u16DataLen;
+         /*KLV协议内存分配*/
          AC_KLV *pOut = AC_CreateObj();
+         /*读取demo灯状态*/
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff>>2;
+         /*构造KLV消息*/
          AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+         /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
+         /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
 ```
@@ -596,21 +607,27 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
     
     void AC_SendLedStatus2Server()
     {
+         /*上报demo灯的状态*/
         cJSON *root;
         char *out;
         u8 u8LedOnOff;
         u16 u16DataLen;
+         /*JSON协议内存分配*/
         root=cJSON_CreateObject();
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff>>2;
+         /*构造JSON消息体*/
         cJSON_AddNumberToObject(root,"led",		u8LedOnOff);
         out=cJSON_Print(root);	
         cJSON_Delete(root);
+        /*构造消息*/
         AC_BuildMessage(AC_CODE_JSON_REPORT,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);	
+         /*JSON协议内存释放*/
         free(out);
     }
 
@@ -623,12 +640,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
 
 设备接收到云端指令必须回响应。
 
-
-----------
-
-<font color= "red"> 补充说明这里接收到了云端什么指令。同时代码中添加注释 </font>
-
-----------
+下面的例子是云端下发控制demo灯开关状态，收到指令回应响应。
 
 ###二进制
 
@@ -647,10 +659,12 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 break;            
         
         }
+        /*构造消息*/
         AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg->MsgId,
                         (u8*)test, 5,
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &u16DataLen);
+        /*发送消息*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);    
     }
 ```
@@ -672,7 +686,11 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 break;            
         
         }
+        /*构造KLV消息*/
+        AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+        /*发送响应消息，用户自定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
+         /*KLV协议内存释放*/
         AC_FreeObj(pOut);    
     }
 ```
@@ -682,11 +700,13 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
   
     void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
-        //处理设备自定义控制消息
+        /*处理设备自定义控制消息*/
         u16 u16DataLen;
         u32 u32LedOnOff;
         char *out;
+        /*解析收到的JSON数据*/
         cJSON *root = cJSON_Parse(pu8Playload);
+        /*JSON协议内存分配*/
         root=cJSON_CreateObject();
         cJSON *format = cJSON_GetObjectItem(root,"ledctl");
     	u32LedOnOff = cJSON_GetObjectItem(format,"led")->valueint;
@@ -697,17 +717,19 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 AC_BlinkLed(u32LedOnOff);
                 break;
         }
+        /*构造JSON消息*/
         cJSON_AddStringToObject(root,"status",		"ok");
         out=cJSON_Print(root);	
         cJSON_Delete(root);
+        /*发送JSON消息*/
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);	
+         /*释放JSON消息*/
         free(out);   
-}
-
+     }
 ```
 ##接口定义
 
@@ -719,10 +741,10 @@ void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
 
 参数
 
-    字段|类型|说明
-      ----|----|----
-    pu8Msg|u8 *|待发送的数据缓存
-    u16DataLen|u16|待发送的数据长度
+    |字段|类型|说明|
+    |----|----|----|
+    |pu8Msg|u8 *|待发送的数据缓存|
+    |u16DataLen|u16|待发送的数据长度|
 
 说明
 ###协议消息组包接口
@@ -736,15 +758,15 @@ void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId,
 
 参数
 
-字段	|类型	|说明
-    ----|----|----
-u8MsgCode|	u8	|消息类型
-u8MsgId|	u8	|消息ID
-pu8Payload|	u8	|消息实际内容
-u16PayloadLen|	u16|	消息实际长度
-pstruOptList	|AC_OptList *|	Option项列表
-pu8Msg|	u8 *	|组好的消息数据的存储buffer
-pu16Len|	u8 *	|组好的数据长度
+|字段	|类型	|说明|
+    |----|----|----|
+|u8MsgCode|	u8	|消息类型|
+|u8MsgId|	u8	|消息ID|
+|pu8Payload|	u8	|消息实际内容|
+|u16PayloadLen|	u16|	消息实际长度|
+|pstruOptList	|AC_OptList *|	Option项列表|
+|pu8Msg|	u8 *	|组好的消息数据的存储buffer|
+|pu16Len|	u8 *	|组好的数据长度|
 ###KLV协议解析包接口
 函数定义
 
@@ -752,14 +774,14 @@ s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 
 
 参数
 
-    字段|类型|说明
-      ----|----|----
-    pu8Playload|u8 *|待解析的消息
-    u16PayloadLen|u16|待解析的消息长度
-    u8Key|u8|传入的关键字
-    pValue|void *|该关键字对应的数据
-    pu16Length|u16 *|该关键字对应的数据长度
-    pu8Type|u8 *|该关键字对应的数据类型
+    |字段|类型|说明|
+     | ----|----|----|
+    |pu8Playload|u8 *|待解析的消息|
+   | u16PayloadLen|u16|待解析的消息长度|
+   | u8Key|u8|传入的关键字|
+   | pValue|void *|该关键字对应的数据|
+    |pu16Length|u16 *|该关键字对应的数据长度|
+  |  pu8Type|u8 *|该关键字对应的数据类型|
 
 ###KLV协议内存分配接口
 函数定义
@@ -781,13 +803,13 @@ s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
 
 参数
 
-    字段|类型|说明
-      ----|----|----
-    pOut|AC_KLV *|待组包数据的消息
-    u8Key|u8|传入的关键字
-    pu16Length|u16 *|该关键字对应的数据长度
-    pu8Type|u8 *|该关键字对应的数据类型
-    pValue|void *|该关键字对应的数据
+   | 字段|类型|说明|
+     | ----|----|----|
+   | pOut|AC_KLV *|待组包数据的消息|
+   | u8Key|u8|传入的关键字|
+   | pu16Length|u16 *|该关键字对应的数据长度|
+   | pu8Type|u8 *|该关键字对应的数据类型|
+   | pValue|void *|该关键字对应的数据|
 
 
 

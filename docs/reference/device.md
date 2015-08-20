@@ -74,10 +74,6 @@ AC_MessageHead中各个字段的说明：
 |19		|AC_CODE_OTA_FILE_CHUNK	|OTA文件传输			|
 |20		|AC_CODE_OTA_FILE_END	|OTA文件传输结束		|
 |21		|AC_CODE_OTA_END		|OTA结束				|
-|23		|AC_CODE_ZOTA_FILE_BEGIN|Wifi 升级文件传输消息|
-|24		|AC_CODE_ZOTA_FILE_CHUNK|Wifi 升级文件传输	|
-|25		|AC_CODE_ZOTA_FILE_END	|Wifi 升级文件传输结束|
-|26		|AC_CODE_ZOTA_END		|Wifi 升级OTA结束	|
 |36		|AC_CODE_UNBIND			|解除设备的绑定		|
 |45		|AC_CODE_GATEWAY_CTRL	|网关控制消息			|
 |46		|AC_CODE_LIST_SUBDEVICES_REQ|查询所有子设备列表请求|
