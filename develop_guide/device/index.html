@@ -250,8 +250,10 @@
 <li>设备域信息：（两个字节的domain加上6个字节的subdomain）</li>
 </ul>
 <h1 id="_2">配置设备基本信息</h1>
-<p>打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID
-如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不用更新</p>
+<p>打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID</p>
+<p>如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不填写。
+如下图所示：</p>
+<p><img alt="" src="../../pic/develop_guide/device_config.png" /></p>
 <h1 id="_3">设备激活</h1>
 <p>在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
 <h2 id="wifi">通过WiFi连接到云的设备（包括独立设备和网关)</h2>
