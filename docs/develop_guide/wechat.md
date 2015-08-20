@@ -39,28 +39,45 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 
 #设备管理-独立设备
 ##设备绑定
-###微信官方授权设备
+- 1.微信官方授权设备
 参考[微信硬件平台](http://iot.weixin.qq.com/)如何对硬件设备进行授权。
 
 
-####实例化ACBridgeWeChat对象
+
+
+- 2.实例化ACBridgeWeChat对象
+
 ```php
 $wxBridge = new ACBridgeWeChat($accessToken);
 ```
+
 $accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
-###生成设备二维码码串
+
+
+
+- 3.生成设备二维码码串
+
 ```php
 $wxBridge->getDeviceQRCode($physicalId, FALSE, $openId );
 ```
-###利用二维码生生工具上一步中得到的码串生成二维码
-例如草料二维码生成工具（http://cli.im/）
-###处理微信推送扫码信息
+
+
+
+- 4.利用二维码生生工具上一步中得到的码串生成二维码
+例如[草料二维码生成工具](http://cli.im/)
+
+
+- 5.处理微信推送扫码信息
 在微信推送的device_event 的 bind事件中调用ablecloud sdk的响应函数
 ```php
 $device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName);
 ```
-###扫描二维码关注公众号，绑定设备
+
+
+- 6.扫描二维码关注公众号，绑定设备
 第一个用微信扫描二维码的人，将会绑定设备，成为设备的管理员。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。Ablecloud对于已有用户绑定的设备，其它用户想要得到设备的管理权需要设备的管理员分享设备，才能拥有设备的管理权。
+
+
 
    
 ##设备激活
