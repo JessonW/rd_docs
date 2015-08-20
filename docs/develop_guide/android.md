@@ -1,12 +1,13 @@
 
-**安卓开发的环境配置参考[开发框架-安卓-开发环境配置](../framework/android#开发环境配置)**
+#开发环境配置
+安卓开发的环境配置参考[reference-安卓-开发环境配置](../reference/android.md#开发环境配置)
 
 #帐号管理
-建议的用户交互流程见 [用户交互-帐号管理](../user_interaction/user_interaction.md#账号管理)
+建议的用户交互流程见 [用户交互-帐号管理](../user_interaction.md#账号管理)
 
 ##1、普通帐号注册
 
-![account_register](pic/develop_guide/account_register.png)
+![account_register](../pic/develop_guide/account_register.png)
 
 获取账号管理对象
 
@@ -87,7 +88,7 @@
  
 ##2、第三方登录
  
-![account_Oauth](pic/develop_guide/Oauth.png)
+![account_Oauth](../pic/develop_guide/account_Oauth.png)
 
 1、直接使用第三方登录
 
@@ -136,7 +137,7 @@
 
 用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。
 
-![DM_wifi](pic/develop_guide/DM_WiFi.png)
+![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
 ###一．激活设备
 Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如下：
@@ -183,11 +184,11 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 });
 
 
-##网关设备
+##网关型设备
 
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
-![DM_gateway](pic/develop_guide/DM_gateway.png)
+![DM_gateway](../pic/develop_guide/DM_gateway.png)
 
 该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。
 
@@ -195,15 +196,15 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
 
 ##home模型
-说明参见[基本介绍-功能介绍-home模型](../introduction/introduction.md#功能介绍##home模型)
+说明参见[基本介绍-功能介绍-home模型](../introduction.md#功能介绍##home模型)
 
-建议的用户交互参见[用户交互-home模型](../user_interaction/user_interaction.md#home模型)
+建议的用户交互参见[用户交互-home模型](../user_interaction.md#home模型)
 
 ###home模型下添加独立设备
 
 建议的流程如下：
 
-![DM_home_WiFi](pic/develop_guide/DM_home_WiFi.png)
+![DM_home_WiFi](../pic/develop_guide/DM_home_WiFi.png)
 
 <font color="red">**东生补充开发指导**</font>
 
@@ -211,7 +212,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
 网关没有二维码时，一般是网管在连接云端以后在局域网广播自己的物理ID。APP接收广播然后绑定设备。
 
-![DM_home_gateway](pic/develop_guide/DM_home_gateway.png)
+![DM_home_gateway](../pic/develop_guide/DM_home_gateway.png)
 
 <font color="red">**东生补充开发指导**</font>
 
@@ -219,16 +220,16 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
 网关有二维码时，不需要通过接收广播来获取设备物理ID。流程如下：
 
-![DM_home_gateway2](pic/develop_guide/DM_home_gateway2.png)
+![DM_home_gateway2](../pic/develop_guide/DM_home_gateway2.png)
 
 <font color="red">**东生补充开发指导**</font>
 
 #OTA
-说明参见[基本介绍-功能介绍-OTA](../introduction/introduction.md#功能介绍##OTA)
+说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
-建议的用户交互参见[用户交互-OTA](../user_interaction/user_interaction.md#OTA)
+建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
 
-![OTA](pic/develop_guide/OTA.png)
+![OTA](../pic/develop_guide/OTA.png)
 
 
 开发OTA之前需要在开发环境中配置友盟的推送服务，配置方法参见：[开发框架-安卓-环境配置](../framework/android#环境配置)
@@ -291,6 +292,18 @@ AC.notificationMgr().removeAlias(userId, new VoidCallback() {
 #推送
 见[开发框架-开发环境配置](../framework/android#开发环境配置)
 
+下面以友盟推送为例，介绍开发者使用流程。
+
+首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示
+
+![push1](pic/develop_guide/push1.png) 
+
+记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。
+
+![push2](pic/develop_guide/push2.png) 
+
+友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
+
 <font color="red">**东生补充开发指导**</font>
 
 #实时消息
@@ -298,9 +311,9 @@ AC.notificationMgr().removeAlias(userId, new VoidCallback() {
 <font color="red">**东生补充开发指导**</font>
 
 #和云端通信
-说明参见[基本介绍-功能介绍-和云端通信](../introduction/introduction.md#功能介绍##云端通信)
+说明参见[基本介绍-功能介绍-和云端通信](../introduction.md#功能介绍##云端通信)
 
-建议的用户交互参见[用户交互-和云端通信](../user_interaction/user_interaction.md#云端通信)
+建议的用户交互参见[用户交互-和云端通信](../user_interaction.md#云端通信)
 
 ##1、发送到设备
 
@@ -311,9 +324,9 @@ AC.notificationMgr().removeAlias(userId, new VoidCallback() {
 <font color="red">**东生补充开发指导**</font>
 
 #局域网通信
-说明参见[基本介绍-功能介绍-局域网通信](../introduction/introduction.md#功能介绍##局域网通信)
+说明参见[基本介绍-功能介绍-局域网通信](../introduction.md#功能介绍##局域网通信)
 
-建议的用户交互参见[用户交互-局域网通信](../user_interaction/user_interaction.md#局域网通信)
+建议的用户交互参见[用户交互-局域网通信](../user_interaction.md#局域网通信)
 
 <font color="red">**东生补充开发指导**</font>
 

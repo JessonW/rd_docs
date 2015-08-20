@@ -1,27 +1,24 @@
 site_name: AbleCloud 开发文档
 theme_dir: ac_theme
-theme: mkdocs
+theme: readthedocs
 
 pages:
-- 基本介绍: introduction/introduction.md
-- 用户交互: user_interaction/user_interaction.md
+#- Home: index.md
+- 基本介绍: introduction.md
+- 用户交互: user_interaction.md
 - 开发指导:
     - 安卓: develop_guide/android.md
     - iOS: develop_guide/iOS.md
     - 微信: develop_guide/wechat.md
     - 云端服务: develop_guide/cloud.md
     - 设备: develop_guide/device.md
-- 开发框架:
-    - 安卓: framework/android.md
-    - iOS: framework/iOS.md
-    - 微信: framework/wechat.md
-    - 云端服务: framework/cloud.md
-    - 设备: framework/device.md
-
-
-
-
-
+    - 第三方云对接: develop_guide/third_proxy.md
+- Reference:
+    - 安卓: reference/android.md
+    - iOS: reference/iOS.md
+    - 微信: reference/wechat.md
+    - 云端服务: reference/cloud.md
+    - 设备: reference/device.md
 #pages:
 #- ['index.md', '首页']
 #- ['introduction/introduction.md', '基本介绍']
