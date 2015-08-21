@@ -20,7 +20,7 @@ pages:
     - iOS客户端: reference/iOS.md
     - 微信客户端: reference/wechat.md
     - 设备-嵌入式系统: reference/device_android.md
-    - 设备-安卓系统系统: reference/device_linux.md
+    - 设备-安卓系统: reference/device_linux.md
     - 设备-linux系统: reference/device.md
     - 云端服务: reference/cloud.md
 
