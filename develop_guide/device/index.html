@@ -148,6 +148,12 @@
                     </li>
                 
                 
+                
+                    <li >
+                        <a href="../../QandA/">Q&A</a>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -719,14 +725,13 @@
     {
          /*上报demo灯的状态*/
          u8 u8LedOnOff ;
-         u16 u16DataLen;
          /*KLV协议内存分配*/
          AC_KLV *pOut = AC_CreateObj();
          /*读取demo灯状态*/
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff&gt;&gt;2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
          /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
          /*KLV协议内存释放*/
@@ -799,10 +804,10 @@
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        u16 u16DataLen;
-        u8 test[] = &quot;hello&quot;;
         AC_KLV *pOut = AC_CreateObj();
         u8 u8LedOnOff= 0;
+        u16 u16length = 0;
+        u8 u8Type = 0;
         AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg-&gt;Payloadlen),KEY_LED_ON_OFF,&amp;u8LedOnOff,&amp;u16length,&amp;u8Type);
         switch (u8LedOnOff)
         {
@@ -813,7 +818,7 @@
 
         }
         /*构造KLV消息*/
-        AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+        AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
         /*发送响应消息，用户自定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
          /*KLV协议内存释放*/
