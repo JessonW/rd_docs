@@ -7,18 +7,23 @@ pages:
 - 基本介绍: introduction.md
 - 用户交互: user_interaction.md
 - 开发指导:
-    - 安卓: develop_guide/android.md
-    - iOS: develop_guide/iOS.md
-    - 微信: develop_guide/wechat.md
+    - 安卓客户端: develop_guide/android.md
+    - iOS客户端: develop_guide/iOS.md
+    - 微信客户端: develop_guide/wechat.md
+    - 设备-嵌入式系统: develop_guide/device.md
+    - 设备-安卓系统: develop_guide/device.md
+    - 设备-linux系统: develop_guide/device.md
     - 云端服务: develop_guide/cloud.md
-    - 设备: develop_guide/device.md
     - 第三方云对接: develop_guide/third_proxy.md
 - Reference:
-    - 安卓: reference/android.md
-    - iOS: reference/iOS.md
-    - 微信: reference/wechat.md
+    - 安卓客户端: reference/android.md
+    - iOS客户端: reference/iOS.md
+    - 微信客户端: reference/wechat.md
+    - 设备-嵌入式系统: reference/device.md
+    - 设备-安卓系统系统: reference/device.md
+    - 设备-linux系统: reference/device.md
     - 云端服务: reference/cloud.md
-    - 设备: reference/device.md
+
 - Q&A: QandA.md
 #pages:
 #- ['index.md', '首页']
