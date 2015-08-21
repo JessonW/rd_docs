@@ -71,31 +71,43 @@
                         
                             
 <li >
-    <a href="../develop_guide/android/">安卓</a>
+    <a href="../develop_guide/android/">安卓客户端</a>
 </li>
 
                         
                             
 <li >
-    <a href="../develop_guide/iOS/">iOS</a>
+    <a href="../develop_guide/iOS/">iOS客户端</a>
 </li>
 
                         
                             
 <li >
-    <a href="../develop_guide/wechat/">微信</a>
+    <a href="../develop_guide/wechat/">微信客户端</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/device/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/device/">设备-linux系统</a>
 </li>
 
                         
                             
 <li >
     <a href="../develop_guide/cloud/">云端服务</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../develop_guide/device/">设备</a>
 </li>
 
                         
@@ -116,31 +128,43 @@
                         
                             
 <li >
-    <a href="../reference/android/">安卓</a>
+    <a href="../reference/android/">安卓客户端</a>
 </li>
 
                         
                             
 <li >
-    <a href="../reference/iOS/">iOS</a>
+    <a href="../reference/iOS/">iOS客户端</a>
 </li>
 
                         
                             
 <li >
-    <a href="../reference/wechat/">微信</a>
+    <a href="../reference/wechat/">微信客户端</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/device/">设备-安卓系统系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/device/">设备-linux系统</a>
 </li>
 
                         
                             
 <li >
     <a href="../reference/cloud/">云端服务</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../reference/device/">设备</a>
 </li>
 
                         
@@ -165,7 +189,7 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../reference/device/">
+                        <a rel="next" href="../reference/cloud/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -215,10 +239,10 @@
 <h1 id="_1">客户端相关</h1>
 <h2 id="android">Android端</h2>
 <h3 id="1uidtoken">1.uid和token获取与保存</h3>
-<p>long userId=PreferencesUtils.getLong(AC.context, ACConfiguration.KEY_USERID, 0);
-String token=PreferencesUtils.getString(AC.context, ACConfiguration.KEY_TOKEN, "");
-PreferencesUtils.putLong(AC.context, ACConfiguration.KEY_USERID, uid);
-PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);</p>
+<p>long userId=PreferencesUtils.getLong(AC.context, ACConfiguration.KEY_USERID, 0);</p>
+<p>String token=PreferencesUtils.getString(AC.context, ACConfiguration.KEY_TOKEN, "");</p>
+<p>PreferencesUtils.putLong(AC.context, ACConfiguration.KEY_USERID, uid);</p>
+<p>PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);</p>
 <h2 id="_2">微信开发</h2>
 <h3 id="1makeqrcodeservice-not-available">1.makeQRCode方法，会报service not available的错误</h3>
 <p>解决方法：
