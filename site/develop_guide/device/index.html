@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>设备 - AbleCloud 开发文档</title>
+	<title>设备-嵌入式系统 - AbleCloud 开发文档</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -71,31 +71,43 @@
                         
                             
 <li >
-    <a href="../android/">安卓</a>
+    <a href="../android/">客户端-安卓</a>
 </li>
 
                         
                             
 <li >
-    <a href="../iOS/">iOS</a>
+    <a href="../iOS/">客户端-iOS</a>
 </li>
 
                         
                             
 <li >
-    <a href="../wechat/">微信</a>
+    <a href="../wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../device_linux/">设备-linux系统</a>
 </li>
 
                         
                             
 <li >
     <a href="../cloud/">云端服务</a>
-</li>
-
-                        
-                            
-<li class="active">
-    <a href="./">设备</a>
 </li>
 
                         
@@ -116,19 +128,37 @@
                         
                             
 <li >
-    <a href="../../reference/android/">安卓</a>
+    <a href="../../reference/android/">客户端-安卓</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../reference/iOS/">iOS</a>
+    <a href="../../reference/iOS/">客户端-iOS</a>
 </li>
 
                         
                             
 <li >
-    <a href="../../reference/wechat/">微信</a>
+    <a href="../../reference/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device_linux/">设备-linux系统</a>
 </li>
 
                         
@@ -138,13 +168,13 @@
 </li>
 
                         
-                            
-<li >
-    <a href="../../reference/device/">设备</a>
-</li>
-
-                        
                         </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../QandA/">Q&A</a>
                     </li>
                 
                 
@@ -159,12 +189,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../cloud/">
+                        <a rel="next" href="../wechat/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../third_proxy/">
+                        <a rel="prev" href="../device_android/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -257,7 +287,6 @@
 <h1 id="_3">设备激活</h1>
 <p>在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
 <h2 id="wifi">通过WiFi连接到云的设备（包括独立设备和网关)</h2>
-<p>需要提交到AbleCloud的信息和烧制到设备中的信息参考：<a href="../../reference/device/#开发准备">reference-设备-开发准备</a> </p>
 <p>WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：<a href="../../reference/device/#设备应用开发框架">reference-设备-设备应用开发框架</a> </p>
 <p>WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。</p>
 <p><img alt="device_wifi_activator" src="../../pic/develop_guide/device_WiFi_activator.png" /> </p>
@@ -719,14 +748,13 @@
     {
          /*上报demo灯的状态*/
          u8 u8LedOnOff ;
-         u16 u16DataLen;
          /*KLV协议内存分配*/
          AC_KLV *pOut = AC_CreateObj();
          /*读取demo灯状态*/
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff&gt;&gt;2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
          /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
          /*KLV协议内存释放*/
@@ -799,10 +827,10 @@
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        u16 u16DataLen;
-        u8 test[] = &quot;hello&quot;;
         AC_KLV *pOut = AC_CreateObj();
         u8 u8LedOnOff= 0;
+        u16 u16length = 0;
+        u8 u8Type = 0;
         AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg-&gt;Payloadlen),KEY_LED_ON_OFF,&amp;u8LedOnOff,&amp;u16length,&amp;u8Type);
         switch (u8LedOnOff)
         {
@@ -813,7 +841,7 @@
 
         }
         /*构造KLV消息*/
-        AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+        AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
         /*发送响应消息，用户自定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
          /*KLV协议内存释放*/

@@ -29,8 +29,6 @@
 
 ##通过WiFi连接到云的设备（包括独立设备和网关)
 
-需要提交到AbleCloud的信息和烧制到设备中的信息参考：[reference-设备-开发准备](../reference/device.md#开发准备) 
-
 WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：[reference-设备-设备应用开发框架](../reference/device.md#设备应用开发框架) 
 
 WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。
@@ -662,12 +660,12 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 break;            
         
         }
-        /*构造消息*/
+        /*构造消息,接口含义详见下节接口定义*/
         AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg->MsgId,
                         (u8*)test, 5,
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &u16DataLen);
-        /*发送消息*/
+        /*发送消息,接口含义详见下节接口定义*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);    
     }
 ```
@@ -676,6 +674,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
 
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*KLV协议内存申请,接口含义详见下节接口定义*/
         AC_KLV *pOut = AC_CreateObj();
         u8 u8LedOnOff= 0;
         u16 u16length = 0;
@@ -689,11 +688,11 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 break;            
         
         }
-        /*构造KLV消息*/
+        /*构造KLV消息,接口含义详见下节接口定义*/
         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
-        /*发送响应消息，用户自定义*/
+        /*发送响应消息，用户自定义,接口含义详见下节接口定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
-         /*KLV协议内存释放*/
+         /*KLV协议内存释放,接口含义详见下节接口定义*/
         AC_FreeObj(pOut);    
     }
 ```
@@ -724,13 +723,13 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
         cJSON_AddStringToObject(root,"status",		"ok");
         out=cJSON_Print(root);	
         cJSON_Delete(root);
-        /*发送JSON消息*/
+        /*发送JSON消息,接口含义详见下节接口定义*
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);	
-         /*释放JSON消息*/
+         /*释放JSON消息,接口含义详见下节接口定义*
         free(out);   
      }
 ```
@@ -744,10 +743,10 @@ void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
 
 参数
 
-    |字段|类型|说明|
-    |----|----|----|
-    |pu8Msg|u8 *|待发送的数据缓存|
-    |u16DataLen|u16|待发送的数据长度|
+|字段|类型|说明|
+|----|----|----|
+|pu8Msg|u8 *|待发送的数据缓存|
+|u16DataLen|u16|待发送的数据长度|
 
 说明
 ###协议消息组包接口
@@ -762,7 +761,7 @@ void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId,
 参数
 
 |字段	|类型	|说明|
-    |----|----|----|
+|----|----|----|
 |u8MsgCode|	u8	|消息类型|
 |u8MsgId|	u8	|消息ID|
 |pu8Payload|	u8	|消息实际内容|
@@ -777,14 +776,14 @@ s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 
 
 参数
 
-    |字段|类型|说明|
-     | ----|----|----|
-    |pu8Playload|u8 *|待解析的消息|
-   | u16PayloadLen|u16|待解析的消息长度|
-   | u8Key|u8|传入的关键字|
-   | pValue|void *|该关键字对应的数据|
-    |pu16Length|u16 *|该关键字对应的数据长度|
-  |  pu8Type|u8 *|该关键字对应的数据类型|
+|字段|类型|说明|
+| ----|----|----|
+|pu8Playload|u8 *|待解析的消息|
+| u16PayloadLen|u16|待解析的消息长度|
+| u8Key|u8|传入的关键字|
+| pValue|void *|该关键字对应的数据|
+|pu16Length|u16 *|该关键字对应的数据长度|
+|  pu8Type|u8 *|该关键字对应的数据类型|
 
 ###KLV协议内存分配接口
 函数定义
@@ -806,13 +805,13 @@ s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
 
 参数
 
-   | 字段|类型|说明|
-     | ----|----|----|
-   | pOut|AC_KLV *|待组包数据的消息|
-   | u8Key|u8|传入的关键字|
-   | pu16Length|u16 *|该关键字对应的数据长度|
-   | pu8Type|u8 *|该关键字对应的数据类型|
-   | pValue|void *|该关键字对应的数据|
+| 字段|类型|说明|
+| ----|----|----|
+| pOut|AC_KLV *|待组包数据的消息|
+| u8Key|u8|传入的关键字|
+| pu16Length|u16 *|该关键字对应的数据长度|
+| pu8Type|u8 *|该关键字对应的数据类型|
+| pValue|void *|该关键字对应的数据|
 
 
 

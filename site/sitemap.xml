@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/introduction/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>None/user_interaction/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -21,37 +21,49 @@
         
     <url>
      <loc>None/develop_guide/android/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/iOS/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/wechat/</loc>
-     <lastmod>2015-08-20</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/develop_guide/cloud/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/device/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/device_android/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/device_linux/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/cloud/</loc>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/third_proxy/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -61,34 +73,54 @@
         
     <url>
      <loc>None/reference/android/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/iOS/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/wechat/</loc>
-     <lastmod>2015-08-20</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/reference/cloud/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/device/</loc>
-     <lastmod>2015-08-20</lastmod>
+     <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>None/reference/device_android/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/reference/device_linux/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/reference/cloud/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>None/QandA/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
     
 
 </urlset>
