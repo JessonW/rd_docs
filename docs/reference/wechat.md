@@ -1,7 +1,7 @@
 ##架构框图
 AbleCloud实现的和微信云端对接，其架构如下：
 
-![arch](../pic/framework/wechat/arch.png)
+![arch](../pic/reference/wechat/arch.png)
 
 在整个架构中，厂商的公众号开发人员只需要根据厂商自己的需求，扩展高亮部分`ac-weixin-server`的功能开发便可，图中其它模块不用太关注。
 ##功能列表
@@ -88,7 +88,7 @@ public class HttpUtil {
 ###1、申请微信公众号
 由于公众号属于各个厂商，因此，申请公众号这个步骤由厂商完成。申请好后，会拿到微信公众平台分配的appID和appsecret，如下图所示：
 
-![public_account](../pic/framework/wechat/public_account.png)
+![public_account](../pic/reference/wechat/public_account.png)
 
 ###2、准备服务器
 当前，AbleCloud暂时还未提供主机代理服务，因此需要厂商准备机器，并配置外网ip，最好申请一个域名。该服务器用来运行`ac-weixin-server`。由于微信方的要求，现在该后台服务只能使用80端口。
@@ -98,11 +98,11 @@ public class HttpUtil {
 ###3、扩展ac-weixin-server功能
 `ac-weixin-server`的发布库目录结构如下：
 
-![release](../pic/framework/wechat/release.png)
+![release](../pic/reference/wechat/release.png)
 
 config目录下存放配置文件，lib目录下存放所有的jar文件，包括ac-weixin-server框架及其依赖包，继承`ACMPService`，开发实现自己的`handleMsg`编译成功后，也放入lib目录即可。start.cmd用于windows平台启动服务，start.sh用于linux平台启动服务。这里解释下webRoot目录，该目录用来存放公众号所需的html页面及其它静态资源，其结构大致如下：
 
-![webroot](../pic/framework/wechat/webroot.png)
+![webroot](../pic/reference/wechat/webroot.png)
 
 ###4、编写html页面
 在webRoot目录下，编写您所需的网页html或h5页面，如果要和已经接入AbleCloud平台的设备进行控制等功能，请在html页面中调用js目录下AbleCloud提供ac.js，该jssdk提供了和AbleCloud云端交互所需的丰富接口，具体参见[jssdk手册](http://docs.ablecloud.cn/sdk/javascript_sdk_manual/)。
@@ -154,7 +154,7 @@ sh start.sh
 ###7、修改公众号接口配置信息
 在微信公众平台修改*接口配置信息*，如下图所示:
 
-![modify_config](../pic/framework/wechat/modify_config.png)
+![modify_config](../pic/reference/wechat/modify_config.png)
 
 点击**提交**，正常情况下，会收到微信公众平台提示验证成功。如果验证失败，请查看log目录下的日志。
 ><font color="brown">**注：**这里填写的token要和配置文件中的token一致。并且URL的URI部分（除去域名）必须是`/weixin/message`，域名部分则是您服务器所申请的域名。</font>
