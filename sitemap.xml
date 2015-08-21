@@ -38,13 +38,25 @@
     </url>
         
     <url>
-     <loc>None/develop_guide/cloud/</loc>
+     <loc>None/develop_guide/device/</loc>
      <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/device/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/device/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/develop_guide/cloud/</loc>
      <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -78,13 +90,25 @@
     </url>
         
     <url>
-     <loc>None/reference/cloud/</loc>
+     <loc>None/reference/device/</loc>
      <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/device/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/reference/device/</loc>
+     <lastmod>2015-08-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/reference/cloud/</loc>
      <lastmod>2015-08-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
