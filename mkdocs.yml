@@ -19,6 +19,7 @@ pages:
     - 微信: reference/wechat.md
     - 云端服务: reference/cloud.md
     - 设备: reference/device.md
+- Q&A :QandA.md
 #pages:
 #- ['index.md', '首页']
 #- ['introduction/introduction.md', '基本介绍']
