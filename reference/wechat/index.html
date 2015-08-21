@@ -226,7 +226,7 @@
 
 <h2 id="_1">架构框图</h2>
 <p>AbleCloud实现的和微信云端对接，其架构如下：</p>
-<p><img alt="arch" src="../../pic/framework/wechat/arch.png" /></p>
+<p><img alt="arch" src="../../pic/reference/wechat/arch.png" /></p>
 <p>在整个架构中，厂商的公众号开发人员只需要根据厂商自己的需求，扩展高亮部分<code>ac-weixin-server</code>的功能开发便可，图中其它模块不用太关注。</p>
 <h2 id="_2">功能列表</h2>
 <p>整个<code>ac-weixin-server</code>的主要功能提供http服务器功能，提供如下几个功能：</p>
@@ -307,7 +307,7 @@
 <p>基于<code>ac-weixin-server</code>开发厂商自己的公众号服务，除了不用关注硬件和微信交互细节外，我们还提供了常规公众号开发的基础封装，如access token管理，微信公众平台推送过来的消息解析等功能。因此厂商开发自己的公众号将变得更加简单。</p>
 <h3 id="1">1、申请微信公众号</h3>
 <p>由于公众号属于各个厂商，因此，申请公众号这个步骤由厂商完成。申请好后，会拿到微信公众平台分配的appID和appsecret，如下图所示：</p>
-<p><img alt="public_account" src="../../pic/framework/wechat/public_account.png" /></p>
+<p><img alt="public_account" src="../../pic/reference/wechat/public_account.png" /></p>
 <h3 id="2">2、准备服务器</h3>
 <p>当前，AbleCloud暂时还未提供主机代理服务，因此需要厂商准备机器，并配置外网ip，最好申请一个域名。该服务器用来运行<code>ac-weixin-server</code>。由于微信方的要求，现在该后台服务只能使用80端口。</p>
 <blockquote>
@@ -315,9 +315,9 @@
 </blockquote>
 <h3 id="3ac-weixin-server">3、扩展ac-weixin-server功能</h3>
 <p><code>ac-weixin-server</code>的发布库目录结构如下：</p>
-<p><img alt="release" src="../../pic/framework/wechat/release.png" /></p>
+<p><img alt="release" src="../../pic/reference/wechat/release.png" /></p>
 <p>config目录下存放配置文件，lib目录下存放所有的jar文件，包括ac-weixin-server框架及其依赖包，继承<code>ACMPService</code>，开发实现自己的<code>handleMsg</code>编译成功后，也放入lib目录即可。start.cmd用于windows平台启动服务，start.sh用于linux平台启动服务。这里解释下webRoot目录，该目录用来存放公众号所需的html页面及其它静态资源，其结构大致如下：</p>
-<p><img alt="webroot" src="../../pic/framework/wechat/webroot.png" /></p>
+<p><img alt="webroot" src="../../pic/reference/wechat/webroot.png" /></p>
 <h3 id="4html">4、编写html页面</h3>
 <p>在webRoot目录下，编写您所需的网页html或h5页面，如果要和已经接入AbleCloud平台的设备进行控制等功能，请在html页面中调用js目录下AbleCloud提供ac.js，该jssdk提供了和AbleCloud云端交互所需的丰富接口，具体参见<a href="http://docs.ablecloud.cn/sdk/javascript_sdk_manual/">jssdk手册</a>。
 当然，您可以为您的公众号编写除硬件相关页面之外的其它任意html页面。</p>
@@ -362,7 +362,7 @@ weixin_mp_message_handler_class是您自定义的微信公众号核心消息处�
 <p>真正线上启动，需要用nohup等将服务放后台，如<code>nohup sh start.sh &amp;</code>,并且可能需要使用supervisor配合，防止进程异常退出。</p>
 <h3 id="7">7、修改公众号接口配置信息</h3>
 <p>在微信公众平台修改<em>接口配置信息</em>，如下图所示:</p>
-<p><img alt="modify_config" src="../../pic/framework/wechat/modify_config.png" /></p>
+<p><img alt="modify_config" src="../../pic/reference/wechat/modify_config.png" /></p>
 <p>点击<strong>提交</strong>，正常情况下，会收到微信公众平台提示验证成功。如果验证失败，请查看log目录下的日志。</p>
 <blockquote>
 <p><font color="brown"><strong>注：</strong>这里填写的token要和配置文件中的token一致。并且URL的URI部分（除去域名）必须是<code>/weixin/message</code>，域名部分则是您服务器所申请的域名。</font></p>
