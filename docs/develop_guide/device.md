@@ -29,8 +29,6 @@
 
 ##通过WiFi连接到云的设备（包括独立设备和网关)
 
-需要提交到AbleCloud的信息和烧制到设备中的信息参考：[reference-设备-开发准备](../reference/device.md#开发准备) 
-
 WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：[reference-设备-设备应用开发框架](../reference/device.md#设备应用开发框架) 
 
 WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。

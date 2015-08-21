@@ -148,6 +148,12 @@
                     </li>
                 
                 
+                
+                    <li >
+                        <a href="../../QandA/">Q&A</a>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -163,8 +169,8 @@
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
+                    <li >
+                        <a rel="prev" href="../../QandA/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -199,7 +205,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="_1">设备应用开发框架</h1>
-<p>厂商在开发过程，可以直接按照协议标准，以及规定的协议过程进行升级。同时可以调用Ablecloud提供的SDK进行应用开发。SDK5软件逻辑框图如下所示：</p>
+<p>对于嵌入式WiFi设备，AbleCloud提供了设备主控MCU的SDK，SDK软件逻辑框图如下所示：</p>
 <p><img alt="device_arch" src="../../pic/reference/device_arch.png" /></p>
 <p>在使用SDK开发时，软件逻辑分如下三层：</p>
 <ol>
@@ -207,7 +213,7 @@
 <li>HAL层：该层属于硬件抽象层，它向上为APP提供控制逻辑接口，同时为API层提供回调函数，访问硬件资源。</li>
 <li>API层：负责协议控制逻辑的实现，协议报文的解析，协议报文的组装等。</li>
 </ol>
-<p>设备给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图</p>
+<p>设备通过联网模块给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图</p>
 <p><img alt="device_message_arch" src="../../pic/reference/device_message_arch.png" /> </p>
 <p>每个消息由AC_MessageHead和AC_MessagePayload两部分构成：</p>
 <table>

@@ -1,6 +1,7 @@
 
 #设备应用开发框架
-厂商在开发过程，可以直接按照协议标准，以及规定的协议过程进行升级。同时可以调用Ablecloud提供的SDK进行应用开发。SDK软件逻辑框图如下所示：
+
+对于嵌入式WiFi设备，AbleCloud提供了设备主控MCU的SDK，SDK软件逻辑框图如下所示：
 
 ![device_arch](../pic/reference/device_arch.png)
  
@@ -11,7 +12,7 @@
 1. API层：负责协议控制逻辑的实现，协议报文的解析，协议报文的组装等。
 
 
-设备给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图
+设备通过联网模块给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图
 
 ![device_message_arch](../pic/reference/device_message_arch.png) 
 

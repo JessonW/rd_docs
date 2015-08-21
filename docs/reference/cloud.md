@@ -55,28 +55,28 @@ start.cmd -m test
 	
     选择新建maven工程，JDK选择正确的版本。
     
-    ![new project](../pic/framework/intellij/new_project_1_1.png)
+    ![new project](../pic/reference/intellij/new_project_1_1.png)
     
     选择**maven**工程
     
-    ![info](../pic/framework/intellij/new_project_1_2.png)
+    ![info](../pic/reference/intellij/new_project_1_2.png)
     
     注意jdk版本选择安装的1.7+
     点击**next**即可。
     
-    ![next](../pic/framework/intellij/next.png)
+    ![next](../pic/reference/intellij/next.png)
     
     进入下一个页面，根据情况填写groupid/artifactid/version等信息。
     
-    ![info](../pic/framework/intellij/new_project_1_3.png)
+    ![info](../pic/reference/intellij/new_project_1_3.png)
     
     填好后点击**next**，进入下一步，填写工程名以及存放路径。
     
-    ![name](../pic/framework/intellij/new_project_1_4.png)
+    ![name](../pic/reference/intellij/new_project_1_4.png)
     
     然后点击**finish**完成新建工程向导。
     
-    ![finish](../pic/framework/intellij/new_project_1_5.png)
+    ![finish](../pic/reference/intellij/new_project_1_5.png)
     
     至此，新建工程完成。
    
@@ -85,32 +85,32 @@ start.cmd -m test
 	按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
     点击**File** -> **Project Structure...**
     
-    ![setting](../pic/framework/intellij/set_project_1_1.png)
+    ![setting](../pic/reference/intellij/set_project_1_1.png)
     
     首先设置工程所使用的JDK版本1.7+和语言级别7.0
     
-    ![lib](../pic/framework/intellij/set_project_1_2.png)
+    ![lib](../pic/reference/intellij/set_project_1_2.png)
     
     设置开发服务所要依赖的ablecloud框架包，点击**+**号，选择下载并解压后的ablecloud开发框架的**lib目录**即可。
     同上，打开**Project Structure...**,然后选择**Libraries**，点击右边的**+**号，选择**Java**，如下图所示
     
-    ![lib](../pic/framework/intellij/set_project_2_1.png)
+    ![lib](../pic/reference/intellij/set_project_2_1.png)
     
     在弹出的对话框中选择下载并解压后的ablecloud中的lib目录，并点击**OK**
     
-    ![lib](../pic/framework/intellij/set_project_2_2.png)
+    ![lib](../pic/reference/intellij/set_project_2_2.png)
     
     回到上一个窗口后再次点击**OK**确认
     
-    ![lib](../pic/framework/intellij/set_project_2_3.png)
+    ![lib](../pic/reference/intellij/set_project_2_3.png)
     
     这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为**ablecloud-libs**。点击**OK**完成添加。
     
-    ![lib](../pic/framework/intellij/set_project_2_4.png)
+    ![lib](../pic/reference/intellij/set_project_2_4.png)
     
     完成上述步骤后，我们将在工程视图里面看到新添加的该目录，如下
     
-    ![lib](../pic/framework/intellij/set_project_2_5.png))
+    ![lib](../pic/reference/intellij/set_project_2_5.png))
     
     至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
     
@@ -267,56 +267,56 @@ start.cmd -m test
 
 	选择**File-->New-->Project...**
     
-    ![new project](../pic/framework/eclipse/new_project_1_1.png)
+    ![new project](../pic/reference/eclipse/new_project_1_1.png)
     
     选择**maven**工程
     
-    ![new project](../pic/framework/eclipse/new_project_1_2.png)
+    ![new project](../pic/reference/eclipse/new_project_1_2.png)
     
     点击**Next**进入下一步
     
-    ![next](../pic/framework/eclipse/next.png)
+    ![next](../pic/reference/eclipse/next.png)
     
     填写groupId,artifactId,version等信息，并点击**Finish**完成新建工程。
     
-    ![info](../pic/framework/eclipse/new_project_1_3.png)
+    ![info](../pic/reference/eclipse/new_project_1_3.png)
     
 1. **设置工程**
 	在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置
     
-    ![setting](../pic/framework/eclipse/set_project_1_1.png)
+    ![setting](../pic/reference/eclipse/set_project_1_1.png)
     
     首先设置工程对ablecloud发行库的依赖。如图选择**Java Build Path**的**Libaries**标签页，点击**Add Library...**
     
-    ![setting](../pic/framework/eclipse/set_project_1_2.png)
+    ![setting](../pic/reference/eclipse/set_project_1_2.png)
     
     在**Add Library**页选择**User Library**
     
-    ![setting](../pic/framework/eclipse/set_project_1_3.png)
+    ![setting](../pic/reference/eclipse/set_project_1_3.png)
     
     继续点击**User Libraries...**按钮
     
-    ![setting](../pic/framework/eclipse/set_project_1_4.png)
+    ![setting](../pic/reference/eclipse/set_project_1_4.png)
     
     然后点击**New...**新建一个用户library文件夹
     
-    ![setting](../pic/framework/eclipse/set_project_1_5.png)
+    ![setting](../pic/reference/eclipse/set_project_1_5.png)
     
     这里可以给该用户lib重命名，如图中命名为ablecloud-libs，点击**OK**完成
     
-    ![setting](../pic/framework/eclipse/set_project_1_6.png)
+    ![setting](../pic/reference/eclipse/set_project_1_6.png)
     
     回到**User Libraries**页面，点击右方的**Add External JARs...**按钮，选择下载并解压的ablecloud发行库中的**lib**目录，将该目录中所有的jars添加到新建的user library中。
     
-    ![setting](../pic/framework/eclipse/set_project_1_7.png)
+    ![setting](../pic/reference/eclipse/set_project_1_7.png)
     
     勾选上新建的user library，并点击**Finish**将ablecloud的jars添加到新建的工程中。
     
-    ![setting](../pic/framework/eclipse/set_project_1_8.png)
+    ![setting](../pic/reference/eclipse/set_project_1_8.png)
     
     下面进行java语言的设置，类似上面的设置，先进入**Properties**窗口，选择**Java Compiler**，**去掉**默认的*Use compliance from execution environment...*，并且选择*Compiler compliance level*为**1.7**
     
-    ![setting](../pic/framework/eclipse/set_project_2_1.png)
+    ![setting](../pic/reference/eclipse/set_project_2_1.png)
     
 1. **修改pom.xml文件**
 
@@ -862,7 +862,7 @@ ablecloud目前提供基于sql的存储服务，开发者需要预先设定数�
 ><font color="brown">**注：**entity group key必须是primary key的前缀，可以相同。</font>
 
 存储模型示例如下：
-![store](../pic/framework/store.png)
+![store](../pic/reference/store.png)
 
 从上图我们可以看到，定义的一个存储模型如下：
 
