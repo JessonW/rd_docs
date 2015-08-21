@@ -586,14 +586,13 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
     {
          /*上报demo灯的状态*/
          u8 u8LedOnOff ;
-         u16 u16DataLen;
          /*KLV协议内存分配*/
          AC_KLV *pOut = AC_CreateObj();
          /*读取demo灯状态*/
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff>>2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
          /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
          /*KLV协议内存释放*/
@@ -673,10 +672,10 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
 
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        u16 u16DataLen;
-        u8 test[] = "hello";
         AC_KLV *pOut = AC_CreateObj();
         u8 u8LedOnOff= 0;
+        u16 u16length = 0;
+        u8 u8Type = 0;
         AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg->Payloadlen),KEY_LED_ON_OFF,&u8LedOnOff,&u16length,&u8Type);
         switch (u8LedOnOff)
         {
@@ -687,7 +686,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
         
         }
         /*构造KLV消息*/
-        AC_SetKeyValue(pOut,KLV_LED_ONOFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+        AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
         /*发送响应消息，用户自定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
          /*KLV协议内存释放*/
