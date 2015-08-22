@@ -852,12 +852,13 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 </code></pre>
 
 <h1 id="_19">推送</h1>
-<p>开发准备见<a href="../../framework/android#推送开发准备">reference-安卓-推送开发准备</a></p>
+<p>AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。</p>
+<p>开发前的配置工作参考<a href="../../framework/android#推送开发准备">reference-安卓-推送开发准备</a></p>
 <blockquote>
-<p><font color="red">注意</font>
-1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装
-2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试
-3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。</p>
+<p><font color="red">注意</font></p>
+<p>1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装</p>
+<p>2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试</p>
+<p>3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。</p>
 </blockquote>
 <h3 id="_20">一、开发环境配置</h3>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量</p>
@@ -1244,7 +1245,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
 <h2 id="_25">三、实时消息</h2>
 <p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到app</p>
-<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png.png" /></p>
+<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <p>cloud_syn.png</p>
 <h4 id="1_8">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
@@ -1390,17 +1391,33 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 
 <h4 id="_32">添加定时任务</h4>
 <blockquote>
-<p><strong><font color="red">注意</font>：</strong>
-<strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong>
-<strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong>
-<strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong>
-+ <strong>"once":</strong>单次循环
-+ <strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行
-+ <strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行
-+ <strong>"day":</strong>在每天的<strong><code>HH:mm:ss</code></strong>时间点循环执行
-+ <strong>"month":</strong>在每月的<strong><code>dd HH:mm:ss</code></strong>时间点循环执行
-+ <strong>"year":</strong>在每年的<strong><code>MM-dd HH:mm:ss</code></strong>时间点循环执行
-+ <strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周一，周五重复，则表示为"week[1,5]")</p>
+<p><strong><font color="red">注意</font>：</strong></p>
+<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
+<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
+<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<ul>
+<li>
+<p><strong>"once":</strong>单次循环</p>
+</li>
+<li>
+<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"day":</strong>在每天的<strong><code>HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"month":</strong>在每月的<strong><code>dd HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"year":</strong>在每年的<strong><code>MM-dd HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周一，周五重复，则表示为"week[1,5]")</p>
+</li>
+</ul>
 </blockquote>
 <pre><code class="java">//设置序列化器
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
@@ -1494,11 +1511,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="_38">文件存储</h1>
 <blockquote>
-<p><font color="red">注意</font>：
-1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限
-<code>java
-&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code>
-2、上传下载支持断点续传功能</p>
+<p><font color="red">注意</font>：</p>
+<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
+<p><code>java
+&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
+<p>2、上传下载支持断点续传功能</p>
 </blockquote>
 <h2 id="_39">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
