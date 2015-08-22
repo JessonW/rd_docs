@@ -813,12 +813,12 @@
                 break;            
 
         }
-        /*构造消息*/
+        /*构造消息,接口含义详见下节接口定义*/
         AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg-&gt;MsgId,
                         (u8*)test, 5,
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
-        /*发送消息*/
+        /*发送消息,接口含义详见下节接口定义*/
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);    
     }
 </code></pre>
@@ -827,6 +827,7 @@
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
+        /*KLV协议内存申请,接口含义详见下节接口定义*/
         AC_KLV *pOut = AC_CreateObj();
         u8 u8LedOnOff= 0;
         u16 u16length = 0;
@@ -840,11 +841,11 @@
                 break;            
 
         }
-        /*构造KLV消息*/
+        /*构造KLV消息,接口含义详见下节接口定义*/
         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
-        /*发送响应消息，用户自定义*/
+        /*发送响应消息，用户自定义,接口含义详见下节接口定义*/
         AC_SendKLVMessage(pstruMsg, pstruOptList,pOut);
-         /*KLV协议内存释放*/
+         /*KLV协议内存释放,接口含义详见下节接口定义*/
         AC_FreeObj(pOut);    
     }
 </code></pre>
@@ -874,13 +875,13 @@
         cJSON_AddStringToObject(root,&quot;status&quot;,      &quot;ok&quot;);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
-        /*发送JSON消息*/
+        /*发送JSON消息,接口含义详见下节接口定义*
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen); 
-         /*释放JSON消息*/
+         /*释放JSON消息,接口含义详见下节接口定义*
         free(out);   
      }
 </code></pre>
@@ -890,11 +891,27 @@
 <p>函数定义</p>
 <p>void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);</p>
 <p>参数</p>
-<pre><code>|字段|类型|说明|
-|----|----|----|
-|pu8Msg|u8 *|待发送的数据缓存|
-|u16DataLen|u16|待发送的数据长度|
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pu8Msg</td>
+<td>u8 *</td>
+<td>待发送的数据缓存</td>
+</tr>
+<tr>
+<td>u16DataLen</td>
+<td>u16</td>
+<td>待发送的数据长度</td>
+</tr>
+</tbody>
+</table>
 <p>说明</p>
 <h3 id="_21">协议消息组包接口</h3>
 <p>函数定义</p>
@@ -961,15 +978,47 @@
 </table>
 <p>s8 AC_GetKeyValue(u8 <em>pu8Playload, u16 u16PayloadLen, u8 u8Key,void </em>pValue,u16 <em>pu16Length,u8 </em>pu8Type)</p>
 <p>参数</p>
-<pre><code>|字段|类型|说明|
- | ----|----|----|
-|pu8Playload|u8 *|待解析的消息|
-</code></pre>
-<p>| u16PayloadLen|u16|待解析的消息长度|
-   | u8Key|u8|传入的关键字|
-   | pValue|void <em>|该关键字对应的数据|
-    |pu16Length|u16 </em>|该关键字对应的数据长度|
-  |  pu8Type|u8 *|该关键字对应的数据类型|</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pu8Playload</td>
+<td>u8 *</td>
+<td>待解析的消息</td>
+</tr>
+<tr>
+<td>u16PayloadLen</td>
+<td>u16</td>
+<td>待解析的消息长度</td>
+</tr>
+<tr>
+<td>u8Key</td>
+<td>u8</td>
+<td>传入的关键字</td>
+</tr>
+<tr>
+<td>pValue</td>
+<td>void *</td>
+<td>该关键字对应的数据</td>
+</tr>
+<tr>
+<td>pu16Length</td>
+<td>u16 *</td>
+<td>该关键字对应的数据长度</td>
+</tr>
+<tr>
+<td>pu8Type</td>
+<td>u8 *</td>
+<td>该关键字对应的数据类型</td>
+</tr>
+</tbody>
+</table>
 <h3 id="klv_2">KLV协议内存分配接口</h3>
 <p>函数定义</p>
 <p>AC_KLV * AC_CreateObj()</p>
