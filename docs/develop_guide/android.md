@@ -942,6 +942,8 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 ##一、发送消息到设备
 ###1、KLV格式
 **在新建产品的时候选择klv通讯协议，并填写数据点与数据包**
+KLV协议介绍参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)
+
 **例如**：以开启设备为例,协议如下:
 >+  数据点：key:1  value:int8(0为关闭，1为开启)
 >+ 数据包：code:68  

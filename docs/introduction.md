@@ -493,7 +493,7 @@ AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：
 
 - JSON格式，适合MCU支持JSON解析的设备；
  
-- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV](reference/device.md#KLV)；
+- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV协议介绍](reference/device.md#klv)；
 - 二进制，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。
 
 无论采用JSON、KLV还是二进制为了统一，建议安卓、iOS、微信，全部采用有符号格式。比如一个十进制整数，当小于127时可以采用8bit数据表示，当大于127小于256时，就必须用16bit表示了。当前支持的交互数据类型包括：
