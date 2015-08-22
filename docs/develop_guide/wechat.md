@@ -41,7 +41,7 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 
 设备绑定的交互流程参考下图：
 
-![wechat_wifi](../pic/develop_guide/DM_wechat_wifi.png)
+![wechat_wifi](../pic/develop_guide/DM_wechat_WiFi.png)
 
 ##设备绑定
 - 1.微信官方授权设备
@@ -157,7 +157,7 @@ $wxBridge->unbindDevice($openId, $physicalId, FALSE)；
 
 网关的绑定操作流程和独立设备是一样的，如下图：
 
-![wechat_wifi](../pic/develop_guide/DM_wechat_wifi.png)
+![wechat_wifi](../pic/develop_guide/DM_wechat_WiFi.png)
 
 
 - 1.微信官方授权设备
