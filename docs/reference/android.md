@@ -1,3 +1,8 @@
+
+
+
+
+
 #开发环境配置
 ##SDK发布库
 ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.1.zip)
@@ -25,118 +30,20 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 
 
 
-##配置推送
+#推送开发准备
 
-1、在<application>标签下添加权限：
-```java
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
-<uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-<uses-permission android:name="android.permission.GET_TASKS" />
-```
+下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。
 
-2、在<application>标签下添加组件：
-```java
-<receiver
-    android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
-    android:process=":push"
-    android:exported="false" >
-</receiver>
-<receiver
-    android:name="com.umeng.message.SystemReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="android.intent.action.PACKAGE_REMOVED" />
-        <data android:scheme="package" />
-    </intent-filter>
-</receiver>
-<receiver
-    android:name="com.umeng.message.MessageReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.RECEIVE" />
-    </intent-filter>
-</receiver>
-<receiver
-    android:name="com.umeng.message.ElectionReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
-        <category android:name="umeng" />
-    </intent-filter>
-</receiver>
-<receiver
-    android:name="com.umeng.message.RegistrationReceiver"
-    android:exported="false" >
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.COMMAND" />
-    </intent-filter>
-</receiver>
-<receiver android:name="com.umeng.message.BootBroadcastReceiver" >
-    <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-    </intent-filter>
-</receiver>
+首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示
 
-<!-- 可以根据需要自行设置 android:label 中的服务名 ： -->
-<service
-    android:name="com.umeng.message.UmengService"
-   android:label="PushService" 
-    android:exported="true" 
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.START" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.COCKROACH" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.PING_V4" />
-    <category android:name="umeng" />
-    </intent-filter>
-</service>
-<service android:name="com.umeng.message.UmengIntentService" 
-    android:process=":push" />
-<service 
-    android:name="com.umeng.message.UmengMessageIntentReceiverService"
-    android:process=":push" 
-    android:exported="true" >
-    <intent-filter>
-        <action android:name="org.android.agoo.client.MessageReceiverService" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="org.android.agoo.client.ElectionReceiverService" />
-    </intent-filter>
-</service>
-<!-- V1.3.0添加的service，负责下载通知的资源 -->
-<service android:name="com.umeng.message.UmengDownloadResourceService" />
-<!-- 添加 AppKey 和 Umeng Message Secret -->
-<meta-data
-    android:name="UMENG_APPKEY"
-    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
-</meta-data>
-<meta-data
-    android:name="UMENG_MESSAGE_SECRET"
-    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
-</meta-data>
-<!-- 用Channel ID来标识APP的推广渠道，作为推送消息时给用户分组的一个维度，若不设置，则使用Unknown作为Channel ID -->
-<meta-data
-    android:name="UMENG_CHANNEL"
-    android:value="Channel ID" >
-</meta-data>
-```
+![push1](pic/develop_guide/push1.png) 
+
+记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。
+
+![push2](pic/develop_guide/push2.png) 
+
+友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
+
 
 #交互协议-基础数据结构
 整个服务框架采用两种消息进行交互，ACMsg、ACDeviceMsg，其中框架提供了对ACMsg的解析，而ACDeviceMsg则由厂商自定义，框架透传其内容。
