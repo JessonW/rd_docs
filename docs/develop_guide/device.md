@@ -560,6 +560,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ###二进制
 参考代码如下：
 
+上报数据包=code:201 + req:{1,0,0,0} 
 ```c    
     
     void AC_SendStatus2Server()
@@ -571,7 +572,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
         struRsp.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         struRsp.u8LedOnOff = struRsp.u8LedOnOff>>2;
         /*构造消息*/
-        AC_BuildMessage(AC_CODE_BINARY_REPORT,0,
+        AC_BuildMessage(201,0,
                         (u8*)&struRsp, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
@@ -581,6 +582,8 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ```
 ###KLV格式
 参考代码如下：
+
+上报数据包=key:1 value:int8(0为关闭，1为开启)
 
 ```c    
     
@@ -594,7 +597,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff>>2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+         AC_SetKeyValue(pOut,1,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
          /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
          /*KLV协议内存释放*/
@@ -602,8 +605,10 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
     }
 ```
 ###JSON格式
-JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMessage构造消息。
-    
+参考代码如下：
+
+JSON格式用户调用第三方源码构造json格式的消息体。
+控制数据包= code:201 + req:{"switch",1}     
 ```c    
     
     void AC_SendLedStatus2Server()
@@ -618,11 +623,11 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff>>2;
          /*构造JSON消息体*/
-        cJSON_AddNumberToObject(root,"led",		u8LedOnOff);
+        cJSON_AddNumberToObject(root,"switch",		u8LedOnOff);
         out=cJSON_Print(root);	
         cJSON_Delete(root);
         /*构造消息*/
-        AC_BuildMessage(AC_CODE_JSON_REPORT,0,
+        AC_BuildMessage(201,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
@@ -644,25 +649,30 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
 下面的例子是云端下发控制demo灯开关状态，收到指令回应响应。
 
 ###二进制
+参考代码如下：
+
+控制数据包=code:68 + req:{1,0,0,0} 
+
+响应数据包=code:102 + resp:{1,0,0,0}
 
 ```c    
 
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u16 u16DataLen;
-        u8 test[] = "hello";
+        u8 resp[4] = {0};
 
         switch (((STRU_LED_ONOFF *)pu8Playload)->u8LedOnOff)
         {
             case 0://处理开关消息
             case 1:        
-                AC_BlinkLed(((STRU_LED_ONOFF *)pu8Playload)->u8LedOnOff);
+                resp[0]=AC_BlinkLed(((STRU_LED_ONOFF *)pu8Playload)->u8LedOnOff);
                 break;            
         
         }
         /*构造消息,接口含义详见下节接口定义*/
-        AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg->MsgId,
-                        (u8*)test, 5,
+        AC_BuildMessage(102,pstruMsg->MsgId,
+                        (u8*)resp, sizeof(resp),
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &u16DataLen);
         /*发送消息,接口含义详见下节接口定义*/
@@ -670,8 +680,16 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
     }
 ```
 ###KLV格式
-```c    
+参考代码如下：
 
+控制数据点：key:1 value:int8(0为关闭，1为开启)
+
+控制数据包：code:68
+
+响应数据点：key:1 value:int8(0为关闭，1为开启)
+
+```c  
+  
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*KLV协议内存申请,接口含义详见下节接口定义*/
@@ -679,7 +697,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
         u8 u8LedOnOff= 0;
         u16 u16length = 0;
         u8 u8Type = 0;
-        AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg->Payloadlen),KEY_LED_ON_OFF,&u8LedOnOff,&u16length,&u8Type);
+        AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg->Payloadlen),1,&u8LedOnOff,&u16length,&u8Type);
         switch (u8LedOnOff)
         {
             case 0://处理开关消息
@@ -697,9 +715,14 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
     }
 ```
 ###JSON格式
+参考代码如下：
+
+控制数据包= code:68 + req:{"switch",1} 
+
+响应数据包= code:102 +resp:{"result",1}
 
 ```c  
-  
+
     void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
         /*处理设备自定义控制消息*/
@@ -710,8 +733,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
         cJSON *root = cJSON_Parse(pu8Playload);
         /*JSON协议内存分配*/
         root=cJSON_CreateObject();
-        cJSON *format = cJSON_GetObjectItem(root,"ledctl");
-    	u32LedOnOff = cJSON_GetObjectItem(format,"led")->valueint;
+    	u32LedOnOff = cJSON_GetObjectItem(root,"switch")->valueint;
         switch (u32LedOnOff)
         {
             case 0://处理开关消息
@@ -720,7 +742,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMess
                 break;
         }
         /*构造JSON消息*/
-        cJSON_AddStringToObject(root,"status",		"ok");
+        cJSON_AddNumberToObject(root,"result",		1);
         out=cJSON_Print(root);	
         cJSON_Delete(root);
         /*发送JSON消息,接口含义详见下节接口定义*
