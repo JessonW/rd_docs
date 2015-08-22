@@ -662,13 +662,19 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
-开发准备见[reference-安卓-推送开发准备](../framework/android#推送开发准备)
+AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
+
+开发前的配置工作参考[reference-安卓-推送开发准备](../framework/android#推送开发准备)
 
 
 ><font color="red">注意</font>
+
 >1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装
+
 >2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试
+
 >3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
+
 ###一、开发环境配置
 如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
 ####1、在`<manifest>`标签下添加权限：
@@ -1066,7 +1072,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到app
 
-![cloud_syn](../pic/develop_guide/cloud_syn.png.png)
+![cloud_syn](../pic/develop_guide/cloud_syn.png)
 
 cloud_syn.png
 
@@ -1227,16 +1233,28 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 ```
 ####添加定时任务
 >**<font color="red">注意</font>：**
+
 >**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备**
+
 >**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败**
+
 >**3、timeCycle需要在timePoint时间点的基础上,选择循环方式**
+
 >+ **"once":**单次循环
+
 >+ **"min":**在每分钟的**`ss`**时间点循环执行
+
 >+ **"hour":**在每小时的**`mm:ss`**时间点循环执行
+
 >+ **"day":**在每天的**`HH:mm:ss`**时间点循环执行
+
 >+ **"month":**在每月的**`dd HH:mm:ss`**时间点循环执行
+
 >+ **"year":**在每年的**`MM-dd HH:mm:ss`**时间点循环执行
+
+
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
+
 ```java
 //设置序列化器
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
@@ -1338,11 +1356,18 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 #文件存储
 ><font color="red">注意</font>：
+
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
+
+
 >```java
 ><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 >```
+
+
 >2、上传下载支持断点续传功能
+
+
 ##一、获取文件管理器
 ```java
 ACFileMgr fileMgr = AC.fileMgr();
