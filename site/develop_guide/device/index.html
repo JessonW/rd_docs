@@ -722,6 +722,7 @@
 <p>下面的例子是上报demo灯状态到云端。</p>
 <h3 id="_16">二进制</h3>
 <p>参考代码如下：</p>
+<p>上报数据包=code:201 + req:{1,0,0,0} </p>
 <pre><code class="c">
     void AC_SendStatus2Server()
     {
@@ -732,7 +733,7 @@
         struRsp.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         struRsp.u8LedOnOff = struRsp.u8LedOnOff&gt;&gt;2;
         /*构造消息*/
-        AC_BuildMessage(AC_CODE_BINARY_REPORT,0,
+        AC_BuildMessage(201,0,
                         (u8*)&amp;struRsp, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
@@ -743,6 +744,7 @@
 
 <h3 id="klv">KLV格式</h3>
 <p>参考代码如下：</p>
+<p>上报数据包=key:1 value:int8(0为关闭，1为开启)</p>
 <pre><code class="c">
     void AC_SendStatus2Server()
     {
@@ -754,7 +756,7 @@
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff&gt;&gt;2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
+         AC_SetKeyValue(pOut,1,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
          /*上报KLV消息*/
          AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
          /*KLV协议内存释放*/
@@ -763,7 +765,9 @@
 </code></pre>
 
 <h3 id="json">JSON格式</h3>
-<p>JSON格式用户调用第三方源码构造json格式的消息体。AC_BuildMessage构造消息。</p>
+<p>参考代码如下：</p>
+<p>JSON格式用户调用第三方源码构造json格式的消息体。
+控制数据包= code:201 + req:{"switch",1}     </p>
 <pre><code class="c">
     void AC_SendLedStatus2Server()
     {
@@ -777,11 +781,11 @@
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff&gt;&gt;2;
          /*构造JSON消息体*/
-        cJSON_AddNumberToObject(root,&quot;led&quot;,     u8LedOnOff);
+        cJSON_AddNumberToObject(root,&quot;switch&quot;,      u8LedOnOff);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*构造消息*/
-        AC_BuildMessage(AC_CODE_JSON_REPORT,0,
+        AC_BuildMessage(201,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
@@ -799,23 +803,26 @@
 <p>设备接收到云端指令必须回响应。</p>
 <p>下面的例子是云端下发控制demo灯开关状态，收到指令回应响应。</p>
 <h3 id="_18">二进制</h3>
+<p>参考代码如下：</p>
+<p>控制数据包=code:68 + req:{1,0,0,0} </p>
+<p>响应数据包=code:102 + resp:{1,0,0,0}</p>
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u16 u16DataLen;
-        u8 test[] = &quot;hello&quot;;
+        u8 resp[4] = {0};
 
         switch (((STRU_LED_ONOFF *)pu8Playload)-&gt;u8LedOnOff)
         {
             case 0://处理开关消息
             case 1:        
-                AC_BlinkLed(((STRU_LED_ONOFF *)pu8Playload)-&gt;u8LedOnOff);
+                resp[0]=AC_BlinkLed(((STRU_LED_ONOFF *)pu8Playload)-&gt;u8LedOnOff);
                 break;            
 
         }
         /*构造消息,接口含义详见下节接口定义*/
-        AC_BuildMessage(CLIENT_SERVER_OK,pstruMsg-&gt;MsgId,
-                        (u8*)test, 5,
+        AC_BuildMessage(102,pstruMsg-&gt;MsgId,
+                        (u8*)resp, sizeof(resp),
                         pstruOptList, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
         /*发送消息,接口含义详见下节接口定义*/
@@ -824,6 +831,10 @@
 </code></pre>
 
 <h3 id="klv_1">KLV格式</h3>
+<p>参考代码如下：</p>
+<p>控制数据点：key:1 value:int8(0为关闭，1为开启)</p>
+<p>控制数据包：code:68</p>
+<p>响应数据点：key:1 value:int8(0为关闭，1为开启)</p>
 <pre><code class="c">
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
@@ -832,7 +843,7 @@
         u8 u8LedOnOff= 0;
         u16 u16length = 0;
         u8 u8Type = 0;
-        AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg-&gt;Payloadlen),KEY_LED_ON_OFF,&amp;u8LedOnOff,&amp;u16length,&amp;u8Type);
+        AC_GetKeyValue(pu8Playload,AC_HtoNs(pstruMsg-&gt;Payloadlen),1,&amp;u8LedOnOff,&amp;u16length,&amp;u8Type);
         switch (u8LedOnOff)
         {
             case 0://处理开关消息
@@ -851,6 +862,9 @@
 </code></pre>
 
 <h3 id="json_1">JSON格式</h3>
+<p>参考代码如下：</p>
+<p>控制数据包= code:68 + req:{"switch",1} </p>
+<p>响应数据包= code:102 +resp:{"result",1}</p>
 <pre><code class="c">
     void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
@@ -862,8 +876,7 @@
         cJSON *root = cJSON_Parse(pu8Playload);
         /*JSON协议内存分配*/
         root=cJSON_CreateObject();
-        cJSON *format = cJSON_GetObjectItem(root,&quot;ledctl&quot;);
-        u32LedOnOff = cJSON_GetObjectItem(format,&quot;led&quot;)-&gt;valueint;
+        u32LedOnOff = cJSON_GetObjectItem(root,&quot;switch&quot;)-&gt;valueint;
         switch (u32LedOnOff)
         {
             case 0://处理开关消息
@@ -872,7 +885,7 @@
                 break;
         }
         /*构造JSON消息*/
-        cJSON_AddStringToObject(root,&quot;status&quot;,      &quot;ok&quot;);
+        cJSON_AddNumberToObject(root,&quot;result&quot;,      1);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*发送JSON消息,接口含义详见下节接口定义*

@@ -1170,9 +1170,6 @@ pushMgr.unwatch(table, new VoidCallback() {
 建议的用户交互参见[用户交互-局域网通信](../user_interaction.md#局域网通信)
 
 
-
-#局域网通信
-
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）
 ```java
 bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
