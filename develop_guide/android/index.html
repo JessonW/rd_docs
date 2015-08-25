@@ -233,49 +233,49 @@
             <li><a href="#_14">设备扩展属性</a></li>
         
     
+        <li class="main "><a href="#_17">和云端通信</a></li>
+        
+            <li><a href="#_18">一、发送消息到设备</a></li>
+        
+            <li><a href="#_19">二、发送消息到服务</a></li>
+        
+            <li><a href="#_20">三、实时消息</a></li>
+        
+    
+        <li class="main "><a href="#_21">局域网通信</a></li>
+        
+    
+        <li class="main "><a href="#_22">定时任务</a></li>
+        
+            <li><a href="#_23">获取定时管理器</a></li>
+        
+            <li><a href="#_26">添加定时任务</a></li>
+        
+            <li><a href="#_27">修改定时任务</a></li>
+        
+            <li><a href="#_28">开启定时任务</a></li>
+        
+            <li><a href="#_29">关闭定时任务</a></li>
+        
+            <li><a href="#_30">删除定时任务</a></li>
+        
+            <li><a href="#_31">获取定时任务列表</a></li>
+        
+    
         <li class="main "><a href="#ota">OTA</a></li>
         
             <li><a href="#ota_1">一.获取OTA管理器对象</a></li>
         
-            <li><a href="#_17">二. 检查升级</a></li>
+            <li><a href="#_32">二. 检查升级</a></li>
         
-            <li><a href="#_18">三．确认升级</a></li>
-        
-    
-        <li class="main "><a href="#_19">推送</a></li>
-        
-            <li><a href="#_20">一、开发环境配置</a></li>
-        
-            <li><a href="#_21">二、开启推送服务</a></li>
+            <li><a href="#_33">三．确认升级</a></li>
         
     
-        <li class="main "><a href="#_22">和云端通信</a></li>
+        <li class="main "><a href="#_34">推送</a></li>
         
-            <li><a href="#_23">一、发送消息到设备</a></li>
+            <li><a href="#_35">一、开发环境配置</a></li>
         
-            <li><a href="#_24">二、发送消息到服务</a></li>
-        
-            <li><a href="#_25">三、实时消息</a></li>
-        
-    
-        <li class="main "><a href="#_26">局域网通信</a></li>
-        
-    
-        <li class="main "><a href="#_27">定时任务</a></li>
-        
-            <li><a href="#_28">获取定时管理器</a></li>
-        
-            <li><a href="#_31">添加定时任务</a></li>
-        
-            <li><a href="#_32">修改定时任务</a></li>
-        
-            <li><a href="#_33">开启定时任务</a></li>
-        
-            <li><a href="#_34">关闭定时任务</a></li>
-        
-            <li><a href="#_35">删除定时任务</a></li>
-        
-            <li><a href="#_36">获取定时任务列表</a></li>
+            <li><a href="#_36">二、开启推送服务</a></li>
         
     
         <li class="main "><a href="#_37">文件存储</a></li>
@@ -808,6 +808,410 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
+<h1 id="_17">和云端通信</h1>
+<p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#云端通信">用户交互-和云端通信</a></p>
+<h2 id="_18">一、发送消息到设备</h2>
+<h3 id="1klv">1、KLV格式</h3>
+<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
+KLV协议介绍参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a></p>
+<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
+<blockquote>
+<ul>
+<li>数据点：key:1  value:int8(0为关闭，1为开启)</li>
+<li>数据包：code:68  </li>
+</ul>
+</blockquote>
+<pre><code class="java">ACKLVObject req = new ACKLVObject();
+//只需要告诉设备指令，而不需要payload时，传null
+req.put(1, 1);
+//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
+    @Override
+    public void success(ACKLVDeviceMsg deviceMsg) {
+        ACKLVObject resp = deviceMsg.getKLVObject();
+        //发送成功并接收设备的响应消息
+    }
+
+    @Override
+    public void error(ACException e) {
+        //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h3 id="2_5">2、二进制格式</h3>
+<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
+<blockquote>
+<p><strong>数据包</strong> 
++ code:68 
++ req:{1,0,0,0}
++ resp:{1,0,0,0}</p>
+</blockquote>
+<h4 id="1_5">1)、设置序列化器</h4>
+<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
+    @Override
+    public byte[] marshal(ACDeviceMsg msg) throws Exception {
+        return (byte[]) msg.getContent();
+    }
+
+    @Override
+    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
+        return new ACDeviceMsg(msgCode, payload);
+    }
+});
+</code></pre>
+
+<h4 id="2_6">2)、发送到设备</h4>
+<pre><code class="java">bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte[]{1, 0, 0, 0}), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+    @Override
+    public void success(ACDeviceMsg deviceMsg) {
+        byte[] resp = (byte[]) deviceMsg.getContent();
+        if(resp[0] == 1 &amp;&amp; resp[1] == 0 &amp;&amp; ...){
+            //开灯成功
+        } else {
+            //开灯失败
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+        //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h3 id="3json">3、json格式</h3>
+<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
+<blockquote>
+<p><strong>数据包</strong> 
++ code:68 
++ req:{"switch","open"}
++ resp:{"result",1}</p>
+</blockquote>
+<h4 id="1_6">1、设置序列化器</h4>
+<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
+    @Override
+    public byte[] marshal(ACDeviceMsg msg) throws Exception {
+        return ACObjectMarshaller.marshal((ACObject)msg.getContent());
+    }
+
+    @Override
+    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
+        ACObject resp = new ACObject();
+        ACObjectMarshaller.unmarshal(resp, payload);
+        return new ACDeviceMsg(msgCode, resp);
+    }
+});
+</code></pre>
+
+<h4 id="2_7">2、发送到设备</h4>
+<pre><code class="java">ACObject req = new ACObject();
+req.put(&quot;switch&quot;, &quot;open&quot;);
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+    @Override
+    public void success(ACDeviceMsg deviceMsg) {
+        ACObject resp = (ACObject) deviceMsg.getContent();
+        long result = resp.get(&quot;result&quot;);
+        if (result == 1) {
+            //开灯成功
+        } else {
+            //开灯失败
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+        //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h2 id="_19">二、发送消息到服务</h2>
+<p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致，进入版本管理之后，查看已上线版本，serviceVersion为主版本号，比如1-0-0，则version为1</strong></p>
+<pre><code class="java">ACMsg req = new ACMsg();
+req.setName(&quot;queryData&quot;);
+req.put(&quot;deviceId&quot;, deviceId);
+req.put(&quot;startTime&quot;, 0);
+req.put(&quot;endTime&quot;, System.currentTimeMillis());
+AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallback&lt;ACMsg&gt;() {
+    @Override
+    public void success(ACMsg resp) {
+        //发送成功并接收服务的响应消息
+    }
+
+    @Override
+    public void error(ACException e) {
+        //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h2 id="_20">三、实时消息</h2>
+<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到app</p>
+<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
+<p>cloud_syn.png</p>
+<h4 id="1_7">1、获取实时消息管理器</h4>
+<pre><code class="java">pushMgr = AC.pushMgr();
+</code></pre>
+
+<h4 id="2_8">2、创建与服务器的连接</h4>
+<pre><code class="java">pushMgr.connect(new VoidCallback() {
+    @Override
+    public void success() {
+        //连接成功，可以开始订阅数据
+    }
+    @Override
+    public void error(ACException e) {
+        //网络错误，连接失败
+    }
+});
+</code></pre>
+
+<h4 id="3_4">3、订阅实时数据</h4>
+<pre><code class="java">//实例化ACPushTable对象
+ACPushTable table = new ACPushTable();
+//设置订阅的表名
+table.setClassName(&quot;test_class&quot;);
+//设置订阅的columns行
+table.setColumes(new String[]{&quot;status&quot;, &quot;pm25&quot;});
+//设置监听主键，此处对应添加数据集时的监控主键
+ACObject primaryKey = new ACObject();
+primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
+table.setPrimaryKey(primaryKey);
+//设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
+table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
+pushMgr.watch(table, new VoidCallback() {
+    @Override
+    public void success() {
+        //订阅成功
+    }
+    @Override
+    public void error(ACException e) {
+        //订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h4 id="4_2">4、接收已订阅的实时数据</h4>
+<pre><code class="java">pushMgr.onReceive(new PayloadCallback&lt;ACPushReceive&gt;() {
+    @Override
+    public void success(ACPushReceive pushReceive) {
+        //pushReceive.getClassName() 表名
+        //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
+        //pushReceive.getPayload() 接收数据ACObject格式
+    }
+
+    @Override
+    public void error(ACException e) {
+    //永远不会执行
+    }
+});
+</code></pre>
+
+<h4 id="5">5、取消订阅</h4>
+<p>建议在退出订阅的activity之后调用，避免造成流量浪费</p>
+<pre><code class="java">//实例化ACPushTable对象
+ACPushTable table = new ACPushTable();
+//设置订阅的表名
+table.setClassName(&quot;test_class&quot;);
+//设置监听主键
+ACObject primaryKey = new ACObject();
+primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
+table.setPrimaryKey(primaryKey);
+pushMgr.unwatch(table, new VoidCallback() {
+    @Override
+    public void success() {
+        //取消订阅成功
+    }
+    @Override
+    public void error(ACException e) {
+        //取消订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+</code></pre>
+
+<h1 id="_21">局域网通信</h1>
+<p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
+<p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
+<p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
+<pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
+    @Override
+    public void success(List&lt;ACUserDevice&gt; deviceList) {
+        For(ACUserDevice device:deviceList){
+            /**
+              * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
+              * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
+              */
+            device.getStatus();
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+    //网络错误且之前从来没有获取过设备列表时返回
+    }
+});
+</code></pre>
+
+<p>因为局域网通讯要求设备与app处于同一个wifi下，若网络环境变化，如切换wifi时，直连的状态会发生改变，所以需要监听网络环境变化</p>
+<pre><code class="java">//监听网络变化
+ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
+    @Override
+    public void onNetChange() {
+        //当手机网络环境变化时，更新局域网状态或者重新获取设备列表
+        getDeviceList();
+    }
+});
+</code></pre>
+
+<p>此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态</p>
+<pre><code class="java">//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
+AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
+    @Override
+    public void success(List&lt;ACDeviceFind&gt; acDeviceFinds) {
+        //发现局域网设备，更新局域网状态或者重新获取设备列表
+        getDeviceList();
+    }
+
+    @Override
+    public void error(ACException e) {
+        //没有局域网设备，更新局域网状态或者重新获取设备列表
+        getDeviceList();
+    }
+});
+</code></pre>
+
+<h1 id="_22">定时任务</h1>
+<h4 id="_23">获取定时管理器</h4>
+<h5 id="_24">使用默认时区</h5>
+<pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
+</code></pre>
+
+<h5 id="_25">使用自定义时区</h5>
+<pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
+</code></pre>
+
+<h4 id="_26">添加定时任务</h4>
+<blockquote>
+<p><strong><font color="red">注意</font>：</strong></p>
+<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
+<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
+<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<ul>
+<li>
+<p><strong>"once":</strong>单次循环</p>
+</li>
+<li>
+<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"day":</strong>在每天的<strong><code>HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"month":</strong>在每月的<strong><code>dd HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"year":</strong>在每年的<strong><code>MM-dd HH:mm:ss</code></strong>时间点循环执行</p>
+</li>
+<li>
+<p><strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周一，周五重复，则表示为"week[1,5]")</p>
+</li>
+</ul>
+</blockquote>
+<pre><code class="java">//设置序列化器
+AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
+    @Override
+    public byte[] marshal(ACDeviceMsg msg) throws Exception {
+         return (byte[]) msg.getContent();
+    }
+
+    @Override
+    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
+         //跟定时任务无关
+         return null;
+    }
+});
+</code></pre>
+
+<pre><code class="java">//若为二进制或klv格式，则msg需要先经过序列化器进行序列化
+timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new VoidCallback() {
+     @Override
+     public void success() {
+          //成功添加定时任务，创建后默认为开启状态
+     }
+
+     @Override
+     public void error(ACException e) {
+          //e.getErrorCode为错误码，e.getMessage为错误信息
+     }
+});
+</code></pre>
+
+<h4 id="_27">修改定时任务</h4>
+<p>接口为modifyTask，其他参数与定义与创建定时任务相同</p>
+<h4 id="_28">开启定时任务</h4>
+<pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
+     @Override
+     public void success() {
+          //开启定时任务成功
+     }
+
+     @Override
+     public void error(ACException e) {
+          //e.getErrorCode为错误码，e.getMessage为错误信息
+     }
+});
+</code></pre>
+
+<h4 id="_29">关闭定时任务</h4>
+<pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
+     @Override
+     public void success() {
+          //关闭定时任务
+     }
+
+     @Override
+     public void error(ACException e) {
+          //e.getErrorCode为错误码，e.getMessage为错误信息
+     }
+});
+</code></pre>
+
+<h4 id="_30">删除定时任务</h4>
+<pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
+     @Override
+     public void success() {
+          //删除定时任务
+     }
+
+     @Override
+     public void error(ACException e) {
+          //e.getErrorCode为错误码，e.getMessage为错误信息
+     }
+});
+</code></pre>
+
+<h4 id="_31">获取定时任务列表</h4>
+<pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
+     @Override
+     public void success(List&lt;ACTimerTask&gt; timerTasks) {
+          //通过logcat查看获取到的定时任务列表进行显示或下一步操作
+          for (ACTimerTask timerTask : timerTasks){
+              LogUtil.i(&quot;TAG&quot;, timerTask.toString());
+          }
+     }
+
+     @Override
+     public void error(ACException e) {
+          //e.getErrorCode为错误码，e.getMessage为错误信息
+     }
+});
+</code></pre>
+
 <h1 id="ota">OTA</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
 <p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
@@ -817,7 +1221,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
-<h4 id="_17">二. 检查升级</h4>
+<h4 id="_32">二. 检查升级</h4>
 <p>1.检查设备是否有新的OTA版本，同时获取升级日志</p>
 <pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
@@ -835,7 +1239,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="_18">三．确认升级</h4>
+<h4 id="_33">三．确认升级</h4>
 <pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     @Override
     public void success() {
@@ -848,7 +1252,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h1 id="_19">推送</h1>
+<h1 id="_34">推送</h1>
 <p>AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。</p>
 <p>开发前的配置工作参考<a href="../../framework/android#推送开发准备">reference-安卓-推送开发准备</a></p>
 <blockquote>
@@ -857,7 +1261,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <p>2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试</p>
 <p>3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。</p>
 </blockquote>
-<h3 id="_20">一、开发环境配置</h3>
+<h3 id="_35">一、开发环境配置</h3>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
@@ -1012,9 +1416,9 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 &lt;/meta-data&gt;
 </code></pre>
 
-<h3 id="_21">二、开启推送服务</h3>
+<h3 id="_36">二、开启推送服务</h3>
 <p>在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
-<h4 id="1_5">1、获取推送管理器</h4>
+<h4 id="1_8">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
 </code></pre>
 
@@ -1022,7 +1426,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <pre><code class="java">notificationMgr.init();
 </code></pre>
 
-<h4 id="3_4">3、在登录成功之后添加推送别名</h4>
+<h4 id="3_5">3、在登录成功之后添加推送别名</h4>
 <pre><code class="java">notificationMgr.addAlias(info.getUserId(), new VoidCallback() {
     @Override
     public void success() {
@@ -1035,7 +1439,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="4_2">4、设置友盟的消息处理</h4>
+<h4 id="4_3">4、设置友盟的消息处理</h4>
 <pre><code class="java">notificationMgr.setMessageHandler(new UmengMessageHandler() {
     /**
      * 参考集成文档的1.6.3
@@ -1089,7 +1493,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="5">5、在退出登录之后移除掉旧的别名</h4>
+<h4 id="5_1">5、在退出登录之后移除掉旧的别名</h4>
 <pre><code class="java">notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override
     public void success() {
@@ -1099,410 +1503,6 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
     public void error(ACException e) {
          //别名注销失败
     }
-});
-</code></pre>
-
-<h1 id="_22">和云端通信</h1>
-<p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#云端通信">用户交互-和云端通信</a></p>
-<h2 id="_23">一、发送消息到设备</h2>
-<h3 id="1klv">1、KLV格式</h3>
-<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
-KLV协议介绍参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a></p>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
-<blockquote>
-<ul>
-<li>数据点：key:1  value:int8(0为关闭，1为开启)</li>
-<li>数据包：code:68  </li>
-</ul>
-</blockquote>
-<pre><code class="java">ACKLVObject req = new ACKLVObject();
-//只需要告诉设备指令，而不需要payload时，传null
-req.put(1, 1);
-//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
-    @Override
-    public void success(ACKLVDeviceMsg deviceMsg) {
-        ACKLVObject resp = deviceMsg.getKLVObject();
-        //发送成功并接收设备的响应消息
-    }
-
-    @Override
-    public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h3 id="2_5">2、二进制格式</h3>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
-<blockquote>
-<p><strong>数据包</strong> 
-+ code:68 
-+ req:{1,0,0,0}
-+ resp:{1,0,0,0}</p>
-</blockquote>
-<h4 id="1_6">1)、设置序列化器</h4>
-<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return (byte[]) msg.getContent();
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        return new ACDeviceMsg(msgCode, payload);
-    }
-});
-</code></pre>
-
-<h4 id="2_6">2)、发送到设备</h4>
-<pre><code class="java">bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte[]{1, 0, 0, 0}), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
-    @Override
-    public void success(ACDeviceMsg deviceMsg) {
-        byte[] resp = (byte[]) deviceMsg.getContent();
-        if(resp[0] == 1 &amp;&amp; resp[1] == 0 &amp;&amp; ...){
-            //开灯成功
-        } else {
-            //开灯失败
-        }
-    }
-
-    @Override
-    public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h3 id="3json">3、json格式</h3>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
-<blockquote>
-<p><strong>数据包</strong> 
-+ code:68 
-+ req:{"switch","open"}
-+ resp:{"result",1}</p>
-</blockquote>
-<h4 id="1_7">1、设置序列化器</h4>
-<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return ACObjectMarshaller.marshal((ACObject)msg.getContent());
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        ACObject resp = new ACObject();
-        ACObjectMarshaller.unmarshal(resp, payload);
-        return new ACDeviceMsg(msgCode, resp);
-    }
-});
-</code></pre>
-
-<h4 id="2_7">2、发送到设备</h4>
-<pre><code class="java">ACObject req = new ACObject();
-req.put(&quot;switch&quot;, &quot;open&quot;);
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
-    @Override
-    public void success(ACDeviceMsg deviceMsg) {
-        ACObject resp = (ACObject) deviceMsg.getContent();
-        long result = resp.get(&quot;result&quot;);
-        if (result == 1) {
-            //开灯成功
-        } else {
-            //开灯失败
-        }
-    }
-
-    @Override
-    public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h2 id="_24">二、发送消息到服务</h2>
-<p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致，进入版本管理之后，查看已上线版本，serviceVersion为主版本号，比如1-0-0，则version为1</strong></p>
-<pre><code class="java">ACMsg req = new ACMsg();
-req.setName(&quot;queryData&quot;);
-req.put(&quot;deviceId&quot;, deviceId);
-req.put(&quot;startTime&quot;, 0);
-req.put(&quot;endTime&quot;, System.currentTimeMillis());
-AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallback&lt;ACMsg&gt;() {
-    @Override
-    public void success(ACMsg resp) {
-        //发送成功并接收服务的响应消息
-    }
-
-    @Override
-    public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h2 id="_25">三、实时消息</h2>
-<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到app</p>
-<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
-<p>cloud_syn.png</p>
-<h4 id="1_8">1、获取实时消息管理器</h4>
-<pre><code class="java">pushMgr = AC.pushMgr();
-</code></pre>
-
-<h4 id="2_8">2、创建与服务器的连接</h4>
-<pre><code class="java">pushMgr.connect(new VoidCallback() {
-    @Override
-    public void success() {
-        //连接成功，可以开始订阅数据
-    }
-    @Override
-    public void error(ACException e) {
-        //网络错误，连接失败
-    }
-});
-</code></pre>
-
-<h4 id="3_5">3、订阅实时数据</h4>
-<pre><code class="java">//实例化ACPushTable对象
-ACPushTable table = new ACPushTable();
-//设置订阅的表名
-table.setClassName(&quot;test_class&quot;);
-//设置订阅的columns行
-table.setColumes(new String[]{&quot;status&quot;, &quot;pm25&quot;});
-//设置监听主键，此处对应添加数据集时的监控主键
-ACObject primaryKey = new ACObject();
-primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
-table.setPrimaryKey(primaryKey);
-//设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
-table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
-pushMgr.watch(table, new VoidCallback() {
-    @Override
-    public void success() {
-        //订阅成功
-    }
-    @Override
-    public void error(ACException e) {
-        //订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h4 id="4_3">4、接收已订阅的实时数据</h4>
-<pre><code class="java">pushMgr.onReceive(new PayloadCallback&lt;ACPushReceive&gt;() {
-    @Override
-    public void success(ACPushReceive pushReceive) {
-        //pushReceive.getClassName() 表名
-        //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
-        //pushReceive.getPayload() 接收数据ACObject格式
-    }
-
-    @Override
-    public void error(ACException e) {
-    //永远不会执行
-    }
-});
-</code></pre>
-
-<h4 id="5_1">5、取消订阅</h4>
-<p>建议在退出订阅的activity之后调用，避免造成流量浪费</p>
-<pre><code class="java">//实例化ACPushTable对象
-ACPushTable table = new ACPushTable();
-//设置订阅的表名
-table.setClassName(&quot;test_class&quot;);
-//设置监听主键
-ACObject primaryKey = new ACObject();
-primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
-table.setPrimaryKey(primaryKey);
-pushMgr.unwatch(table, new VoidCallback() {
-    @Override
-    public void success() {
-        //取消订阅成功
-    }
-    @Override
-    public void error(ACException e) {
-        //取消订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-</code></pre>
-
-<h1 id="_26">局域网通信</h1>
-<p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
-<p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
-<pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
-    @Override
-    public void success(List&lt;ACUserDevice&gt; deviceList) {
-        For(ACUserDevice device:deviceList){
-            /**
-              * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
-              * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
-              */
-            device.getStatus();
-        }
-    }
-
-    @Override
-    public void error(ACException e) {
-    //网络错误且之前从来没有获取过设备列表时返回
-    }
-});
-</code></pre>
-
-<p>因为局域网通讯要求设备与app处于同一个wifi下，若网络环境变化，如切换wifi时，直连的状态会发生改变，所以需要监听网络环境变化</p>
-<pre><code class="java">//监听网络变化
-ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
-    @Override
-    public void onNetChange() {
-        //当手机网络环境变化时，更新局域网状态或者重新获取设备列表
-        getDeviceList();
-    }
-});
-</code></pre>
-
-<p>此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态</p>
-<pre><code class="java">//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
-AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
-    @Override
-    public void success(List&lt;ACDeviceFind&gt; acDeviceFinds) {
-        //发现局域网设备，更新局域网状态或者重新获取设备列表
-        getDeviceList();
-    }
-
-    @Override
-    public void error(ACException e) {
-        //没有局域网设备，更新局域网状态或者重新获取设备列表
-        getDeviceList();
-    }
-});
-</code></pre>
-
-<h1 id="_27">定时任务</h1>
-<h4 id="_28">获取定时管理器</h4>
-<h5 id="_29">使用默认时区</h5>
-<pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
-</code></pre>
-
-<h5 id="_30">使用自定义时区</h5>
-<pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
-</code></pre>
-
-<h4 id="_31">添加定时任务</h4>
-<blockquote>
-<p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
-<ul>
-<li>
-<p><strong>"once":</strong>单次循环</p>
-</li>
-<li>
-<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
-</li>
-<li>
-<p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>
-</li>
-<li>
-<p><strong>"day":</strong>在每天的<strong><code>HH:mm:ss</code></strong>时间点循环执行</p>
-</li>
-<li>
-<p><strong>"month":</strong>在每月的<strong><code>dd HH:mm:ss</code></strong>时间点循环执行</p>
-</li>
-<li>
-<p><strong>"year":</strong>在每年的<strong><code>MM-dd HH:mm:ss</code></strong>时间点循环执行</p>
-</li>
-<li>
-<p><strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周一，周五重复，则表示为"week[1,5]")</p>
-</li>
-</ul>
-</blockquote>
-<pre><code class="java">//设置序列化器
-AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-         return (byte[]) msg.getContent();
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-         //跟定时任务无关
-         return null;
-    }
-});
-</code></pre>
-
-<pre><code class="java">//若为二进制或klv格式，则msg需要先经过序列化器进行序列化
-timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new VoidCallback() {
-     @Override
-     public void success() {
-          //成功添加定时任务，创建后默认为开启状态
-     }
-
-     @Override
-     public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
-     }
-});
-</code></pre>
-
-<h4 id="_32">修改定时任务</h4>
-<p>接口为modifyTask，其他参数与定义与创建定时任务相同</p>
-<h4 id="_33">开启定时任务</h4>
-<pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
-     @Override
-     public void success() {
-          //开启定时任务成功
-     }
-
-     @Override
-     public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
-     }
-});
-</code></pre>
-
-<h4 id="_34">关闭定时任务</h4>
-<pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
-     @Override
-     public void success() {
-          //关闭定时任务
-     }
-
-     @Override
-     public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
-     }
-});
-</code></pre>
-
-<h4 id="_35">删除定时任务</h4>
-<pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
-     @Override
-     public void success() {
-          //删除定时任务
-     }
-
-     @Override
-     public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
-     }
-});
-</code></pre>
-
-<h4 id="_36">获取定时任务列表</h4>
-<pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
-     @Override
-     public void success(List&lt;ACTimerTask&gt; timerTasks) {
-          //通过logcat查看获取到的定时任务列表进行显示或下一步操作
-          for (ACTimerTask timerTask : timerTasks){
-              LogUtil.i(&quot;TAG&quot;, timerTask.toString());
-          }
-     }
-
-     @Override
-     public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
-     }
 });
 </code></pre>
 
