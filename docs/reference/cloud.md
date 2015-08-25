@@ -1,7 +1,9 @@
+
 #开发环境配置
-##开发步骤
+
 本节将详细介绍开发者基于ablecloud提供的服务框架，快速开发自定义后端服务（UDS）和云端定时任务的流程：两者的开发流程是完全一致的。这里介绍ablecloud框架进行开发环境搭建、单元测试、集成测试以及服务发布等内容。
-###服务框架发布库
+
+##服务框架发布库
 ablecloud一期发布java版本服务开发框架，其发布目录、文件如下所示
 ~~~
 /config
@@ -20,7 +22,7 @@ start.cmd
 
 <font color="red">**在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下。**</font>
 
-###本地启动命令
+##本地启动命令
 开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
 
 <b>*linux*</b>下在终端运行如下命令启动服务进行测试：
@@ -34,8 +36,8 @@ start.cmd -m test
 
 ><font color="brown">**注：**启动时的参数"-m test"用于测试环境，所依赖的配置项如域名/版本等信息从config目录下的cloudservice-conf.xml配置文件中读取，开发者可以修改配置文件中的内容以适应测试环境。正式线上环境，开发者不用关心配置文件以及配置项，域名/版本等所有的信息均由框架自动获取并填充。</font>
 
-###开发环境设置
-####系统准备
+##开发工具设置
+###系统准备
 在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如jdk、maven等。
 
 + **JDK**
@@ -50,7 +52,7 @@ start.cmd -m test
 
 	下载ablecloud开发框架并解压
 
-####Intellij
+###Intellij
 1. **新建工程**
 	
     选择新建maven工程，JDK选择正确的版本。
@@ -262,7 +264,7 @@ start.cmd -m test
 
 	将你编译好的服务jar包（位于你服务代码主目录下的target/lib文件夹中，如`~/SmartHome/target/lib/SmartHome-1.0.0.jar`）放入ablecloud框架的lib目录下，然后将ablecloud的config目录、lib目录、start.sh打成zip包，通过ablecloud的web平台提交。
 
-####Eclipse
+###Eclipse
 1. **新建工程**
 
 	选择**File-->New-->Project...**
