@@ -226,11 +226,11 @@
         
             <li><a href="#_5">独立设备</a></li>
         
-            <li><a href="#_9">网关设备</a></li>
+            <li><a href="#_9">网关型设备</a></li>
         
             <li><a href="#home">home模型</a></li>
         
-            <li><a href="#_14">设备扩展属性</a></li>
+            <li><a href="#_14">设备附加属性</a></li>
         
     
         <li class="main "><a href="#_17">和云端通信</a></li>
@@ -578,7 +578,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h2 id="_9">网关设备</h2>
+<h2 id="_9">网关型设备</h2>
 <p>网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：</p>
 <p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
@@ -771,9 +771,9 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h2 id="_14">设备扩展属性</h2>
+<h2 id="_14">设备附加属性</h2>
 <p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口</strong></p>
-<h4 id="_15">一、设置或者更新设备扩展属性</h4>
+<h4 id="_15">一、设置或者更新设备附加属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
 deviceProfile.put(&quot;String&quot;, &quot;北京&quot;);
@@ -793,7 +793,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="_16">二、获取设备扩展属性</h4>
+<h4 id="_16">二、获取设备附加属性</h4>
 <pre><code class="java">bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback&lt;ACObject&gt;() {
     @Override
     public void success(ACObject object) {
