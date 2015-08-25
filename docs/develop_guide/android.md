@@ -233,7 +233,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 });
 ```
 
-###gprs设备
+###gprs设备和以太网设备
 
 ![DM_gprs](../pic/develop_guide/DM_gprs.png)
 
@@ -459,6 +459,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
     }
 });
 ```
+
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
 
@@ -1091,7 +1092,7 @@ AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进�
 
 >3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
 
-###一、开发环境配置
+##一、开发环境配置
 如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
 ####1、在`<manifest>`标签下添加权限：
 ```java
@@ -1248,7 +1249,7 @@ AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进�
 </meta-data>
 ```
 
-###二、开启推送服务
+##二、开启推送服务
 在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：
 ####1、获取推送管理器
 ```java
