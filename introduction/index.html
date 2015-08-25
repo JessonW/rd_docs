@@ -474,10 +474,10 @@ AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个�
 <p>AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：</p>
 <ul>
 <li>
-<p>JSON格式，适合MCU支持JSON解析的设备；协议格式参考：<a href="../reference/device/#JSON">reference-设备-JSON</a></p>
+<p>JSON格式，适合MCU支持JSON解析的设备；协议格式参考：<a href="../reference/device/#json">reference-设备-JSON</a></p>
 </li>
 <li>
-<p>KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：<a href="../reference/device/#KLV">reference-设备-KLV</a>；</p>
+<p>KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：<a href="../reference/device/#klv">reference-设备-KLV</a>；</p>
 </li>
 <li>
 <p>二进制，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。</p>
@@ -486,7 +486,7 @@ AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个�
 <p>在云端定义好设备端各个功能点的数据包以后，设备和APP直接的数据交互（无论是经过本地局域网还是云端）都必须采用数据包定义的内容进行，具体数据包的格式定义参考：开发框架-设备-通信。数据点和数据包包只能够定义设备上的数据，而除了数据包之外的APP和云端的交互由厂商的自定义服务完成，同时该部分数据格式由厂商自己定义。</p>
 <h2 id="_14">二、功能开发</h2>
 <h3 id="21">2.1 设备开发</h3>
-<p>为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见<a href="./#功能介绍">基本介绍-功能介绍-设备管理-独立设备</a>。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。</p>
+<p>为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见<a href="./#_16">基本介绍-功能介绍-设备管理-独立设备</a>。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。</p>
 <p>对于“设备绑定”、“本地通信密钥交换”、“OTA”等功能，设备需要和云端进行固定格式的交互并实现对云端相应指令的响应。对于网关类型的设备，为了实现对网关下面子设备的独立管理，也需要设备端（网关）实现相应的指令（少于5个）。</p>
 <p>对于设备和本地APP、设备和云端的数据交互，设备只需按照定义产品时生成的数据格式，进行发送和解析即可。</p>
 <p>AbleCloud的管理后台提供了设备调试工具。在设备管理页面下，可以看到所有当前在线设备。点击详情可以进入设备详情页面
@@ -507,7 +507,7 @@ AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个�
 <li>完成设备在微信平台的入库、授权流程，并为设备生成对应的二维码；</li>
 <li>基于AbleCloud提供的微信公众号SDK，开发微信公众号的后台服务及前端界面（公众号界面菜单及HTML5页面），在该服务中实现微信用户信息与AbleCloud用户信息同步、微信设备信息与AbleCloud设备信息同步、设备控制等功能。</li>
 </ol>
-<p>更详细信息，请参考 <a href="../reference/wechat/#开发准备">reference-微信-开发准备</a></p>
+<p>更详细信息，请参考 <a href="develop_guide/third_porxy.md#_2">开发指导-第三方云对接-微信</a></p>
 <h3 id="24">2.4 云端服务开发</h3>
 <p>AbleCloud提供了通用的云端服务，如“帐号管理“、”设备管理“、”设备数据存储“、”OTA“、”推送管理“。对于这些通用功能可以满足需求的产品，不需要进行任何云端服务的开发。</p>
 <p>对于通用服务不能够满足需求的产品，AbleCloud在云端提供了开发框架，厂商可以对“用户帐号“、”设备“、”云端服务“，”存储“进行定制化开发。云端服务开发框架参考 <a href="../develop_guide/cloud/">开发指导-云端服务</a>
@@ -550,7 +550,7 @@ AbleCloud提供两种帐号系统：</p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的附加属性接口中需要作为参数。</p>
 <p>在当前主流的设计中，为了简化用户的注册流程，帐号的附加属性一般都是在用户完成注册以后补充填写，在帐号的注册过程中不填写。</p>
 <p>建议的用户交互流程参考 <a href="../user_interaction/#帐号附加属性">用户交互-帐号附加属性</a></p>
-<p>如果需要存储用户的头像，请参考 <a href="./##文件存储">基本介绍-功能介绍-文件存储</a></p>
+<p>如果需要存储用户的头像，请参考 <a href="./#_31">基本介绍-功能介绍-文件存储</a></p>
 <p>开发指导参考：</p>
 <p><a href="../develop_guide/android/#帐号管理">开发指导-安卓-帐号管理</a></p>
 <p><a href="../develop_guide/iOS/#独帐号管理">开发指导-iOS-帐号管理</a></p>
@@ -644,12 +644,12 @@ AbleCloud提供两种帐号系统：</p>
 </ol>
 <p>对于WiFi类设备，可以通过局域网广播自己的物理ID，APP接收广播完成绑定。</p>
 <p>对于蜂窝网络设备，没有局域网，需要APP扫描设备的物理ID（一般是二维码）来完成设备的绑定。</p>
-<p>建议的用户交互参考<a href="../user_interaction/#独立设备管理">用户交互-独立设备管理</a> </p>
+<p>建议的用户交互参考<a href="../user_interaction/#_3">用户交互-独立设备管理</a> </p>
 <p>开发指导参考：</p>
 <p><a href="../develop_guide/android/#_4">开发指导-安卓-独立设备管理</a></p>
 <p><a href="../develop_guide/iOS/##独立设备">开发指导-iOS-独立设备管理</a></p>
 <p><a href="../develop_guide/wechat/##独立设备">开发指导-微信-独立设备管理</a></p>
-<p><a href="../develop_guide/device/##独立设备">开发指导-设备-独立设备管理</a></p>
+<p><a href="../develop_guide/device/#设备激活">开发指导-设备-设备激活</a></p>
 <h3 id="_20">网关型设备管理</h3>
 <p><img alt="gateway" src="../pic/introduction/introduction_gatewaydevice.png" /> </p>
 <p>网关型设备是指结构如下图所示包括网关和子设备类型的设备。</p>
@@ -679,7 +679,7 @@ AbleCloud提供两种帐号系统：</p>
 <p><a href="../develop_guide/android/#网关型设备管理">开发指导-安卓-网关型设备管理</a></p>
 <p><a href="../develop_guide/iOS/#网关型设备管理">开发指导-iOS-网关型设备管理</a></p>
 <p><a href="../develop_guide/wechat/#网关型设备管理">开发指导-微信-网关型设备管理</a></p>
-<p><a href="../develop_guide/device/#网关型设备管理">开发指导-设备-网关型设备管理</a></p>
+<p><a href="../develop_guide/device/#设备绑定管理">开发指导-设备-设备绑定管理</a></p>
 <h3 id="home">home模型</h3>
 <p>考虑到用户管理的设备量变多的时候的分组管理需求，AbleCloud开发了home模型。
 AbleCloud的home模型在权限管理上继承之前的WiFi设备以及网关型设备，这也正好和HomeKit的权限管理方式一致——基于管理员的权限管理。
@@ -696,11 +696,11 @@ home模型的组层次如下图所示：</p>
 <li>创建room时必须指定其所属的home。将设备放入room前必须将设备先放入home。</li>
 </ul>
 <p>需要单独说明的是，分组模型只是设备权限管理的模型，与用户的自定义场景设置没有关系。如果用户需要自定义场景对分组内的设备集中操作时，开发者可以自己定义场景，然后存储到云端的个人帐号下。在该用户在其他手机登录或帐号退出再登录时，可以从云端取出该用户的个人自定义设置。这种用户自定义的场景属于用户个人，不能够在多人之间分享。</p>
-<p>建议的用户交互参考<a href="../user_interaction/#home模型">用户交互-home模型</a> </p>
+<p>建议的用户交互参考<a href="../user_interaction/#home">用户交互-home模型</a> </p>
 <p>开发指导参考：</p>
-<p><a href="../develop_guide/android/#home模型">开发指导-安卓-home模型</a></p>
-<p><a href="../develop_guide/iOS/#home模型">开发指导-iOS-home模型</a></p>
-<p><a href="../develop_guide/wechat/#home模型">开发指导-微信-home模型</a></p>
+<p><a href="../develop_guide/android/#home">开发指导-安卓-home模型</a></p>
+<p><a href="../develop_guide/iOS/#home">开发指导-iOS-home模型</a></p>
+<p><a href="../develop_guide/wechat/#home">开发指导-微信-home模型</a></p>
 <h3 id="_21">设备附加属性</h3>
 <p>AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户在APP等客户端中填写更多和设备关联的信息，如设备关联手机号、家庭住址、地理位置等，就需要用到设备的附加属性。为了简化设备绑定流程，一般设备附加属性需要在设备绑定完成后补充填写，在帐号的注册过程中不填写。建议的用户交互流程参考 <a href="../user_interaction/#设备附加属性">用户交互-设备附加属性</a> 。</p>
 <p>若要使用设备的附加属性，首先需要在产品管理中进行定义。</p>
