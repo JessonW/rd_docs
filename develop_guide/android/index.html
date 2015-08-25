@@ -487,7 +487,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
-<h3 id="gprs">gprs设备</h3>
+<h3 id="gprs">gprs设备和以太网设备</h3>
 <p><img alt="DM_gprs" src="../../pic/develop_guide/DM_gprs.png" /></p>
 <p><strong><font color="red">注</font>：gprs设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备</strong>
 建议通过扫二维码的形式获取物理id进行绑定</p>
@@ -1261,7 +1261,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试</p>
 <p>3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。</p>
 </blockquote>
-<h3 id="_35">一、开发环境配置</h3>
+<h2 id="_35">一、开发环境配置</h2>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
@@ -1416,7 +1416,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 &lt;/meta-data&gt;
 </code></pre>
 
-<h3 id="_36">二、开启推送服务</h3>
+<h2 id="_36">二、开启推送服务</h2>
 <p>在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1_8">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
