@@ -335,7 +335,7 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
 
 
-##网关设备
+##网关型设备
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
 ![DM_gateway](../pic/develop_guide/DM_gateway.png)
@@ -566,10 +566,10 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 
 
-##设备扩展属性
+##设备附加属性
 **<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口**
 
-####一、设置或者更新设备扩展属性
+####一、设置或者更新设备附加属性
 ```java
 ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
@@ -590,7 +590,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 ```
 
-####二、获取设备扩展属性
+####二、获取设备附加属性
 ```java
 bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
     @Override

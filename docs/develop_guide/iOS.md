@@ -92,7 +92,7 @@
 
 建议的流程如下：
 
-![DM_home_WiFi](../pic/develop_guide/DM_home_WiFi.png)
+![DM_home_WiFi](../pic/develop_guide/DM_home_wifi.png)
 
 <font color="red">**补充开发指导**</font>
 

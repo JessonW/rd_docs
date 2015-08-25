@@ -218,28 +218,11 @@
             <li><a href="#_3">绑定手机号</a></li>
         
     
-        <li class="main "><a href="#-">设备管理-独立设备</a></li>
+        <li class="main "><a href="#_4">设备管理</a></li>
         
-            <li><a href="#_4">设备绑定</a></li>
+            <li><a href="#_5">独立设备</a></li>
         
-            <li><a href="#_5">设备激活</a></li>
-        
-            <li><a href="#_6">设备分享</a></li>
-        
-            <li><a href="#_7">设备解绑</a></li>
-        
-    
-        <li class="main "><a href="#-_1">设备管理-网关设备</a></li>
-        
-            <li><a href="#_8">绑定网关</a></li>
-        
-            <li><a href="#_9">分享网关设备</a></li>
-        
-            <li><a href="#_10">网关激活</a></li>
-        
-            <li><a href="#_11">绑定子设备</a></li>
-        
-            <li><a href="#_12">设备解绑</a></li>
+            <li><a href="#_10">网关型设备</a></li>
         
     
         <li class="main "><a href="#ota">OTA</a></li>
@@ -249,28 +232,28 @@
             <li><a href="#2_2">2.确认升级</a></li>
         
     
-        <li class="main "><a href="#_13">和云端通信</a></li>
+        <li class="main "><a href="#_16">和云端通信</a></li>
         
-            <li><a href="#_14">发送消息到设备</a></li>
+            <li><a href="#_17">发送消息到设备</a></li>
         
-            <li><a href="#_16">发送消息到服务</a></li>
+            <li><a href="#_19">发送消息到服务</a></li>
         
     
-        <li class="main "><a href="#_17">定时任务</a></li>
+        <li class="main "><a href="#_20">定时任务</a></li>
         
-            <li><a href="#_18">添加定时任务</a></li>
+            <li><a href="#_21">添加定时任务</a></li>
         
             <li><a href="#1actimertaskservice">1.获取ACTimerTaskService对象</a></li>
         
             <li><a href="#2_3">2.新增定时任务</a></li>
         
-            <li><a href="#_19">启动定时任务</a></li>
+            <li><a href="#_22">启动定时任务</a></li>
         
-            <li><a href="#_20">停止定时任务</a></li>
+            <li><a href="#_23">停止定时任务</a></li>
         
-            <li><a href="#_21">修改定时任务</a></li>
+            <li><a href="#_24">修改定时任务</a></li>
         
-            <li><a href="#_22">删除定时任务</a></li>
+            <li><a href="#_25">删除定时任务</a></li>
         
     
     </ul>
@@ -309,10 +292,11 @@
 
 <p>$verifyCode 字符串，是用户修改手机号码的验证码
 $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取openid。</p>
-<h1 id="-">设备管理-独立设备</h1>
+<h1 id="_4">设备管理</h1>
+<h2 id="_5">独立设备</h2>
 <p>设备绑定的交互流程参考下图：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
-<h2 id="_4">设备绑定</h2>
+<h3 id="_6">设备绑定</h3>
 <ul>
 <li>
 <p>1.微信官方授权设备
@@ -349,11 +333,11 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 <li>6.扫描二维码关注公众号，绑定设备
 第一个用微信扫描二维码的人，将会绑定设备，成为设备的管理员。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。Ablecloud对于已有用户绑定的设备，其它用户想要得到设备的管理权需要设备的管理员分享设备，才能拥有设备的管理权。</li>
 </ul>
-<h2 id="_5">设备激活</h2>
-<h3 id="airkiss">调起微信airkiss页面</h3>
+<h3 id="_7">设备激活</h3>
+<h4 id="airkiss">调起微信airkiss页面</h4>
 <p>在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待设备连接云端。
 微信airkiss相关内容请参参考微信官方文档。</p>
-<h2 id="_6">设备分享</h2>
+<h3 id="_8">设备分享</h3>
 <ul>
 <li>1.实例化ACBridgeWeChat对象</li>
 </ul>
@@ -387,13 +371,13 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 </code></pre>
 
 <p>拿到码串后，开发者可以本地用js去生成二维码图片。</p>
-<h2 id="_7">设备解绑</h2>
+<h3 id="_9">设备解绑</h3>
 <p>解除用户与设备绑定</p>
 <pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE)；
 </code></pre>
 
-<h1 id="-_1">设备管理-网关设备</h1>
-<h2 id="_8">绑定网关</h2>
+<h2 id="_10">网关型设备</h2>
+<h3 id="_11">绑定网关</h3>
 <p>网关的绑定操作流程和独立设备是一样的，如下图：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
 <ul>
@@ -431,7 +415,7 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 <li>6.扫描二维码关注公众号，绑定网关设备</li>
 </ul>
 <p>第一个用微信扫描二维码的人，将会绑定设备，成为网关设备的拥有者。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。</p>
-<h2 id="_9">分享网关设备</h2>
+<h3 id="_12">分享网关设备</h3>
 <ul>
 <li>1.实例化ACBridgeWeChat对象</li>
 </ul>
@@ -465,14 +449,14 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 </code></pre>
 
 <p>拿到码串后，开发者可以本地用js去生成二维码图片。</p>
-<h2 id="_10">网关激活</h2>
+<h3 id="_13">网关激活</h3>
 <p>调起微信airkiss页面
 在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待连接。
 微信airkiss相关内容请参参考微信官方文档。</p>
-<h2 id="_11">绑定子设备</h2>
+<h3 id="_14">绑定子设备</h3>
 <p>网关绑定成功以后，绑定子设备的流程如下图：</p>
 <p><img alt="wechat_gateway" src="../../pic/develop_guide/DM_wechat_gateway.png" /></p>
-<h3 id="1">1.开启网关接入</h3>
+<h4 id="1">1.开启网关接入</h4>
 <p>(1)实例化ACDeviceService</p>
 <pre><code class="php">$acDeviceService = ACClient::getDeviceService();
 </code></pre>
@@ -489,7 +473,7 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 </code></pre>
 
 <p>操作成功开启网关设备允许新的子设备接入的功能。</p>
-<h3 id="2">2.绑定子设备</h3>
+<h4 id="2">2.绑定子设备</h4>
 <p>(1)列举新的子设备</p>
 <pre><code class="php">$acDeviceService –&gt;listNewSubDevicesFromGateway($user, $gatewayId)；
 </code></pre>
@@ -499,14 +483,14 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 <pre><code class="php">$acDeviceService–&gt;addSubDeviceToGateway($user,$gatewayId,$physicalId, $name)
 </code></pre>
 
-<h3 id="3">3.关闭网关接入功能</h3>
+<h4 id="3">3.关闭网关接入功能</h4>
 <pre><code class="php">$acDeviceService -&gt;closeGatewayMatch($deviceId, $user);
 </code></pre>
 
 <p>操作成功关闭网关设备允许新的子设备接入的功能。</p>
 <p>$deviceId为设备逻辑id。</p>
-<h2 id="_12">设备解绑</h2>
-<h3 id="1_1">1.解绑网关</h3>
+<h3 id="_15">设备解绑</h3>
+<h4 id="1_1">1.解绑网关</h4>
 <p>（1）实例化ACBridgeWeChat对象</p>
 <pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
 </code></pre>
@@ -516,7 +500,7 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 <pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, $isGateway = TRUE)
 </code></pre>
 
-<h3 id="2_1">2.解绑子设备</h3>
+<h4 id="2_1">2.解绑子设备</h4>
 <pre><code class="php">$acDeviceService–&gt;deleteSubDeviceFromGateway($user, $deviceId)
 </code></pre>
 
@@ -540,8 +524,8 @@ $openId 字符串，是微信用户的OpenID,开发者需要参考微信官方�
 </code></pre>
 
 <p>调用这个方法可以升级设备的固件</p>
-<h1 id="_13">和云端通信</h1>
-<h2 id="_14">发送消息到设备</h2>
+<h1 id="_16">和云端通信</h1>
+<h2 id="_17">发送消息到设备</h2>
 <h3 id="acrequest">实例化ACRequest对象</h3>
 <pre><code class="php">$request=new  ACRequest($serviceName, $methodName, $serviceVersion = 1);
  ```
@@ -553,17 +537,17 @@ $request –&gt;setPayloadAsJSON($payload);
 </code></pre>
 
 <p>$payload string类型的数据,为上传到云端的消息内容，必须是json格式</p>
-<h3 id="_15">设置二进制格式的消息内容</h3>
+<h3 id="_18">设置二进制格式的消息内容</h3>
 <pre><code class="php">$request –&gt;setPayloadAsJSON($payload);
 </code></pre>
 
 <p>$payload string类型的数据,为上传到云端的消息内容，必须是二进制格式</p>
-<h2 id="_16">发送消息到服务</h2>
+<h2 id="_19">发送消息到服务</h2>
 <pre><code class="php">ACClient-&gt; sendToService($request);
 </code></pre>
 
-<h1 id="_17">定时任务</h1>
-<h3 id="_18">添加定时任务</h3>
+<h1 id="_20">定时任务</h1>
+<h3 id="_21">添加定时任务</h3>
 <h3 id="1actimertaskservice">1.获取ACTimerTaskService对象</h3>
 <pre><code class="php">$acTimerTaskService=ACClient-&gt;getTimerTaskService();
 </code></pre>
@@ -575,7 +559,7 @@ $request –&gt;setPayloadAsJSON($payload);
 <p>$task为ACTimerTask对象，表示要新添加的任务。
 $user 为ACUser对象，表示定义该任务的用户。
 返回TRUE表示操作成功，否则表示操作失败。失败时，可调用getLastError()获取错误信息。</p>
-<h3 id="_19">启动定时任务</h3>
+<h3 id="_22">启动定时任务</h3>
 <ul>
 <li>1.列举定时任务</li>
 </ul>
@@ -590,16 +574,16 @@ $user 为ACUser对象，表示定义该任务的用户。
 </code></pre>
 
 <p>$taskId 整数，是要被启动的任务的ID。</p>
-<h3 id="_20">停止定时任务</h3>
+<h3 id="_23">停止定时任务</h3>
 <pre><code class="php">$acTimerTaskService -&gt;stopTask($user, $deviceId, $taskId)
 </code></pre>
 
-<h3 id="_21">修改定时任务</h3>
+<h3 id="_24">修改定时任务</h3>
 <pre><code class="php">$acTimerTaskService -&gt;modifyTask($taskId, $task, $user)
 </code></pre>
 
 <p>$task ACTimerTask对象，表示任务的新内容。</p>
-<h3 id="_22">删除定时任务</h3>
+<h3 id="_25">删除定时任务</h3>
 <pre><code class="php">$acTimerTaskService -&gt;deleteTask($user, $deviceId, $taskId)；
 </code></pre></div>
             

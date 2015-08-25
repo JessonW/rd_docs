@@ -1,5 +1,5 @@
 #帐号管理
-对于走云端的远程控制需要对用户进行鉴权，所以AbleCloud建议用户下载新的智能设备的APP后第一步要注册帐号。AbleCloud支持的帐号体系介绍见[基本介绍-帐号管理](introduction.md#功能介绍)
+对于走云端的远程控制需要对用户进行鉴权，所以AbleCloud建议用户下载新的智能设备的APP后第一步要注册帐号。AbleCloud支持的帐号体系介绍见[基本介绍-帐号管理](introduction.md#_17)
 
 
 AbleCloud建议每个APP页面只实现一个功能，该功能用户操作成功以后再跳转到下个页面。APP开发者需要将整个流程中的意外情况做合理的处理，保证用户在使用过程中所有流程都是通顺的。
@@ -83,11 +83,11 @@ AbleCloud建议每个APP页面只实现一个功能，该功能用户操作成�
 
 [开发指导-安卓-独立设备管理](develop_guide/android.md#_4)
 
-[开发指导-iOS-独立设备管理](develop_guide/iOS.md#_4)
+[开发指导-iOS-独立设备管理](develop_guide/iOS.md##独立设备)
 
-[开发指导-微信-独立设备管理](develop_guide/wechat.md#_4)
+[开发指导-微信-独立设备管理](develop_guide/wechat.md#_5)
 
-[开发指导-设备-独立设备管理](develop_guide/device.md#_4)
+[开发指导-设备-设备激活](develop_guide/device.md#_3)
 
 
 
@@ -127,15 +127,15 @@ AbleCloud建议每个APP页面只实现一个功能，该功能用户操作成�
 客户端为微信时，目前AbleCloud只能够支持“管理员分享”的模式分享设备。
 
 
-开发指导请参考：
+网关型设备的开发指导请参考：
 
-[开发指导-安卓-网关型设备管理](develop_guide/android.md#_6)
+[开发指导-安卓-网关型设备管理](develop_guide/android.md#_9)
 
-[开发指导-iOS-网关型设备管理](develop_guide/iOS.md#_6)
+[开发指导-iOS-网关型设备管理](develop_guide/iOS.md#网关型设备管理)
 
-[开发指导-微信-网关型设备管理](develop_guide/wechat.md#_6)
+[开发指导-微信-网关型设备管理](develop_guide/wechat.md#_10)
 
-[开发指导-设备-网关型设备管理](develop_guide/device.md#_6)
+[开发指导-设备-设备绑定管理](develop_guide/device.md#_6)
 
 
 ##home模型
@@ -214,7 +214,7 @@ room没有权限管理，不能够被单独分享授权。
 
 开发指导请参考：
 
-[开发指导-安卓-设备附加属性](develop_guide/android.md#设备附加属性)
+[开发指导-安卓-设备附加属性](develop_guide/android.md#_14)
 
 [开发指导-iOS-设备附加属性](develop_guide/iOS.md#设备附加属性)
 
@@ -235,13 +235,13 @@ room没有权限管理，不能够被单独分享授权。
 
 具体的开发方法请参考：
 
-[开发指导-安卓-和云端通信](develop_guide/android.md#和云端通信)
+[开发指导-安卓-和云端通信](develop_guide/android.md#_17)
 
 [开发指导-iOS-和云端通信](develop_guide/iOS.md#和云端通信)
 
-[开发指导-微信-和云端通信](develop_guide/wechat.md#和云端通信)
+[开发指导-微信-和云端通信](develop_guide/wechat.md#_16)
 
-[开发指导-设备-和云端通信](develop_guide/device.md#和云端通信)
+[开发指导-设备-和云端通信](develop_guide/device.md#_14)
 
 #局域网通信
 
@@ -257,7 +257,7 @@ room没有权限管理，不能够被单独分享授权。
 
 #OTA
 
-基本介绍请参考：[基本介绍-功能介绍-OTA](introduction.md#OTA)
+基本介绍请参考：[基本介绍-功能介绍-OTA](introduction.md#ota)
 
 
 **静默升级**
@@ -277,19 +277,19 @@ room没有权限管理，不能够被单独分享授权。
 
 开发指导请参考：
 
-[开发指导-安卓-OTA](develop_guide/android.md#OTA)
+[开发指导-安卓-OTA](develop_guide/android.md#ota)
 
-[开发指导-iOS-OTA](develop_guide/iOS.md#OTA)
+[开发指导-iOS-OTA](develop_guide/iOS.md#ota)
 
-[开发指导-微信-OTA](develop_guide/wechat.md#OTA)
+[开发指导-微信-OTA](develop_guide/wechat.md#ota)
 
-[开发指导-设备-OTA](develop_guide/device.md#OTA)
+[开发指导-设备-OTA](develop_guide/device.md#ota)
 
 
 
 #推送
 
-关于推送的基本介绍请参考：[基本介绍-功能介绍-推送](introduction.md#_21)
+关于推送的基本介绍请参考：[基本介绍-功能介绍-推送](introduction.md#_30)
 
 **1、群发通知**
 

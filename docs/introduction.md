@@ -232,9 +232,9 @@ AbleCloud目前与微信硬件平台、京东智能云等物联云平台实现�
 
 AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：
 
-- JSON格式，适合MCU支持JSON解析的设备；协议格式参考：[reference-设备-JSON](reference/device.md#JSON)
+- JSON格式，适合MCU支持JSON解析的设备；协议格式参考：[reference-设备-JSON](reference/device.md#json)
 
-- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV](reference/device.md#KLV)；
+- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV](reference/device.md#klv)；
 
 - 二进制，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。
 
@@ -244,7 +244,7 @@ AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：
 
 ###2.1 设备开发
 
-为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见[基本介绍-功能介绍-设备管理-独立设备](introduction.md#功能介绍)。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。
+为了保证安全，对于设备和云端的交互AbleCloud采用了RSA加AES的加密通信方式。该加密协议已经烧入AbleCloud支持的WiFi模块中(支持列表详见[基本介绍-功能介绍-设备管理-独立设备](introduction.md#_18)。对于尚未完成适配的联网模块(部分WiFi，以太网，蜂窝网络)，AbleCloud提供已经封装好的和云端握手交互的SDK，厂商只需要调用该SDK，更改底层驱动即可实现联网模块的适配。
 
 对于“设备绑定”、“本地通信密钥交换”、“OTA”等功能，设备需要和云端进行固定格式的交互并实现对云端相应指令的响应。对于网关类型的设备，为了实现对网关下面子设备的独立管理，也需要设备端（网关）实现相应的指令（少于5个）。
 
@@ -271,7 +271,7 @@ AbleCloud在后台和微信硬件平台进行了对接，同时在云端提供�
 1. 	完成设备在微信平台的入库、授权流程，并为设备生成对应的二维码；
 1. 	基于AbleCloud提供的微信公众号SDK，开发微信公众号的后台服务及前端界面（公众号界面菜单及HTML5页面），在该服务中实现微信用户信息与AbleCloud用户信息同步、微信设备信息与AbleCloud设备信息同步、设备控制等功能。
 
-更详细信息，请参考 [reference-微信-开发准备](reference/wechat.md#开发准备)
+更详细信息，请参考 [开发指导-第三方云对接-微信](develop_guide/third_proxy.md#_2)
 
 
 ###2.4 云端服务开发
@@ -329,7 +329,7 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 
 建议的用户交互流程参考 [用户交互-帐号附加属性](user_interaction.md#帐号附加属性)
 
-如果需要存储用户的头像，请参考 [基本介绍-功能介绍-文件存储](introduction.md##文件存储)
+如果需要存储用户的头像，请参考 [基本介绍-功能介绍-文件存储](introduction.md#_31)
 
 开发指导参考：
 
@@ -388,7 +388,7 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 对于蜂窝网络设备，没有局域网，需要APP扫描设备的物理ID（一般是二维码）来完成设备的绑定。
 
-建议的用户交互参考[用户交互-独立设备管理](user_interaction.md#独立设备管理) 
+建议的用户交互参考[用户交互-独立设备管理](user_interaction.md#_3) 
 
 开发指导参考：
 
@@ -396,9 +396,9 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 [开发指导-iOS-独立设备管理](develop_guide/iOS.md##独立设备)
 
-[开发指导-微信-独立设备管理](develop_guide/wechat.md##独立设备)
+[开发指导-微信-独立设备管理](develop_guide/wechat.md#_5)
 
-[开发指导-设备-独立设备管理](develop_guide/device.md##独立设备)
+[开发指导-设备-设备激活](develop_guide/device.md#_3)
 
 ###网关型设备管理
 
@@ -432,17 +432,17 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 1. 管理员删除网关，网关和子设备、用户和网关、用户和子设备的所有绑定关系解除
 1. 当把子设备添加绑定后，子设备也是和该网关的管理员绑定的，若要把该网关和其他人绑定，需要原管理员解绑
 
-建议的用户交互参考[用户交互-网关型设备管理](user_interaction.md#网关型设备管理) 
+建议的用户交互参考[用户交互-网关型设备管理](user_interaction.md#_4) 
 
 开发指导参考：
 
-[开发指导-安卓-网关型设备管理](develop_guide/android.md#网关型设备管理)
+[开发指导-安卓-网关型设备管理](develop_guide/android.md#_9)
 
 [开发指导-iOS-网关型设备管理](develop_guide/iOS.md#网关型设备管理)
 
-[开发指导-微信-网关型设备管理](develop_guide/wechat.md#网关型设备管理)
+[开发指导-微信-网关型设备管理](develop_guide/wechat.md#_10)
 
-[开发指导-设备-网关型设备管理](develop_guide/device.md#网关型设备管理)
+[开发指导-设备-设备绑定管理](develop_guide/device.md#_6)
 
 ###home模型
 考虑到用户管理的设备量变多的时候的分组管理需求，AbleCloud开发了home模型。
@@ -464,15 +464,15 @@ home模型的组层次如下图所示：
 
 需要单独说明的是，分组模型只是设备权限管理的模型，与用户的自定义场景设置没有关系。如果用户需要自定义场景对分组内的设备集中操作时，开发者可以自己定义场景，然后存储到云端的个人帐号下。在该用户在其他手机登录或帐号退出再登录时，可以从云端取出该用户的个人自定义设置。这种用户自定义的场景属于用户个人，不能够在多人之间分享。
 
-建议的用户交互参考[用户交互-home模型](user_interaction.md#home模型) 
+建议的用户交互参考[用户交互-home模型](user_interaction.md#home) 
 
 开发指导参考：
 
-[开发指导-安卓-home模型](develop_guide/android.md#home模型)
+[开发指导-安卓-home模型](develop_guide/android.md#home)
 
-[开发指导-iOS-home模型](develop_guide/iOS.md#home模型)
+[开发指导-iOS-home模型](develop_guide/iOS.md#home)
 
-[开发指导-微信-home模型](develop_guide/wechat.md#home模型)
+[开发指导-微信-home模型](develop_guide/wechat.md#home)
 
 
 
@@ -494,7 +494,7 @@ AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户�
 
 开发指导参考：
 
-[开发指导-安卓-设备附加属性](develop_guide/android.md#设备附加属性)
+[开发指导-安卓-设备附加属性](develop_guide/android.md#_14)
 
 [开发指导-iOS-设备附加属性](develop_guide/iOS.md#设备附加属性)
 
@@ -546,15 +546,15 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 需要单独说明的是，设备向云端发送的是TCP请求，如果要求云端响应设备的请求返回数据，实际云端是以控制命令的格式向设备下发数据。
 对于推送和定时任务，请参考定时任务文档。
 
-建议用户交互流程参考 [用户交互-和云端通信](user_interaction.md#和云端通信)
+建议用户交互流程参考 [用户交互-和云端通信](user_interaction.md#_7)
 
 **开发指导请参考：**
 
-[开发指导-安卓-和云端通信](develop_guide/android.md#和云端通信)
+[开发指导-安卓-和云端通信](develop_guide/android.md#_17)
 
 [开发指导-iOS-和云端通信](develop_guide/iOS.md#和云端通信)
 
-[开发指导-微信-和云端通信](develop_guide/wechat.md#和云端通信)
+[开发指导-微信-和云端通信](develop_guide/wechat.md#_16)
 
 ###设备上报消息
 
@@ -571,7 +571,7 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 开发指导请参考：
 
-[开发指导-设备-和云端通信](develop_guide/device.md#和云端通信)
+[开发指导-设备-和云端通信](develop_guide/device.md#_14)
 
 ##局域网通信
 
@@ -607,12 +607,12 @@ localKey对开发者不可见，由SDK自动维护。
 
 AbleCloud的定时任务功能支持单次任务、按天重复、按星期重复、按月重复等功能。用户只需要调用相关的接口，将任务类型和执行的指令内容发送到云端，云端就会在设定的时间将该指令下发到设备。而设备上不需要针对定时任务做任何开发，因为从设备端看来只是执行了一条普通指令。只不过该指令由云端按照用户设定的时间下发。
 
-建议的用户交互参考：[用户交互-定时任务](user_interaction.md#定时任务)
+建议的用户交互参考：[用户交互-定时任务](user_interaction.md#_9)
 
 建议的开发指导参考：
 
 
-[开发指导-安卓-定时任务](develop_guide/android.md#定时任务)
+[开发指导-安卓-定时任务](develop_guide/android.md#_22)
 
 [开发指导-iOS-定时任务](develop_guide/iOS.md#定时任务)
 
@@ -635,15 +635,15 @@ OTA（Over－the－Air Technology），即空中下载技术。
 
 如果开发者希望强制用户升级，即弹出的升级确认中只有确定没有取消，可以在OTA的版本号中做出标识，APP对标识进行识别。例如，OTA修正版本号为99的是强制升级版本。APP检查到升级版本号的修正版本为99的OTA时，弹出的OTA升级确认消息中就只有确定选项。
 
-建议用户交互流程参考 [用户交互-OTA](user_interaction.md#OTA)
+建议用户交互流程参考 [用户交互-OTA](user_interaction.md#ota)
 
 开发指导参考：
 
-[开发指导-安卓-OTA](develop_guide/android.md#OTA)
+[开发指导-安卓-OTA](develop_guide/android.md#ota)
 
-[开发指导-iOS-OTA](develop_guide/iOS.md#OTA)
+[开发指导-iOS-OTA](develop_guide/iOS.md#ota)
 
-[开发指导-微信-OTA](develop_guide/wechat.md#OTA)
+[开发指导-微信-OTA](develop_guide/wechat.md#ota)
 
 
 ##推送
@@ -662,7 +662,7 @@ AbleCloud的消息推送支持国内多家主流推送服务，目前主要推�
 
 安卓、iOS和微信实现推送的方式不同，具体开发请参考开发指导：
 
-[开发指导-安卓-推送](develop_guide/android.md#推送)
+[开发指导-安卓-推送](develop_guide/android.md#_34)
 
 [开发指导-iOS-推送](develop_guide/iOS.md#推送)
 
@@ -676,7 +676,7 @@ AbleCloud的消息推送支持国内多家主流推送服务，目前主要推�
 
 使用方法请参考
 
-[开发指导-安卓-文件存储](develop_guide/android.md#文件存储)
+[开发指导-安卓-文件存储](develop_guide/android.md#_37)
 
 [开发指导-iOS-文件存储](develop_guide/iOS.md#文件存储)
 
