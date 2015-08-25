@@ -261,33 +261,30 @@
         <li class="main "><a href="#_26">局域网通信</a></li>
         
     
-        <li class="main "><a href="#_27">局域网通信</a></li>
+        <li class="main "><a href="#_27">定时任务</a></li>
+        
+            <li><a href="#_28">获取定时管理器</a></li>
+        
+            <li><a href="#_31">添加定时任务</a></li>
+        
+            <li><a href="#_32">修改定时任务</a></li>
+        
+            <li><a href="#_33">开启定时任务</a></li>
+        
+            <li><a href="#_34">关闭定时任务</a></li>
+        
+            <li><a href="#_35">删除定时任务</a></li>
+        
+            <li><a href="#_36">获取定时任务列表</a></li>
         
     
-        <li class="main "><a href="#_28">定时任务</a></li>
+        <li class="main "><a href="#_37">文件存储</a></li>
         
-            <li><a href="#_29">获取定时管理器</a></li>
+            <li><a href="#_38">一、获取文件管理器</a></li>
         
-            <li><a href="#_32">添加定时任务</a></li>
+            <li><a href="#_39">二、下载文件</a></li>
         
-            <li><a href="#_33">修改定时任务</a></li>
-        
-            <li><a href="#_34">开启定时任务</a></li>
-        
-            <li><a href="#_35">关闭定时任务</a></li>
-        
-            <li><a href="#_36">删除定时任务</a></li>
-        
-            <li><a href="#_37">获取定时任务列表</a></li>
-        
-    
-        <li class="main "><a href="#_38">文件存储</a></li>
-        
-            <li><a href="#_39">一、获取文件管理器</a></li>
-        
-            <li><a href="#_40">二、下载文件</a></li>
-        
-            <li><a href="#_41">三、上传文件</a></li>
+            <li><a href="#_40">三、上传文件</a></li>
         
     
     </ul>
@@ -1331,7 +1328,6 @@ pushMgr.unwatch(table, new VoidCallback() {
 <h1 id="_26">局域网通信</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
 <p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
-<h1 id="_27">局域网通信</h1>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
@@ -1380,17 +1376,17 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 });
 </code></pre>
 
-<h1 id="_28">定时任务</h1>
-<h4 id="_29">获取定时管理器</h4>
-<h5 id="_30">使用默认时区</h5>
+<h1 id="_27">定时任务</h1>
+<h4 id="_28">获取定时管理器</h4>
+<h5 id="_29">使用默认时区</h5>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
 </code></pre>
 
-<h5 id="_31">使用自定义时区</h5>
+<h5 id="_30">使用自定义时区</h5>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 </code></pre>
 
-<h4 id="_32">添加定时任务</h4>
+<h4 id="_31">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
@@ -1449,9 +1445,9 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_33">修改定时任务</h4>
+<h4 id="_32">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同</p>
-<h4 id="_34">开启定时任务</h4>
+<h4 id="_33">开启定时任务</h4>
 <pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1465,7 +1461,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_35">关闭定时任务</h4>
+<h4 id="_34">关闭定时任务</h4>
 <pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1479,7 +1475,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_36">删除定时任务</h4>
+<h4 id="_35">删除定时任务</h4>
 <pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1493,7 +1489,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_37">获取定时任务列表</h4>
+<h4 id="_36">获取定时任务列表</h4>
 <pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
      @Override
      public void success(List&lt;ACTimerTask&gt; timerTasks) {
@@ -1510,7 +1506,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_38">文件存储</h1>
+<h1 id="_37">文件存储</h1>
 <blockquote>
 <p><font color="red">注意</font>：</p>
 <p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
@@ -1518,11 +1514,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
 <p>2、上传下载支持断点续传功能</p>
 </blockquote>
-<h2 id="_39">一、获取文件管理器</h2>
+<h2 id="_38">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
 </code></pre>
 
-<h2 id="_40">二、下载文件</h2>
+<h2 id="_39">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback&lt;String&gt;() {
@@ -1583,7 +1579,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 });
 </code></pre>
 
-<h2 id="_41">三、上传文件</h2>
+<h2 id="_40">三、上传文件</h2>
 <h3 id="1_9">1、设置上传文件的权限管理</h3>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
