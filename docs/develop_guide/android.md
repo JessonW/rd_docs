@@ -606,332 +606,6 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 ```
 
 
-
-
-#OTA
-说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
-
-建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
-
-![OTA](../pic/develop_guide/OTA.png)
-
-若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
-####一.获取OTA管理器对象
-```java
-ACOTAMgr otaMgr = AC.otaMgr();
-```
-####二. 检查升级
-1.检查设备是否有新的OTA版本，同时获取升级日志
-```java
-otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() {
-    @Override
-    public void success(ACOTAUpgradeInfo info) {
-        /**
-         * 通过判断info.getOldVersion()和info.getNewVersion()是否相等判断是否有新版本更新
-         * 
-         * info.getOldVersion为老版本，info.getNewVersion为新版本，info.getUpgradeLog为升级日志
-         */
-    }
-    @Override
-    public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-```
-
-####三．确认升级
-```java
-otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
-    @Override
-    public void success() {
-         //确认升级     
-    }
-    @Override
-    public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});
-```
-
-
-
-
-
-
-
-
-#推送
-
-AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
-
-开发前的配置工作参考[reference-安卓-推送开发准备](../framework/android#推送开发准备)
-
-
-><font color="red">注意</font>
-
->1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装
-
->2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试
-
->3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
-
-###一、开发环境配置
-如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
-####1、在`<manifest>`标签下添加权限：
-```java
-<!-- 必选 -->
-<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.WAKE_LOCK"/>
-<uses-permission android:name="android.permission.VIBRATE"/>
-<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-<!-- 用以设置前台是否显示通知-->
-<uses-permission android:name="android.permission.GET_TASKS"/>
-<!-- 可选  -->
-<uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED"/>
-<uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED"/>
-<uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL"/>
-<uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED"/>
-<uses-permission android:name="android.permission.RESTART_PACKAGES"/>
-<uses-permission android:name="android.permission.GET_ACCOUNTS"/>;
-```
-####2、在`<application>`标签下添加组件：
-<font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。
-```java
-<!-- 监听通知点击或者忽略处理的广播 -->
-<receiver
-    android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
-    android:exported="false" >
-</receiver>
-
-<!-- 监听开机运行、网络连接变化、卸载的广播 -->
-<receiver
-    android:name="com.umeng.message.SystemReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="android.intent.action.PACKAGE_REMOVED" />
-        <data android:scheme="package" />
-    </intent-filter>
-</receiver>
-
-<!-- 监听消息到达的广播 -->
-<receiver
-    android:name="com.umeng.message.MessageReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.RECEIVE" />
-    </intent-filter>
-</receiver>
-
-<!-- 监听宿主选举的广播 -->
-<receiver
-    android:name="com.umeng.message.ElectionReceiver"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
-        <category android:name="umeng" />
-    </intent-filter>
-</receiver>
-
-<!-- 监听注册的广播 -->
-<!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
-<receiver
-    android:name="com.umeng.message.RegistrationReceiver"
-    android:exported="false" >
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.COMMAND" />
-    </intent-filter>
-</receiver>
-<receiver android:name="com.umeng.message.UmengMessageBootReceiver" >
-    <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-    </intent-filter>
-</receiver>
-```
-可以根据需要自行设置 android:label 中的服务名 ：
-```java
-<!-- Umeng的长连服务，用来建立推送的长连接的 -->
-<!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
-<service
-    android:name="com.umeng.message.UmengService"
-    android:label="PushService"
-    android:exported="true"
-    android:process=":push" >
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.START" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="【应用包名】.intent.action.COCKROACH" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="org.agoo.android.intent.action.PING_V4" />
-    <category android:name="umeng" />
-    </intent-filter>
-</service>
-
-<!-- Umeng的消息接收服务 -->
-<service android:name="com.umeng.message.UmengIntentService" 
-    android:process=":push" />
-
-<!-- Umeng的消息路由服务 -->
-<service 
-    android:name="com.umeng.message.UmengMessageIntentReceiverService"
-    android:process=":push" 
-    android:exported="true" >
-    <intent-filter>
-        <action android:name="org.android.agoo.client.MessageReceiverService" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="org.android.agoo.client.ElectionReceiverService" />
-    </intent-filter>
-</service>
-
-<!-- v2.4.1添加的Service，Umeng的消息接收后的处理服务 -->
-<service android:name="com.umeng.message.UmengMessageCallbackHandlerService" 
-    android:exported="false">
-    <intent-filter>
-        <action android:name="com.umeng.messge.registercallback.action" />
-    </intent-filter>
-    <intent-filter>
-        <action android:name="com.umeng.message.unregistercallback.action"/>
-    </intent-filter>
-    <intent-filter>
-        <action android:name="com.umeng.message.message.handler.action"/>
-    </intent-filter>
-    <intent-filter>
-        <action android:name="com.umeng.message.autoupdate.handler.action"/>
-    </intent-filter>
-</service>
-```
-
-####3、添加 AppKey 和 Umeng Message Secret
-```java
-<!-- V1.3.0添加的service，负责下载通知的资源 -->
-<service android:name="com.umeng.message.UmengDownloadResourceService" />
-
-<!-- 添加 AppKey 和 Umeng Message Secret -->
-<meta-data
-    android:name="UMENG_APPKEY"
-    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
-</meta-data>
-<meta-data
-    android:name="UMENG_MESSAGE_SECRET"
-    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
-</meta-data>
-<!-- 用Channel ID来标识APP的推广渠道，作为推送消息时给用户分组的一个维度，若不设置，则使用Unknown作为Channel ID -->
-<meta-data
-    android:name="UMENG_CHANNEL"
-    android:value="Channel ID" >
-</meta-data>
-```
-
-###二、开启推送服务
-在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：
-####1、获取推送管理器
-```java
-ACNotificationMgr notificationMgr=AC.notificationMgr();
-```
-####2、在应用的主Activity onCreate() 函数中开启推送服务
-```java
-notificationMgr.init();
-```
-
-####3、在登录成功之后添加推送别名
-```java
-notificationMgr.addAlias(info.getUserId(), new VoidCallback() {
-    @Override
-    public void success() {
-        //别名添加成功
-    }
-    @Override
-    public void error(ACException e) {
-        //别名添加失败，检查前面步骤的配置是否有问题
-    } 	
-});
-```
-
-####4、设置友盟的消息处理
-```java
-notificationMgr.setMessageHandler(new UmengMessageHandler() {
-    /**
-     * 参考集成文档的1.6.3
-     * http://dev.umeng.com/push/android/integration#1_6_3
-     */
-    @Override
-    public void dealWithCustomMessage(final Context context, final UMessage msg) {
-         new Handler().post(new Runnable() {
-             @Override
-             public void run() {
-                 // TODO Auto-generated method stub
-                 Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-                 // 对自定义消息的处理方式，点击或者忽略
-                 boolean isClickOrDismissed = true;
-                 if (isClickOrDismissed) {
-                     //自定义消息的点击统计
-                     UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
-                 } else {
-                     //自定义消息的忽略统计
-                     UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
-                 }
-             }
-         });
-    }
-    /**
-     * 参考集成文档的1.6.4
-     * http://dev.umeng.com/push/android/integration#1_6_4
-     */
-    @Override
-    public Notification getNotification(Context context, UMessage msg) {
-        //接收到Notification消息处理
-        switch (msg.builder_id) {
-            case 1:
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.notification_view);
-                myNotificationView.setTextViewText(R.id.notification_title, msg.title);
-                myNotificationView.setTextViewText(R.id.notification_text, msg.text);
-                myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
-                myNotificationView.setImageViewResource(R.id.notification_small_icon, getSmallIconId(context, msg));
-                builder.setContent(myNotificationView);
-                builder.setAutoCancel(true);
-                Notification mNotification = builder.build();
-                //由于Android v4包的bug，在2.3及以下系统，Builder创建出来的Notification，并没有设置RemoteView，故需要添加此代码
-                mNotification.contentView = myNotificationView;
-                return mNotification;
-            default:
-                //默认为0，若填写的builder_id并不存在，也使用默认。
-                return super.getNotification(context, msg);
-        }
-    }
-});
-```
-####5、在退出登录之后移除掉旧的别名
-```java
-notificationMgr.removeAlias(userId, new VoidCallback() {
-    @Override
-    public void success() {
-         //别名注销成功
-    }
-    @Override
-    public void error(ACException e) {
-         //别名注销失败
-    }
-});
-```
-
-
-
-
-
-
-
-
 #和云端通信
 
 说明参见[基本介绍-功能介绍-和云端通信](../introduction.md#功能介绍##云端通信)
@@ -1219,6 +893,7 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 });
 ```
 
+
 #定时任务
 
 ####获取定时管理器
@@ -1350,6 +1025,322 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
      }
 });
 ```
+
+
+
+#OTA
+说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
+
+建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
+
+![OTA](../pic/develop_guide/OTA.png)
+
+若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
+####一.获取OTA管理器对象
+```java
+ACOTAMgr otaMgr = AC.otaMgr();
+```
+####二. 检查升级
+1.检查设备是否有新的OTA版本，同时获取升级日志
+```java
+otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() {
+    @Override
+    public void success(ACOTAUpgradeInfo info) {
+        /**
+         * 通过判断info.getOldVersion()和info.getNewVersion()是否相等判断是否有新版本更新
+         * 
+         * info.getOldVersion为老版本，info.getNewVersion为新版本，info.getUpgradeLog为升级日志
+         */
+    }
+    @Override
+    public void error(ACException e) {
+        //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+```
+
+####三．确认升级
+```java
+otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
+    @Override
+    public void success() {
+         //确认升级     
+    }
+    @Override
+    public void error(ACException e) {
+         //e.getErrorCode为错误码，e.getMessage为错误信息
+    }
+});
+```
+
+
+
+
+#推送
+
+AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
+
+开发前的配置工作参考[reference-安卓-推送开发准备](../framework/android#推送开发准备)
+
+
+><font color="red">注意</font>
+
+>1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装
+
+>2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试
+
+>3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
+
+###一、开发环境配置
+如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
+####1、在`<manifest>`标签下添加权限：
+```java
+<!-- 必选 -->
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WAKE_LOCK"/>
+<uses-permission android:name="android.permission.VIBRATE"/>
+<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+<!-- 用以设置前台是否显示通知-->
+<uses-permission android:name="android.permission.GET_TASKS"/>
+<!-- 可选  -->
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED"/>
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED"/>
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL"/>
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED"/>
+<uses-permission android:name="android.permission.RESTART_PACKAGES"/>
+<uses-permission android:name="android.permission.GET_ACCOUNTS"/>;
+```
+####2、在`<application>`标签下添加组件：
+<font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。
+```java
+<!-- 监听通知点击或者忽略处理的广播 -->
+<receiver
+    android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
+    android:exported="false" >
+</receiver>
+
+<!-- 监听开机运行、网络连接变化、卸载的广播 -->
+<receiver
+    android:name="com.umeng.message.SystemReceiver"
+    android:process=":push" >
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="android.intent.action.PACKAGE_REMOVED" />
+        <data android:scheme="package" />
+    </intent-filter>
+</receiver>
+
+<!-- 监听消息到达的广播 -->
+<receiver
+    android:name="com.umeng.message.MessageReceiver"
+    android:process=":push" >
+    <intent-filter>
+        <action android:name="org.agoo.android.intent.action.RECEIVE" />
+    </intent-filter>
+</receiver>
+
+<!-- 监听宿主选举的广播 -->
+<receiver
+    android:name="com.umeng.message.ElectionReceiver"
+    android:process=":push" >
+    <intent-filter>
+        <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+        <category android:name="umeng" />
+    </intent-filter>
+</receiver>
+
+<!-- 监听注册的广播 -->
+<!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
+<receiver
+    android:name="com.umeng.message.RegistrationReceiver"
+    android:exported="false" >
+    <intent-filter>
+        <action android:name="【应用包名】.intent.action.COMMAND" />
+    </intent-filter>
+</receiver>
+<receiver android:name="com.umeng.message.UmengMessageBootReceiver" >
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+    </intent-filter>
+</receiver>
+```
+可以根据需要自行设置 android:label 中的服务名 ：
+```java
+<!-- Umeng的长连服务，用来建立推送的长连接的 -->
+<!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
+<service
+    android:name="com.umeng.message.UmengService"
+    android:label="PushService"
+    android:exported="true"
+    android:process=":push" >
+    <intent-filter>
+        <action android:name="【应用包名】.intent.action.START" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="【应用包名】.intent.action.COCKROACH" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="org.agoo.android.intent.action.PING_V4" />
+    <category android:name="umeng" />
+    </intent-filter>
+</service>
+
+<!-- Umeng的消息接收服务 -->
+<service android:name="com.umeng.message.UmengIntentService" 
+    android:process=":push" />
+
+<!-- Umeng的消息路由服务 -->
+<service 
+    android:name="com.umeng.message.UmengMessageIntentReceiverService"
+    android:process=":push" 
+    android:exported="true" >
+    <intent-filter>
+        <action android:name="org.android.agoo.client.MessageReceiverService" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="org.android.agoo.client.ElectionReceiverService" />
+    </intent-filter>
+</service>
+
+<!-- v2.4.1添加的Service，Umeng的消息接收后的处理服务 -->
+<service android:name="com.umeng.message.UmengMessageCallbackHandlerService" 
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.umeng.messge.registercallback.action" />
+    </intent-filter>
+    <intent-filter>
+        <action android:name="com.umeng.message.unregistercallback.action"/>
+    </intent-filter>
+    <intent-filter>
+        <action android:name="com.umeng.message.message.handler.action"/>
+    </intent-filter>
+    <intent-filter>
+        <action android:name="com.umeng.message.autoupdate.handler.action"/>
+    </intent-filter>
+</service>
+```
+
+####3、添加 AppKey 和 Umeng Message Secret
+```java
+<!-- V1.3.0添加的service，负责下载通知的资源 -->
+<service android:name="com.umeng.message.UmengDownloadResourceService" />
+
+<!-- 添加 AppKey 和 Umeng Message Secret -->
+<meta-data
+    android:name="UMENG_APPKEY"
+    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
+</meta-data>
+<meta-data
+    android:name="UMENG_MESSAGE_SECRET"
+    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxx" >
+</meta-data>
+<!-- 用Channel ID来标识APP的推广渠道，作为推送消息时给用户分组的一个维度，若不设置，则使用Unknown作为Channel ID -->
+<meta-data
+    android:name="UMENG_CHANNEL"
+    android:value="Channel ID" >
+</meta-data>
+```
+
+###二、开启推送服务
+在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：
+####1、获取推送管理器
+```java
+ACNotificationMgr notificationMgr=AC.notificationMgr();
+```
+####2、在应用的主Activity onCreate() 函数中开启推送服务
+```java
+notificationMgr.init();
+```
+
+####3、在登录成功之后添加推送别名
+```java
+notificationMgr.addAlias(info.getUserId(), new VoidCallback() {
+    @Override
+    public void success() {
+        //别名添加成功
+    }
+    @Override
+    public void error(ACException e) {
+        //别名添加失败，检查前面步骤的配置是否有问题
+    } 	
+});
+```
+
+####4、设置友盟的消息处理
+```java
+notificationMgr.setMessageHandler(new UmengMessageHandler() {
+    /**
+     * 参考集成文档的1.6.3
+     * http://dev.umeng.com/push/android/integration#1_6_3
+     */
+    @Override
+    public void dealWithCustomMessage(final Context context, final UMessage msg) {
+         new Handler().post(new Runnable() {
+             @Override
+             public void run() {
+                 // TODO Auto-generated method stub
+                 Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+                 // 对自定义消息的处理方式，点击或者忽略
+                 boolean isClickOrDismissed = true;
+                 if (isClickOrDismissed) {
+                     //自定义消息的点击统计
+                     UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+                 } else {
+                     //自定义消息的忽略统计
+                     UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
+                 }
+             }
+         });
+    }
+    /**
+     * 参考集成文档的1.6.4
+     * http://dev.umeng.com/push/android/integration#1_6_4
+     */
+    @Override
+    public Notification getNotification(Context context, UMessage msg) {
+        //接收到Notification消息处理
+        switch (msg.builder_id) {
+            case 1:
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.notification_view);
+                myNotificationView.setTextViewText(R.id.notification_title, msg.title);
+                myNotificationView.setTextViewText(R.id.notification_text, msg.text);
+                myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
+                myNotificationView.setImageViewResource(R.id.notification_small_icon, getSmallIconId(context, msg));
+                builder.setContent(myNotificationView);
+                builder.setAutoCancel(true);
+                Notification mNotification = builder.build();
+                //由于Android v4包的bug，在2.3及以下系统，Builder创建出来的Notification，并没有设置RemoteView，故需要添加此代码
+                mNotification.contentView = myNotificationView;
+                return mNotification;
+            default:
+                //默认为0，若填写的builder_id并不存在，也使用默认。
+                return super.getNotification(context, msg);
+        }
+    }
+});
+```
+####5、在退出登录之后移除掉旧的别名
+```java
+notificationMgr.removeAlias(userId, new VoidCallback() {
+    @Override
+    public void success() {
+         //别名注销成功
+    }
+    @Override
+    public void error(ACException e) {
+         //别名注销失败
+    }
+});
+```
+
 
 
 
