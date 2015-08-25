@@ -244,7 +244,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="_1">帐号管理</h1>
-<p>对于走云端的远程控制需要对用户进行鉴权，所以AbleCloud建议用户下载新的智能设备的APP后第一步要注册帐号。AbleCloud支持的帐号体系介绍见<a href="../introduction/#功能介绍">基本介绍-帐号管理</a></p>
+<p>对于走云端的远程控制需要对用户进行鉴权，所以AbleCloud建议用户下载新的智能设备的APP后第一步要注册帐号。AbleCloud支持的帐号体系介绍见<a href="../introduction/#_17">基本介绍-帐号管理</a></p>
 <p>AbleCloud建议每个APP页面只实现一个功能，该功能用户操作成功以后再跳转到下个页面。APP开发者需要将整个流程中的意外情况做合理的处理，保证用户在使用过程中所有流程都是通顺的。</p>
 <p>1、普通帐号注册</p>
 <p><img alt="account1" src="../pic/user_interaction/account1.png" /> </p>
@@ -308,9 +308,9 @@
 客户端为微信时，目前AbleCloud只能够支持管理员分享的方式分享设备。</p>
 <p>开发指导请参考：</p>
 <p><a href="../develop_guide/android/#_4">开发指导-安卓-独立设备管理</a></p>
-<p><a href="../develop_guide/iOS/#_4">开发指导-iOS-独立设备管理</a></p>
-<p><a href="../develop_guide/wechat/#_4">开发指导-微信-独立设备管理</a></p>
-<p><a href="../develop_guide/device/#_4">开发指导-设备-独立设备管理</a></p>
+<p><a href="../develop_guide/iOS/##独立设备">开发指导-iOS-独立设备管理</a></p>
+<p><a href="../develop_guide/wechat/#_5">开发指导-微信-独立设备管理</a></p>
+<p><a href="../develop_guide/device/#_3">开发指导-设备-设备激活</a></p>
 <h2 id="_4">网关型设备管理</h2>
 <h3 id="1_1">1、绑定网关</h3>
 <p>对于一台（或一套）新设备，首先要绑定网关才能够使用，第一个绑定的人成为管理员。和WiFi设备的绑定一样，为了防止被恶意攻击，要求网关云端在线（微信不需要）。如果网关是通过WiFi连接无线路由器的，绑定网关的建议操作流程和绑定WiFi设备是一样的，参考“用户交互-WiFi设备”。对于网关是通过以太网连接路由器的场景，建议的用户交互流程如下：</p>
@@ -330,11 +330,11 @@
 <p>对于使用二维码分享方式分享设备  用权的，开发者可以自己定义二维码有效期，过了有效期再扫描的时候也不能够获得设备使用权。
 对于使用邀请方式分享的，要求被邀请人要求已经注册。
 客户端为微信时，目前AbleCloud只能够支持“管理员分享”的模式分享设备。</p>
-<p>开发指导请参考：</p>
-<p><a href="../develop_guide/android/#_6">开发指导-安卓-网关型设备管理</a></p>
-<p><a href="../develop_guide/iOS/#_6">开发指导-iOS-网关型设备管理</a></p>
-<p><a href="../develop_guide/wechat/#_6">开发指导-微信-网关型设备管理</a></p>
-<p><a href="../develop_guide/device/#_6">开发指导-设备-网关型设备管理</a></p>
+<p>网关型设备的开发指导请参考：</p>
+<p><a href="../develop_guide/android/#_9">开发指导-安卓-网关型设备管理</a></p>
+<p><a href="../develop_guide/iOS/#网关型设备管理">开发指导-iOS-网关型设备管理</a></p>
+<p><a href="../develop_guide/wechat/#_10">开发指导-微信-网关型设备管理</a></p>
+<p><a href="../develop_guide/device/#_6">开发指导-设备-设备绑定管理</a></p>
 <h2 id="home">home模型</h2>
 <h3 id="1wifi">1、设备为独立设备（WiFi）</h3>
 <p>当设备为独立设备时（为WiFi），建议的流程如下：</p>
@@ -377,7 +377,7 @@
 <h2 id="_6">设备附加属性</h2>
 <p>设备的扩展属性可以在设备绑定成功后即刻进行填写，也可以在编辑设备信息的时候进行填写，开发者可以根据自己的具体需求进行设计。</p>
 <p>开发指导请参考：</p>
-<p><a href="../develop_guide/android/#设备附加属性">开发指导-安卓-设备附加属性</a></p>
+<p><a href="../develop_guide/android/#_14">开发指导-安卓-设备附加属性</a></p>
 <p><a href="../develop_guide/iOS/#设备附加属性">开发指导-iOS-设备附加属性</a></p>
 <p><a href="../develop_guide/wechat/#设备附加属性">开发指导-微信-设备附加属性</a></p>
 <h1 id="_7">和云端通信</h1>
@@ -387,17 +387,17 @@
 <p>一般来讲，当APP没有打开的情况下，对于需要定时上报数据的设备也一般不建议设备高频次快速上报数据。但是在APP打开的情况下开启实施消息同步时，为了用户能快速及时的看到设备的数据和状态的变化，需要将设备的上报时间间隔变小。然后，在APP退出或者离开监控的页面的时候，再把设备的上报间隔变回原来的值。因此在设备开发时，需要开发调整上报频率的功能；在APP开发时，需要在进入需要实时监控设备状态变化的页面时给设备发一条指令，通知设备快速上报数据，当APP离开该页面的时候，再发一条指令，通知设备使用正常的上报间隔。</p>
 <p>以上为开发建议，仅供参考。</p>
 <p>具体的开发方法请参考：</p>
-<p><a href="../develop_guide/android/#和云端通信">开发指导-安卓-和云端通信</a></p>
+<p><a href="../develop_guide/android/#_17">开发指导-安卓-和云端通信</a></p>
 <p><a href="../develop_guide/iOS/#和云端通信">开发指导-iOS-和云端通信</a></p>
-<p><a href="../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p>
-<p><a href="../develop_guide/device/#和云端通信">开发指导-设备-和云端通信</a></p>
+<p><a href="../develop_guide/wechat/#_16">开发指导-微信-和云端通信</a></p>
+<p><a href="../develop_guide/device/#_14">开发指导-设备-和云端通信</a></p>
 <h1 id="_8">局域网通信</h1>
 <p>如果要求用户进入到局域网以后，app和设备的交互能够自动切换到局域网模式，而不再通过云端，那么对于用户来讲，最好的交互是完全感受不到这种切换。</p>
 <p>我们提供的接口能够帮助厂商直接获取到当前设备的在线状态：云端和局域网在线、云端在线、局域网在线、云端和局域网都不在线。因此APP开发人员可以根据设备的在线情况调用相关的处理接口，是用户感受不到网络的切换。</p>
 <h1 id="_9">定时任务</h1>
 <p>建议的用户交互请参考手机的闹钟设定方法。只是在闹钟设定的基础上增加对设备操作的设定。</p>
 <h1 id="ota">OTA</h1>
-<p>基本介绍请参考：<a href="../introduction/#OTA">基本介绍-功能介绍-OTA</a></p>
+<p>基本介绍请参考：<a href="../introduction/#ota">基本介绍-功能介绍-OTA</a></p>
 <p><strong>静默升级</strong></p>
 <p>静默升级不需要用户交互。</p>
 <p><strong>用户确认的升级</strong></p>
@@ -409,12 +409,12 @@
 </ul>
 <p>还有一种场景为强制升级，即APP启动后弹出升级确认框，但是用户只能选择确定不能选择取消）。对于这种场景，APP开发者可以根据升级描述或者版本号来确定是否是强制升级。例如，版本号格式为 "1-1-1"这种，APP可以开发者可以自己约定，当版本号中的最后一位为特殊数字的时候，系统固件要强制升级，此时APP弹出的升级提示没有取消选项。</p>
 <p>开发指导请参考：</p>
-<p><a href="../develop_guide/android/#OTA">开发指导-安卓-OTA</a></p>
-<p><a href="../develop_guide/iOS/#OTA">开发指导-iOS-OTA</a></p>
-<p><a href="../develop_guide/wechat/#OTA">开发指导-微信-OTA</a></p>
-<p><a href="../develop_guide/device/#OTA">开发指导-设备-OTA</a></p>
+<p><a href="../develop_guide/android/#ota">开发指导-安卓-OTA</a></p>
+<p><a href="../develop_guide/iOS/#ota">开发指导-iOS-OTA</a></p>
+<p><a href="../develop_guide/wechat/#ota">开发指导-微信-OTA</a></p>
+<p><a href="../develop_guide/device/#ota">开发指导-设备-OTA</a></p>
 <h1 id="_10">推送</h1>
-<p>关于推送的基本介绍请参考：<a href="../introduction/#_21">基本介绍-功能介绍-推送</a></p>
+<p>关于推送的基本介绍请参考：<a href="../introduction/#_30">基本介绍-功能介绍-推送</a></p>
 <p><strong>1、群发通知</strong></p>
 <p>由厂商在友盟的后台自定义发送</p>
 <p><strong>2、和设备状态相关的推送</strong></p>
