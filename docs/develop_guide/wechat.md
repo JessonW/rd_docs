@@ -5,6 +5,8 @@
 在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户及用户与设备的绑定关系、同步设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
 本文档中的代码示例均以PHP语言为例。PHP SDK的API详细说明请参见SDK下载包中附带的文档。
 
+开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置信息。
+
 #帐号管理#
 
 ##帐号注册##
