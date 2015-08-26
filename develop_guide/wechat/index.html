@@ -215,45 +215,58 @@
     
         <li class="main "><a href="#_2">帐号管理</a></li>
         
-            <li><a href="#_3">绑定手机号</a></li>
+            <li><a href="#_3">帐号注册</a></li>
+        
+            <li><a href="#_4">用户登录</a></li>
+        
+            <li><a href="#_5">绑定手机号</a></li>
+        
+            <li><a href="#_6">用户帐号的扩展属性</a></li>
+        
+            <li><a href="#openid">获取用户的微信OpenId</a></li>
         
     
-        <li class="main "><a href="#_4">设备管理</a></li>
+        <li class="main "><a href="#_9">设备管理</a></li>
         
-            <li><a href="#_5">独立设备</a></li>
+            <li><a href="#_10">独立设备</a></li>
         
-            <li><a href="#_10">网关型设备</a></li>
+            <li><a href="#_15">网关型设备</a></li>
+        
+            <li><a href="#home">Home模型</a></li>
+        
+            <li><a href="#_22">设备的扩展属性</a></li>
+        
+    
+        <li class="main "><a href="#_25">和云端通信</a></li>
+        
+            <li><a href="#_26">访问云端服务</a></li>
+        
+            <li><a href="#_27">向设备发送消息</a></li>
+        
+    
+        <li class="main "><a href="#_28">定时任务</a></li>
+        
+            <li><a href="#_29">添加定时任务</a></li>
+        
+            <li><a href="#_30">查询定时任务列表</a></li>
+        
+            <li><a href="#_31">启动定时任务</a></li>
+        
+            <li><a href="#_32">停止定时任务</a></li>
+        
+            <li><a href="#_33">修改定时任务</a></li>
+        
+            <li><a href="#_34">删除定时任务</a></li>
         
     
         <li class="main "><a href="#ota">OTA</a></li>
         
-            <li><a href="#1_2">1.检查更新</a></li>
+            <li><a href="#_35">检查更新</a></li>
         
-            <li><a href="#2_2">2.确认升级</a></li>
-        
-    
-        <li class="main "><a href="#_16">和云端通信</a></li>
-        
-            <li><a href="#_17">发送消息到设备</a></li>
-        
-            <li><a href="#_19">发送消息到服务</a></li>
+            <li><a href="#_36">确认升级</a></li>
         
     
-        <li class="main "><a href="#_20">定时任务</a></li>
-        
-            <li><a href="#_21">添加定时任务</a></li>
-        
-            <li><a href="#1actimertaskservice">1.获取ACTimerTaskService对象</a></li>
-        
-            <li><a href="#2_3">2.新增定时任务</a></li>
-        
-            <li><a href="#_22">启动定时任务</a></li>
-        
-            <li><a href="#_23">停止定时任务</a></li>
-        
-            <li><a href="#_24">修改定时任务</a></li>
-        
-            <li><a href="#_25">删除定时任务</a></li>
+        <li class="main "><a href="#_37">消息推送</a></li>
         
     
     </ul>
@@ -261,331 +274,408 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="_1">开发准备</h1>
-<p>在进行微信开发前，需要到微信的硬件平台进行申请。具体的操作指导请参考 <a href="../third_proxy/#微信">开发指导-第三方云对接-微信</a></p>
+<p>开发者首先需要申请开通带设备功能的微信公众服务号。请参考<a href="../third_proxy/#微信">开发指导-第三方云对接-微信</a>。</p>
+<p>在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户及用户与设备的绑定关系、同步设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
+本文档中的代码示例均以PHP语言为例。PHP SDK的API详细说明请参见SDK下载包中附带的文档。</p>
+<p>开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置信息。</p>
 <h1 id="_2">帐号管理</h1>
-<h2 id="_3">绑定手机号</h2>
-<ul>
-<li>1.获取账号管理对象</li>
-</ul>
-<pre><code class="php">$accountServcie=ACClient::getAccountService();
+<h2 id="_3">帐号注册</h2>
+<p>对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID在AbleCloud平台中注册用户。
+该操作一般在用户关注公众号时执行。此时，微信平台会向开发者的微信公众号后台推送用户关注公众号的事件，开发者可以在收到该事件时完成用户的注册。</p>
+<pre><code class="php">// 实例化ACAccountService对象
+$accountServcie = ACClient::getAccountService();
+// 参数$openId是微信用户的OpenID；'weixin'用于标记第三方用户来自微信平台。
+$user = $accountServcie-&gt;registerByOpenId($openId, 'weixin');
 </code></pre>
 
-<ul>
-<li>2.发送验证码</li>
-</ul>
-<pre><code class="php">$accountServcie-&gt;sendVerifyCode($phone);
+<h2 id="_4">用户登录</h2>
+<p>对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台。
+该“登录”操作的目的一般是获取用户在AbleCloud平台对应的帐号信息，以方便通过AbleCloud平台提供的接口访问云端或设备提供的服务。</p>
+<p>通过ACBridgeWeChat类直接登录，获取ACUser对象。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 使用用户的OpenID登录
+$user = $wxBridge-&gt;getUser($openId);
 </code></pre>
 
-<p>$phone 字符串，是用户的手机号。</p>
-<ul>
-<li>3.获取ACBridgeWeChat对象</li>
-</ul>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+<p>通过ACCountService提供的方法登录，获取ACUser对象。</p>
+<pre><code class="php">// 实例化ACAccountService对象
+$accountServcie = ACClient::getAccountService();
+// 使用微信用户的OpenID登录。参数$openId是微信用户的OpenID；'weixin'用于标记第三方用户来自微信平台。
+$user = $accountService-&gt;getUserByOpenId($openId, 'weixin');
 </code></pre>
 
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<ul>
-<li>4.提交验证码，绑定手机号</li>
-</ul>
-<pre><code class="php">$wxBridge-&gt;setPhone($openid,$phone, $verifyCode)；
+<h2 id="_5">绑定手机号</h2>
+<p>缺省情况下，AbleCloud平台只能获取用户的微信OpenID信息。关于用户的其它信息需要开发者或用户额外提供。
+如为安全起见，可以验证并绑定用户的手机。</p>
+<p>1.向用户的手机发送验证码</p>
+<pre><code class="php">// 获取账号管理对象
+$accountServcie = ACClient::getAccountService();
+// 发送验证码
+// 参数$phone为字符串，是用户的手机号。
+$accountServcie-&gt;sendVerifyCode($phone);
 </code></pre>
 
-<p>$verifyCode 字符串，是用户修改手机号码的验证码
-$openId 字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取openid。</p>
-<h1 id="_4">设备管理</h1>
-<h2 id="_5">独立设备</h2>
-<p>设备绑定的交互流程参考下图：</p>
+<p>2.根据验证码绑定用户的手机</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 提交验证码，绑定手机号
+// 参数$verifyCode是字符串，表示用户修改手机号码的验证码。
+// 参数$openId为字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取OpenID。
+$wxBridge-&gt;setPhone($openId, $phone, $verifyCode)；
+</code></pre>
+
+<h2 id="_6">用户帐号的扩展属性</h2>
+<h3 id="_7">获取用户帐号的扩展属性</h3>
+<pre><code class="php">// 实例化ACAccountService对象
+$accountService = ACClient::getAccountService();
+// 获取用户的扩展属性
+$keyValues = $accountService-&gt;getUserProfile($user);
+</code></pre>
+
+<h3 id="_8">设置用户帐号的扩展属性</h3>
+<p>设置帐号的扩展属性之前，应通过开发者管理控制台定义帐号的扩展属性列。</p>
+<pre><code class="php">// 实例化ACAccountService对象
+$accountService = ACClient::getAccountService();
+// 设置帐号的扩展属性。扩展属性以键值对组成的关联数组保存，记为$profile。
+$accountService-&gt;setUserProfile($user, $profile);
+</code></pre>
+
+<h2 id="openid">获取用户的微信OpenId</h2>
+<p>在已知用户在AbleCloud平台上的ID的条件下，可以获取用户在微信平台上对应的OpenId。</p>
+<p>通过ACBridgeWeChat类提供的方法获取用户的OpenID。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 获取用户的OpenID
+$openId = $wxBridge-&gt;getUserOpenId($userId);
+</code></pre>
+
+<p>通过ACCountService类提供的方法获取用户的OpenID。</p>
+<pre><code class="php">// 实例化ACAccountService对象
+$accountService = ACClient::getAccountService();
+// 获取用户的OpenID。参数$userId是用户在AbleCloud平台上的ID；'weixin'用于标记第三方用户来自微信平台。
+$openId = $accountService-&gt;getUserOpenId($userId, 'weixin');
+</code></pre>
+
+<h1 id="_9">设备管理</h1>
+<h2 id="_10">独立设备</h2>
+<p>设备绑定的交互流程如下图所示：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
-<h3 id="_6">设备绑定</h3>
-<ul>
-<li>
-<p>1.微信官方授权设备
-参考<a href="http://iot.weixin.qq.com/">微信硬件平台</a>如何对硬件设备进行授权。</p>
-</li>
-<li>
-<p>2.实例化ACBridgeWeChat对象</p>
-</li>
-</ul>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+<h3 id="_11">设备绑定</h3>
+<p>1.微信设备授权及设备二维码</p>
+<p>参考<a href="http://iot.weixin.qq.com/document-2_6.html">微信硬件平台-设备授权</a>对硬件设备进行授权。</p>
+<p>授权完成后调用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>接口获取设备的二维码。PHP SDK也封装了该接口，其调用方式如下：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 获取设备的二维码串
+$qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
+// 之后可使用相关工具将码串转换为二维码图片。
 </code></pre>
 
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<ul>
-<li>3.生成设备二维码码串</li>
-</ul>
-<pre><code class="php">$wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId );
+<p>2.处理用户扫描二维码的事件</p>
+<p>微信用户扫描设备的二维码后，微信公众号平台会向厂商的公众号后台推送两条事件消息："event"-"subscribe"及"device_event"-"bind"，分别表示用户关注公众号，以及用户绑定了指定设备。
+如果用户之前已经绑定过公众号，则仅推送第二条消息。</p>
+<p>处理事件"event"-"subscribe"：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+$user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// 其它处理逻辑
 </code></pre>
 
-<ul>
-<li>
-<p>4.利用二维码生生工具上一步中得到的码串生成二维码
-例如<a href="http://cli.im/">草料二维码生成工具</a></p>
-</li>
-<li>
-<p>5.处理微信推送扫码信息
-在微信推送的device_event 的 bind事件中调用ablecloud sdk的响应函数</p>
-</li>
-</ul>
-<pre><code class="php">$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName);
+<p>方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，将该用户注册为AbleCloud用户，实现与微信的用户信息同步。</p>
+<p>处理事件"device_event"-"bind"：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, FALSE);   // $xmlMsg是微信推送的完整XML消息内容。
+// 其它处理逻辑
 </code></pre>
 
-<ul>
-<li>6.扫描二维码关注公众号，绑定设备
-第一个用微信扫描二维码的人，将会绑定设备，成为设备的管理员。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。Ablecloud对于已有用户绑定的设备，其它用户想要得到设备的管理权需要设备的管理员分享设备，才能拥有设备的管理权。</li>
-</ul>
-<h3 id="_7">设备激活</h3>
-<h4 id="airkiss">调起微信airkiss页面</h4>
-<p>在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待设备连接云端。
-微信airkiss相关内容请参参考微信官方文档。</p>
-<h3 id="_8">设备分享</h3>
-<ul>
-<li>1.实例化ACBridgeWeChat对象</li>
-</ul>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+<p>方法ACBridgeWeChat::onDeviceEventBind实现的主要功能是识别用户及设备信息，在AbleCloud平台中同步用户与设备的绑定关系。</p>
+<p>AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。其他用户只能在管理员用户的授权下才能绑定该设备。管理员可以提供设备的分享码，允许其它用户绑定设备。这个分享码可以作为附加属性附属在微信的原始设备二维码中方便用户扫码提取。
+方法ACBridgeWeChat::onDeviceEventBind能自动处理用户扫描包含/不包含分享码的设备二维码来绑定设备的情况。</p>
+<h3 id="_12">设备激活</h3>
+<p>此处，“设备激活”是指为WIFI设备配置WIFI网络，使设备连网，连接云端，从而提供在线服务能力。</p>
+<p>对于接入微信硬件平台的设备，可以调用微信的AirKiss页面配置设备的WIFI网络。
+在手机连上WIFI的情况下，在AiKiss页面输入WIFI密码，等待设备连接网络。AirKiss的具体信息请参考<a href="http://iot.weixin.qq.com/document-0_1.html">微信硬件平台文档</a>。</p>
+<h3 id="_13">设备分享</h3>
+<p>设备分享是指以设备的管理员用户的身份调用AbleCloud平台的接口生成设备的分享码，其它用户凭借该分享码绑定设备。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 获取包含分享码的二维码串
+$qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, TRUE, $openId, 300);
+// 将码串$qrCode转换为二维码图片。其他用户使用微信扫描该二维码就可绑定设备。
 </code></pre>
 
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<ul>
-<li>2.实例化user对象</li>
-</ul>
-<pre><code class="php">$user=$wxBridge-&gt;getUser($openid);
+<h3 id="_14">设备解绑</h3>
+<p>在AbleCloud平台及微信平台中同步解除用户与设备的绑定关系。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 解邦设备
+$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE);
 </code></pre>
 
-<ul>
-<li>3.实例化ACDeviceService</li>
-</ul>
-<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
-</code></pre>
-
-<ul>
-<li>4.得到已绑定设备信息。</li>
-</ul>
-<pre><code class="php">$devices=$acDeviceService-&gt;listDevices($user);
-</code></pre>
-
-<p>从返回的信息中，可以得到与设备相关的信息。</p>
-<ul>
-<li>5.分享设备，生成分享的二维码码串</li>
-</ul>
-<pre><code class="php">$wxBridge -&gt;getDeviceQRCode($physicalId, TRUE, $openId , 300)；
-</code></pre>
-
-<p>拿到码串后，开发者可以本地用js去生成二维码图片。</p>
-<h3 id="_9">设备解绑</h3>
-<p>解除用户与设备绑定</p>
-<pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE)；
-</code></pre>
-
-<h2 id="_10">网关型设备</h2>
-<h3 id="_11">绑定网关</h3>
+<p>方法ACBridgeWeChat::unbindDevice实现的主要功能是在AbleCloud平台及微信平台中同步解除用户与设备的绑定关系。</p>
+<h2 id="_15">网关型设备</h2>
+<h3 id="_16">绑定网关</h3>
 <p>网关的绑定操作流程和独立设备是一样的，如下图：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
-<ul>
-<li>
-<p>1.微信官方授权设备
-参考<a href="http://iot.weixin.qq.com/">微信硬件平台</a>如何对硬件设备进行授权。</p>
-</li>
-<li>
-<p>2.生成网关设备二维码</p>
-</li>
-</ul>
-<p>实例化ACBridgeWeChat对象</p>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+<p>绑定网关设备的实现过程也与独立设备一致，只是最后调用方法ACBridgeWeChat::onDeviceEventBind的参数不一样。</p>
+<p>1.微信设备授权及设备二维码</p>
+<p>参考<a href="http://iot.weixin.qq.com/document-2_6.html">微信硬件平台-设备授权</a>对硬件设备进行授权。</p>
+<p>授权完成后调用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>接口获取设备的二维码。PHP SDK也封装了该接口，其调用方式如下：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 获取设备的二维码串
+$qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
+// 之后可使用相关工具将码串转换为二维码图片。
 </code></pre>
 
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<ul>
-<li>3.生成网关设备二维码码串</li>
-</ul>
-<pre><code class="php">$wxBridge-&gt;getDeviceQRCode($physicalId, $withACShareCode = FALSE, $openId = '', $timeout = 300);
+<p>2.处理用户扫描二维码的事件</p>
+<p>微信用户扫描设备的二维码后，微信公众号平台会向厂商的公众号后台推送两条事件消息："event"-"subscribe"及"device_event"-"bind"，分别表示用户关注公众号，以及用户绑定了指定设备。
+如果用户之前已经绑定过公众号，则仅推送第二条消息。</p>
+<p>处理事件"event"-"subscribe"：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+$user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// 其它处理逻辑
 </code></pre>
 
-<ul>
-<li>4.利用二维码生生工具上一步中得到的码串生成二维码</li>
-</ul>
-<p>例如<a href="http://cli.im/">草料二维码生成工具</a></p>
-<ul>
-<li>5.处理微信推送扫码信息</li>
-</ul>
-<p>在微信推送的device_event 的 bind事件中调用ablecloud sdk的响应函数</p>
-<pre><code class="php">$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName);
+<p>方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，将该用户注册为AbleCloud用户，实现与微信的用户信息同步。</p>
+<p>处理事件"device_event"-"bind"：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+$device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, TRUE);   // $xmlMsg是微信推送的完整XML消息内容。
+// 其它处理逻辑
 </code></pre>
 
-<ul>
-<li>6.扫描二维码关注公众号，绑定网关设备</li>
-</ul>
-<p>第一个用微信扫描二维码的人，将会绑定设备，成为网关设备的拥有者。当再次有人扫描二维码时，只会关注微信公众号，不会绑定设备。</p>
-<h3 id="_12">分享网关设备</h3>
-<ul>
-<li>1.实例化ACBridgeWeChat对象</li>
-</ul>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
-</code></pre>
-
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<ul>
-<li>2.实例化user对象</li>
-</ul>
-<pre><code class="php">$user=$wxBridge-&gt;getUser($openid);
-</code></pre>
-
-<ul>
-<li>3.实例化ACDeviceService</li>
-</ul>
-<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
-</code></pre>
-
-<ul>
-<li>4.得到已绑定设备信息。</li>
-</ul>
-<pre><code class="php">$devices=$acDeviceService-&gt;listDevices($user);
-</code></pre>
-
-<p>从返回的信息中，可以得到与设备相关的信息。</p>
-<ul>
-<li>5.分享设备，生成分享的二维码码串。</li>
-</ul>
-<pre><code class="php">$wxBridge -&gt;getDeviceQRCode($physicalId, TRUE, $openId , 300)；
-</code></pre>
-
-<p>拿到码串后，开发者可以本地用js去生成二维码图片。</p>
-<h3 id="_13">网关激活</h3>
-<p>调起微信airkiss页面
-在手机连上wifi的情况下，在aikiss页面输入wifi密码，等待连接。
-微信airkiss相关内容请参参考微信官方文档。</p>
-<h3 id="_14">绑定子设备</h3>
+<p>方法ACBridgeWeChat::onDeviceEventBind实现的主要功能是识别用户及设备信息，在AbleCloud平台中同步用户与设备的绑定关系。其第三个参数用来标记该设备是否为网关设备。</p>
+<h3 id="_17">网关激活</h3>
+<p>网关设备的激活方法与独立设备一致。</p>
+<h3 id="_18">分享网关设备</h3>
+<p>分享网关设备的实现方式与独立设备一致。</p>
+<h3 id="_19">绑定子设备</h3>
 <p>网关绑定成功以后，绑定子设备的流程如下图：</p>
 <p><img alt="wechat_gateway" src="../../pic/develop_guide/DM_wechat_gateway.png" /></p>
-<h4 id="1">1.开启网关接入</h4>
-<p>(1)实例化ACDeviceService</p>
-<pre><code class="php">$acDeviceService = ACClient::getDeviceService();
+<p>总体来说，其步骤是：</p>
+<ol>
+<li>
+<p>开启网关接入功能；</p>
+</li>
+<li>
+<p>查询新接入的子设备；</p>
+</li>
+<li>
+<p>绑定新接入的子设备；</p>
+</li>
+<li>
+<p>关闭网关接入功能。</p>
+</li>
+</ol>
+<p>代码示例如下：</p>
+<pre><code class="php">// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 开启网关接入功能
+$deviceService-&gt;openGatewayMatch($gatewayId, $user, $timeout);
+// 列举网关设备上新接入的子设备（尚未绑定）
+$newSubDevices = $deviceService-&gt;listNewSubDevicesFromGateway($user, $gatewayId);
+// 绑定新子设备
+foreach ($newSubDevices as $dev) {
+    $deviceService–&gt;addSubDeviceToGateway($user, $gatewayId, $dev-&gt;getPhysicalId(), $name)
+}
+// 关闭网关接入功能
+$deviceService -&gt;closeGatewayMatch($gatewayId, $user);
 </code></pre>
 
-<p>(2)实例化user对象</p>
-<p>用关注公众号用户的openid，去实例化user对象。如何去获取用户的openid详见微信官方参考文档。</p>
-<p>(3)列举已绑定gateway列表</p>
-<pre><code class="php">$gateways=$acDeviceService-&gt;listGateways($user);
+<h3 id="_20">设备解绑</h3>
+<h4 id="1">1.解绑网关</h4>
+<p>解邦网关设备的过程与解邦独立设备一致，只是最后调用方法ACBridgeWeChat::unbindDevice的参数不一致。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken);
+// 解邦网关设备
+$wxBridge-&gt;unbindDevice($openId, $physicalId, TRUE);
 </code></pre>
 
-<p>从返回的信息可以得到gateway的相关信息。</p>
-<p>(4)开启网关接入功能</p>
-<pre><code class="php">$acDeviceService -&gt;openGatewayMatch($deviceId, $user, $timeout = 300)
+<p>方法ACBridgeWeChat::unbindDevice第三个参数用于标记所操作的设备是否为网关设备。</p>
+<h4 id="2">2.解绑子设备</h4>
+<p>解邦子设备是指从网关设备中删除子设备。</p>
+<pre><code class="php">// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 解邦子设备
+$deviceService–&gt;deleteSubDeviceFromGateway($user, $subDeviceId)
 </code></pre>
 
-<p>操作成功开启网关设备允许新的子设备接入的功能。</p>
-<h4 id="2">2.绑定子设备</h4>
-<p>(1)列举新的子设备</p>
-<pre><code class="php">$acDeviceService –&gt;listNewSubDevicesFromGateway($user, $gatewayId)；
+<h2 id="home">Home模型</h2>
+<p>关于Home模型的介绍参见<a href="../../introduction/#功能介绍##home模型">基本介绍-功能介绍-Home模型</a>。</p>
+<p>建议的用户交互参见<a href="../../user_interaction/#home模型">用户交互-Home模型</a>。</p>
+<p>针对微信公众号这种应用环境，在Home模型下，创建“Home”、“Room”并绑定设备的交互流程与Android设备的流程几乎一致，可参考<a href="../android/#home">Android设备的Home模型</a>。</p>
+<h3 id="homeroom">创建Home及Room</h3>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 创建名字为$homeName的Home
+$home = $deviceService-&gt;createHome($user, $homeName);
+// ......
+// 创建名字为$roomName的Room
+$room = $deviceService-&gt;createRoom($user, $home-&gt;ownerId, $roomName);
 </code></pre>
 
-<p>从返回的信息中可以得到子设备的相关信息。</p>
-<p>(2)绑定新的子设备到gateway</p>
-<pre><code class="php">$acDeviceService–&gt;addSubDeviceToGateway($user,$gatewayId,$physicalId, $name)
+<h3 id="_21">添加或移动设备到分组中</h3>
+<p>用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。</p>
+<p>在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。</p>
+<p>只有Home中的设备才能通过ACDeviceService::moveDeviceToRoom方法将其添加至Room中。</p>
+<p>添加设备到Home中：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 添加设备到Home中：$homeId是Home的ID；$physicalId（设备的物理ID）或$deviceId（设备的逻辑ID）任意提供一个即可。
+$device = $deviceService-&gt;addDeviceToHome($user, $homeId, $name, $physicalId, $deviceId);
 </code></pre>
 
-<h4 id="3">3.关闭网关接入功能</h4>
-<pre><code class="php">$acDeviceService -&gt;closeGatewayMatch($deviceId, $user);
+<p>在Home中移动设备到Room中：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 移动Home中的设备到Room中
+$deviceService-&gt;moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
 </code></pre>
 
-<p>操作成功关闭网关设备允许新的子设备接入的功能。</p>
-<p>$deviceId为设备逻辑id。</p>
-<h3 id="_15">设备解绑</h3>
-<h4 id="1_1">1.解绑网关</h4>
-<p>（1）实例化ACBridgeWeChat对象</p>
-<pre><code class="php">$wxBridge = new ACBridgeWeChat($accessToken);
+<h2 id="_22">设备的扩展属性</h2>
+<h3 id="_23">获取设备的扩展属性</h3>
+<pre><code class="php">// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 获取设备的扩展属性
+$keyValues = $deviceService-&gt;getDeviceProfile($deviceId);
 </code></pre>
 
-<p>$accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。</p>
-<p>（2）解绑网关</p>
-<pre><code class="php">$wxBridge-&gt;unbindDevice($openId, $physicalId, $isGateway = TRUE)
+<h3 id="_24">设置设备的扩展属性</h3>
+<p>设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性列。</p>
+<pre><code class="php">// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 设置设备的扩展属性。扩展属性以键值对组成的关联数组保存，记为$profile。
+$deviceService-&gt;setDeviceProfile($user, $deviceId, $profile);
 </code></pre>
 
-<h4 id="2_1">2.解绑子设备</h4>
-<pre><code class="php">$acDeviceService–&gt;deleteSubDeviceFromGateway($user, $deviceId)
+<h1 id="_25">和云端通信</h1>
+<h2 id="_26">访问云端服务</h2>
+<p>PHP SDK中的类ACClient定义了方法sendToService用于访问运行在AbleCloud云端的任意服务（包括开发者的UDS）的通用方法。但访问AbleCloud官方提供的云端服务时，可直接调用SDK中封装的API。
+下文的代码示例是访问云端任意服务的通用方法。</p>
+<pre><code class="php">// 实例化ACRequest对象
+$request = new ACRequest($serviceName, $methodName, $serviceVersion);
+// 设置参数：通过addParameter方法添加的参数，将以查询字符串的方式置于访问远程服务的URL中传递给远程服务。
+$request-&gt;addParameter($key, $value);
+// 设置参数：通过setPayloadAsJSON/setPayloadAsStream方法设置的数据是HTTP请求的Body。
+// $request-&gt;setPayloadAsStream($binaryBody);
+$request-&gt;通过setPayloadAsJSON($jsonText);
+// 访问云端服务
+$response = ACClient::sendToService($request);
+// 其它处理逻辑
+</code></pre>
+
+<h2 id="_27">向设备发送消息</h2>
+<p>PHP SDK中的类ACDeviceService定义了方法sendToDevice用于向设备发送指令。该方法的使用示例如下：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 向设备发送消息
+// 参数$messageCode是整数，表示发送给设备的消息的码。
+// 参数$message是拟发送给设备的二进制数据。
+$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message);
+// 其它处理逻辑
+</code></pre>
+
+<h1 id="_28">定时任务</h1>
+<h2 id="_29">添加定时任务</h2>
+<pre><code class="php">// 实例化ACTimerTaskService对象
+$timerTaskService = ACClient::getTimerTaskService();
+// 配置定时任务
+$task = new ACTimerTask();
+// 设置$task的属性
+// ......
+// 向云端添加任务
+$timerTaskService-&gt;addTask($task, $user);
+</code></pre>
+
+<h2 id="_30">查询定时任务列表</h2>
+<pre><code class="php">// 查询已配置的定时任务的列表
+$tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
+</code></pre>
+
+<h2 id="_31">启动定时任务</h2>
+<pre><code class="php">// 查询已配置的定时任务的列表，从中找到要启动的定时任务，记录其ID。
+$tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
+// 找到要启动的任务的ID，记为$taskId。
+// 启动该任务
+$timerTaskService-&gt;startTask($user, $deviceId, $taskId);
+</code></pre>
+
+<h2 id="_32">停止定时任务</h2>
+<pre><code class="php">// 查询已配置的定时任务的列表，从中找到要停止的的定时任务，记录其ID。
+$tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
+// 找到要停止的任务的ID，记为$taskId。
+// 停止该任务
+$timerTaskService-&gt;stopTask($user, $deviceId, $taskId);
+</code></pre>
+
+<h2 id="_33">修改定时任务</h2>
+<pre><code class="php">// 查询已配置的定时任务的列表，从中找到要修改的的定时任务，记录其ID。
+$tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
+// 找到要修改的任务的ID，记为$taskId。
+// 配置该任务的新属性
+$task = new ACTimerTask();
+// 修改$task对象的属性值
+// ......
+// 修改任务
+$timerTaskService-&gt;modifyTask($taskId, $task, $user);
+</code></pre>
+
+<h2 id="_34">删除定时任务</h2>
+<pre><code class="php">// 查询已配置的定时任务的列表，从中找到要删除的的定时任务，记录其ID。
+$tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
+// 找到要删除的任务的ID，记为$taskId。
+// 删除该任务
+$timerTaskService-&gt;deleteTask($user, $deviceId, $taskId);
 </code></pre>
 
 <h1 id="ota">OTA</h1>
-<h3 id="1_2">1.检查更新</h3>
+<h2 id="_35">检查更新</h2>
+<pre><code class="php">// 实例化ACOtaService
+$otaService = ACClient::getOtaService();
+// 检查更新
+$otaVersion = $otaService-&gt;checkUpdate($user, $deviceId);
+$needUpdate = $otaVersion-&gt;canUpdate();
+// $needUpdate为TRUE时表示云端发布了新版本的固件，可以执行升级。
+</code></pre>
+
+<h2 id="_36">确认升级</h2>
+<p>经过前述步骤查询得到可升级的固件版本时，用户可以选择是否升级。确认升级的示例代码如下：</p>
+<pre><code class="php">// 将指定设备的固件升级为查询得到的新版本
+$otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion());
+</code></pre>
+
+<h1 id="_37">消息推送</h1>
+<p>向用户的微信客户端推送消息可分两种情况：一种是用户打开公众号的HTML5页面时推送消息到HTML5页面；一种是直接推送消息到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
+<p>第一种情况下，可利用HTML5页面的WebSocket技术实现消息的实时推送。具体流程是：</p>
 <ul>
-<li>（1）实例化ACOtaService</li>
+<li>
+<p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
+</li>
+<li>
+<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个数据推送接口（Web服务），将消息推送给微信公众号后台；</p>
+</li>
+<li>
+<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。</p>
+</li>
 </ul>
-<pre><code class="php">$otaService=ACClient::getOtaService();
-</code></pre>
-
+<p>第二种情况下，可利用微信公众平台提供的消息推送接口（<a href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">微信公众平台-模板消息接口</a>）向用户推送消息。具体流程是：</p>
 <ul>
-<li>（2）检查更新</li>
-</ul>
-<pre><code class="php">$otaService-&gt; checkUpdate($user, $deviceId);
-</code></pre>
-
-<p>通过返回的版本信息，可以来判断是否有新版本需要升级。</p>
-<h3 id="2_2">2.确认升级</h3>
-<pre><code class="php">$otaService-&gt;confirmUpdate($user, $deviceId, $toVersion);
-</code></pre>
-
-<p>调用这个方法可以升级设备的固件</p>
-<h1 id="_16">和云端通信</h1>
-<h2 id="_17">发送消息到设备</h2>
-<h3 id="acrequest">实例化ACRequest对象</h3>
-<pre><code class="php">$request=new  ACRequest($serviceName, $methodName, $serviceVersion = 1);
- ```
-
-###设置json格式的消息内容
-
-```php
-$request –&gt;setPayloadAsJSON($payload);
-</code></pre>
-
-<p>$payload string类型的数据,为上传到云端的消息内容，必须是json格式</p>
-<h3 id="_18">设置二进制格式的消息内容</h3>
-<pre><code class="php">$request –&gt;setPayloadAsJSON($payload);
-</code></pre>
-
-<p>$payload string类型的数据,为上传到云端的消息内容，必须是二进制格式</p>
-<h2 id="_19">发送消息到服务</h2>
-<pre><code class="php">ACClient-&gt; sendToService($request);
-</code></pre>
-
-<h1 id="_20">定时任务</h1>
-<h3 id="_21">添加定时任务</h3>
-<h3 id="1actimertaskservice">1.获取ACTimerTaskService对象</h3>
-<pre><code class="php">$acTimerTaskService=ACClient-&gt;getTimerTaskService();
-</code></pre>
-
-<h3 id="2_3">2.新增定时任务</h3>
-<pre><code class="php">$acTimerTaskService -&gt;addTask($task, $user)
-</code></pre>
-
-<p>$task为ACTimerTask对象，表示要新添加的任务。
-$user 为ACUser对象，表示定义该任务的用户。
-返回TRUE表示操作成功，否则表示操作失败。失败时，可调用getLastError()获取错误信息。</p>
-<h3 id="_22">启动定时任务</h3>
-<ul>
-<li>1.列举定时任务</li>
-</ul>
-<pre><code class="php">$acTimerTaskService -&gt;listTasks($user, $deviceId);
-</code></pre>
-
-<p>$deviceId 整数，是设备的逻辑ID。操作成功时，返回一个数组，数组的元素是ACTimerTask对象。</p>
-<ul>
-<li>2.启动定时任务</li>
-</ul>
-<pre><code class="php">$acTimerTaskService -&gt;startTask($user, $deviceId, $taskId)
-</code></pre>
-
-<p>$taskId 整数，是要被启动的任务的ID。</p>
-<h3 id="_23">停止定时任务</h3>
-<pre><code class="php">$acTimerTaskService -&gt;stopTask($user, $deviceId, $taskId)
-</code></pre>
-
-<h3 id="_24">修改定时任务</h3>
-<pre><code class="php">$acTimerTaskService -&gt;modifyTask($taskId, $task, $user)
-</code></pre>
-
-<p>$task ACTimerTask对象，表示任务的新内容。</p>
-<h3 id="_25">删除定时任务</h3>
-<pre><code class="php">$acTimerTaskService -&gt;deleteTask($user, $deviceId, $taskId)；
-</code></pre></div>
+<li>
+<p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
+</li>
+<li>
+<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个数据推送接口（Web服务），将消息推送给微信公众号后台；</p>
+</li>
+<li>
+<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API获取用户的OpenID，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。</p>
+</li>
+</ul></div>
             
         </div>
 
