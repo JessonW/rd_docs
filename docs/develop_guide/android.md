@@ -463,7 +463,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
 
-##home模型
+##Home模型
 
 说明参见[基本介绍-功能介绍-home模型](../introduction.md#功能介绍##home模型)
 
