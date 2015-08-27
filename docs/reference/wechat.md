@@ -31,24 +31,9 @@ AbleCloud提供了开发实现AbleCloud与微信云端对接的微信公众号�
 
 下文是PHP SDK (v1.2.2)的API说明。
 
-##ACConfig##
+##对接微信##
 
-```php
-/**
- * AbleCloud服务配置信息。
- */
-class ACConfig {
-	public static $RuntimeMode = 'test';	// 运行模式：test（测试模式）；production（生产模式）。
-	public static $DeveloperId = 0;			// AbleCloud开发者帐号ID。整数。
-	public static $AccessKey   = '';		// 开发者的AK/SK密钥对中的AK。字符串。
-	public static $SecretKey   = '';		// 开发者的AK/SK密钥对中的SK。字符串。
-	public static $MajorDomain = '';		// 本地服务对应的主域的名字。
-	public static $SubDomain   = '';		// 本地服务对应的子域的名字。
-	public static $RouterUrl   = 'http://test.ablecloud.cn:5000';	// AbleCloud远程服务的访问入口地址，如：http://test.ablecloud.cn:5000。
-}
-```
-
-##ACBridgeWeChat##
+###ACBridgeWeChat###
 
 ```php
 /**
@@ -165,71 +150,95 @@ class ACBridgeWeChat {
 }
 ```
 
-##ACClient##
+##基础工具##
+
+###ACContext###
 
 ```php
 /**
- * AbleCloud服务的客户端。
+ * 访问AbleCloud服务时的环境信息。
  */
-class ACClient {
+class ACContext {
     /**
-     * 通用的以HTTP POST方法访问AbleCloud云端服务（包括开发者自定义的服务）。
-     * @param $request ACRequest对象。描述访问目标及参数。
-     * @return 返回ACResponse对象，表示远程服务的应答消息。
+     * 构造函数。
+     * @param $developerId 整数。AbleCloud开发者帐号ID。
+     * @param $accessKey 字符串。开发者的Access Key。
+     * @param $secretKey 字符串。开发者的Secret Key。
+     * @param $majorDomain 字符串。本地服务对应的主域的名字。
+     * @param $subDomain 字符串。本地服务对应的子域的名字。
+     * @param $runtimeMode 字符串。运行模式：test（测试模式），production（生产模式）。
+     * @param $routerAddress 字符串。AbleCloud远程服务的入口地址。
      */
-    public static function sendToService($request);
+    function __construct($developerId, $accessKey, $secretKey, $majorDomain, $subDomain, $runtimeMode, $routerAddress);
     
     /**
-     * AbleCloud帐号服务。
-     * @return 返回ACAccountService对象。
+     * 取AbleCloud开发者信息。
+     * @return 返回ACDeveloper对象。
      */
-    public static function getAccountService();
+    public function getDeveloper();
     
     /**
-     * AbleCloud文件存储服务。
-     * @return 返回ACBlobStoreService对象。
+     * 取本地服务对应的主域的名字。
+     * @return 返回本地服务对应的主域的名字。
      */
-    public static function getBlobStoreService();
+    public function getMajorDomain();
     
     /**
-     * AbleCloud设备管理服务。
-     * @return 返回ACDeviceService对象。
+     * 取本地服务对应的子域的名字。
+     * @return 返回本地服务对应的子域的名字。
      */
-    public static function getDeviceService();
+    public function getSubDomain();
     
     /**
-     * AbleCloud设备OTA服务。
-     * @return 返回ACOtaService对象。
+     * 取AbleCloud远程服务的访问入口地址。
+     * @return 返回AbleCloud远程服务的访问入口地址。
      */
-    public static function getOtaService();
+    public function getRouterAddress();
     
     /**
-     * AbleCloud消息推送服务。
-     * @return 返回ACNotificationService对象。
+     * 检查是否配置为生产环境。
+     * @return 返回TRUE表示当前配置为生产环境，否则表示为测试环境。
      */
-    public static function getNotificationService();
-    
-    /**
-     * AbleCloud数据存储服务。
-     * @return 返回ACStoreService对象。
-     */
-    public static function getStoreService();
-    
-    /**
-     * AbleCloud数据存储服务。
-     * @return 返回ACStoreService对象。
-     */
-    public static function getTimerTaskService();
-    
-    /**
-     * 取访问AbleCloud远程服务的环境信息。
-     * @return 返回ACContext对象，表示访问AbleCloud远程服务的环境信息。
-     */
-    public static function getContext();
+    public function isProductionMode();
 }
 ```
 
-##ACDeveloperSignature##
+###ACDeveloper###
+
+```php
+/**
+ * AbleCloud开发者。
+ */
+class ACDeveloper {
+    /**
+     * 构造函数。
+     * @param $id 开发者帐号的ID。
+     * @param $accessKey 开发者AK/SK密钥对中的AccessKey。
+     * @param $secretKey 开发者AK/SK密钥对中的SecretKey。
+     */
+    function __construct($id, $accessKey, $secretKey);
+    
+    /**
+     * 取开发者的ID。
+     * @return 返回一个整数，表示开发者的ID。
+     */
+    public function getId();
+    
+    /**
+     * 取开发者的AK/SK密钥对中的AccessKey。
+     * @return 返回一个字符串表示AccessKey。
+     */
+    public function getAccessKey();
+    
+    /**
+     * 取开发者的AK/SK密钥对中的SecretKey。
+     * @return 返回一个字符串表示SecretKey。
+     */
+    public function getSecretKey();
+}
+```
+
+###ACDeveloperSignature###
 
 ```php
 /**
@@ -250,7 +259,7 @@ class ACDeveloperSignature {
 }
 ```
 
-##ACHttpClient##
+###ACHttpClient###
 
 ```php
 /**
@@ -282,7 +291,7 @@ class ACHttpClient {
 }
 ```
 
-##ACRequest##
+###ACRequest###
 
 ```php
 /**
@@ -383,7 +392,7 @@ class ACRequest {
 }
 ```
 
-##ACResponse##
+###ACResponse###
 
 ```php
 /**
@@ -429,7 +438,7 @@ class ACResponse {
 }
 ```
 
-##ACUserSignature##
+###ACUserSignature###
 
 ```php
 /**
@@ -447,7 +456,170 @@ class ACUserSignature {
 }
 ```
 
-##ACAccountService##
+##AbleCloud配置##
+
+###ACConfig###
+
+```php
+/**
+ * AbleCloud服务配置信息。
+ */
+class ACConfig {
+	public static $RuntimeMode = 'test';	// 运行模式：test（测试模式）；production（生产模式）。
+	public static $DeveloperId = 0;			// AbleCloud开发者帐号ID。整数。
+	public static $AccessKey   = '';		// 开发者的AK/SK密钥对中的AK。字符串。
+	public static $SecretKey   = '';		// 开发者的AK/SK密钥对中的SK。字符串。
+	public static $MajorDomain = '';		// 本地服务对应的主域的名字。
+	public static $SubDomain   = '';		// 本地服务对应的子域的名字。
+	public static $RouterUrl   = 'http://test.ablecloud.cn:5000';	// AbleCloud远程服务的访问入口地址，如：http://test.ablecloud.cn:5000。
+}
+```
+
+##AbleCloud客户端##
+
+###ACClient###
+
+```php
+/**
+ * AbleCloud服务的客户端。
+ */
+class ACClient {
+    /**
+     * 通用的以HTTP POST方法访问AbleCloud云端服务（包括开发者自定义的服务）。
+     * @param $request ACRequest对象。描述访问目标及参数。
+     * @return 返回ACResponse对象，表示远程服务的应答消息。
+     */
+    public static function sendToService($request);
+    
+    /**
+     * AbleCloud帐号服务。
+     * @return 返回ACAccountService对象。
+     */
+    public static function getAccountService();
+    
+    /**
+     * AbleCloud文件存储服务。
+     * @return 返回ACBlobStoreService对象。
+     */
+    public static function getBlobStoreService();
+    
+    /**
+     * AbleCloud设备管理服务。
+     * @return 返回ACDeviceService对象。
+     */
+    public static function getDeviceService();
+    
+    /**
+     * AbleCloud设备OTA服务。
+     * @return 返回ACOtaService对象。
+     */
+    public static function getOtaService();
+    
+    /**
+     * AbleCloud消息推送服务。
+     * @return 返回ACNotificationService对象。
+     */
+    public static function getNotificationService();
+    
+    /**
+     * AbleCloud数据存储服务。
+     * @return 返回ACStoreService对象。
+     */
+    public static function getStoreService();
+    
+    /**
+     * AbleCloud数据存储服务。
+     * @return 返回ACStoreService对象。
+     */
+    public static function getTimerTaskService();
+    
+    /**
+     * 取访问AbleCloud远程服务的环境信息。
+     * @return 返回ACContext对象，表示访问AbleCloud远程服务的环境信息。
+     */
+    public static function getContext();
+}
+```
+
+###ACService###
+
+```php
+/**
+ * AbleCloud服务。
+ */
+class ACService {
+    /**
+     * 构造函数。
+     * @param $name 服务的名字。字符串。
+     * @param $version 服务的主版本值。整数。
+     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+    
+    /**
+     * 取服务的名字。
+     * @return 返回服务的名字。
+     */
+    public function getName();
+    
+    /**
+     * 取服务的主版本值。
+     * @return 返回一个整数，表示服务的主版本值。
+     */
+    public function getVersion();
+    
+    /**
+     * 取访问该服务所依赖的环境信息。
+     * @return 返回ACContext对象，表示环境信息。
+     */
+    public function getContext();
+    
+    /**
+     * 取最近一次错误消息。
+     * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
+     */
+    public function getLastError();
+}
+```
+
+##AbleCloud帐号服务##
+
+###ACUser###
+
+```php
+/**
+ * 用户信息。
+ */
+class ACUser {
+    /**
+     * 构造函数。
+     * @param $id 用户的ID。
+     * @param $token 用户的Token。
+     * @param $name 用户的显示名。字符串。
+     */
+    function __construct($id, $token, $name = '');
+    
+    /**
+     * 取用户的ID。
+     * @return 返回用户的ID。整数。
+     */
+    public function getId();
+    
+    /**
+     * 取用户的Token。
+     * @return 返回用户的Token。字符串。
+     */
+    public function getToken();
+    
+    /**
+     * 取用户的名字。
+     * @return 返回用户的名字。
+     */
+    public function getName();
+}
+```
+
+###ACAccountService###
 
 ```php
 /**
@@ -558,8 +730,9 @@ class ACAccountService extends ACService {
     public function clearUsers();
 }
 ```
+##AbleCloud文件存储服务##
 
-##ACBlobStoreService##
+###ACBlobStoreService###
 
 ```php
 /**
@@ -611,93 +784,9 @@ class ACBlobStoreService extends ACService {
 }
 ```
 
-##ACContext##
+##AbleCloud设备管理服务##
 
-```php
-/**
- * 访问AbleCloud服务时的环境信息。
- */
-class ACContext {
-    /**
-     * 构造函数。
-     * @param $developerId 整数。AbleCloud开发者帐号ID。
-     * @param $accessKey 字符串。开发者的Access Key。
-     * @param $secretKey 字符串。开发者的Secret Key。
-     * @param $majorDomain 字符串。本地服务对应的主域的名字。
-     * @param $subDomain 字符串。本地服务对应的子域的名字。
-     * @param $runtimeMode 字符串。运行模式：test（测试模式），production（生产模式）。
-     * @param $routerAddress 字符串。AbleCloud远程服务的入口地址。
-     */
-    function __construct($developerId, $accessKey, $secretKey, $majorDomain, $subDomain, $runtimeMode, $routerAddress);
-    
-    /**
-     * 取AbleCloud开发者信息。
-     * @return 返回ACDeveloper对象。
-     */
-    public function getDeveloper();
-    
-    /**
-     * 取本地服务对应的主域的名字。
-     * @return 返回本地服务对应的主域的名字。
-     */
-    public function getMajorDomain();
-    
-    /**
-     * 取本地服务对应的子域的名字。
-     * @return 返回本地服务对应的子域的名字。
-     */
-    public function getSubDomain();
-    
-    /**
-     * 取AbleCloud远程服务的访问入口地址。
-     * @return 返回AbleCloud远程服务的访问入口地址。
-     */
-    public function getRouterAddress();
-    
-    /**
-     * 检查是否配置为生产环境。
-     * @return 返回TRUE表示当前配置为生产环境，否则表示为测试环境。
-     */
-    public function isProductionMode();
-}
-```
-
-##ACDeveloper##
-
-```php
-/**
- * AbleCloud开发者。
- */
-class ACDeveloper {
-    /**
-     * 构造函数。
-     * @param $id 开发者帐号的ID。
-     * @param $accessKey 开发者AK/SK密钥对中的AccessKey。
-     * @param $secretKey 开发者AK/SK密钥对中的SecretKey。
-     */
-    function __construct($id, $accessKey, $secretKey);
-    
-    /**
-     * 取开发者的ID。
-     * @return 返回一个整数，表示开发者的ID。
-     */
-    public function getId();
-    
-    /**
-     * 取开发者的AK/SK密钥对中的AccessKey。
-     * @return 返回一个字符串表示AccessKey。
-     */
-    public function getAccessKey();
-    
-    /**
-     * 取开发者的AK/SK密钥对中的SecretKey。
-     * @return 返回一个字符串表示SecretKey。
-     */
-    public function getSecretKey();
-}
-```
-
-##ACDevice##
+###ACDevice###
 
 ```php
 /**
@@ -738,7 +827,7 @@ class ACDevice {
 }
 ```
 
-##ACDeviceService##
+###ACDeviceService###
 
 ```php
 /**
@@ -1100,7 +1189,7 @@ class ACDeviceService extends ACService {
 }
 ```
 
-##ACRoom##
+###ACRoom###
 
 ```php
 /**
@@ -1123,7 +1212,7 @@ class ACRoom {
 }
 ```
 
-##ACHome##
+###ACHome###
 
 ```php
 /**
@@ -1144,7 +1233,9 @@ class ACHome {
 }
 ```
 
-##ACOtaService##
+##AbleCloud OTA服务##
+
+###ACOtaService###
 
 ```php
 /**
@@ -1178,7 +1269,7 @@ class ACOtaService extends ACService {
 }
 ```
 
-##ACOtaVersion##
+###ACOtaVersion###
 
 ```php
 /**
@@ -1219,48 +1310,9 @@ class ACOtaVersion {
 }
 ```
 
-##ACService##
+##AbleCloud数据库服务##
 
-```php
-/**
- * AbleCloud服务。
- */
-class ACService {
-    /**
-     * 构造函数。
-     * @param $name 服务的名字。字符串。
-     * @param $version 服务的主版本值。整数。
-     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
-     */
-    function __construct($name, $version, $context);
-    
-    /**
-     * 取服务的名字。
-     * @return 返回服务的名字。
-     */
-    public function getName();
-    
-    /**
-     * 取服务的主版本值。
-     * @return 返回一个整数，表示服务的主版本值。
-     */
-    public function getVersion();
-    
-    /**
-     * 取访问该服务所依赖的环境信息。
-     * @return 返回ACContext对象，表示环境信息。
-     */
-    public function getContext();
-    
-    /**
-     * 取最近一次错误消息。
-     * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
-     */
-    public function getLastError();
-}
-```
-
-##ACStoreClassColumn##
+###ACStoreClassColumn###
 
 ```php
 /**
@@ -1287,7 +1339,7 @@ class ACStoreClassColumn {
 }
 ```
 
-##ACStoreClass##
+###ACStoreClass###
 
 ```php
 /**
@@ -1315,7 +1367,7 @@ class ACStoreClass {
 }
 ```
 
-##ACStoreComplicatedFilter##
+###ACStoreComplicatedFilter###
 
 ```php
 /**
@@ -1367,7 +1419,7 @@ class ACStoreComplicatedFilter {
 }
 ```
 
-##ACStoreFilter##
+###ACStoreFilter###
 
 ```php
 /**
@@ -1401,7 +1453,7 @@ class ACStoreFilter {
 }
 ```
 
-##ACStoreIterator##
+###ACStoreIterator###
 
 ```php
 /**
@@ -1427,7 +1479,7 @@ class ACStoreIterator extends ACService {
 }
 ```
 
-##ACStoreScanner##
+###ACStoreScanner###
 
 ```php
 /**
@@ -1532,7 +1584,7 @@ class ACStoreScanner {
 }
 ```
 
-##ACStoreService##
+###ACStoreService###
 
 ```php
 /**
@@ -1623,7 +1675,9 @@ class ACStoreService extends ACService {
 }
 ```
 
-##ACTimerTask##
+##AbleCloud 定时任务##
+
+###ACTimerTask###
 
 ```php
 /**
@@ -1655,7 +1709,7 @@ class ACTimerTask {
 }
 ```
 
-##ACTimerTaskService##
+###ACTimerTaskService###
 
 ```php
 /**
@@ -1721,40 +1775,5 @@ class ACTimerTaskService extends ACService {
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()获取错误信息。
      */
     public function startTask($user, $deviceId, $taskId);
-}
-```
-
-##ACUser##
-
-```php
-/**
- * 用户信息。
- */
-class ACUser {
-    /**
-     * 构造函数。
-     * @param $id 用户的ID。
-     * @param $token 用户的Token。
-     * @param $name 用户的显示名。字符串。
-     */
-    function __construct($id, $token, $name = '');
-    
-    /**
-     * 取用户的ID。
-     * @return 返回用户的ID。整数。
-     */
-    public function getId();
-    
-    /**
-     * 取用户的Token。
-     * @return 返回用户的Token。字符串。
-     */
-    public function getToken();
-    
-    /**
-     * 取用户的名字。
-     * @return 返回用户的名字。
-     */
-    public function getName();
 }
 ```
