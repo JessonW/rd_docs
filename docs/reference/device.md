@@ -135,7 +135,8 @@ AC_MessageOption是由AC_MessageOptHead定义的Option的内容。
 
 ```
 typedef struct{
-    u8 u8DeviciId[8];
+    u8 DomainId[8]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
+    u8 DeviceId[16];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 } AC_TransportInfo;
 ```
 
