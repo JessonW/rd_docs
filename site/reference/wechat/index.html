@@ -378,6 +378,16 @@ class ACBridgeWeChat {
     public function unbindDevice($openId, $physicalId, $isGateway = FALSE);
 
     /**
+     * 同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
+     * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
+     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据（比如处理蓝牙设备绑定关系的同步）。
+     * @param $openId 字符串，是待检查的用户的微信OpenID。
+     * @param $physicalIdOfStatus 字符串，是要查询其在线状态的设备的物理ID。
+     * @return 返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
+     */
+    public function syncBindings($openId, $physicalIdOfStatus = '');
+
+    /**
      * 取最近一次错误消息。
      * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
      */
