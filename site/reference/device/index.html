@@ -535,7 +535,8 @@
 <p><strong>AC_OPT_TRANSPORT消息</strong></p>
 <p>该消息用于将设备ID和消息一并上传，用来进行针对指定设备的控制管理。 消息定义如下：</p>
 <pre><code>typedef struct{
-    u8 u8DeviciId[8];
+    u8 DomainId[8]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
+    u8 DeviceId[16];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 } AC_TransportInfo;
 </code></pre>
 

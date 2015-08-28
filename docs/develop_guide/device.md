@@ -110,7 +110,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 ##通过以太网连接到云端的设备
 
 
-以太网判断本地网络已连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。
+设备在太网判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。
 
 
 
