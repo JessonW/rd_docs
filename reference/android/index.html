@@ -259,7 +259,7 @@
             <li><a href="#ac">AC</a></li>
         
     
-        <li class="main "><a href="#_21">蓝牙方案</a></li>
+        <li class="main "><a href="#_21">适用蓝牙的接口</a></li>
         
             <li><a href="#1">1、帐号管理</a></li>
         
@@ -2319,10 +2319,10 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     public static void addServiceStub(String name, ACService stub) {}
 </code></pre>
 
-<h1 id="_21">蓝牙方案</h1>
+<h1 id="_21">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
-<p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考[开发指导-云端服务]</p>
+<p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
 <p>适用于蓝牙方案的接口见下表：</p>
 <h2 id="1">1、帐号管理</h2>
 <p>用户帐号管理
@@ -2613,7 +2613,6 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 </code></pre>
 
 <h2 id="3ota">3、OTA</h2>
-<p>具体使用步骤见开发指导--&gt;OTA 接口定义如下：</p>
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
@@ -2647,7 +2646,7 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 </code></pre>
 
 <h2 id="4">4、消息推送</h2>
-<p>参考<a href="http://shumonluo.github.io/rd_docs/develop_guide/android/#_34">开发指导-安卓-推送</a></p>
+<p>参考<a href="../../develop_guide/android/#_34">开发指导-安卓-推送</a></p>
 <h2 id="5">5、和云端通信</h2>
 <pre><code>public class AC {
     /**
