@@ -5,7 +5,7 @@
 
 ##服务框架发布库
 ablecloud一期发布java版本服务开发框架，其发布目录、文件如下所示
-~~~
+```java
 /config
 	/cloudservice-conf.xml
 /lib
@@ -17,7 +17,7 @@ ablecloud一期发布java版本服务开发框架，其发布目录、文件如�
     /...
 start.sh
 start.cmd
-~~~
+```
 ><font color="brown">**注：**所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为ablecloud的服务框架**ablecloud-framework-1.0.0.jar**。各jar包版本根据ablecloud发行的大版本不同可能不同。</font>
 
 <font color="red">**在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下。**</font>
@@ -26,13 +26,13 @@ start.cmd
 开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
 
 <b>*linux*</b>下在终端运行如下命令启动服务进行测试：
-~~~
+```java
 sh start.sh -m test
-~~~
+```
 <b>*windows*</b>下在cmd中运行如下命令启动服务进行测试：
-~~~
+```java
 start.cmd -m test
-~~~
+```
 
 ><font color="brown">**注：**启动时的参数"-m test"用于测试环境，所依赖的配置项如域名/版本等信息从config目录下的cloudservice-conf.xml配置文件中读取，开发者可以修改配置文件中的内容以适应测试环境。正式线上环境，开发者不用关心配置文件以及配置项，域名/版本等所有的信息均由框架自动获取并填充。</font>
 
@@ -151,7 +151,7 @@ start.cmd -m test
 	                	<configuration>
 	                    	<argLine>-Dmode=test</argLine>
 	                    	<additionalClasspathElements>
-    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/ablecloud-framework-1.0.0.jar</additionalClasspathElement>
+    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/ablecloud-framework-1.0.2.jar</additionalClasspathElement>
         	                	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar</additionalClasspathElement>
             	            	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-api-1.7.7.jar</additionalClasspathElement>
                 	        	<additionalClasspathElement>${ablecloud.lib.dir}/log4j-1.2.17.jar</additionalClasspathElement>
@@ -213,7 +213,6 @@ start.cmd -m test
     	</project>
         
 	<font style="background:cyan">注意以下配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</font>
-    	<argLine>-Dmode=test</argLine>
         
 1. **修改配置文件**
 
@@ -362,7 +361,7 @@ start.cmd -m test
 
 ```java
 public class ACContext {
- private String majorDomain;         // 服务所属主域名
+    private String majorDomain;         // 服务所属主域名
     private String subDomain;           // 服务所属子域名
     private Long userId;                // 用户id
     private Long developerId;           // 开发者id
@@ -659,7 +658,28 @@ public abstract class ACService {
      * @throws Exception
      */
     public abstract void handleDeviceMsg(ACContext context, long deviceId, ACDeviceMsg req) throws Exception;
+   
+    /**
+     * 处理JINDDONG-->Service之间的交互消息，收到Stream点数组，进行设备控制
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param req              请求消息体(Stream数组)
+     * @param resp             响应消息体
+     * @throws Exception
+     */
+    public void handleJDSetStatusMsg(ACContext context, String physicalDeviceId, List<ACJDMsg> req, ACMsg resp) throws Exception {}
 
+    /**
+     * 处理JINDDONG-->Service之间的交互消息,获取设备上所有Stream点
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param resp             响应消息体(Stream数组)
+     * @throws Exception
+     */
+    public void handleJDGetStatusMsg(ACContext context, String physicalDeviceId, List<ACJDMsg> resp) throws Exception {}
+    
     /**
      * 内部调用接口，开发者不用关注且不能修改。
      * 设置服务相关的信息，并将全局AC框架传给服务
@@ -749,6 +769,26 @@ public abstract class AC {
     public abstract ACMsg sendToService(String name, int version, ACMsg req) throws Exception;
 
     /**
+     * 往JD service发送命令/消息,上报设备上的所有Stream点到JINGDONG Service
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param req              请求消息体(Stream数组)
+     * @return 服务端相应的消息
+     * @throws Exception
+     */
+    public abstract ACMsg sendToJDService(ACContext context, String physicalDeviceId, List<ACJDMsg> req) throws Exception;
+
+    /**
+     * 使用ACHttpClient访问外网服务
+     *
+     * @param url 访问外网的url
+     * @return ACHttpClient
+     * @throws IOException
+     */
+    public abstract ACHttpClient getHttpClient(String url) throws IOException;
+
+    /**
      * 获取设备管理器。开发者在实现自定义服务时，
      * 可以调用ACDeviceMgr提供的各个通用接口
      *
@@ -829,21 +869,40 @@ public abstract class AC {
      */
     public static final AC getTestAc(ACConfiguration config) throws Exception {}
 }
-
 ```
-
+###访问外网使用示例
+```java
+try {
+    ACHttpClient client = ac.getHttpClient("http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC");
+    //默认为GET方法
+    client.setRequestMethod("GET");
+    //默认超时时间为5000
+    client.setConnectTime(5000);
+    client.setHeader("apikey", "caf46348383a17f6070e0bda0e361a28");
+    client.connect();
+    //AbleCloud签名认证失败
+    if (client.getResponseCode() == 401) {
+        assertEquals(client.getResponseMessage(), "Unauthorized");
+    } else if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        assertEquals(client.getResponseMessage(), "OK");
+        //通过getData()或getInputStream()获取response,不能同时一起调用
+    }
+} catch (IOException e) {
+    fail(e.toString());
+}
+```
 
 #内嵌云端服务
 顾名思义，内嵌云端服务，是指ablecloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象通过上节介绍的服务框架AC的相关接口获取。
 ##账号管理服务
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 ###获取方式
-~~~
+```java
 ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
-~~~
+```
 ###接口说明
 当前提供接口较少，后续会进一步丰富。
-~~~
+```java
 public interface ACAccountMgr {
     /**
      * 根据用户的id，查找用户信息
@@ -852,13 +911,13 @@ public interface ACAccountMgr {
      */
     public ACAccount getAccountInfo(long accountId) throws Exception;
 }
-~~~
+```
 ##存储服务
 该服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。
 ###获取方式
-~~~
+```java
 ACStore store = ac.store(String className, ACContext contexte);
-~~~
+```
 ###存储模型
 ablecloud目前提供基于sql的存储服务，开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。因此如何定位数据所在分区，需要提供分区key，ablecloud称其为entity group key。当我们要查找一条存储在ablecloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，ablecloud称其为primary key。
 ><font color="brown">**注：**entity group key必须是primary key的前缀，可以相同。</font>
@@ -880,7 +939,7 @@ ablecloud目前提供基于sql的存储服务，开发者需要预先设定数�
 
 获取方式：
 ACFilter filter = ac.filter();
-~~~
+```java
 public class ACFilter {
     // 各种关系连接符
     public static long INVALID          = 0;
@@ -904,11 +963,11 @@ public class ACFilter {
     // 向查询过滤器中添加小于等于表达式
     public ACFilter whereLessThanOrEqualTo(String key, Object value);
 }
-~~~
+```
 
 全表扫描FullScan的数据游标ACIterator：
 注意ACIterator仅用于进行了分区的数据集，对于未分区的数据集，请直接使用Scan接口。
-~~~
+```java
 public class ACIterator {
     // 从游标中取出下一份数据结果集，每一份结果集对应一个分区键
     public List<ACObject> next() throws Exception;
@@ -916,7 +975,7 @@ public class ACIterator {
     // 获取游标当前所在的分区键
     public ACObject currentEntityGroup();
 }
-~~~
+```
 
 ~~~
 public abstract class ACStore {
