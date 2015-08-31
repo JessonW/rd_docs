@@ -189,7 +189,10 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">设备应用开发框架</a></li>
+        <li class="main active"><a href="#_1">嵌入式设备开发参考</a></li>
+        
+    
+        <li class="main "><a href="#_2">设备应用开发框架</a></li>
         
             
             <li class="sub"><a href="#ac_messagehead">AC_MessageHead</a></li>
@@ -203,7 +206,7 @@
         <li class="main "><a href="#klv">KLV协议介绍</a></li>
         
             
-            <li class="sub"><a href="#_2">设备侧使用说明</a></li>
+            <li class="sub"><a href="#_3">设备侧使用说明</a></li>
             
         
             
@@ -211,18 +214,18 @@
             
         
             
-            <li class="sub"><a href="#_3">厂商管理后台的使用说明</a></li>
+            <li class="sub"><a href="#_4">厂商管理后台的使用说明</a></li>
             
         
             
-            <li class="sub"><a href="#_4">云端消息解析</a></li>
+            <li class="sub"><a href="#_5">云端消息解析</a></li>
             
         
     
         <li class="main "><a href="#json">JSON</a></li>
         
             
-            <li class="sub"><a href="#_5">厂商管理后台使用说明</a></li>
+            <li class="sub"><a href="#_6">厂商管理后台使用说明</a></li>
             
         
     
@@ -230,7 +233,8 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">设备应用开发框架</h1>
+<h1 id="_1">嵌入式设备开发参考</h1>
+<h1 id="_2">设备应用开发框架</h1>
 <p>对于嵌入式WiFi设备，AbleCloud提供了设备主控MCU的SDK，SDK软件逻辑框图如下所示：</p>
 <p><img alt="device_arch" src="../../pic/reference/device_arch.png" /></p>
 <p>在使用SDK开发时，软件逻辑分如下三层：</p>
@@ -822,7 +826,7 @@ typedef struct
 <p>KLV最短长度为2个字节。</p>
 <p>多个KLV打包的结构示意图如下：</p>
 <p><img alt="device_KLV2.png" src="../../pic/reference/device_KLV2.png" /></p>
-<h2 id="_2">设备侧使用说明</h2>
+<h2 id="_3">设备侧使用说明</h2>
 <p>设备需要预先知道各个key的真实含义，比如key 123代表温度。</p>
 <p>设备获取各个key对应的value，其value的含义由设备开发者定义。KLV中携带了value的数据类型。对于二进制类型，需要设备开发者自行处理其含义。对于布尔型，使用8bit的数字表示，0表示false，非0值表示true。</p>
 <p>如果一次请求中携带多组KLV，并且不止一组KLV需要响应这次请求，那么设备需要打包这些响应，组成KLVs一次回复，不能对其中的各个KLV单独回复一次。</p>
@@ -839,7 +843,7 @@ typedef struct
 <p><a href="../../develop_guide/android/#和云端通信">开发指导-安卓-和云端通信</a></p>
 <p><a href="../../develop_guide/iOS/#和云端通信">开发指导-iOS-和云端通信</a></p>
 <p><a href="../../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p>
-<h2 id="_3">厂商管理后台的使用说明</h2>
+<h2 id="_4">厂商管理后台的使用说明</h2>
 <p>厂商管理后台在创建产品时，选择产品的数据类型KLV。一个产品只能选择一种数据类型。</p>
 <p>然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、key值，数据类型。</p>
 <ul>
@@ -851,7 +855,7 @@ typedef struct
 <p>数据点对应设备上的功能点。数据包对应设备和云端通信的通信包，一个数据包可以包括一个或者多个数据点。</p>
 <p>在数据点和数据包页面可以导出创建的数据点</p>
 <p>如果某些KLV存在关联，需要打包处理，可以使用KLV嵌套的方式将关联的KLV打包在一个KLV中，即KLV的value是KLVS。</p>
-<h2 id="_4">云端消息解析</h2>
+<h2 id="_5">云端消息解析</h2>
 <p>在管理后台定义好数据点之后，云端就可以根据定义的数据点解析数据。</p>
 <p>如果不开发UDS，不需要关系此部分。如果需要开发UDS，参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
 <h1 id="json">JSON</h1>
@@ -873,7 +877,7 @@ typedef struct
 “key5”: [1,2,3,4],
 “key6”: {“key7”:11, “key8”:”error”},
 }</p>
-<h2 id="_5">厂商管理后台使用说明</h2>
+<h2 id="_6">厂商管理后台使用说明</h2>
 <p>厂商管理后台在创建产品时，选择产品的数据类型JSON。一个产品只能选择一种数据类型。</p>
 <p>然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、数据类型。</p>
 <ul>

@@ -189,17 +189,20 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">架构框图</a></li>
+        <li class="main active"><a href="#_1">微信客户端开发参考</a></li>
+        
+    
+        <li class="main "><a href="#_2">架构框图</a></li>
         
     
         <li class="main "><a href="#php-sdk">PHP SDK</a></li>
         
             
-            <li class="sub"><a href="#_2">对接微信</a></li>
+            <li class="sub"><a href="#_3">对接微信</a></li>
             
         
             
-            <li class="sub"><a href="#_3">基础工具</a></li>
+            <li class="sub"><a href="#_4">基础工具</a></li>
             
         
             
@@ -239,7 +242,8 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">架构框图</h1>
+<h1 id="_1">微信客户端开发参考</h1>
+<h1 id="_2">架构框图</h1>
 <p>AbleCloud实现的和微信云端对接，其架构如下：</p>
 <p><img alt="arch" src="../../pic/reference/wechat/arch.png" /></p>
 <p>在整个架构中，<code>ac-weixin-server</code>代表厂商的公众号后台服务。</p>
@@ -268,7 +272,7 @@
 </li>
 </ul>
 <p>下文是PHP SDK (v1.2.x)的API说明。</p>
-<h2 id="_2">对接微信</h2>
+<h2 id="_3">对接微信</h2>
 <h3 id="acbridgewechat">ACBridgeWeChat</h3>
 <pre><code class="php">/**
  * AbleCloud-微信公众号服务接口。
@@ -394,7 +398,7 @@ class ACBridgeWeChat {
 }
 </code></pre>
 
-<h2 id="_3">基础工具</h2>
+<h2 id="_4">基础工具</h2>
 <h3 id="accontext">ACContext</h3>
 <pre><code class="php">/**
  * 访问AbleCloud服务时的环境信息。
