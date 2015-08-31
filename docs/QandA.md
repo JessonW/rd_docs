@@ -29,7 +29,7 @@ Ac.js支持通过url及cookie两种方式获取参数。如果用 /weixin/oauth2
 
 #设备相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####问：AbleCloud现在支持模块类型有哪些？
 
@@ -105,7 +105,7 @@ Ac.js支持通过url及cookie两种方式获取参数。如果用 /weixin/oauth2
 
 #云端服务相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.UDS返回查询结果为NULL
 H5中获取的时间单位是秒，我们需要的是毫秒。
@@ -120,7 +120,7 @@ H5中获取的时间单位是秒，我们需要的是毫秒。
 
 #设备接入相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.设备不能接入云端
 设备不能接入云端有以下几种情况：
@@ -158,7 +158,7 @@ H5中获取的时间单位是秒，我们需要的是毫秒。
 
 #OTA相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.创建OTA失败
 
@@ -172,7 +172,7 @@ H5中获取的时间单位是秒，我们需要的是毫秒。
 
 #设备管理相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.用户绑定设备失败
 
@@ -213,7 +213,7 @@ H5中获取的时间单位是秒，我们需要的是毫秒。
 
 #HOME模型相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.网关类设备的子设备如何加入home中
 网关类设备的子设备比较特殊，只能使用addSubDevice方法加入网关，当网关在home中时，子设备自动加入home中，网关移出home后，子设备自动移出home，当网关移入home后，子设备默认也移入home，需要用户自行将设备移入指定的room。子设备单独移出home也只能通过deleteSubDevice方法将其从网关中移出，云端自动将其从home中移出。
@@ -226,7 +226,7 @@ H5中获取的时间单位是秒，我们需要的是毫秒。
 
 #APP与云端通信相关
 
-## ||SKIP||
+## <span class="skip">||SKIP||</span>
 
 ####1.APP提示签名失败
 (1)APP的本地时间不正确，导致签名超时。
