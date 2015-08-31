@@ -179,7 +179,7 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 #设备管理
 ##独立设备
 
-用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。
+用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，App拿到这些信息后调用bindDevice接口绑定设备。对于gprs设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
 
 ![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
@@ -233,10 +233,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 });
 ```
 
-###gprs设备和以太网设备
-
-![DM_gprs](../pic/develop_guide/DM_gprs.png)
-
+###gprs设备
 **<font color="red">注</font>：gprs设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备**
 建议通过扫二维码的形式获取物理id进行绑定
 ```java
@@ -252,7 +249,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
     }
 });
 ```
-<font color="red">建议流程</font>：可提示用户根据设备上是否连接上ablecloud云端的指示灯，在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
+<font color="red">建议流程</font>：若设备上有是否连接上ablecloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
 **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权，推荐使用第二种分享机制。**
@@ -331,7 +328,7 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
         //e.getErrorCode为错误码，e.getMessage为错误信息
     }
 });
-```  
+```
 
 
 
@@ -854,6 +851,7 @@ bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
             /**
               * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
               * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
+              * 若只选择直连的通讯方式，则只有在2和3的状态下才能往设备发送成功
               */
             device.getStatus();
         }
@@ -861,7 +859,7 @@ bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
 
     @Override
     public void error(ACException e) {
-    //网络错误且之前从来没有获取过设备列表时返回
+        //网络错误且之前从来没有获取过设备列表时返回
     }
 });
 ```
@@ -871,7 +869,7 @@ bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
 ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
     @Override
     public void onNetChange() {
-        //当手机网络环境变化时，更新局域网状态或者重新获取设备列表
+        //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
         getDeviceList();
     }
 });
@@ -882,17 +880,18 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
 AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
     @Override
     public void success(List<ACDeviceFind> acDeviceFinds) {
-        //发现局域网设备，更新局域网状态或者重新获取设备列表
+        //发现局域网设备，根据ACDeviceFind更新局域网在线状态或者重新获取设备列表
         getDeviceList();
     }
 
     @Override
     public void error(ACException e) {
-        //没有局域网设备，更新局域网状态或者重新获取设备列表
+        //没有局域网设备，更新局域网在线状态或者重新获取设备列表
         getDeviceList();
     }
 });
 ```
+最后，至于如何通过直连方式给设备发消息，详情见`和云端通讯`部分
 
 
 #定时任务

@@ -583,7 +583,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ###KLV格式
 参考代码如下：
 
-上报数据包=key:1 value:int8(0为关闭，1为开启)
+上报数据包=code:201+key:1 value:int8(0为关闭，1为开启)
 
 ```c    
     
@@ -599,7 +599,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
          /*构造KLV消息*/
          AC_SetKeyValue(pOut,1,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
          /*上报KLV消息*/
-         AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
+         AC_ReportKLVMessage(201, NULL, pOut);
          /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
