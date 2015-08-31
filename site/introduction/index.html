@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="./">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="./"><img src="../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li class="active">
-                        <a href="./">基本介绍</a>
+                        <a href="./" style="background:#00a0dc;">基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../user_interaction/">用户交互</a>
+                        <a href="../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../QandA/">Q&A</a>
+                        <a href="../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,63 +205,105 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">接入流程</a></li>
         
-            <li><a href="#1-ablecloud">1. AbleCloud注册</a></li>
+            
+            <li class="sub"><a href="#1-ablecloud">1. AbleCloud注册</a></li>
+            
         
-            <li><a href="#2">2.商务接洽</a></li>
+            
+            <li class="sub"><a href="#2">2.商务接洽</a></li>
+            
         
-            <li><a href="#3">3. 技术评估</a></li>
+            
+            <li class="sub"><a href="#3">3. 技术评估</a></li>
+            
         
-            <li><a href="#4">4. 商务合同</a></li>
+            
+            <li class="sub"><a href="#4">4. 商务合同</a></li>
+            
         
-            <li><a href="#5-test">5. test环境产品开发</a></li>
+            
+            <li class="sub"><a href="#5-test">5. test环境产品开发</a></li>
+            
         
-            <li><a href="#6">6. 正式环境产品上线</a></li>
+            
+            <li class="sub"><a href="#6">6. 正式环境产品上线</a></li>
+            
         
     
         <li class="main "><a href="#_2">基本概念</a></li>
         
-            <li><a href="#_3">智能硬件架构模型</a></li>
+            
+            <li class="sub"><a href="#_3">智能硬件架构模型</a></li>
+            
         
-            <li><a href="#_4">基本概念</a></li>
+            
+            <li class="sub"><a href="#_4">基本概念</a></li>
+            
         
-            <li><a href="#_5">名词解释</a></li>
+            
+            <li class="sub"><a href="#_5">名词解释</a></li>
+            
         
     
         <li class="main "><a href="#_12">开发流程</a></li>
         
-            <li><a href="#_13">一、定义产品</a></li>
+            
+            <li class="sub"><a href="#_13">一、定义产品</a></li>
+            
         
-            <li><a href="#_14">二、功能开发</a></li>
+            
+            <li class="sub"><a href="#_14">二、功能开发</a></li>
+            
         
-            <li><a href="#_15">三、调试</a></li>
+            
+            <li class="sub"><a href="#_15">三、调试</a></li>
+            
         
     
         <li class="main "><a href="#_16">功能介绍</a></li>
         
-            <li><a href="#_17">帐号管理</a></li>
+            
+            <li class="sub"><a href="#_17">帐号管理</a></li>
+            
         
-            <li><a href="#_18">设备管理</a></li>
+            
+            <li class="sub"><a href="#_18">设备管理</a></li>
+            
         
-            <li><a href="#_22">和云端通信</a></li>
+            
+            <li class="sub"><a href="#_22">和云端通信</a></li>
+            
         
-            <li><a href="#_28">局域网通信</a></li>
+            
+            <li class="sub"><a href="#_28">局域网通信</a></li>
+            
         
-            <li><a href="#_29">定时任务</a></li>
+            
+            <li class="sub"><a href="#_29">定时任务</a></li>
+            
         
-            <li><a href="#ota">OTA</a></li>
+            
+            <li class="sub"><a href="#ota">OTA</a></li>
+            
         
-            <li><a href="#_30">推送</a></li>
+            
+            <li class="sub"><a href="#_30">推送</a></li>
+            
         
-            <li><a href="#_31">文件存储</a></li>
+            
+            <li class="sub"><a href="#_31">文件存储</a></li>
+            
         
-            <li><a href="#_32">第三方云对接</a></li>
+            
+            <li class="sub"><a href="#_32">第三方云对接</a></li>
+            
         
     
     </ul>
@@ -882,7 +924,9 @@ AbleCloud打通了和微信硬件平台的接入，实现了双方的云端对�
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../js/jquery-1.10.2.min.js"></script>

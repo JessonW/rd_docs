@@ -3,7 +3,9 @@
     {% for toc_item in toc %}
         <li class="main {% if toc_item.active %}active{% endif %}"><a href="{{ toc_item.url }}">{{ toc_item.title }}</a></li>
         {% for toc_item in toc_item.children %}
-            <li><a href="{{ toc_item.url }}">{{ toc_item.title }}</a></li>
+            {% if toc_item.title != '||SKIP||' %}
+            <li class="sub"><a href="{{ toc_item.url }}">{{ toc_item.title }}</a></li>
+            {% endif %}
         {% endfor %}
     {% endfor %}
     </ul>
