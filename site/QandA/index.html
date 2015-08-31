@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../introduction/"><img src="../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../introduction/">基本介绍</a>
+                        <a href="../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../user_interaction/">用户交互</a>
+                        <a href="../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li class="active">
-                        <a href="./">Q&A</a>
+                        <a href="./" style="background:#00a0dc;">Q&A</a>
                     </li>
                 
                 
@@ -205,85 +205,55 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">客户端相关</a></li>
         
-            <li><a href="#android">Android端</a></li>
+            
+            <li class="sub"><a href="#android">Android端</a></li>
+            
         
-            <li><a href="#_2">微信</a></li>
+            
+            <li class="sub"><a href="#_2">微信</a></li>
+            
         
     
         <li class="main "><a href="#_3">设备相关</a></li>
         
-            <li><a href="#ablecloud">问：AbleCloud现在支持模块类型有哪些？</a></li>
-        
-            <li><a href="#ablecloudwifi">问：AbleCloud现在支持WIFI模块有哪些？</a></li>
-        
-            <li><a href="#ablecloudandroidlinux">问：AbleCloud支持ANDROID和LINUX操作系统设备吗？</a></li>
-        
-            <li><a href="#wifi">问：wifi模块怎么连接云端？</a></li>
-        
-            <li><a href="#_4">问：设备端如何从测试环境迁移正式环境</a></li>
-        
-            <li><a href="#hf-lpb100">问：HF-LPB100的针脚定义是什么？</a></li>
-        
-            <li><a href="#hf-lpb100_1">问：HF-LPB100如何升级？</a></li>
-        
-            <li><a href="#_5">问：如果在设备升级过程中突然遭遇断电或者断网，那么设备再次接入云端后，云端是否会继续向该设备发起升级？</a></li>
+            
         
     
         <li class="main "><a href="#_6">云端服务相关</a></li>
         
-            <li><a href="#1udsnull">1.UDS返回查询结果为NULL</a></li>
-        
-            <li><a href="#2uds">2.UDS服务不能上线</a></li>
-        
-            <li><a href="#3subdomain">3.报错subdomain不存在</a></li>
+            
         
     
         <li class="main "><a href="#_7">设备接入相关</a></li>
         
-            <li><a href="#1">1.设备不能接入云端</a></li>
-        
-            <li><a href="#2appuds">2.APP/UDS 控制设备失败</a></li>
-        
-            <li><a href="#3">3.设备已经从云端下线，管理后台仍然显示设备在线</a></li>
-        
-            <li><a href="#4uds">4.UDS未收到设备的上报</a></li>
+            
         
     
         <li class="main "><a href="#ota">OTA相关</a></li>
         
-            <li><a href="#1ota">1.创建OTA失败</a></li>
-        
-            <li><a href="#2ota">2.发布OTA失败</a></li>
+            
         
     
         <li class="main "><a href="#_8">设备管理相关</a></li>
         
-            <li><a href="#1_1">1.用户绑定设备失败</a></li>
-        
-            <li><a href="#2">2.控制设备失败</a></li>
-        
-            <li><a href="#3_1">3.用户解绑设备失败</a></li>
+            
         
     
         <li class="main "><a href="#home">HOME模型相关</a></li>
         
-            <li><a href="#1home">1.网关类设备的子设备如何加入home中</a></li>
-        
-            <li><a href="#2homeroomunbind">2.加入home或者room的设备，可以调用unbind方法解绑吗？</a></li>
-        
-            <li><a href="#3homehomehome">3.在设备加入home前，分享给某用户，当设备加入home后，该分享用户是否也加入了home？</a></li>
+            
         
     
         <li class="main "><a href="#app">APP与云端通信相关</a></li>
         
-            <li><a href="#1app">1.APP提示签名失败</a></li>
+            
         
     
         <li class="main "><a href="#_9">管理后台使用相关</a></li>
@@ -310,6 +280,7 @@
 <p>（1）设备向我们的服务器上报数据，在UDS里接收到警报消息，然后由UDS推送消息给微信公众号服务器，最后公众号服务器推消息给微信客户端</p>
 <p>（2）另外一种方法，要求设备自己向微信公众号服务器发起HTTP请求，报告消息，然后公众号服务器推消息给微信客户端</p>
 <h1 id="_3">设备相关</h1>
+<h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="ablecloud">问：AbleCloud现在支持模块类型有哪些？</h4>
 <p>答：网关型设备、wifi设备、蜂窝网络设备、以太网设备</p>
 <h4 id="ablecloudwifi">问：AbleCloud现在支持WIFI模块有哪些？</h4>
@@ -412,6 +383,7 @@
 <h4 id="_5">问：如果在设备升级过程中突然遭遇断电或者断网，那么设备再次接入云端后，云端是否会继续向该设备发起升级？</h4>
 <p>答：当在升级过程中出现异常导致升级失败，在本次升级过程中，只要设备在线，就会再次向该设备重新发起OTA升级。</p>
 <h1 id="_6">云端服务相关</h1>
+<h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <h4 id="1udsnull">1.UDS返回查询结果为NULL</h4>
 <p>H5中获取的时间单位是秒，我们需要的是毫秒。</p>
 <h4 id="2uds">2.UDS服务不能上线</h4>
@@ -419,6 +391,7 @@
 <h4 id="3subdomain">3.报错subdomain不存在</h4>
 <p>请看DeveloperID填写是否错误</p>
 <h1 id="_7">设备接入相关</h1>
+<h2 id="skip_2"><span class="skip">||SKIP||</span></h2>
 <h4 id="1">1.设备不能接入云端</h4>
 <p>设备不能接入云端有以下几种情况：</p>
 <p>(1)设备物理的ID重复。一个domain下的设备物理ID不能重复，如果使用相同的物理ID但是subDomain不同，云端会认为设备信息有无，拒绝接入。</p>
@@ -437,12 +410,14 @@
 <p>(1)设备未被用户绑定。云端不允许未绑定的设备进行设备上报。(大部分是这种场景)</p>
 <p>(2)设备上报使用的messagecode不应小于200.ablecloud规定200~255之间的message code用于设备上报。</p>
 <h1 id="ota">OTA相关</h1>
+<h2 id="skip_3"><span class="skip">||SKIP||</span></h2>
 <h4 id="1ota">1.创建OTA失败</h4>
 <p>(1)这是因为新创建的OTA与之前存在的OTA基本信息重复。OTA的基本信息有：产品渠道，产品批次，OTA版本号，OTA类型。</p>
 <p>(2)OTA文件较大，在网络不稳定的时候出现文件上传失败导致创建OTA失败。</p>
 <h4 id="2ota">2.发布OTA失败</h4>
 <p>这是因为存在未停止发布的OTA版本的升级范围与当前要发布的OTA版本的升级范围有交集。这种情况下可以停止之前发布的OTA版本或者修改将要发布的OTA版本的升级范围直到没有交叉覆盖的时候才能发布成功。举例来说，如果有一个已经发布的版本0-0-1，产品渠道指定为“京东”，如果要发布一个新的OTA版本0-0-2，产品渠道也指定为“京东”，那么这种情况先，0-0-2的版本在0-0-1停止发布之前发布会失败。</p>
 <h1 id="_8">设备管理相关</h1>
+<h2 id="skip_4"><span class="skip">||SKIP||</span></h2>
 <h4 id="1_1">1.用户绑定设备失败</h4>
 <p>用户不能绑定设备的原因有以下几种可能：</p>
 <p>（1）设备不在线，设备绑定时要求设备必须在线.</p>
@@ -462,6 +437,7 @@
 <p>(2)设备自己强制解除与所有用户的绑定关系（应用场景：恢复出厂设置，或者设备变更拥有者），导致原绑定的用户不能解绑成功。</p>
 <p>(3)网络原因设备已经解绑成功，但是APP解绑请求超时，用户认为解绑失败，重复发起解绑操作。</p>
 <h1 id="home">HOME模型相关</h1>
+<h2 id="skip_5"><span class="skip">||SKIP||</span></h2>
 <h4 id="1home">1.网关类设备的子设备如何加入home中</h4>
 <p>网关类设备的子设备比较特殊，只能使用addSubDevice方法加入网关，当网关在home中时，子设备自动加入home中，网关移出home后，子设备自动移出home，当网关移入home后，子设备默认也移入home，需要用户自行将设备移入指定的room。子设备单独移出home也只能通过deleteSubDevice方法将其从网关中移出，云端自动将其从home中移出。</p>
 <h4 id="2homeroomunbind">2.加入home或者room的设备，可以调用unbind方法解绑吗？</h4>
@@ -469,6 +445,7 @@
 <h4 id="3homehomehome">3.在设备加入home前，分享给某用户，当设备加入home后，该分享用户是否也加入了home？</h4>
 <p>在设备加入home前的分享关系在设备加入home后保持不变，分享用户可以单独解绑设备。如果用户被邀请加入该home，那么该用户对home中所有的设备用户控制权，包括之前分享给他的设备。</p>
 <h1 id="app">APP与云端通信相关</h1>
+<h2 id="skip_6"><span class="skip">||SKIP||</span></h2>
 <h4 id="1app">1.APP提示签名失败</h4>
 <p>(1)APP的本地时间不正确，导致签名超时。</p>
 <p>(2)用户未登录。</p>
@@ -479,7 +456,9 @@
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../js/jquery-1.10.2.min.js"></script>

@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,20 +205,28 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">安卓设备开发文档</a></li>
         
-            <li><a href="#_2">开发步骤</a></li>
+            
+            <li class="sub"><a href="#_2">开发步骤</a></li>
+            
         
-            <li><a href="#_5">交互消息</a></li>
+            
+            <li class="sub"><a href="#_5">交互消息</a></li>
+            
         
-            <li><a href="#sdk_1">SDK</a></li>
+            
+            <li class="sub"><a href="#sdk_1">SDK</a></li>
+            
         
-            <li><a href="#demo">Demo</a></li>
+            
+            <li class="sub"><a href="#demo">Demo</a></li>
+            
         
     
     </ul>
@@ -659,7 +667,9 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../../js/jquery-1.10.2.min.js"></script>
