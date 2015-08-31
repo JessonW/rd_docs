@@ -1,5 +1,5 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
-    <div class="container">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -18,7 +18,7 @@
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             {% if include_nav %}
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav nav-ac">
@@ -40,38 +40,6 @@
                 {% endfor %}
                 </ul>
             {% endif %}
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                {% if include_next_prev %}
-                    <li {% if not previous_page %}class="disabled"{% endif %}>
-                        <a rel="next" {% if previous_page %}href="{{ previous_page.url }}"{% endif %}>
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li {% if not next_page %}class="disabled"{% endif %}>
-                        <a rel="prev" {% if next_page %}href="{{ next_page.url }}"{% endif %}>
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                {% endif %}
-                {% if repo_url %}
-                    <li>
-                        <a href="{{ repo_url }}">
-                            {% if repo_name == 'GitHub' %}
-                                <i class="fa fa-github"></i>
-                            {% elif repo_name == 'Bitbucket' %}
-                                <i class="fa fa-bitbucket"></i>
-                            {% endif %}
-                            {{ repo_name }}
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 </div>

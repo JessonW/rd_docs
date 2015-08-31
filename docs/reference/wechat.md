@@ -29,7 +29,7 @@ AbleCloud提供了开发实现AbleCloud与微信云端对接的微信公众号�
 
     本SDK使用了PHP(v5.6及其后续版本)才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.2.2)的API说明。
+下文是PHP SDK (v1.2.x)的API说明。
 
 ##对接微信##
 
