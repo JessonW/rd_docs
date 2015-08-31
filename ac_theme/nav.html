@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -14,14 +14,14 @@
             {% endif %}
 
             <!-- Main title -->
-            <a class="navbar-brand" href="{{ homepage_url }}">{{ site_name }}</a>
+            <a class="navbar-brand" href="{{ homepage_url }}"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             {% if include_nav %}
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 {% for nav_item in nav %}
                 {% if nav_item.children %}
                     <li class="dropdown{% if nav_item.active %} active{% endif %}">
@@ -34,7 +34,7 @@
                     </li>
                 {% else %}
                     <li {% if nav_item.active %}class="active"{% endif %}>
-                        <a href="{{ nav_item.url }}">{{ nav_item.title }}</a>
+                        <a href="{{ nav_item.url }}" {% if nav_item.active %}style="background:#00a0dc;"{% endif %}>{{ nav_item.title }}</a>
                     </li>
                 {% endif %}
                 {% endfor %}
