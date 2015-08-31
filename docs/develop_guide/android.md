@@ -132,7 +132,7 @@
 	});
 ```
 
-##三、添加帐号扩展属性
+##3、添加帐号扩展属性
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、获取账号管理器
@@ -896,6 +896,8 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
+## <span class="skip">||SKIP||</span>
+
 ####获取定时管理器
 #####使用默认时区
 ```java
@@ -1029,6 +1031,9 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 
 #OTA
+
+## <span class="skip">||SKIP||</span>
+
 说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
 建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
@@ -1491,6 +1496,8 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 
 #Error Code
+
+## <span class="skip">||SKIP||</span>
 
 完整的错误码定义如下
 ###请求相关常用错误码 (3000 - 3500)

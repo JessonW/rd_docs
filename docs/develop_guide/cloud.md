@@ -1,22 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 #云端自定义服务开发指导
-*theme_dir: ac_theme
 
-copyright: 2015, 北京智云奇点科技有限公司
-;jasd;kljfasdj;kldasflj;kfda;ljfd
-拉斯科格鲁卡公司第六届啊送给大家
-拉萨的客观来讲卡的睡个懒觉卡死规定
-llalsdkgj
-拉萨的苦尽甘来但是结果
-
-lskdjg
-
-拉斯科的经过拉丝记大过
-
-拉斯科的经过拉丝记大过
+正在整理文档。
 
 #Error Code
+
+## <span class="skip">||SKIP||</span>
 
 完整的错误码定义如下
 ###请求相关常用错误码 (3000 - 3500)
@@ -163,25 +151,11 @@ lskdjg
 |6027|invalid format|
 |6028|invalid meta name|
 |	|				|
-=======
-=======
->>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
-*theme_dir: ac_theme
-
-copyright: 2015, 北京智云奇点科技有限公司
-;jasd;kljfasdj;kldasflj;kfda;ljfd
-拉斯科格鲁卡公司第六届啊送给大家
-拉萨的客观来讲卡的睡个懒觉卡死规定
-llalsdkgj
-拉萨的苦尽甘来但是结果
-
-lskdjg
-
-拉斯科的经过拉丝记大过
-
-拉斯科的经过拉丝记大过
 
 #Error Code
+
+## <span class="skip">||SKIP||</span>
+
 error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码，[5001,6000]为AbleCloud平台返回的错误码，[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。
 
 如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：
@@ -275,7 +249,3 @@ error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储�
 |3924|数据不存在|
 |3925|数据集不匹配|
 |3926|数据索引超出索引范围|
-<<<<<<< HEAD
->>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
-=======
->>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
