@@ -195,9 +195,28 @@
         <li class="main "><a href="#error-code">Error Code</a></li>
         
             
+            <li class="sub"><a href="#3000-3500">请求相关常用错误码 (3000 - 3500)</a></li>
+            
+        
+            
+            <li class="sub"><a href="#3501-3600">帐号管理相关错误码 (3501 - 3600)</a></li>
+            
+        
+            
+            <li class="sub"><a href="#3601-3900">设备分组管理相关错误码 (3601 - 3900)</a></li>
+            
+        
+            
+            <li class="sub"><a href="#3901-4000">存储服务相关错误码 (3901 - 4000)</a></li>
+            
         
     
         <li class="main "><a href="#error-code_1">Error Code</a></li>
+        
+            
+        
+    
+        <li class="main "><a href="#error-code_2">Error Code</a></li>
         
             
         
@@ -207,11 +226,351 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="_1">云端自定义服务开发指导</h1>
-<p>正在整理文档。</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+copyright: 2015, 北京智云奇点科技有限公司</p>
 <h1 id="error-code">Error Code</h1>
+<p>error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码，[5001,6000]为AbleCloud平台返回的错误码，[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。</p>
+<p>如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：</p>
+<h3 id="3000-3500">请求相关常用错误码 (3000 - 3500)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>简要说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3000</td>
+<td>系统内部错误</td>
+</tr>
+<tr>
+<td>3001</td>
+<td>请求HEADER错误</td>
+</tr>
+<tr>
+<td>3002</td>
+<td>请求参数不合法</td>
+</tr>
+<tr>
+<td>3003</td>
+<td>不支持的请求</td>
+</tr>
+<tr>
+<td>3004</td>
+<td>不允许的请求</td>
+</tr>
+<tr>
+<td>3005</td>
+<td>请求没有权限</td>
+</tr>
+<tr>
+<td>3006</td>
+<td>请求URI错误</td>
+</tr>
+<tr>
+<td>3007</td>
+<td>请求主域不存在</td>
+</tr>
+<tr>
+<td>3008</td>
+<td>请求子域不存在</td>
+</tr>
+<tr>
+<td>3009</td>
+<td>请求服务不存在</td>
+</tr>
+<tr>
+<td>3010</td>
+<td>请求方法不存在</td>
+</tr>
+<tr>
+<td>3011</td>
+<td>服务暂不可用</td>
+</tr>
+<tr>
+<td>3012</td>
+<td>请求超时</td>
+</tr>
+<tr>
+<td>3013</td>
+<td>网络异常</td>
+</tr>
+<tr>
+<td>3014</td>
+<td>签名已失效</td>
+</tr>
+<tr>
+<td>3015</td>
+<td>签名错误</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3501-3600">帐号管理相关错误码 (3501 - 3600)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>简要说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3501</td>
+<td>帐号不存在</td>
+</tr>
+<tr>
+<td>3502</td>
+<td>帐号已存在</td>
+</tr>
+<tr>
+<td>3503</td>
+<td>帐号不合法</td>
+</tr>
+<tr>
+<td>3504</td>
+<td>密码错误</td>
+</tr>
+<tr>
+<td>3505</td>
+<td>验证码错误</td>
+</tr>
+<tr>
+<td>3506</td>
+<td>验证码已失效</td>
+</tr>
+<tr>
+<td>3507</td>
+<td>邮箱不合法</td>
+</tr>
+<tr>
+<td>3508</td>
+<td>手机不合法</td>
+</tr>
+<tr>
+<td>3509</td>
+<td>帐号状态异常</td>
+</tr>
+<tr>
+<td>3510</td>
+<td>账号已经绑定</td>
+</tr>
+<tr>
+<td>3511</td>
+<td>安全认证失败</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3601-3900">设备分组管理相关错误码 (3601 - 3900)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>简要说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3601</td>
+<td>分组不存在</td>
+</tr>
+<tr>
+<td>3602</td>
+<td>分组已存在</td>
+</tr>
+<tr>
+<td>3603</td>
+<td>分组状态异常</td>
+</tr>
+<tr>
+<td>3604</td>
+<td>成员不存在</td>
+</tr>
+<tr>
+<td>3605</td>
+<td>成员已存在</td>
+</tr>
+<tr>
+<td>3606</td>
+<td>成员状态异常</td>
+</tr>
+<tr>
+<td>3801</td>
+<td>设备消息码非法</td>
+</tr>
+<tr>
+<td>3802</td>
+<td>设备不存在</td>
+</tr>
+<tr>
+<td>3803</td>
+<td>设备已存在</td>
+</tr>
+<tr>
+<td>3804</td>
+<td>消息不合法</td>
+</tr>
+<tr>
+<td>3805</td>
+<td>绑定码已失效</td>
+</tr>
+<tr>
+<td>3806</td>
+<td>绑定码错误</td>
+</tr>
+<tr>
+<td>3807</td>
+<td>设备不在线</td>
+</tr>
+<tr>
+<td>3808</td>
+<td>主设备不存在</td>
+</tr>
+<tr>
+<td>3809</td>
+<td>设备为主机</td>
+</tr>
+<tr>
+<td>3810</td>
+<td>消息为备机</td>
+</tr>
+<tr>
+<td>3811</td>
+<td>设备已绑定</td>
+</tr>
+<tr>
+<td>3812</td>
+<td>设备未绑定</td>
+</tr>
+<tr>
+<td>3813</td>
+<td>设备状态异常</td>
+</tr>
+<tr>
+<td>3814</td>
+<td>设备响应超时</td>
+</tr>
+<tr>
+<td>3815</td>
+<td>分享码不存在</td>
+</tr>
+<tr>
+<td>3816</td>
+<td>分享码不合法</td>
+</tr>
+<tr>
+<td>3817</td>
+<td>分享码已过期</td>
+</tr>
+<tr>
+<td>3818</td>
+<td>绑定设备超时</td>
+</tr>
+<tr>
+<td>3819</td>
+<td>不存在的管理员</td>
+</tr>
+<tr>
+<td>3820</td>
+<td>网关不匹配</td>
+</tr>
+<tr>
+<td>3821</td>
+<td>管理员不匹配</td>
+</tr>
+<tr>
+<td>3822</td>
+<td>设备未激活</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3901-4000">存储服务相关错误码 (3901 - 4000)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>简要说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3901</td>
+<td>文件不存在</td>
+</tr>
+<tr>
+<td>3902</td>
+<td>文件已存在</td>
+</tr>
+<tr>
+<td>3903</td>
+<td>文件状态异常</td>
+</tr>
+<tr>
+<td>3904</td>
+<td>文件校验失败</td>
+</tr>
+<tr>
+<td>3905</td>
+<td>文件内容异常</td>
+</tr>
+<tr>
+<td>3920</td>
+<td>数据集不存在</td>
+</tr>
+<tr>
+<td>3921</td>
+<td>数据集已存在</td>
+</tr>
+<tr>
+<td>3922</td>
+<td>数据存在错误</td>
+</tr>
+<tr>
+<td>3923</td>
+<td>数据已存在</td>
+</tr>
+<tr>
+<td>3924</td>
+<td>数据不存在</td>
+</tr>
+<tr>
+<td>3925</td>
+<td>数据集不匹配</td>
+</tr>
+<tr>
+<td>3926</td>
+<td>数据索引超出索引范围</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>=======</td>
+<td></td>
+</tr>
+<tr>
+<td>正在整理文档。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="error-code_1">Error Code</h1>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <p>完整的错误码定义如下</p>
-<h3 id="3000-3500">请求相关常用错误码 (3000 - 3500)</h3>
+<h3 id="3000-3500_1">请求相关常用错误码 (3000 - 3500)</h3>
 <table>
 <thead>
 <tr>
@@ -290,7 +649,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3501-3600">帐号管理相关错误码 (3501 - 3600)</h3>
+<h3 id="3501-3600_1">帐号管理相关错误码 (3501 - 3600)</h3>
 <table>
 <thead>
 <tr>
@@ -341,7 +700,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3601-3900">设备分组管理相关错误码 (3601 - 3900)</h3>
+<h3 id="3601-3900_1">设备分组管理相关错误码 (3601 - 3900)</h3>
 <table>
 <thead>
 <tr>
@@ -432,7 +791,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3901-4000">存储服务相关错误码 (3901 - 4000)</h3>
+<h3 id="3901-4000_1">存储服务相关错误码 (3901 - 4000)</h3>
 <table>
 <thead>
 <tr>
@@ -737,11 +1096,11 @@
 </tr>
 </tbody>
 </table>
-<h1 id="error-code_1">Error Code</h1>
+<h1 id="error-code_2">Error Code</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p>error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码，[5001,6000]为AbleCloud平台返回的错误码，[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。</p>
 <p>如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：</p>
-<h3 id="3000-3500_1">请求相关常用错误码 (3000 - 3500)</h3>
+<h3 id="3000-3500_2">请求相关常用错误码 (3000 - 3500)</h3>
 <table>
 <thead>
 <tr>
@@ -816,7 +1175,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3501-3600_1">帐号管理相关错误码 (3501 - 3600)</h3>
+<h3 id="3501-3600_2">帐号管理相关错误码 (3501 - 3600)</h3>
 <table>
 <thead>
 <tr>
@@ -871,7 +1230,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3601-3900_1">设备分组管理相关错误码 (3601 - 3900)</h3>
+<h3 id="3601-3900_2">设备分组管理相关错误码 (3601 - 3900)</h3>
 <table>
 <thead>
 <tr>
@@ -994,7 +1353,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3901-4000_1">存储服务相关错误码 (3901 - 4000)</h3>
+<h3 id="3901-4000_2">存储服务相关错误码 (3901 - 4000)</h3>
 <table>
 <thead>
 <tr>
@@ -1050,6 +1409,10 @@
 <tr>
 <td>3926</td>
 <td>数据索引超出索引范围</td>
+</tr>
+<tr>
+<td>&gt;&gt;&gt;&gt;&gt;&gt;&gt; e5e992bd44753a618d49c80b08d091f90f12c505</td>
+<td></td>
 </tr>
 </tbody>
 </table></div>
