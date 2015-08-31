@@ -132,7 +132,7 @@
 	});
 ```
 
-##三、添加帐号扩展属性
+##3、添加帐号扩展属性
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、获取账号管理器
@@ -896,6 +896,8 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
+## <span class="skip">||SKIP||</span>
+
 ####获取定时管理器
 #####使用默认时区
 ```java
@@ -1029,6 +1031,9 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 
 #OTA
+
+## <span class="skip">||SKIP||</span>
+
 说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
 建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
@@ -1495,6 +1500,12 @@ error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储�
 
 如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：
 
+<<<<<<< HEAD
+=======
+## <span class="skip">||SKIP||</span>
+
+完整的错误码定义如下
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
 ###请求相关常用错误码 (3000 - 3500)
 
 |错误码|简要说明|

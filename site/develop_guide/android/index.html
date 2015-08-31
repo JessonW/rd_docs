@@ -27,8 +27,8 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav nav-ac">
@@ -180,27 +180,6 @@
                 
                 </ul>
             
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                
-                    <li >
-                        <a rel="next" href="../../user_interaction/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="prev" href="../iOS/">
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                
-                
-            </ul>
         </div>
     </div>
 </div>
@@ -211,11 +190,19 @@
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">安卓客户端开发指导</a></li>
+<<<<<<< HEAD
         
     
         <li class="main "><a href="#_2">开发环境配置</a></li>
         
     
+=======
+        
+    
+        <li class="main "><a href="#_2">开发环境配置</a></li>
+        
+    
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
         <li class="main "><a href="#_3">帐号管理</a></li>
         
             
@@ -227,7 +214,11 @@
             
         
             
+<<<<<<< HEAD
             <li class="sub"><a href="#_4">三、添加帐号扩展属性</a></li>
+=======
+            <li class="sub"><a href="#3">3、添加帐号扩展属性</a></li>
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
             
         
     
@@ -271,6 +262,7 @@
         <li class="main "><a href="#_23">定时任务</a></li>
         
             
+<<<<<<< HEAD
             <li class="sub"><a href="#_24">获取定时管理器</a></li>
             
         
@@ -297,11 +289,14 @@
             
             <li class="sub"><a href="#_32">获取定时任务列表</a></li>
             
+=======
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
         
     
         <li class="main "><a href="#ota">OTA</a></li>
         
             
+<<<<<<< HEAD
             <li class="sub"><a href="#ota_1">一.获取OTA管理器对象</a></li>
             
         
@@ -312,6 +307,8 @@
             
             <li class="sub"><a href="#_34">三．确认升级</a></li>
             
+=======
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
         
     
         <li class="main "><a href="#_35">推送</a></li>
@@ -341,6 +338,7 @@
         
     
         <li class="main "><a href="#error-code">Error Code</a></li>
+<<<<<<< HEAD
         
             
             <li class="sub"><a href="#3000-3500">请求相关常用错误码 (3000 - 3500)</a></li>
@@ -365,6 +363,10 @@
             
             <li class="sub"><a href="#ablecloud-6001-">AbleCloud内部错误码 (6001 - ~)</a></li>
             
+=======
+        
+            
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
         
     
     </ul>
@@ -483,7 +485,11 @@
     });
 </code></pre>
 
+<<<<<<< HEAD
 <h2 id="_4">三、添加帐号扩展属性</h2>
+=======
+<h2 id="3">3、添加帐号扩展属性</h2>
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
 <p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性</p>
 <h4 id="1_1">1、获取账号管理器</h4>
 <pre><code class="java">accountMgr=AC.accountMgr();
@@ -507,7 +513,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
-<h4 id="3">3、获取用户自定义扩展属性</h4>
+<h4 id="3_1">3、获取用户自定义扩展属性</h4>
 <pre><code class="java">accountMgr.getUserProfile(new PayloadCallback&lt;ACObject&gt;() {
      @Override
      public void success(ACObject object) {
@@ -538,7 +544,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <pre><code class="java">deviceActivator. getSSID()
 </code></pre>
 
-<h4 id="3_1">3.激活设备</h4>
+<h4 id="3_2">3.激活设备</h4>
 <p>app通过startAbleLink广播自己的wifi密码，设备成功连上云之后通过广播通知app同时获取设备物理id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的wifi</p>
 <pre><code class="java">deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback&lt;List&lt;ACDeviceBind&gt;&gt;() {
     @Override
@@ -675,7 +681,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <pre><code class="java">deviceActivator. getSSID()
 </code></pre>
 
-<h4 id="3_2">3.激活网关</h4>
+<h4 id="3_3">3.激活网关</h4>
 <p>app通过startAbleLink广播自己的wifi密码，设备成功连上云之后通过广播通知app同时获取设备物理id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的wifi</p>
 <pre><code class="java">deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback&lt;List&lt;ACDeviceBind&gt;&gt;() {
     @Override
@@ -755,7 +761,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h4 id="3_3">3．绑定子设备</h4>
+<h4 id="3_4">3．绑定子设备</h4>
 <p>通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口把用户选择的子设备列表绑定</p>
 <pre><code class="java">AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieName, new PayloadCallback&lt;ACUserDevice&gt;() {
@@ -1048,7 +1054,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 });
 </code></pre>
 
-<h4 id="3_4">3、订阅实时数据</h4>
+<h4 id="3_5">3、订阅实时数据</h4>
 <pre><code class="java">//实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
@@ -1164,9 +1170,16 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 </code></pre>
 
 <p>最后，至于如何通过直连方式给设备发消息，详情见<code>和云端通讯</code>部分</p>
+<<<<<<< HEAD
 <h1 id="_23">定时任务</h1>
 <h4 id="_24">获取定时管理器</h4>
 <h5 id="_25">使用默认时区</h5>
+=======
+<h1 id="_22">定时任务</h1>
+<h2 id="skip"><span class="skip">||SKIP||</span></h2>
+<h4 id="_23">获取定时管理器</h4>
+<h5 id="_24">使用默认时区</h5>
+>>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
 </code></pre>
 
@@ -1295,6 +1308,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h1 id="ota">OTA</h1>
+<h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
 <p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
@@ -1508,7 +1522,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <pre><code class="java">notificationMgr.init();
 </code></pre>
 
-<h4 id="3_5">3、在登录成功之后添加推送别名</h4>
+<h4 id="3_6">3、在登录成功之后添加推送别名</h4>
 <pre><code class="java">notificationMgr.addAlias(info.getUserId(), new VoidCallback() {
     @Override
     public void success() {
@@ -1725,6 +1739,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
+<h2 id="skip_2"><span class="skip">||SKIP||</span></h2>
 <p>完整的错误码定义如下</p>
 <h3 id="3000-3500">请求相关常用错误码 (3000 - 3500)</h3>
 <table>
