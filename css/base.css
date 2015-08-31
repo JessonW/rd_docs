@@ -68,6 +68,14 @@ h2, h3, h4, h5, h6 {
     font-weight: 300;
 }
 
+h1 {
+    margin-top: 42px;
+}
+
+h2 {
+    margin-top: 15px;
+}
+
 hr {
     border-top: 1px solid #aaa;
 }
@@ -136,7 +144,7 @@ footer {
 /* All levels of nav */
 .bs-sidebar .nav > li.active,
 .bs-sidebar .nav > li:hover {
-    background: #e7f9ff;
+    background: #00b5f1;
 }
 
 .bs-sidebar .nav > li > a {
@@ -160,7 +168,8 @@ footer {
     text-decoration: none;
     /*border-right: 1px solid;*/
     font-weight: normal;
-    background: #e7f9ff;
+    background: #00b5f1;
+    color: #fff;
 }
 .bs-sidebar .nav > .active > a,
 .bs-sidebar .nav > .active:hover > a,
@@ -169,7 +178,8 @@ footer {
     font-weight: normal;
     /*background-color: transparent;*/
     /*border-right: 1px solid;*/
-    background: #e7f9ff;
+    background: #00b5f1;
+    color: #fff;
 }
 
 /* Nav: second level (shown on .active) */
