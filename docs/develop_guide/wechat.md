@@ -508,6 +508,8 @@ $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
 
 #Error Code
 
+## <span class="skip">||SKIP||</span>
+
 完整的错误码定义如下
 ###请求相关常用错误码 (3000 - 3500)
 
