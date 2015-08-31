@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #云端自定义服务开发指导
 *theme_dir: ac_theme
 
@@ -163,6 +164,8 @@ lskdjg
 |6028|invalid meta name|
 |	|				|
 =======
+=======
+>>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
 *theme_dir: ac_theme
 
 copyright: 2015, 北京智云奇点科技有限公司
@@ -272,4 +275,7 @@ error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储�
 |3924|数据不存在|
 |3925|数据集不匹配|
 |3926|数据索引超出索引范围|
+<<<<<<< HEAD
+>>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
+=======
 >>>>>>> 992278e960ca7fced452e6846ee566bd25521afa
