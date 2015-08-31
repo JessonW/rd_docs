@@ -42,7 +42,7 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
 
 + id
 
-    设备的物理ID。AbleCloud要求设备物理的ID为16个字符。
+    设备的物理ID。AbleCloud要求设备的物理ID为16个字符。
     
 + auth_key, crypt_method, auth_ver
 
