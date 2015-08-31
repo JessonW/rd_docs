@@ -2,7 +2,7 @@
 
 使用AbleCloud云平台的接入流程如上图所示
 
-![flow](pic/introduction/ablecloud_flow.png) 
+![flow](./pic/introduction/ablecloud_flow.png) 
 
 
 
