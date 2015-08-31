@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,7 +205,7 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
@@ -218,44 +218,74 @@
     
         <li class="main "><a href="#_3">设备激活</a></li>
         
-            <li><a href="#wifi">通过WiFi连接到云的设备（包括独立设备和网关)</a></li>
+            
+            <li class="sub"><a href="#wifi">通过WiFi连接到云的设备（包括独立设备和网关)</a></li>
+            
         
-            <li><a href="#_4">通过蜂窝网络连接到云端的设备</a></li>
+            
+            <li class="sub"><a href="#_4">通过蜂窝网络连接到云端的设备</a></li>
+            
         
-            <li><a href="#_5">通过以太网连接到云端的设备</a></li>
+            
+            <li class="sub"><a href="#_5">通过以太网连接到云端的设备</a></li>
+            
         
     
         <li class="main "><a href="#_6">设备绑定管理</a></li>
         
-            <li><a href="#_7">子设备的绑定</a></li>
+            
+            <li class="sub"><a href="#_7">子设备的绑定</a></li>
+            
         
-            <li><a href="#_12">子设备解除绑定</a></li>
+            
+            <li class="sub"><a href="#_12">子设备解除绑定</a></li>
+            
         
     
         <li class="main "><a href="#ota">OTA</a></li>
         
-            <li><a href="#_13">设备与云端交互流程</a></li>
+            
+            <li class="sub"><a href="#_13">设备与云端交互流程</a></li>
+            
         
-            <li><a href="#ota_1">OTA启动消息</a></li>
+            
+            <li class="sub"><a href="#ota_1">OTA启动消息</a></li>
+            
         
-            <li><a href="#ota_2">OTA文件传输消息</a></li>
+            
+            <li class="sub"><a href="#ota_2">OTA文件传输消息</a></li>
+            
         
-            <li><a href="#ota_3">OTA文件块传输消息</a></li>
+            
+            <li class="sub"><a href="#ota_3">OTA文件块传输消息</a></li>
+            
         
-            <li><a href="#ota_4">OTA文件传输结束消息</a></li>
+            
+            <li class="sub"><a href="#ota_4">OTA文件传输结束消息</a></li>
+            
         
-            <li><a href="#ota_5">OTA结束消息</a></li>
+            
+            <li class="sub"><a href="#ota_5">OTA结束消息</a></li>
+            
         
-            <li><a href="#ota_6">OTA确认升级消息</a></li>
+            
+            <li class="sub"><a href="#ota_6">OTA确认升级消息</a></li>
+            
         
     
         <li class="main "><a href="#_14">和云端通信</a></li>
         
-            <li><a href="#_15">设备上报消息</a></li>
+            
+            <li class="sub"><a href="#_15">设备上报消息</a></li>
+            
         
-            <li><a href="#_17">设备接收云端指令</a></li>
+            
+            <li class="sub"><a href="#_17">设备接收云端指令</a></li>
+            
         
-            <li><a href="#_19">接口定义</a></li>
+            
+            <li class="sub"><a href="#_19">接口定义</a></li>
+            
         
     
         <li class="main "><a href="#_22">局域网通信</a></li>
@@ -343,7 +373,7 @@
 <h2 id="_4">通过蜂窝网络连接到云端的设备</h2>
 <p>蜂窝网络判断用户打开数据并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
 <h2 id="_5">通过以太网连接到云端的设备</h2>
-<p>以太网判断本地网络已连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
+<p>设备在太网判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。</p>
 <h1 id="_6">设备绑定管理</h1>
 <p>对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成和用户的绑定。</p>
 <p>对于通过蜂窝网络连接到云端的设备，无法通过局域网将设备的信息广播给客户端（APP），所以，需要在设备上印刷二维码进行绑定。</p>
@@ -744,7 +774,7 @@
 
 <h3 id="klv">KLV格式</h3>
 <p>参考代码如下：</p>
-<p>上报数据包=key:1 value:int8(0为关闭，1为开启)</p>
+<p>上报数据包=code:201+key:1 value:int8(0为关闭，1为开启)</p>
 <pre><code class="c">
     void AC_SendStatus2Server()
     {
@@ -758,7 +788,7 @@
          /*构造KLV消息*/
          AC_SetKeyValue(pOut,1,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
          /*上报KLV消息*/
-         AC_ReportKLVMessage(AC_CODE_KLV_REPORT, NULL, pOut);
+         AC_ReportKLVMessage(201, NULL, pOut);
          /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
@@ -1082,14 +1112,17 @@
 </table>
 <h1 id="_22">局域网通信</h1>
 <p>WiFi设备和以太网设备可以和客户端（APP）进行局域网通信。
-AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p></div>
+AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p>
+<p>Error Code</p></div>
             
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../../js/jquery-1.10.2.min.js"></script>

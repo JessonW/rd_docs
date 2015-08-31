@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,50 +205,76 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">开发环境配置</a></li>
         
-            <li><a href="#_2">服务框架发布库</a></li>
+            
+            <li class="sub"><a href="#_2">服务框架发布库</a></li>
+            
         
-            <li><a href="#_3">本地启动命令</a></li>
+            
+            <li class="sub"><a href="#_3">本地启动命令</a></li>
+            
         
-            <li><a href="#_4">开发工具设置</a></li>
+            
+            <li class="sub"><a href="#_4">开发工具设置</a></li>
+            
         
     
         <li class="main "><a href="#_6">基础数据结构</a></li>
         
-            <li><a href="#accontext">ACContext</a></li>
+            
+            <li class="sub"><a href="#accontext">ACContext</a></li>
+            
         
-            <li><a href="#acobject">ACObject</a></li>
+            
+            <li class="sub"><a href="#acobject">ACObject</a></li>
+            
         
     
         <li class="main "><a href="#_7">交互消息</a></li>
         
-            <li><a href="#acmsg">ACMsg</a></li>
+            
+            <li class="sub"><a href="#acmsg">ACMsg</a></li>
+            
         
-            <li><a href="#acdevicemsg">ACDeviceMsg</a></li>
+            
+            <li class="sub"><a href="#acdevicemsg">ACDeviceMsg</a></li>
+            
         
     
         <li class="main "><a href="#_9">服务开发框架</a></li>
         
-            <li><a href="#acservice">ACService</a></li>
+            
+            <li class="sub"><a href="#acservice">ACService</a></li>
+            
         
-            <li><a href="#ac">AC</a></li>
+            
+            <li class="sub"><a href="#ac">AC</a></li>
+            
         
     
-        <li class="main "><a href="#_10">内嵌云端服务</a></li>
+        <li class="main "><a href="#_11">内嵌云端服务</a></li>
         
-            <li><a href="#_11">账号管理服务</a></li>
+            
+            <li class="sub"><a href="#_12">账号管理服务</a></li>
+            
         
-            <li><a href="#_14">存储服务</a></li>
+            
+            <li class="sub"><a href="#_15">存储服务</a></li>
+            
         
-            <li><a href="#_19">推送管理服务</a></li>
+            
+            <li class="sub"><a href="#_20">推送管理服务</a></li>
+            
         
-            <li><a href="#_23">测试桩</a></li>
+            
+            <li class="sub"><a href="#_24">测试桩</a></li>
+            
         
     
     </ul>
@@ -259,7 +285,7 @@
 <p>本节将详细介绍开发者基于ablecloud提供的服务框架，快速开发自定义后端服务（UDS）和云端定时任务的流程：两者的开发流程是完全一致的。这里介绍ablecloud框架进行开发环境搭建、单元测试、集成测试以及服务发布等内容。</p>
 <h2 id="_2">服务框架发布库</h2>
 <p>ablecloud一期发布java版本服务开发框架，其发布目录、文件如下所示</p>
-<pre><code>/config
+<pre><code class="java">/config
     /cloudservice-conf.xml
 /lib
     /ablecloud-framework-1.0.0.jar
@@ -279,11 +305,11 @@ start.cmd
 <h2 id="_3">本地启动命令</h2>
 <p>开发者写好服务后，可在本机启动服务进行测试集成或功能测试。</p>
 <p><b><em>linux</em></b>下在终端运行如下命令启动服务进行测试：</p>
-<pre><code>sh start.sh -m test
+<pre><code class="java">sh start.sh -m test
 </code></pre>
 
 <p><b><em>windows</em></b>下在cmd中运行如下命令启动服务进行测试：</p>
-<pre><code>start.cmd -m test
+<pre><code class="java">start.cmd -m test
 </code></pre>
 
 <blockquote>
@@ -379,7 +405,7 @@ start.cmd
                 &lt;configuration&gt;
                     &lt;argLine&gt;-Dmode=test&lt;/argLine&gt;
                     &lt;additionalClasspathElements&gt;
-                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.0.0.jar&lt;/additionalClasspathElement&gt;
+                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.0.2.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-api-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/log4j-1.2.17.jar&lt;/additionalClasspathElement&gt;
@@ -439,8 +465,7 @@ start.cmd
     &lt;/properties&gt;
 &lt;/project&gt;
 </code></pre>
-<p><font style="background:cyan">注意以下配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</font>
-    <argLine>-Dmode=test</argLine></p>
+<p><font style="background:cyan">注意以下配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</font></p>
 </li>
 <li>
 <p><strong>修改配置文件</strong></p>
@@ -561,7 +586,7 @@ start.cmd
 <li>developerId：开发者id。当某一服务开发好上线后，一方面接收APP或设备发来的消息，另一方面可能自主的执行例行巡检任务。当在巡检过程中自主的对后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。</li>
 </ul>
 <pre><code class="java">public class ACContext {
- private String majorDomain;         // 服务所属主域名
+    private String majorDomain;         // 服务所属主域名
     private String subDomain;           // 服务所属子域名
     private Long userId;                // 用户id
     private Long developerId;           // 开发者id
@@ -847,6 +872,27 @@ public interface ACDeviceMsgMarshaller {
     public abstract void handleDeviceMsg(ACContext context, long deviceId, ACDeviceMsg req) throws Exception;
 
     /**
+     * 处理JINDDONG--&gt;Service之间的交互消息，收到Stream点数组，进行设备控制
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param req              请求消息体(Stream数组)
+     * @param resp             响应消息体
+     * @throws Exception
+     */
+    public void handleJDSetStatusMsg(ACContext context, String physicalDeviceId, List&lt;ACJDMsg&gt; req, ACMsg resp) throws Exception {}
+
+    /**
+     * 处理JINDDONG--&gt;Service之间的交互消息,获取设备上所有Stream点
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param resp             响应消息体(Stream数组)
+     * @throws Exception
+     */
+    public void handleJDGetStatusMsg(ACContext context, String physicalDeviceId, List&lt;ACJDMsg&gt; resp) throws Exception {}
+
+    /**
      * 内部调用接口，开发者不用关注且不能修改。
      * 设置服务相关的信息，并将全局AC框架传给服务
      * 服务内部可以使用AC框架提供的各种功能，如
@@ -932,6 +978,26 @@ public interface ACDeviceMsgMarshaller {
     public abstract ACMsg sendToService(String name, int version, ACMsg req) throws Exception;
 
     /**
+     * 往JD service发送命令/消息,上报设备上的所有Stream点到JINGDONG Service
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     * @param req              请求消息体(Stream数组)
+     * @return 服务端相应的消息
+     * @throws Exception
+     */
+    public abstract ACMsg sendToJDService(ACContext context, String physicalDeviceId, List&lt;ACJDMsg&gt; req) throws Exception;
+
+    /**
+     * 使用ACHttpClient访问外网服务
+     *
+     * @param url 访问外网的url
+     * @return ACHttpClient
+     * @throws IOException
+     */
+    public abstract ACHttpClient getHttpClient(String url) throws IOException;
+
+    /**
      * 获取设备管理器。开发者在实现自定义服务时，
      * 可以调用ACDeviceMgr提供的各个通用接口
      *
@@ -1012,20 +1078,40 @@ public interface ACDeviceMsgMarshaller {
      */
     public static final AC getTestAc(ACConfiguration config) throws Exception {}
 }
-
 </code></pre>
 
-<h1 id="_10">内嵌云端服务</h1>
+<h3 id="_10">访问外网使用示例</h3>
+<pre><code class="java">try {
+    ACHttpClient client = ac.getHttpClient(&quot;http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC&quot;);
+    //默认为GET方法
+    client.setRequestMethod(&quot;GET&quot;);
+    //默认超时时间为5000
+    client.setConnectTime(5000);
+    client.setHeader(&quot;apikey&quot;, &quot;caf46348383a17f6070e0bda0e361a28&quot;);
+    client.connect();
+    //AbleCloud签名认证失败
+    if (client.getResponseCode() == 401) {
+        assertEquals(client.getResponseMessage(), &quot;Unauthorized&quot;);
+    } else if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        assertEquals(client.getResponseMessage(), &quot;OK&quot;);
+        //通过getData()或getInputStream()获取response,不能同时一起调用
+    }
+} catch (IOException e) {
+    fail(e.toString());
+}
+</code></pre>
+
+<h1 id="_11">内嵌云端服务</h1>
 <p>顾名思义，内嵌云端服务，是指ablecloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象通过上节介绍的服务框架AC的相关接口获取。</p>
-<h2 id="_11">账号管理服务</h2>
+<h2 id="_12">账号管理服务</h2>
 <p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
-<h3 id="_12">获取方式</h3>
-<pre><code>ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
+<h3 id="_13">获取方式</h3>
+<pre><code class="java">ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
 </code></pre>
 
-<h3 id="_13">接口说明</h3>
+<h3 id="_14">接口说明</h3>
 <p>当前提供接口较少，后续会进一步丰富。</p>
-<pre><code>public interface ACAccountMgr {
+<pre><code class="java">public interface ACAccountMgr {
     /**
      * 根据用户的id，查找用户信息
      * @param accountId
@@ -1035,13 +1121,13 @@ public interface ACDeviceMsgMarshaller {
 }
 </code></pre>
 
-<h2 id="_14">存储服务</h2>
+<h2 id="_15">存储服务</h2>
 <p>该服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。</p>
-<h3 id="_15">获取方式</h3>
-<pre><code>ACStore store = ac.store(String className, ACContext contexte);
+<h3 id="_16">获取方式</h3>
+<pre><code class="java">ACStore store = ac.store(String className, ACContext contexte);
 </code></pre>
 
-<h3 id="_16">存储模型</h3>
+<h3 id="_17">存储模型</h3>
 <p>ablecloud目前提供基于sql的存储服务，开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。因此如何定位数据所在分区，需要提供分区key，ablecloud称其为entity group key。当我们要查找一条存储在ablecloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，ablecloud称其为primary key。</p>
 <blockquote>
 <p><font color="brown"><strong>注：</strong>entity group key必须是primary key的前缀，可以相同。</font></p>
@@ -1057,12 +1143,12 @@ public interface ACDeviceMsgMarshaller {
 <blockquote>
 <p><font color="brown"><strong>注：</strong>目前所有的整型，都统一支持Long，浮点型统一为Double，字符串型可以设定字符串长度</font></p>
 </blockquote>
-<h3 id="_17">接口说明</h3>
+<h3 id="_18">接口说明</h3>
 <p>数据查询过滤器ACFilter：
 独立于数据集之外，同一个过滤器可用于在不同的数据集中进行数据查询过滤。</p>
 <p>获取方式：
 ACFilter filter = ac.filter();</p>
-<pre><code>public class ACFilter {
+<pre><code class="java">public class ACFilter {
     // 各种关系连接符
     public static long INVALID          = 0;
     public static long EQUAL            = 1;  // 等于
@@ -1089,7 +1175,7 @@ ACFilter filter = ac.filter();</p>
 
 <p>全表扫描FullScan的数据游标ACIterator：
 注意ACIterator仅用于进行了分区的数据集，对于未分区的数据集，请直接使用Scan接口。</p>
-<pre><code>public class ACIterator {
+<pre><code class="java">public class ACIterator {
     // 从游标中取出下一份数据结果集，每一份结果集对应一个分区键
     public List&lt;ACObject&gt; next() throws Exception;
 
@@ -1342,7 +1428,7 @@ ACFilter filter = ac.filter();</p>
 }
 </code></pre>
 
-<h3 id="_18">使用示例</h3>
+<h3 id="_19">使用示例</h3>
 <p>以数据集"test_data"为例，假定其分区键为"deviceId"（字符串型）；主键为"deviceId"（字符串型）和"timestamp"（整型）；其他字段包括"status"（字符串型）、"mode"（字符串型）、"speed"（整型）和"pm25"（浮点型）等。</p>
 <p><strong>Create</strong></p>
 <p>方式一：显示的传入primary keys的k-v对</p>
@@ -1584,13 +1670,13 @@ while ((zos = it.next(limit)) != null) {
 
 <p><strong>其它</strong>
 <code>delete/update/replace</code>的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。</p>
-<h2 id="_19">推送管理服务</h2>
+<h2 id="_20">推送管理服务</h2>
 <p>该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）</p>
-<h3 id="_20">获取方式</h3>
+<h3 id="_21">获取方式</h3>
 <pre><code>ACNotificationMgr notificationMgr = ac.notificationMgr(ACContext context);
 </code></pre>
 
-<h3 id="_21">接口说明</h3>
+<h3 id="_22">接口说明</h3>
 <pre><code>public interface ACNotificationMgr {
     public static long NOTIFY_ALL_USER = 0;
     public static long NOTIFY_OWNER    = 1;
@@ -1614,7 +1700,7 @@ while ((zos = it.next(limit)) != null) {
 }
 </code></pre>
 
-<h3 id="_22">数据结构说明</h3>
+<h3 id="_23">数据结构说明</h3>
 <pre><code>public class ACNotification {
     public static final long GO_APP = 0;
     public static final long GO_URL = 1;
@@ -1682,14 +1768,14 @@ while ((zos = it.next(limit)) != null) {
     }
 </code></pre>
 
-<h2 id="_23">测试桩</h2>
+<h2 id="_24">测试桩</h2>
 <p>有过开发经验的同学应该都知道，在开发较大项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游还在开发之中，此时咱们不能等着下游完全ready后才开始测试，上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
 开发者基于ablecloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此ablecloud的服务开发框架支持两类桩：</p>
 <ul>
 <li><strong>设备桩：</strong>模拟一个智能设备，对服务发过来的命令/消息做出响应</li>
 <li><strong>服务桩：</strong>模拟一个服务，对当前服务发过来的消息做出响应</li>
 </ul>
-<h3 id="_24">设备桩</h3>
+<h3 id="_25">设备桩</h3>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出相应，因此只有一个处理请求并做出响应的接口，如下：</p>
 <pre><code>public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -1697,7 +1783,7 @@ while ((zos = it.next(limit)) != null) {
 }
 </code></pre>
 
-<h3 id="_25">服务桩</h3>
+<h3 id="_26">服务桩</h3>
 <p>服务桩没有另外定义，和真正的服务开发类似，直接继承ACService类，实现其中的<code>handleMsg(ACMsg req, ACMsg resp)</code>接口，模拟另外依赖服务的行为即可。</p></div>
             
         </div>
@@ -1705,7 +1791,9 @@ while ((zos = it.next(limit)) != null) {
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../../js/jquery-1.10.2.min.js"></script>

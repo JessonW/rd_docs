@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,32 +205,46 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">设备应用开发框架</a></li>
         
-            <li><a href="#ac_messagehead">AC_MessageHead</a></li>
+            
+            <li class="sub"><a href="#ac_messagehead">AC_MessageHead</a></li>
+            
         
-            <li><a href="#ac_messagepayload">AC_MessagePayload</a></li>
+            
+            <li class="sub"><a href="#ac_messagepayload">AC_MessagePayload</a></li>
+            
         
     
         <li class="main "><a href="#klv">KLV协议介绍</a></li>
         
-            <li><a href="#_2">设备侧使用说明</a></li>
+            
+            <li class="sub"><a href="#_2">设备侧使用说明</a></li>
+            
         
-            <li><a href="#udsapp">UDS/APP侧使用说明</a></li>
+            
+            <li class="sub"><a href="#udsapp">UDS/APP侧使用说明</a></li>
+            
         
-            <li><a href="#_3">厂商管理后台的使用说明</a></li>
+            
+            <li class="sub"><a href="#_3">厂商管理后台的使用说明</a></li>
+            
         
-            <li><a href="#_4">云端消息解析</a></li>
+            
+            <li class="sub"><a href="#_4">云端消息解析</a></li>
+            
         
     
         <li class="main "><a href="#json">JSON</a></li>
         
-            <li><a href="#_5">厂商管理后台使用说明</a></li>
+            
+            <li class="sub"><a href="#_5">厂商管理后台使用说明</a></li>
+            
         
     
     </ul>
@@ -535,7 +549,8 @@
 <p><strong>AC_OPT_TRANSPORT消息</strong></p>
 <p>该消息用于将设备ID和消息一并上传，用来进行针对指定设备的控制管理。 消息定义如下：</p>
 <pre><code>typedef struct{
-    u8 u8DeviciId[8];
+    u8 DomainId[8]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
+    u8 DeviceId[16];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 } AC_TransportInfo;
 </code></pre>
 
@@ -901,7 +916,9 @@ typedef struct
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../../js/jquery-1.10.2.min.js"></script>

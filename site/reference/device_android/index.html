@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,49 +205,42 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">开发步骤</a></li>
+        <li class="main active"><a href="#_1">安卓设备开发文档</a></li>
         
-            <li><a href="#sdk">SDK发布库</a></li>
+            
+            <li class="sub"><a href="#_2">开发步骤</a></li>
+            
         
-            <li><a href="#_2">开发环境设置</a></li>
+            
+            <li class="sub"><a href="#_5">交互消息</a></li>
+            
         
-            <li><a href="#_3">应用程序初始化</a></li>
+            
+            <li class="sub"><a href="#sdk_1">SDK</a></li>
+            
         
-    
-        <li class="main "><a href="#_4">交互消息</a></li>
-        
-            <li><a href="#_5">基础数据结构</a></li>
-        
-    
-        <li class="main "><a href="#sdk_1">SDK</a></li>
-        
-            <li><a href="#ac">AC</a></li>
-        
-    
-        <li class="main "><a href="#demo">Demo</a></li>
-        
-            <li><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
-        
-            <li><a href="#2">2、使用二进制消息格式进行通讯</a></li>
+            
+            <li class="sub"><a href="#demo">Demo</a></li>
+            
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>﻿#安卓设备开发文档</p>
-<h2 id="_1">开发步骤</h2>
+<h1 id="_1">安卓设备开发文档</h1>
+<h2 id="_2">开发步骤</h2>
 <h4 id="sdk">SDK发布库</h4>
 <p>AbleCloud发布的安卓设备SDK为<code>ac_device_android.jar</code>，除此之外，还需要导入<code>libDevice-Service.so</code>文件（可根据不同cpu做不同选择）</p>
 <blockquote>
 <p>具体步骤:把文件拷入你自己的工程的libs目录下并设置依赖</p>
 </blockquote>
-<h4 id="_2">开发环境设置</h4>
+<h4 id="_3">开发环境设置</h4>
 <p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
 <pre><code class="java">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot;/&gt;
@@ -256,7 +249,7 @@
 &lt;uses-permission android:name=&quot;android.permission.CHANGE_NETWORK_STATE&quot;/&gt;
 </code></pre>
 
-<h4 id="_3">应用程序初始化</h4>
+<h4 id="_4">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。</p>
 <blockquote>
 <p>具体步骤:在启动App的<code>MainActivity</code>的<code>onCreate()</code>方法中调用此方法来进行初始化</p>
@@ -279,12 +272,12 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 <pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 </code></pre>
 
-<h2 id="_4">交互消息</h2>
+<h2 id="_5">交互消息</h2>
 <p>首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与的消息：</p>
 <ul>
 <li><strong>ACDeviceMsg：</strong>安卓设备与服务或普通app之间的交互消息，使用二进制或json或klv通讯协议。</li>
 </ul>
-<h3 id="_5">基础数据结构</h3>
+<h3 id="_6">基础数据结构</h3>
 <h4 id="acdevicemsg">ACDeviceMsg</h4>
 <p>该消息用于处理安卓设备与服务之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。但是ACDeviceMsg的payload部分由开发者解释，框架透传。ACDeviceMsg定义如下：</p>
 <pre><code class="java">public class ACDeviceMsg {
@@ -446,11 +439,9 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 <li>
 <p><strong>响应数据包code:102</strong></p>
 <blockquote>
-<ul>
-<li>数据点key:1
-value:0       //失败
-value:1       //成功</li>
-</ul>
+<p>数据点key:1
++  value:0       //失败
++  value:1       //成功</p>
 </blockquote>
 </li>
 </ul>
@@ -538,14 +529,28 @@ value:1       //成功</li>
         }
     }
 });
-</code></pre></div>
+</code></pre>
+
+<p>htOff())
+                        resp.setPayload(new byte[]{1, 0, 0, 0});
+                    else
+                        resp.setPayload(new byte[]{0, 0, 0, 0});
+                }
+                resp.setMsgCode(102);
+                break;
+        }
+    }
+});
+```</p></div>
             
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../../js/jquery-1.10.2.min.js"></script>

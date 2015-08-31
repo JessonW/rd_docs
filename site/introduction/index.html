@@ -27,7 +27,7 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border-bottom:0px solid #00b5f1;">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="./">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="./"><img src="/img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
         <div class="navbar-collapse collapse">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li class="active">
-                        <a href="./">基本介绍</a>
+                        <a href="./" style="background:#00a0dc;">基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../user_interaction/">用户交互</a>
+                        <a href="../user_interaction/" >用户交互</a>
                     </li>
                 
                 
@@ -174,7 +174,7 @@
                 
                 
                     <li >
-                        <a href="../QandA/">Q&A</a>
+                        <a href="../QandA/" >Q&A</a>
                     </li>
                 
                 
@@ -205,63 +205,105 @@
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
         <li class="main active"><a href="#_1">接入流程</a></li>
         
-            <li><a href="#1-ablecloud">1. AbleCloud注册</a></li>
+            
+            <li class="sub"><a href="#1-ablecloud">1. AbleCloud注册</a></li>
+            
         
-            <li><a href="#2">2.商务接洽</a></li>
+            
+            <li class="sub"><a href="#2">2.商务接洽</a></li>
+            
         
-            <li><a href="#3">3. 技术评估</a></li>
+            
+            <li class="sub"><a href="#3">3. 技术评估</a></li>
+            
         
-            <li><a href="#4">4. 商务合同</a></li>
+            
+            <li class="sub"><a href="#4">4. 商务合同</a></li>
+            
         
-            <li><a href="#5-test">5. test环境产品开发</a></li>
+            
+            <li class="sub"><a href="#5-test">5. test环境产品开发</a></li>
+            
         
-            <li><a href="#6">6. 正式环境产品上线</a></li>
+            
+            <li class="sub"><a href="#6">6. 正式环境产品上线</a></li>
+            
         
     
         <li class="main "><a href="#_2">基本概念</a></li>
         
-            <li><a href="#_3">智能硬件架构模型</a></li>
+            
+            <li class="sub"><a href="#_3">智能硬件架构模型</a></li>
+            
         
-            <li><a href="#_4">基本概念</a></li>
+            
+            <li class="sub"><a href="#_4">基本概念</a></li>
+            
         
-            <li><a href="#_5">名词解释</a></li>
+            
+            <li class="sub"><a href="#_5">名词解释</a></li>
+            
         
     
         <li class="main "><a href="#_12">开发流程</a></li>
         
-            <li><a href="#_13">一、定义产品</a></li>
+            
+            <li class="sub"><a href="#_13">一、定义产品</a></li>
+            
         
-            <li><a href="#_14">二、功能开发</a></li>
+            
+            <li class="sub"><a href="#_14">二、功能开发</a></li>
+            
         
-            <li><a href="#_15">三、调试</a></li>
+            
+            <li class="sub"><a href="#_15">三、调试</a></li>
+            
         
     
         <li class="main "><a href="#_16">功能介绍</a></li>
         
-            <li><a href="#_17">帐号管理</a></li>
+            
+            <li class="sub"><a href="#_17">帐号管理</a></li>
+            
         
-            <li><a href="#_18">设备管理</a></li>
+            
+            <li class="sub"><a href="#_18">设备管理</a></li>
+            
         
-            <li><a href="#_22">和云端通信</a></li>
+            
+            <li class="sub"><a href="#_22">和云端通信</a></li>
+            
         
-            <li><a href="#_28">局域网通信</a></li>
+            
+            <li class="sub"><a href="#_28">局域网通信</a></li>
+            
         
-            <li><a href="#_29">定时任务</a></li>
+            
+            <li class="sub"><a href="#_29">定时任务</a></li>
+            
         
-            <li><a href="#ota">OTA</a></li>
+            
+            <li class="sub"><a href="#ota">OTA</a></li>
+            
         
-            <li><a href="#_30">推送</a></li>
+            
+            <li class="sub"><a href="#_30">推送</a></li>
+            
         
-            <li><a href="#_31">文件存储</a></li>
+            
+            <li class="sub"><a href="#_31">文件存储</a></li>
+            
         
-            <li><a href="#_32">第三方云对接</a></li>
+            
+            <li class="sub"><a href="#_32">第三方云对接</a></li>
+            
         
     
     </ul>
@@ -495,7 +537,7 @@ AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个�
 <p>AbleCloud提供了“帐号管理”、“设备绑定“、”独立设备管理“、”网关型设备管理“、”设备分组管理“、”OTA“、”实时消息“、”推送“等APP开发需要的SDK，进行移动端开发的时候，开发者只需要开发用户交互界面，即可实现大多数和设备相关的功能的开发。</p>
 <p>如果在产品定义部分定义了数据点和数据包，AbleCloud提供虚拟设备的功能可以在设备尚未开发完成的时候用以辅助APP的开发。虚拟设备提供三个功能：</p>
 <ol>
-<li>显示APP发过来的指令。APP调用sendToDevice接口，虚拟设备可以将放过来的消息内容显示出来。</li>
+<li>显示APP发过来的指令。APP调用sendToDevice接口，虚拟设备可以将发过来的消息内容显示出来。</li>
 <li>响应APP的查询指令。APP发过来的message code为 65-200之间的消息时，虚拟设备会把当前设备的所有数据作为返回值返回给APP。</li>
 <li>模拟真实设备上报数据。可以选择message code 200-255之间的消息，填入对应数据点数据后上报到云端。</li>
 </ol>
@@ -718,13 +760,14 @@ home模型的组层次如下图所示：</p>
 <p>AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：</p>
 <ul>
 <li>
-<p>JSON格式，适合MCU支持JSON解析的设备；</p>
+<p>JSON格式，适合MCU支持JSON解析的设备或者使用安卓系统的设备。</p>
 </li>
 <li>
 <p>KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：<a href="../reference/device/#klv">reference-设备-KLV协议介绍</a>；</p>
 </li>
 <li>二进制，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。</li>
 </ul>
+<p><font color="red"> 注:</font>对于网管型设备，AbleCloud并不关心子设备和网关的具体通信协议和数据格式。云端能够看到的是网关上报的子设备的数据格式。例如，网关是安卓设备、子设备计算能力比较弱数据格式是二进制，但是安卓网关能够将子设备的数据解析然后重新打包成JSON格式和云端进行交互，那么在云端管理后台设置的时候，子设备的数据格式也需要设置成JSON格式。</p>
 <p>无论采用JSON、KLV还是二进制为了统一，建议安卓、iOS、微信，全部采用有符号格式。比如一个十进制整数，当小于127时可以采用8bit数据表示，当大于127小于256时，就必须用16bit表示了。当前支持的交互数据类型包括：</p>
 <table>
 <thead>
@@ -881,7 +924,9 @@ AbleCloud打通了和微信硬件平台的接入，实现了双方的云端对�
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
         <script src="../js/jquery-1.10.2.min.js"></script>

@@ -1,4 +1,4 @@
-﻿#安卓设备开发文档
+#安卓设备开发文档
 ##开发步骤
 ####SDK发布库
 AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还需要导入`libDevice-Service.so`文件（可根据不同cpu做不同选择）
@@ -201,9 +201,9 @@ AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开�
 >>+  value:1       //开启
 
 >+ **响应数据包code:102**
->>+  数据点key:1
->> value:0       //失败
->> value:1       //成功
+>> 数据点key:1
+>>+  value:0       //失败
+>>+  value:1       //成功
 ```java
 AC.handleMsg(new ACMsgHandler() {
     @Override
@@ -265,6 +265,19 @@ AC.handleMsg(new ACMsgHandler() {
                         resp.setPayload(new byte[]{0, 0, 0, 0});
                 } else {
                     if (Light.turnLightOff())
+                        resp.setPayload(new byte[]{1, 0, 0, 0});
+                    else
+                        resp.setPayload(new byte[]{0, 0, 0, 0});
+                }
+                resp.setMsgCode(102);
+                break;
+        }
+    }
+});
+```
+
+
+htOff())
                         resp.setPayload(new byte[]{1, 0, 0, 0});
                     else
                         resp.setPayload(new byte[]{0, 0, 0, 0});
