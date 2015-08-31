@@ -269,6 +269,21 @@
         <li class="main "><a href="#_37">消息推送</a></li>
         
     
+        <li class="main "><a href="#error-code">Error Code</a></li>
+        
+            <li><a href="#3000-3500">请求相关常用错误码 (3000 - 3500)</a></li>
+        
+            <li><a href="#3501-3600">帐号管理相关错误码 (3501 - 3600)</a></li>
+        
+            <li><a href="#3601-3900">设备分组管理相关错误码 (3601 - 3900)</a></li>
+        
+            <li><a href="#3901-4000">存储服务相关错误码 (3901 - 4000)</a></li>
+        
+            <li><a href="#5001-5300">平台相关错误码 (5001 - 5300)</a></li>
+        
+            <li><a href="#ablecloud-6001-">AbleCloud内部错误码 (6001 - ~)</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -675,7 +690,535 @@ $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion())
 <li>
 <p>开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API获取用户的OpenID，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。</p>
 </li>
-</ul></div>
+</ul>
+<h1 id="error-code">Error Code</h1>
+<p>完整的错误码定义如下</p>
+<h3 id="3000-3500">请求相关常用错误码 (3000 - 3500)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3000</td>
+<td>internal error</td>
+</tr>
+<tr>
+<td>3001</td>
+<td>invalid header</td>
+</tr>
+<tr>
+<td>3002</td>
+<td>invalid param</td>
+</tr>
+<tr>
+<td>3003</td>
+<td>not supported</td>
+</tr>
+<tr>
+<td>3004</td>
+<td>not allowed</td>
+</tr>
+<tr>
+<td>3005</td>
+<td>no privilege</td>
+</tr>
+<tr>
+<td>3006</td>
+<td>invalid request uri</td>
+</tr>
+<tr>
+<td>3007</td>
+<td>major domain not exist</td>
+</tr>
+<tr>
+<td>3008</td>
+<td>sub domain not exist</td>
+</tr>
+<tr>
+<td>3009</td>
+<td>service not exist</td>
+</tr>
+<tr>
+<td>3010</td>
+<td>message not supported</td>
+</tr>
+<tr>
+<td>3011</td>
+<td>service not available</td>
+</tr>
+<tr>
+<td>3012</td>
+<td>request timeout</td>
+</tr>
+<tr>
+<td>3013</td>
+<td>network error</td>
+</tr>
+<tr>
+<td>3014</td>
+<td>signature timeout</td>
+</tr>
+<tr>
+<td>3015</td>
+<td>invalid signature</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3501-3600">帐号管理相关错误码 (3501 - 3600)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3501</td>
+<td>account not exist</td>
+</tr>
+<tr>
+<td>3502</td>
+<td>account already exist</td>
+</tr>
+<tr>
+<td>3503</td>
+<td>invalid name</td>
+</tr>
+<tr>
+<td>3504</td>
+<td>password wrong</td>
+</tr>
+<tr>
+<td>3505</td>
+<td>invalid verify code</td>
+</tr>
+<tr>
+<td>3506</td>
+<td>verify code timeout</td>
+</tr>
+<tr>
+<td>3507</td>
+<td>invalid email address</td>
+</tr>
+<tr>
+<td>3508</td>
+<td>invalid phone number</td>
+</tr>
+<tr>
+<td>3509</td>
+<td>invalid account status</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3601-3900">设备分组管理相关错误码 (3601 - 3900)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3601</td>
+<td>group not exist</td>
+</tr>
+<tr>
+<td>3602</td>
+<td>group already exist</td>
+</tr>
+<tr>
+<td>3603</td>
+<td>invalid group status</td>
+</tr>
+<tr>
+<td>3604</td>
+<td>member not exist</td>
+</tr>
+<tr>
+<td>3605</td>
+<td>member already exist</td>
+</tr>
+<tr>
+<td>3606</td>
+<td>invalid member status</td>
+</tr>
+<tr>
+<td>3801</td>
+<td>invalid message code</td>
+</tr>
+<tr>
+<td>3802</td>
+<td>device not exist</td>
+</tr>
+<tr>
+<td>3803</td>
+<td>device exist</td>
+</tr>
+<tr>
+<td>3804</td>
+<td>invalid device</td>
+</tr>
+<tr>
+<td>3805</td>
+<td>bind code timeout</td>
+</tr>
+<tr>
+<td>3806</td>
+<td>invalid bind code</td>
+</tr>
+<tr>
+<td>3807</td>
+<td>device offline</td>
+</tr>
+<tr>
+<td>3808</td>
+<td>master device not exist</td>
+</tr>
+<tr>
+<td>3809</td>
+<td>device is master</td>
+</tr>
+<tr>
+<td>3810</td>
+<td>device is slave</td>
+</tr>
+<tr>
+<td>3811</td>
+<td>device already bound</td>
+</tr>
+<tr>
+<td>3812</td>
+<td>device not bound</td>
+</tr>
+<tr>
+<td>3813</td>
+<td>invalid device status</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3901-4000">存储服务相关错误码 (3901 - 4000)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3901</td>
+<td>file not exist</td>
+</tr>
+<tr>
+<td>3902</td>
+<td>file already exist</td>
+</tr>
+<tr>
+<td>3903</td>
+<td>invalid file state</td>
+</tr>
+<tr>
+<td>3904</td>
+<td>file checksum error</td>
+</tr>
+<tr>
+<td>3905</td>
+<td>invalid file content</td>
+</tr>
+<tr>
+<td>3920</td>
+<td>class not exist</td>
+</tr>
+<tr>
+<td>3921</td>
+<td>class already exist</td>
+</tr>
+<tr>
+<td>3922</td>
+<td>data error</td>
+</tr>
+<tr>
+<td>3923</td>
+<td>data already exist</td>
+</tr>
+<tr>
+<td>3924</td>
+<td>data not exist</td>
+</tr>
+<tr>
+<td>3925</td>
+<td>class mismatch</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="5001-5300">平台相关错误码 (5001 - 5300)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5001</td>
+<td>project not exist</td>
+</tr>
+<tr>
+<td>5002</td>
+<td>major domain already exist</td>
+</tr>
+<tr>
+<td>5003</td>
+<td>domain format invalid</td>
+</tr>
+<tr>
+<td>5004</td>
+<td>too many key pairs</td>
+</tr>
+<tr>
+<td>5005</td>
+<td>service is online</td>
+</tr>
+<tr>
+<td>5006</td>
+<td>version not exist</td>
+</tr>
+<tr>
+<td>5007</td>
+<td>version rollback</td>
+</tr>
+<tr>
+<td>5008</td>
+<td>too many version published</td>
+</tr>
+<tr>
+<td>5009</td>
+<td>invalid rollback</td>
+</tr>
+<tr>
+<td>5010</td>
+<td>version compatible</td>
+</tr>
+<tr>
+<td>5011</td>
+<td>version not compatible</td>
+</tr>
+<tr>
+<td>5012</td>
+<td>invalid major version</td>
+</tr>
+<tr>
+<td>5013</td>
+<td>invalid minor version</td>
+</tr>
+<tr>
+<td>5014</td>
+<td>invalid patch version</td>
+</tr>
+<tr>
+<td>5015</td>
+<td>instance not exist</td>
+</tr>
+<tr>
+<td>5016</td>
+<td>instance already exist</td>
+</tr>
+<tr>
+<td>5017</td>
+<td>empty app file from blobstore</td>
+</tr>
+<tr>
+<td>5018</td>
+<td>port already in use</td>
+</tr>
+<tr>
+<td>5019</td>
+<td>port not in use</td>
+</tr>
+<tr>
+<td>5020</td>
+<td>port exhausted</td>
+</tr>
+<tr>
+<td>5021</td>
+<td>invalid container name</td>
+</tr>
+<tr>
+<td>5022</td>
+<td>agent already registered</td>
+</tr>
+<tr>
+<td>5023</td>
+<td>agent not registered yet</td>
+</tr>
+<tr>
+<td>5024</td>
+<td>agent already exist</td>
+</tr>
+<tr>
+<td>5025</td>
+<td>agent not exist</td>
+</tr>
+<tr>
+<td>5026</td>
+<td>exceed agent capacity</td>
+</tr>
+<tr>
+<td>5027</td>
+<td>can not log at ALL level</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ablecloud-6001-">AbleCloud内部错误码 (6001 - ~)</h3>
+<table>
+<thead>
+<tr>
+<th>错误码(code)</th>
+<th>错误消息(error)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6001</td>
+<td>null value</td>
+</tr>
+<tr>
+<td>6002</td>
+<td>invalid config</td>
+</tr>
+<tr>
+<td>6003</td>
+<td>not inited</td>
+</tr>
+<tr>
+<td>6004</td>
+<td>already inited</td>
+</tr>
+<tr>
+<td>6005</td>
+<td>entry not dir</td>
+</tr>
+<tr>
+<td>6006</td>
+<td>invalid encrypt key</td>
+</tr>
+<tr>
+<td>6007</td>
+<td>entry not exist</td>
+</tr>
+<tr>
+<td>6008</td>
+<td>entry already exist</td>
+</tr>
+<tr>
+<td>6009</td>
+<td>iterator end</td>
+</tr>
+<tr>
+<td>6011</td>
+<td>invalid version</td>
+</tr>
+<tr>
+<td>6012</td>
+<td>invalid result</td>
+</tr>
+<tr>
+<td>6013</td>
+<td>encode error</td>
+</tr>
+<tr>
+<td>6014</td>
+<td>decode error</td>
+</tr>
+<tr>
+<td>6015</td>
+<td>data type error</td>
+</tr>
+<tr>
+<td>6016</td>
+<td>database not exist</td>
+</tr>
+<tr>
+<td>6017</td>
+<td>partition not exist</td>
+</tr>
+<tr>
+<td>6018</td>
+<td>no privilege send message</td>
+</tr>
+<tr>
+<td>6019</td>
+<td>no valid endpoint</td>
+</tr>
+<tr>
+<td>6020</td>
+<td>endpoint not in white list</td>
+</tr>
+<tr>
+<td>6021</td>
+<td>device connection exception</td>
+</tr>
+<tr>
+<td>6022</td>
+<td>invalid device message</td>
+</tr>
+<tr>
+<td>6023</td>
+<td>invalid inner request</td>
+</tr>
+<tr>
+<td>6024</td>
+<td>check payload length failed</td>
+</tr>
+<tr>
+<td>6025</td>
+<td>decrypt message error</td>
+</tr>
+<tr>
+<td>6026</td>
+<td>encrypt message error</td>
+</tr>
+<tr>
+<td>6027</td>
+<td>invalid format</td>
+</tr>
+<tr>
+<td>6028</td>
+<td>invalid meta name</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
             
         </div>
 
