@@ -507,16 +507,20 @@ $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
 
 
 #Error Code
-error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码，[5001,6000]为AbleCloud平台返回的错误码，[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。
+[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码
+
+[5001,6000]为AbleCloud平台返回的错误码
+
+[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。
+
 
 如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：
 
-<<<<<<< HEAD
-=======
+
 ## <span class="skip">||SKIP||</span>
 
 完整的错误码定义如下
->>>>>>> e5e992bd44753a618d49c80b08d091f90f12c505
+
 ###请求相关常用错误码 (3000 - 3500)
 
 |错误码|简要说明|
