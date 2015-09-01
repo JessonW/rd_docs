@@ -191,41 +191,105 @@
     
         
         
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
         
         <li class="main active">
-            <a href="#_1">安卓设备开发指导<span class="main-set parent__1">+</span></a>
+            <a href="#_1">安卓设备开发指导</a>
+        </li>
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_2">开发准备<span class="main-set parent__2">+</span></a>
         </li>
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#_2">开发步骤</a></li>
+            <li class="sub parent__2" style="display: none;"><a href="#sdk">SDK发布库</a></li>
             
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#_5">交互消息</a></li>
+            <li class="sub parent__2" style="display: none;"><a href="#_3">开发环境设置</a></li>
             
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#sdk_1">SDK</a></li>
+            <li class="sub parent__2" style="display: none;"><a href="#_4">应用程序初始化</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_5">交互消息<span class="main-set parent__5">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__5" style="display: none;"><a href="#_6">基础数据结构</a></li>
+            
+        
+    
+        
+        
+            
+                
             
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#demo">Demo</a></li>
+                
+            
+        
+        
+        <li class="main">
+            <a href="#sdk_1">SDK<span class="main-set parent_sdk_1">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_sdk_1" style="display: none;"><a href="#handler">消息处理接口Handler介绍</a></li>
+            
+        
+            
+            <li class="sub parent_sdk_1" style="display: none;"><a href="#ac">AC</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#demo">Demo<span class="main-set parent_demo">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_demo" style="display: none;"><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
+            
+        
+            
+            <li class="sub parent_demo" style="display: none;"><a href="#2">2、使用二进制消息格式进行通讯</a></li>
             
         
     
@@ -234,7 +298,7 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="_1">安卓设备开发指导</h1>
-<h2 id="_2">开发步骤</h2>
+<h1 id="_2">开发准备</h1>
 <h4 id="sdk">SDK发布库</h4>
 <p>AbleCloud发布的安卓设备SDK为<code>ac_device_android.jar</code>，除此之外，还需要导入<code>libDevice-Service.so</code>文件（可根据不同cpu做不同选择）</p>
 <blockquote>
@@ -272,7 +336,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 <pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 </code></pre>
 
-<h2 id="_5">交互消息</h2>
+<h1 id="_5">交互消息</h1>
 <p>首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与的消息：</p>
 <ul>
 <li><strong>ACDeviceMsg：</strong>安卓设备与服务或普通app之间的交互消息，使用二进制或json或klv通讯协议。</li>
@@ -411,7 +475,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
     //getter
 </code></pre>
 
-<h2 id="sdk_1">SDK</h2>
+<h1 id="sdk_1">SDK</h1>
 <h3 id="handler">消息处理接口Handler介绍</h3>
 <h4 id="acconnectchangelistener">ACConnectChangeListener</h4>
 <pre><code class="java">public interface ACConnectChangeListener {
@@ -541,7 +605,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 }
 </code></pre>
 
-<h2 id="demo">Demo</h2>
+<h1 id="demo">Demo</h1>
 <p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里com.accloud.ac_device_android_demo.config.Config.java文件里的配置项即可。</p>
 <p>下面以开关灯为例，简要介绍与安卓设备通讯的例子：</p>
 <h3 id="1klv">1、使用KLV消息格式进行通讯</h3>
