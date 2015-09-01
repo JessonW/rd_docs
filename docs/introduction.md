@@ -376,7 +376,7 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 
 目前最常见的独立设备是通过WiFi连接互联网的设备。
 
-<<<<<<< HEAD
+
 对于市面上常见的WiFi模块，AbleCloud都进行了适配，已经完成适配的WiFi模块见下表：
 
 |合作厂商|模块型号|WIFI芯片      | AirKiss|Smartconfig|
