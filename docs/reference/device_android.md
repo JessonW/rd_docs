@@ -1,4 +1,4 @@
-#安卓设备开发指导
+#安卓设备开发参考
 #开发准备
 ####SDK发布库
 AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还需要导入`libDevice-Service.so`文件（可根据不同cpu做不同选择）
