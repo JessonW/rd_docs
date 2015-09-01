@@ -224,8 +224,8 @@
             <a href="#_3">设备激活<span class="main-set parent__3">+</span></a>
         </li>
         
-            
-            <li class="sub parent__3" style="display: none;"><a href="#wifi">通过WiFi连接到云的设备（包括独立设备和网关)</a></li>
+
+            <li class="sub"><a href="#wifi">通过WiFi连接到云的设备</a></li>
             
         
             
@@ -374,14 +374,14 @@
 <p>在进行设备开发前，需要先做以下准备：</p>
 <ol>
 <li>在管理后台创建产品，选择产品的数据类型。创建以后，会获得该款产品的subdomianID。</li>
-<li>在产品管理页面的功能点设置页面设置产品的数据点和数据包。设备和云端通信时，都要按照定义的数据包进行通信。</li>
+<li>在产品管理页面的功能点设置页面设置产品的<a href="../../introduction/#_5">数据点</a>和<a href="../../introduction/#_5">数据包</a>。设备和云端通信时，都要按照定义的数据包进行通信。</li>
 <li>在设备密钥页面选择设备和云端通信采用的加密方式。AbleCloud的环境分为开发使用的test环境和正式生产使用的生成环境。test环境下，可以不加密。正式环境中，必须加密。</li>
 </ol>
 <p>需要厂商烧制到设备中的信息包括：</p>
 <ul>
 <li>设备版本：4字节</li>
 <li>设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）</li>
-<li>设备ID：16字节，可使用WiFi模块的MAC地址</li>
+<li>设备ID：16字节，可独立烧制，也可使用WiFi模块的MAC地址。使用MAC地址作为设备ID时，需要在MAC地址前补四个0凑齐16字节。</li>
 <li>设备域信息：（两个字节的domain加上6个字节的subdomain）</li>
 </ul>
 <h1 id="_2">配置设备基本信息</h1>
@@ -390,8 +390,17 @@
 如下图所示：</p>
 <p><img alt="" src="../../pic/develop_guide/device_config.png" /></p>
 <h1 id="_3">设备激活</h1>
-<p>在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
-<h2 id="wifi">通过WiFi连接到云的设备（包括独立设备和网关)</h2>
+<p>设备连接到云端，和云端完成通信握手叫做设备激活。
+在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
+<h2 id="wifi">通过WiFi连接到云的设备</h2>
+<p>(包括独立设备和网关)</p>
+<p>对于市面上常见的WiFi模块，AbleCloud都进行了适配。WiFi模块上电后可以自动连接到AbleCloud云端。
+开发者只需要按照AbleCloud的协议通过串号和WiFi模块进行交互即可。</p>
+<p>对于以下模组长的WiFi模块已经完成了适配：
+卓立合，江波龙，思存，航锐，汉枫，庆科，RAK，联盛德</p>
+<p>对于一下WiFi芯片已经完成了适配：
+MTK7681，QCA4004，Marvel-88MC500</p>
+<p>适配模块不断进行更新中，最新列表请联系技术支持。</p>
 <p>WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：<a href="../../reference/device/#设备应用开发框架">reference-设备-设备应用开发框架</a> </p>
 <p>WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。</p>
 <p><img alt="device_wifi_activator" src="../../pic/develop_guide/device_WiFi_activator.png" /> </p>
