@@ -69,7 +69,7 @@ h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    margin-top: 42px;
+    margin-top: 15px;
 }
 
 h2 {
@@ -328,4 +328,8 @@ h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .head
 
 .skip {
     display: none;
+}
+
+span.main-set {
+    margin-left: 4px;
 }
