@@ -60,7 +60,7 @@
                 
                 
                     <li >
-                        <a href="../../user_interaction/" >用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -417,7 +417,7 @@
 <h1 id="_2">开发环境配置</h1>
 <p>安卓开发的环境配置参考<a href="../../reference/android/#开发环境配置">reference-安卓-开发环境配置</a></p>
 <h1 id="_3">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../../user_interaction/#账号管理">用户交互-帐号管理</a></p>
+<p>建议的用户交互流程见 <a href="../user_interaction.md#账号管理">用户交互-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p>获取账号管理对象</p>
@@ -816,7 +816,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
 <p>说明参见<a href="../../introduction/#功能介绍##home模型">基本介绍-功能介绍-home模型</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#home模型">用户交互-home模型</a></p>
+<p>建议的用户交互参见<a href="../user_interaction.md#home模型">用户交互-home模型</a></p>
 <p>创建家庭绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
 <p>创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：</p>
@@ -932,7 +932,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
 <h1 id="_17">和云端通信</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#云端通信">用户交互-和云端通信</a></p>
+<p>建议的用户交互参见<a href="../user_interaction.md#云端通信">用户交互-和云端通信</a></p>
 <h2 id="_18">一、发送消息到设备</h2>
 <h3 id="1klv">1、KLV格式</h3>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
@@ -1155,7 +1155,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 <h1 id="_21">局域网通信</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
+<p>建议的用户交互参见<a href="../user_interaction.md#局域网通信">用户交互-局域网通信</a></p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
@@ -1340,7 +1340,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <h1 id="ota">OTA</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
+<p>建议的用户交互参见<a href="../user_interaction.md#OTA">用户交互-OTA</a></p>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
 <p>若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota_1">一.获取OTA管理器对象</h4>
