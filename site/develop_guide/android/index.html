@@ -932,8 +932,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 </code></pre>
 
 <h1 id="_17">和云端通信</h1>
-<p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
-<p>建议的用户交互参见<a href="../../features/#云端通信">功能介绍-和云端通信</a></p>
+<p>说明参见<a href="../../introduction/#_22">功能说明-和云端通信</a></p>
 <h2 id="_18">一、发送消息到设备</h2>
 <h3 id="1klv">1、KLV格式</h3>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
@@ -1155,8 +1154,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 </code></pre>
 
 <h1 id="_21">局域网通信</h1>
-<p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
-<p>建议的用户交互参见<a href="../../features/#局域网通信">功能介绍-局域网通信</a></p>
+<p>说明参见<a href="../../features/#_28">功能说明-局域网通信</a></p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
@@ -1208,6 +1206,7 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 
 <p>最后，至于如何通过直连方式给设备发消息，详情见<code>和云端通讯</code>部分</p>
 <h1 id="_22">定时任务</h1>
+<p>说明参见<a href="../../features/#_29">功能说明-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="_23">获取定时管理器</h4>
 <h5 id="_24">使用默认时区</h5>
@@ -1340,9 +1339,8 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="ota">OTA</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
-<p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
-<p>建议的用户交互参见<a href="../../features/#OTA">功能介绍-OTA</a></p>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
+<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a></p>
 <p>若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota_1">一.获取OTA管理器对象</h4>
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
@@ -1380,6 +1378,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h1 id="_34">推送</h1>
+<p>说明参见<a href="../../features/#_30">功能说明-OTA</a></p>
 <p>AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。</p>
 <p>开发前的配置工作参考<a href="../../framework/android#推送开发准备">reference-安卓-推送开发准备</a></p>
 <blockquote>
