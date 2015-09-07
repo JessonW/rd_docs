@@ -419,7 +419,7 @@
 <h1 id="_2">开发环境配置</h1>
 <p>安卓开发的环境配置参考<a href="../../reference/android/#开发环境配置">reference-安卓-开发环境配置</a></p>
 <h1 id="_3">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../../features/#账号管理">功能介绍-帐号管理</a></p>
+<p>建议的用户交互流程见 <a href="../../features/#_11">功能说明-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p>获取账号管理对象</p>
@@ -566,6 +566,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 </code></pre>
 
 <h1 id="_4">设备管理</h1>
+<p>说明参见<a href="../../features/#_12">功能说明-设备管理</a></p>
 <h2 id="_5">独立设备</h2>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，App拿到这些信息后调用bindDevice接口绑定设备。对于gprs设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
 <p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
@@ -817,8 +818,6 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
-<p>说明参见<a href="../../introduction/#功能介绍##home模型">基本介绍-功能介绍-home模型</a></p>
-<p>建议的用户交互参见<a href="../../features/#home模型">功能介绍-home模型</a></p>
 <p>创建家庭绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
 <p>创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：</p>
