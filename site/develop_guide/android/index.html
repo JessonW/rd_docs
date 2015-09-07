@@ -60,7 +60,7 @@
                 
                 
                     <li >
-                        <a href="../../user_interaction/" >用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -165,6 +165,12 @@
                             
 <li >
     <a href="../../reference/cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/error_code/">Error Code</a>
 </li>
 
                         
@@ -399,14 +405,10 @@
     
         
         
-            
-        
         
         <li class="main">
             <a href="#error-code">Error Code</a>
         </li>
-        
-            
         
     
     </ul>
@@ -417,7 +419,7 @@
 <h1 id="_2">开发环境配置</h1>
 <p>安卓开发的环境配置参考<a href="../../reference/android/#开发环境配置">reference-安卓-开发环境配置</a></p>
 <h1 id="_3">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../../user_interaction/#账号管理">用户交互-帐号管理</a></p>
+<p>建议的用户交互流程见 <a href="../../features/#账号管理">功能介绍-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p>获取账号管理对象</p>
@@ -816,7 +818,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
 <p>说明参见<a href="../../introduction/#功能介绍##home模型">基本介绍-功能介绍-home模型</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#home模型">用户交互-home模型</a></p>
+<p>建议的用户交互参见<a href="../../features/#home模型">功能介绍-home模型</a></p>
 <p>创建家庭绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
 <p>创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：</p>
@@ -932,7 +934,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
 <h1 id="_17">和云端通信</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##云端通信">基本介绍-功能介绍-和云端通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#云端通信">用户交互-和云端通信</a></p>
+<p>建议的用户交互参见<a href="../../features/#云端通信">功能介绍-和云端通信</a></p>
 <h2 id="_18">一、发送消息到设备</h2>
 <h3 id="1klv">1、KLV格式</h3>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
@@ -1155,7 +1157,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 <h1 id="_21">局域网通信</h1>
 <p>说明参见<a href="../../introduction/#功能介绍##局域网通信">基本介绍-功能介绍-局域网通信</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#局域网通信">用户交互-局域网通信</a></p>
+<p>建议的用户交互参见<a href="../../features/#局域网通信">功能介绍-局域网通信</a></p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
@@ -1340,7 +1342,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <h1 id="ota">OTA</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p>说明参见<a href="../../introduction/#功能介绍##OTA">基本介绍-功能介绍-OTA</a></p>
-<p>建议的用户交互参见<a href="../../user_interaction/#OTA">用户交互-OTA</a></p>
+<p>建议的用户交互参见<a href="../../features/#OTA">功能介绍-OTA</a></p>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
 <p>若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota_1">一.获取OTA管理器对象</h4>
@@ -1769,338 +1771,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
-<p>error code[3000-5000]为AbleCloud内置的帐号管理，设备管理，存储服务等返回的错误码，[5001,6000]为AbleCloud平台返回的错误码，[6001-10000]为AbleCloud内部服务返回的错误码，因此建议用户自定义服务错误码区间为(1000-2000）或者10000以上。</p>
-<p>如果您使用AbleCloud提供的SDK进行APP或者云端Service开发，需关注[3000-5000]的错误码，具体说明如下：</p>
-<h2 id="skip_2"><span class="skip">||SKIP||</span></h2>
-<p>完整的错误码定义如下</p>
-<h3 id="3000-3500">请求相关常用错误码 (3000 - 3500)</h3>
-<table>
-<thead>
-<tr>
-<th>错误码</th>
-<th>简要说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3000</td>
-<td>系统内部错误</td>
-</tr>
-<tr>
-<td>3001</td>
-<td>请求HEADER错误</td>
-</tr>
-<tr>
-<td>3002</td>
-<td>请求参数不合法</td>
-</tr>
-<tr>
-<td>3003</td>
-<td>不支持的请求</td>
-</tr>
-<tr>
-<td>3004</td>
-<td>不允许的请求</td>
-</tr>
-<tr>
-<td>3005</td>
-<td>请求没有权限</td>
-</tr>
-<tr>
-<td>3006</td>
-<td>请求URI错误</td>
-</tr>
-<tr>
-<td>3007</td>
-<td>请求主域不存在</td>
-</tr>
-<tr>
-<td>3008</td>
-<td>请求子域不存在</td>
-</tr>
-<tr>
-<td>3009</td>
-<td>请求服务不存在</td>
-</tr>
-<tr>
-<td>3010</td>
-<td>请求方法不存在</td>
-</tr>
-<tr>
-<td>3011</td>
-<td>服务暂不可用</td>
-</tr>
-<tr>
-<td>3012</td>
-<td>请求超时</td>
-</tr>
-<tr>
-<td>3013</td>
-<td>网络异常</td>
-</tr>
-<tr>
-<td>3014</td>
-<td>签名已失效</td>
-</tr>
-<tr>
-<td>3015</td>
-<td>签名错误</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="3501-3600">帐号管理相关错误码 (3501 - 3600)</h3>
-<table>
-<thead>
-<tr>
-<th>错误码</th>
-<th>简要说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3501</td>
-<td>帐号不存在</td>
-</tr>
-<tr>
-<td>3502</td>
-<td>帐号已存在</td>
-</tr>
-<tr>
-<td>3503</td>
-<td>帐号不合法</td>
-</tr>
-<tr>
-<td>3504</td>
-<td>密码错误</td>
-</tr>
-<tr>
-<td>3505</td>
-<td>验证码错误</td>
-</tr>
-<tr>
-<td>3506</td>
-<td>验证码已失效</td>
-</tr>
-<tr>
-<td>3507</td>
-<td>邮箱不合法</td>
-</tr>
-<tr>
-<td>3508</td>
-<td>手机不合法</td>
-</tr>
-<tr>
-<td>3509</td>
-<td>帐号状态异常</td>
-</tr>
-<tr>
-<td>3510</td>
-<td>账号已经绑定</td>
-</tr>
-<tr>
-<td>3511</td>
-<td>安全认证失败</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="3601-3900">设备分组管理相关错误码 (3601 - 3900)</h3>
-<table>
-<thead>
-<tr>
-<th>错误码</th>
-<th>简要说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3601</td>
-<td>分组不存在</td>
-</tr>
-<tr>
-<td>3602</td>
-<td>分组已存在</td>
-</tr>
-<tr>
-<td>3603</td>
-<td>分组状态异常</td>
-</tr>
-<tr>
-<td>3604</td>
-<td>成员不存在</td>
-</tr>
-<tr>
-<td>3605</td>
-<td>成员已存在</td>
-</tr>
-<tr>
-<td>3606</td>
-<td>成员状态异常</td>
-</tr>
-<tr>
-<td>3801</td>
-<td>设备消息码非法</td>
-</tr>
-<tr>
-<td>3802</td>
-<td>设备不存在</td>
-</tr>
-<tr>
-<td>3803</td>
-<td>设备已存在</td>
-</tr>
-<tr>
-<td>3804</td>
-<td>消息不合法</td>
-</tr>
-<tr>
-<td>3805</td>
-<td>绑定码已失效</td>
-</tr>
-<tr>
-<td>3806</td>
-<td>绑定码错误</td>
-</tr>
-<tr>
-<td>3807</td>
-<td>设备不在线</td>
-</tr>
-<tr>
-<td>3808</td>
-<td>主设备不存在</td>
-</tr>
-<tr>
-<td>3809</td>
-<td>设备为主机</td>
-</tr>
-<tr>
-<td>3810</td>
-<td>消息为备机</td>
-</tr>
-<tr>
-<td>3811</td>
-<td>设备已绑定</td>
-</tr>
-<tr>
-<td>3812</td>
-<td>设备未绑定</td>
-</tr>
-<tr>
-<td>3813</td>
-<td>设备状态异常</td>
-</tr>
-<tr>
-<td>3814</td>
-<td>设备响应超时</td>
-</tr>
-<tr>
-<td>3815</td>
-<td>分享码不存在</td>
-</tr>
-<tr>
-<td>3816</td>
-<td>分享码不合法</td>
-</tr>
-<tr>
-<td>3817</td>
-<td>分享码已过期</td>
-</tr>
-<tr>
-<td>3818</td>
-<td>绑定设备超时</td>
-</tr>
-<tr>
-<td>3819</td>
-<td>不存在的管理员</td>
-</tr>
-<tr>
-<td>3820</td>
-<td>网关不匹配</td>
-</tr>
-<tr>
-<td>3821</td>
-<td>管理员不匹配</td>
-</tr>
-<tr>
-<td>3822</td>
-<td>设备未激活</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="3901-4000">存储服务相关错误码 (3901 - 4000)</h3>
-<table>
-<thead>
-<tr>
-<th>错误码</th>
-<th>简要说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>3901</td>
-<td>文件不存在</td>
-</tr>
-<tr>
-<td>3902</td>
-<td>文件已存在</td>
-</tr>
-<tr>
-<td>3903</td>
-<td>文件状态异常</td>
-</tr>
-<tr>
-<td>3904</td>
-<td>文件校验失败</td>
-</tr>
-<tr>
-<td>3905</td>
-<td>文件内容异常</td>
-</tr>
-<tr>
-<td>3920</td>
-<td>数据集不存在</td>
-</tr>
-<tr>
-<td>3921</td>
-<td>数据集已存在</td>
-</tr>
-<tr>
-<td>3922</td>
-<td>数据存在错误</td>
-</tr>
-<tr>
-<td>3923</td>
-<td>数据已存在</td>
-</tr>
-<tr>
-<td>3924</td>
-<td>数据不存在</td>
-</tr>
-<tr>
-<td>3925</td>
-<td>数据集不匹配</td>
-</tr>
-<tr>
-<td>3926</td>
-<td>数据索引超出索引范围</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table></div>
+<p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
             
         </div>
 

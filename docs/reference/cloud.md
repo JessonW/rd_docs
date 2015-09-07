@@ -1586,4 +1586,5 @@ public abstract  class ACDeviceStub {
 服务桩没有另外定义，和真正的服务开发类似，直接继承ACService类，实现其中的`handleMsg(ACMsg req, ACMsg resp)`接口，模拟另外依赖服务的行为即可。
 
 
-
+#Error Code
+参考[reference-Error Code](../reference/error_code.md)

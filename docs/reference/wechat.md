@@ -1788,3 +1788,6 @@ class ACTimerTaskService extends ACService {
     public function startTask($user, $deviceId, $taskId);
 }
 ```
+
+#Error Code
+参考[reference-Error Code](../reference/error_code.md)
