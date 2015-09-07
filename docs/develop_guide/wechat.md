@@ -113,6 +113,8 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 
 #设备管理#
 
+说明参见[功能说明-设备管理](../features.md#_12)
+
 ##独立设备##
 
 设备绑定的交互流程如下图所示：
@@ -303,9 +305,6 @@ $deviceService–>deleteSubDeviceFromGateway($user, $subDeviceId)
 
 ##Home模型##
 
-关于Home模型的介绍参见[基本介绍-功能介绍-Home模型](../introduction.md#功能介绍##home模型)。
-
-建议的用户交互参见[用户交互-Home模型](../features.md#home模型)。
 
 针对微信公众号这种应用环境，在Home模型下，创建“Home”、“Room”并绑定设备的交互流程与Android设备的流程几乎一致，可参考[Android设备的Home模型](android.md#home)。
 

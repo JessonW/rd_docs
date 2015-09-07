@@ -607,9 +607,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
 #和云端通信
 
-说明参见[基本介绍-功能介绍-和云端通信](../introduction.md#功能介绍##云端通信)
-
-建议的用户交互参见[功能介绍-和云端通信](../features.md#云端通信)
+说明参见[功能说明-和云端通信](../introduction.md#_22)
 
 
 ##一、发送消息到设备
@@ -838,10 +836,8 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 
 #局域网通信
-说明参见[基本介绍-功能介绍-局域网通信](../introduction.md#功能介绍##局域网通信)
 
-建议的用户交互参见[功能介绍-局域网通信](../features.md#局域网通信)
-
+说明参见[功能说明-局域网通信](../features.md#_28)
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）
 ```java
@@ -896,6 +892,8 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 
 #定时任务
+
+说明参见[功能说明-定时任务](../features.md#_29)
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1035,11 +1033,12 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 ## <span class="skip">||SKIP||</span>
 
-说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
-建议的用户交互参见[功能介绍-OTA](../features.md#OTA)
+
 
 ![OTA](../pic/develop_guide/OTA.png)
+
+说明参见[功能说明-OTA](../introduction.md#ota)
 
 若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 ####一.获取OTA管理器对象
@@ -1083,6 +1082,8 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 
 #推送
+
+说明参见[功能说明-OTA](../features.md#_30)
 
 AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
 

@@ -2,7 +2,7 @@
 **iOS的开发的环境配置参考[开发框架-iOS-开发环境配置](../framework/iOS#开发环境配置)**
 
 #帐号管理
-建议的用户交互流程见 [用户交互-帐号管理](../features.md#账号管理)
+建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
 
 ##1、普通帐号注册
 
@@ -64,6 +64,9 @@
 ```
 
 #设备管理
+
+说明参见[功能说明-设备管理](../features.md#_12)
+
 ##独立设备
 
 用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。
@@ -84,9 +87,7 @@
 
 
 ##home模型
-说明参见[基本介绍-功能介绍-home模型](../introduction.md#功能介绍##home模型)
 
-建议的用户交互参见[用户交互-home模型](../features.md#home模型)
 
 ###home模型下添加独立设备
 
@@ -112,10 +113,34 @@
 
 <font color="red">**补充开发指导**</font>
 
-#OTA
-说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
-建议的用户交互参见[用户交互-OTA](../features.md#OTA)
+#和云端通信
+
+说明参见[功能说明-和云端通信](../introduction.md#_22)
+
+##1、发送到设备
+
+<font color="red">**补充开发指导**</font>
+
+##2、发送到服务
+
+<font color="red">**补充开发指导**</font>
+
+
+#局域网通信
+
+说明参见[功能说明-局域网通信](../features.md#_28)
+
+<font color="red">**补充开发指导**</font>
+
+#定时任务
+
+说明参见[功能说明-定时任务](../features.md#_29)
+
+
+#OTA
+
+说明参见[功能说明-OTA](../introduction.md#ota)
 
 ![OTA](../pic/develop_guide/OTA.png)
 
@@ -147,6 +172,9 @@
 
 
 #推送
+
+说明参见[功能说明-OTA](../features.md#_30)
+
 见[开发框架-开发环境配置](../framework/android#开发环境配置)
 
 <font color="red">**补充开发指导**</font>
@@ -155,27 +183,8 @@
 
 <font color="red">**补充开发指导**</font>
 
-#和云端通信
-说明参见[基本介绍-功能介绍-和云端通信](../introduction.md#功能介绍##云端通信)
 
-建议的用户交互参见[用户交互-和云端通信](../features.md#云端通信)
 
-##1、发送到设备
-
-<font color="red">**补充开发指导**</font>
-
-##2、发送到服务
-
-<font color="red">**补充开发指导**</font>
-
-#局域网通信
-说明参见[基本介绍-功能介绍-局域网通信](../introduction.md#功能介绍##局域网通信)
-
-建议的用户交互参见[用户交互-局域网通信](../features.md#局域网通信)
-
-<font color="red">**补充开发指导**</font>
-
-#定时任务
 
 
 #Error Code
