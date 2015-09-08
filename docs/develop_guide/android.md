@@ -859,9 +859,9 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 #局域网通信
 
-说明参见[功能说明-局域网通信](../features.md#_28)
+功能说明参见[功能说明-局域网通信](../features.md#_28)。
 
-获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）
+获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
 bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
     @Override
@@ -882,7 +882,7 @@ bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
     }
 });
 ```
-因为局域网通讯要求设备与app处于同一个wifi下，若网络环境变化，如切换wifi时，直连的状态会发生改变，所以需要监听网络环境变化
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
 ```java
 //监听网络变化
 ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
@@ -893,7 +893,7 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
     }
 });
 ```
-此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态
+此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
 ```java
 //当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
 AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
@@ -910,12 +910,12 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
     }
 });
 ```
-最后，至于如何通过直连方式给设备发消息，详情见`和云端通讯`部分
+最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
 
 
 #定时任务
 
-功能说明请参见[功能说明-定时任务](../features.md#_29)。
+功能说明参见[功能说明-定时任务](../features.md#_29)。
 
 ## <span class="skip">||SKIP||</span>
 
@@ -931,11 +931,11 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 ####添加定时任务
 >**<font color="red">注意</font>：**
 
->**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备**
+>**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。**
 
->**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败**
+>**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
 
->**3、timeCycle需要在timePoint时间点的基础上,选择循环方式**
+>**3、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
 
 >+ **"once":**单次循环
 
@@ -984,7 +984,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 ```
 
 ####修改定时任务
-接口为modifyTask，其他参数与定义与创建定时任务相同
+接口为modifyTask，其他参数与定义与创建定时任务相同。
 
 ####开启定时任务
 ```java
@@ -1056,19 +1056,21 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 ## <span class="skip">||SKIP||</span>
 
 
-
-
 ![OTA](../pic/develop_guide/OTA.png)
 
-说明参见[功能说明-OTA](../introduction.md#ota)
+说明参见[功能说明-OTA](../introduction.md#ota)。
 
-若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
+若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
+
 ####一.获取OTA管理器对象
+
 ```java
 ACOTAMgr otaMgr = AC.otaMgr();
 ```
+
 ####二. 检查升级
-1.检查设备是否有新的OTA版本，同时获取升级日志
+
+检查设备是否有新的OTA版本，同时获取升级日志。
 ```java
 otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() {
     @Override
@@ -1101,19 +1103,17 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 ```
 
 
-
-
 #推送
 
-说明参见[功能说明-OTA](../features.md#_30)
+说明参见[功能说明-OTA](../features.md#_30)。
 
-AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
+AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 
 ##推送开发准备
 
 下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。
 
-首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示
+首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。
 
 ![push1](../pic/develop_guide/push1.png) 
 
@@ -1126,16 +1126,17 @@ AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进�
 
 ><font color="red">注意</font>
 
->1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装
+>1、调试的时候若开发环境配置有变化的话尽量手动卸载APP之后再重新安装。
 
->2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试
+>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。
 
->3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
-
+>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。
 
 
 ##一、推送开发环境配置
-如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
+
+如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。
+
 ####1、在`<manifest>`标签下添加权限：
 ```java
 <!-- 必选 -->
@@ -1292,11 +1293,14 @@ AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进�
 ```
 
 ##二、开启推送服务
-在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：
+
+AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：
+
 ####1、获取推送管理器
 ```java
 ACNotificationMgr notificationMgr=AC.notificationMgr();
 ```
+
 ####2、在应用的主Activity onCreate() 函数中开启推送服务
 ```java
 notificationMgr.init();
@@ -1370,6 +1374,7 @@ notificationMgr.setMessageHandler(new UmengMessageHandler() {
     }
 });
 ```
+
 ####5、在退出登录之后移除掉旧的别名
 ```java
 notificationMgr.removeAlias(userId, new VoidCallback() {
@@ -1384,21 +1389,16 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 });
 ```
 
-
-
-
 #文件存储
 ><font color="red">注意</font>：
 
->1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
+>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限：
 
+> ```
+> <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+> ```
 
->```java
-><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
->```
-
-
->2、上传下载支持断点续传功能
+>2、上传下载支持断点续传功能。
 
 
 ##一、获取文件管理器
