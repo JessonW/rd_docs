@@ -26,6 +26,9 @@ $(document).ready(function() {
         $search_modal.find('#mkdocs-search-query').focus();
     });
 
+    // 调整第一个h1标题与文档顶部的距离
+    $('div[role="main"] h1:first-child').css('margin-top', '15px');
+
     // Highlight.js
     hljs.initHighlightingOnLoad();
     $('table').addClass('table table-striped table-hover');
