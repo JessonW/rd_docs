@@ -27,8 +27,8 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -168,156 +168,251 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../error_code/">Error Code</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
                 </ul>
             
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                
-                    <li >
-                        <a rel="next" href="../../develop_guide/third_proxy/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="prev" href="../iOS/">
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                
-                
-            </ul>
         </div>
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">简介</a></li>
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">安卓客户端开发参考</a>
+        </li>
         
     
-        <li class="main "><a href="#_2">开发环境配置</a></li>
         
-            <li><a href="#sdk">SDK发布库</a></li>
         
-            <li><a href="#_3">开发环境设置</a></li>
         
-            <li><a href="#_4">应用程序初始化</a></li>
-        
-    
-        <li class="main "><a href="#_5">推送开发准备</a></li>
+        <li class="main">
+            <a href="#_2">简介</a>
+        </li>
         
     
-        <li class="main "><a href="#-">交互协议-基础数据结构</a></li>
         
-            <li><a href="#_6">基础数据结构</a></li>
         
-    
-        <li class="main "><a href="#sdk_1">SDK接口列表</a></li>
+            
+                
+            
         
-            <li><a href="#_8">基本对象结构</a></li>
         
-            <li><a href="#_9">用户帐号管理</a></li>
+        <li class="main">
+            <a href="#-">交互协议-基础数据结构<span class="main-set parent_-">+</span></a>
+        </li>
         
-            <li><a href="#_10">设备激活</a></li>
-        
-            <li><a href="#_11">设备管理( 独立设备和网关型设备）</a></li>
-        
-            <li><a href="#home">Home模型</a></li>
-        
-            <li><a href="#ota">OTA</a></li>
-        
-            <li><a href="#_12">设备定时任务</a></li>
-        
-            <li><a href="#_13">消息推送</a></li>
-        
-            <li><a href="#_14">和云端通信</a></li>
-        
-            <li><a href="#_15">实时消息同步</a></li>
-        
-            <li><a href="#_16">局域网通信</a></li>
-        
-            <li><a href="#_18">桩模块</a></li>
-        
-            <li><a href="#ac">AC</a></li>
+            
+            <li class="sub parent_-" style="display: none;"><a href="#_3">基础数据结构</a></li>
+            
         
     
-        <li class="main "><a href="#_21">适用蓝牙的接口</a></li>
         
-            <li><a href="#1">1、帐号管理</a></li>
         
-            <li><a href="#2">2、设备管理</a></li>
+            
+                
+            
         
-            <li><a href="#3ota">3、OTA</a></li>
+            
+                
+            
         
-            <li><a href="#4">4、消息推送</a></li>
+            
+                
+            
         
-            <li><a href="#5">5、和云端通信</a></li>
+            
+                
+            
         
-            <li><a href="#6">6、文件存储</a></li>
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#sdk">SDK接口列表<span class="main-set parent_sdk">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_4">基本对象结构</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#ac">AC</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_5">用户帐号管理</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_6">设备激活</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_7">设备管理( 独立和网关型）</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#home">Home模型</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#ota">OTA</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_8">设备定时任务</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_9">消息推送</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_10">和云端通信</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_11">实时消息同步</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_12">局域网通信</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备管理</a></li>
+            
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#3ota">3、OTA</a></li>
+            
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#4">4、消息推送</a></li>
+            
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#5">5、和云端通信</a></li>
+            
+        
+            
+            <li class="sub parent__17" style="display: none;"><a href="#6">6、文件存储</a></li>
+            
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#error-code">Error Code</a>
+        </li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">简介</h1>
+<h1 id="_1">安卓客户端开发参考</h1>
+<h1 id="_2">简介</h1>
 <p>SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。</p>
 <blockquote>
 <p><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。</p>
 </blockquote>
-<h1 id="_2">开发环境配置</h1>
-<h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.0.1.zip"><code>ac-service-android.jar</code></a></p>
-<blockquote>
-<p><font color="red">注意:</font></p>
-<p>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下</p>
-<p>2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下</p>
-</blockquote>
-<h2 id="_3">开发环境设置</h2>
-<p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
-<pre><code class="java">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
-&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot;/&gt;
-&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
-&lt;uses-permission android:name=&quot;android.permission.CHANGE_WIFI_STATE&quot; /&gt;
-&lt;uses-permission android:name=&quot;android.permission.CHANGE_NETWORK_STATE&quot;/&gt;
-</code></pre>
-
-<h2 id="_4">应用程序初始化</h2>
-<p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-继承<code>Application</code>类，并且在<code>onCreate()</code>方法中调用此方法来进行初始化</p>
-<p>开发阶段，请初始化测试环境</p>
-<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
-</code></pre>
-
-<p>在完成测试阶段之后，需要迁移到正式环境下</p>
-<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId);
-</code></pre>
-
-<h1 id="_5">推送开发准备</h1>
-<p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
-<p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示</p>
-<p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
-<p>记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。</p>
-<p><img alt="push2" src="../../pic/develop_guide/push2.png" /> </p>
-<p>友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。</p>
 <h1 id="-">交互协议-基础数据结构</h1>
 <p>首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了三种格式的消息：</p>
 <ul>
@@ -325,7 +420,7 @@
 <li><strong>ACDeviceMsg：</strong>APP与device之间的交互消息，使用二进制或json通讯协议。</li>
 <li><strong>ACKLVDeviceMsg：</strong>APP与device之间的交互消息，使用KLV通讯协议。</li>
 </ul>
-<h2 id="_6">基础数据结构</h2>
+<h2 id="_3">基础数据结构</h2>
 <h3 id="acobject">ACObject</h3>
 <p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
 <pre><code class="java">public class ACObject {
@@ -461,33 +556,6 @@
 }
 </code></pre>
 
-<h4 id="_7">使用示例</h4>
-<p>client端向UDS service发起请求（伪代码，完整代码请参看各部分demo）：</p>
-<pre><code class="java">ACMsg req = new ACMsg();                                // 创建一个空请求消息
-req.setName(&quot;controlLight&quot;);                            // 设置请求消息名
-req.put(&quot;deviceId&quot;, light.getId());                     // 设置一个请求属性“设备id”
-req.put(&quot;action&quot;, &quot;on&quot;);                                // 设置另一属性&quot;动作“，开灯
-AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallback&lt;ACMsg&gt;() {
-    @Override
-    public void finish(ACMsg resp) {
-        //发送成功并接收服务的响应消息
-    }
-
-    @Override
-    public void error(Exception e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});                                                     // 发送请求并返回服务端响应
-</code></pre>
-
-<p>服务端处理请求（伪代码，完整代码请参看各部分demo）：</p>
-<pre><code class="java">private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
-    Long lightId = req.get(&quot;deviceId&quot;);     // 从请求中获取“设备id”
-    String action = req.get(&quot;action&quot;);      // 从请求中获取“动作”
-    // do something
-}
-</code></pre>
-
 <h3 id="acdevicemsg">ACDeviceMsg</h3>
 <p>在使用<strong>二进制</strong>或<strong>json</strong>格式通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。但是ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。ACDeviceMsg定义如下：</p>
 <pre><code class="java">public class ACDeviceMsg {
@@ -545,8 +613,8 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 <blockquote>
 <p><font color="brown">注：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer</font></p>
 </blockquote>
-<h1 id="sdk_1">SDK接口列表</h1>
-<h2 id="_8">基本对象结构</h2>
+<h1 id="sdk">SDK接口列表</h1>
+<h2 id="_4">基本对象结构</h2>
 <p>这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。</p>
 <h3 id="acaccount">ACAccount</h3>
 <p>用来表示AbleCloud的一个注册帐号信息，定义如下：</p>
@@ -803,7 +871,170 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 }
 </code></pre>
 
-<h2 id="_9">用户帐号管理</h2>
+<h2 id="ac">AC</h2>
+<p>SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：</p>
+<pre><code class="java">public class AC {
+    public static Context context;
+    public static String majorDomain;
+    public static long majorDomainId;
+
+    /**
+     * 调试模式
+     */
+    public static final int TEST_MODE = 0;
+    public static final int PRODUCTION_MODE = 1;
+
+    /**
+     * 设备方案
+     */
+    public static final int DEVICE_MTK = 0;
+    public static final int DEVICE_HF = 1;
+    public static final int DEVICE_MX = 2;
+    public static final int DEVICE_MARVELL = 3;
+    public static final int DEVICE_QCA4004 = 4;
+    public static final int DEVICE_MURATA = 5;
+    public static final int DEVICE_WM = 6;
+    public static final int DEVICE_RAK = 7;
+
+    /**
+     * Timeout的默认时间
+     */
+    public static final int DEVICE_ACTIVATOR_DEFAULT_TIMEOUT = 5 * 60 * 1000;
+    public static final int FIND_DEVICE_DEFAULT_TIMEOUT = 1 * 60 * 1000;
+    public static final int SEND_TO_LOCAL_DEVICE_DEFAULT_TIMEOUT = 10 * 1000;
+
+    /**
+     * app与设备通讯方式
+     */
+    public static final int ONLY_LOCAL = 1;
+    public static final int ONLY_CLOUD = 2;
+    public static final int LOCAL_FIRST = 3;
+    public static final int CLOUD_FIRST = 4;
+
+    private static HashMap&lt;String, ACService&gt; serviceStubs;
+
+    /**
+     * 初始化设备的主域信息，默认线上环境
+     */
+    public static void init(Application App, String MajorDomain, String MajorDomainId) {}
+
+    /**
+     * 初始化设备的主域信息，可选模式为测试环境
+     */
+    public static void init(Application App, String MajorDomain, long MajorDomainId, int mode) {}
+
+    /**
+     * 往某一服务发送命令/消息
+     *
+     * @param subDomain 服务所属子域名
+     * @param name      服务名
+     * @param version   服务版本
+     * @param req       具体的消息内容
+     *
+     * @return 返回结果的监听回调，返回服务端的响应消息
+     */
+    public static void sendToService(String subDomain, String name, int version,
+                                     ACMsg req, final PaylodCallback&lt;ACMsg&gt; callback) {}
+
+    /**
+     * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
+     *
+     * @param timeout   发现本地设备的超时时间，单位毫秒
+     * @param callback  返回结果的监听回调，返回设备列表
+     */
+    public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
+
+    /**
+     * 获取帐号管理器。
+     * 可以调用前面介绍的帐号管理ACAccountMgr提供的各个通用接口
+     *
+     * @return  帐号管理器
+     */
+    public static ACAccountMgr accountMgr() {}
+
+    /**
+     * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
+     * @param deviceType 设备wifi模块类型
+     *
+     * @return  设备激活器
+     */
+    public static ACDeviceActivator deviceActivator(int deviceType) {}
+
+     /**
+     * 获取简单无组的设备管理器
+     * 可以调用前面介绍的设备管理ACBindMgr提供的各个通用接口
+     *
+     * @return  绑定管理器
+     */
+    public static ACBindMgr bindMgr() {}
+
+    /**
+     * 获取分组管理器
+     * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
+     *
+     * @return 分组管理器
+     */
+    public static ACGroupMgr groupMgr() {}
+
+    /**
+     * 获取消息推送管理器（集成了友盟推送的一部分接口）
+     * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
+     *
+     * @return 推送通知管理器
+     */
+    public static ACNotificationMgr notificationMgr() {}
+
+    /**
+     * 获取实时消息管理器
+     * 可以调用前面介绍的实时消息管理ACPushMgr提供的各个通用接口
+     *
+     * @return 实时消息管理器
+     */
+    public static ACPushMgr pushMgr() {}
+
+    /**
+     * 获取定时管理器
+     * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
+     *
+     * @return 定时管理器
+     */
+    public static ACTimerMgr timerMgr() {}
+
+    /**
+     * 获取定时管理器
+     * @param timeZone 自定义时区
+     *
+     * @return 定时管理器
+     */
+    public static ACTimerMgr timerMgr(TimeZone timeZone) {}
+
+    /**
+     * 获取OTA管理器
+     * 可以调用前面介绍的OTA管理ACOTAMgr提供的各个通用接口
+     *
+     * @return OTA管理器
+     */
+    public static ACOTAMgr otaMgr() {}
+
+    /**
+     * 获取文件上传下载管理器
+     * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
+     *
+     * @return 文件管理器
+     */
+    public static ACFileMgr fileMgr() {}
+
+    /**
+     * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
+     * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
+     *
+     * @param name  服务名
+     * @param stub  服务桩，需要开发者自己实现具体的stub
+     */
+    public static void addServiceStub(String name, ACService stub) {}
+</code></pre>
+
+<h2 id="_5">用户帐号管理</h2>
 <p>一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
 <pre><code class="java">public interface ACAccountMgr {
 
@@ -955,7 +1186,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 }
 </code></pre>
 
-<h2 id="_10">设备激活</h2>
+<h2 id="_6">设备激活</h2>
 <p>当一款智能设备上市，交付到终端用户时，虽然是智能设备，但是目前大多数智能设备并没有键盘、屏幕等UI（用户界面），那么如何让一台新设备连上网络呢，这里就要用到设备激活功能。新设备激活的大致流程如下：</p>
 <blockquote>
 <ol>
@@ -1034,7 +1265,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 <blockquote>
 <p>通过以上ACDeviceActivator提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
 </blockquote>
-<h2 id="_11">设备管理( 独立设备和网关型设备）</h2>
+<h2 id="_7">设备管理( 独立和网关型）</h2>
 <p>将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。</p>
 <pre><code class="java">public interface ACBindMgr {
 
@@ -1579,7 +1810,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 }
 </code></pre>
 
-<h2 id="_12">设备定时任务</h2>
+<h2 id="_8">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
@@ -1723,7 +1954,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 }
 </code></pre>
 
-<h2 id="_13">消息推送</h2>
+<h2 id="_9">消息推送</h2>
 <p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
 <pre><code class="java">public interface ACNotificationMgr {
 
@@ -1958,7 +2189,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 }
 </code></pre>
 
-<h2 id="_14">和云端通信</h2>
+<h2 id="_10">和云端通信</h2>
 <pre><code>
 public class AC {
     /**
@@ -1989,7 +2220,7 @@ public class AC {
 
 </code></pre>
 
-<h2 id="_15">实时消息同步</h2>
+<h2 id="_11">实时消息同步</h2>
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong>
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
 <pre><code class="java">public interface ACPushMgr {
@@ -2018,7 +2249,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 }
 </code></pre>
 
-<h2 id="_16">局域网通信</h2>
+<h2 id="_12">局域网通信</h2>
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <pre><code class="java">/**
  * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
@@ -2029,7 +2260,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
 </code></pre>
 
-<h3 id="_17">文件存储</h3>
+<h3 id="_13">文件存储</h3>
 <p>如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
 <pre><code class="java">public interface ACFileMgr {
 
@@ -2134,9 +2365,9 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h2 id="_18">桩模块</h2>
+<h2 id="_14">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_19">设备桩</h4>
+<h4 id="_15">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2144,7 +2375,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h4 id="_20">服务桩</h4>
+<h4 id="_16">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，其定义如下：</p>
 <pre><code class="java">public abstract class ACService {
     /**
@@ -2156,170 +2387,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     public abstract void handleMsg(ACMsg req, ACMsg resp);
 </code></pre>
 
-<h2 id="ac">AC</h2>
-<p>前面，我们分别介绍了ablecloud SDK提供的各种功能，这些功能包括设备激活、云端服务、测试桩等。SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口。AC的定义如下：</p>
-<pre><code class="java">public class AC {
-    public static Context context;
-    public static String majorDomain;
-    public static long majorDomainId;
-
-    /**
-     * 调试模式
-     */
-    public static final int TEST_MODE = 0;
-    public static final int PRODUCTION_MODE = 1;
-
-    /**
-     * 设备方案
-     */
-    public static final int DEVICE_MTK = 0;
-    public static final int DEVICE_HF = 1;
-    public static final int DEVICE_MX = 2;
-    public static final int DEVICE_MARVELL = 3;
-    public static final int DEVICE_QCA4004 = 4;
-    public static final int DEVICE_MURATA = 5;
-    public static final int DEVICE_WM = 6;
-    public static final int DEVICE_RAK = 7;
-
-    /**
-     * Timeout的默认时间
-     */
-    public static final int DEVICE_ACTIVATOR_DEFAULT_TIMEOUT = 5 * 60 * 1000;
-    public static final int FIND_DEVICE_DEFAULT_TIMEOUT = 1 * 60 * 1000;
-    public static final int SEND_TO_LOCAL_DEVICE_DEFAULT_TIMEOUT = 10 * 1000;
-
-    /**
-     * app与设备通讯方式
-     */
-    public static final int ONLY_LOCAL = 1;
-    public static final int ONLY_CLOUD = 2;
-    public static final int LOCAL_FIRST = 3;
-    public static final int CLOUD_FIRST = 4;
-
-    private static HashMap&lt;String, ACService&gt; serviceStubs;
-
-    /**
-     * 初始化设备的主域信息，默认线上环境
-     */
-    public static void init(Application App, String MajorDomain, String MajorDomainId) {}
-
-    /**
-     * 初始化设备的主域信息，可选模式为测试环境
-     */
-    public static void init(Application App, String MajorDomain, long MajorDomainId, int mode) {}
-
-    /**
-     * 往某一服务发送命令/消息
-     *
-     * @param subDomain 服务所属子域名
-     * @param name      服务名
-     * @param version   服务版本
-     * @param req       具体的消息内容
-     *
-     * @return 返回结果的监听回调，返回服务端的响应消息
-     */
-    public static void sendToService(String subDomain, String name, int version,
-                                     ACMsg req, final PaylodCallback&lt;ACMsg&gt; callback) {}
-
-    /**
-     * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
-     *
-     * @param timeout   发现本地设备的超时时间，单位毫秒
-     * @param callback  返回结果的监听回调，返回设备列表
-     */
-    public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
-
-    /**
-     * 获取帐号管理器。
-     * 可以调用前面介绍的帐号管理ACAccountMgr提供的各个通用接口
-     *
-     * @return  帐号管理器
-     */
-    public static ACAccountMgr accountMgr() {}
-
-    /**
-     * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
-     * @param deviceType 设备wifi模块类型
-     *
-     * @return  设备激活器
-     */
-    public static ACDeviceActivator deviceActivator(int deviceType) {}
-
-     /**
-     * 获取简单无组的设备管理器
-     * 可以调用前面介绍的设备管理ACBindMgr提供的各个通用接口
-     *
-     * @return  绑定管理器
-     */
-    public static ACBindMgr bindMgr() {}
-
-    /**
-     * 获取分组管理器
-     * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
-     *
-     * @return 分组管理器
-     */
-    public static ACGroupMgr groupMgr() {}
-
-    /**
-     * 获取消息推送管理器（集成了友盟推送的一部分接口）
-     * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
-     *
-     * @return 推送通知管理器
-     */
-    public static ACNotificationMgr notificationMgr() {}
-
-    /**
-     * 获取实时消息管理器
-     * 可以调用前面介绍的实时消息管理ACPushMgr提供的各个通用接口
-     *
-     * @return 实时消息管理器
-     */
-    public static ACPushMgr pushMgr() {}
-
-    /**
-     * 获取定时管理器
-     * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
-     *
-     * @return 定时管理器
-     */
-    public static ACTimerMgr timerMgr() {}
-
-    /**
-     * 获取定时管理器
-     * @param timeZone 自定义时区
-     *
-     * @return 定时管理器
-     */
-    public static ACTimerMgr timerMgr(TimeZone timeZone) {}
-
-    /**
-     * 获取OTA管理器
-     * 可以调用前面介绍的OTA管理ACOTAMgr提供的各个通用接口
-     *
-     * @return OTA管理器
-     */
-    public static ACOTAMgr otaMgr() {}
-
-    /**
-     * 获取文件上传下载管理器
-     * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
-     *
-     * @return 文件管理器
-     */
-    public static ACFileMgr fileMgr() {}
-
-    /**
-     * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
-     * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
-     *
-     * @param name  服务名
-     * @param stub  服务桩，需要开发者自己实现具体的stub
-     */
-    public static void addServiceStub(String name, ACService stub) {}
-</code></pre>
-
-<h1 id="_21">适用蓝牙的接口</h1>
+<h1 id="_17">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
@@ -2766,22 +2834,25 @@ public class ACACL {
      */
     public void unsetUserDeny(OpType opType, long userId);
 }
-</code></pre></div>
+</code></pre>
+
+<h1 id="error-code">Error Code</h1>
+<p>参考<a href="../error_code/">reference-Error Code</a></p></div>
             
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

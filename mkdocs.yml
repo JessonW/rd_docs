@@ -5,7 +5,7 @@ theme: readthedocs
 pages:
 #- Home: index.md
 - 基本介绍: introduction.md
-- 用户交互: user_interaction.md
+- 功能说明: features.md
 - 开发指导:
     - 客户端-安卓: develop_guide/android.md
     - 客户端-iOS: develop_guide/iOS.md
@@ -23,6 +23,7 @@ pages:
     - 设备-安卓系统: reference/device_android.md
     - 设备-linux系统: reference/device_linux.md
     - 云端服务: reference/cloud.md
+    - Error Code: reference/error_code.md
 - Q&A: QandA.md
 
 

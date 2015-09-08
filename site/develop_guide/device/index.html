@@ -27,8 +27,8 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -168,115 +168,226 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../../reference/error_code/">Error Code</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
                 </ul>
             
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                
-                    <li >
-                        <a rel="next" href="../wechat/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="prev" href="../device_android/">
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                
-                
-            </ul>
         </div>
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">开发准备</a></li>
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">开发准备</a>
+        </li>
         
     
-        <li class="main "><a href="#_2">配置设备基本信息</a></li>
+        
+        
+        
+        <li class="main">
+            <a href="#_2">配置设备基本信息</a>
+        </li>
         
     
-        <li class="main "><a href="#_3">设备激活</a></li>
         
-            <li><a href="#wifi">通过WiFi连接到云的设备（包括独立设备和网关)</a></li>
         
-            <li><a href="#_4">通过蜂窝网络连接到云端的设备</a></li>
+            
+                
+            
         
-            <li><a href="#_5">通过以太网连接到云端的设备</a></li>
+            
+                
+            
         
-    
-        <li class="main "><a href="#_6">设备绑定管理</a></li>
+            
+                
+            
         
-            <li><a href="#_7">子设备的绑定</a></li>
         
-            <li><a href="#_12">子设备解除绑定</a></li>
+        <li class="main">
+            <a href="#_3">设备激活<span class="main-set parent__3">+</span></a>
+        </li>
         
-    
-        <li class="main "><a href="#ota">OTA</a></li>
+            
+            <li class="sub parent__3" style="display: none;"><a href="#wifi">通过WiFi连接到云的设备</a></li>
+            
         
-            <li><a href="#_13">设备与云端交互流程</a></li>
+            
+            <li class="sub parent__3" style="display: none;"><a href="#_4">通过蜂窝网络连接到云端的设备</a></li>
+            
         
-            <li><a href="#ota_1">OTA启动消息</a></li>
-        
-            <li><a href="#ota_2">OTA文件传输消息</a></li>
-        
-            <li><a href="#ota_3">OTA文件块传输消息</a></li>
-        
-            <li><a href="#ota_4">OTA文件传输结束消息</a></li>
-        
-            <li><a href="#ota_5">OTA结束消息</a></li>
-        
-            <li><a href="#ota_6">OTA确认升级消息</a></li>
-        
-    
-        <li class="main "><a href="#_14">和云端通信</a></li>
-        
-            <li><a href="#_15">设备上报消息</a></li>
-        
-            <li><a href="#_17">设备接收云端指令</a></li>
-        
-            <li><a href="#_19">接口定义</a></li>
+            
+            <li class="sub parent__3" style="display: none;"><a href="#_5">通过以太网连接到云端的设备</a></li>
+            
         
     
-        <li class="main "><a href="#_22">局域网通信</a></li>
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_6">设备绑定管理<span class="main-set parent__6">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_7">子设备的绑定</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_12">子设备解除绑定</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ota">OTA<span class="main-set parent_ota">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#_13">设备与云端交互流程</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_1">OTA启动消息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_2">OTA文件传输消息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_3">OTA文件块传输消息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_4">OTA文件传输结束消息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_5">OTA结束消息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_6">OTA确认升级消息</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_14">和云端通信<span class="main-set parent__14">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__14" style="display: none;"><a href="#_15">设备上报消息</a></li>
+            
+        
+            
+            <li class="sub parent__14" style="display: none;"><a href="#_17">设备接收云端指令</a></li>
+            
+        
+            
+            <li class="sub parent__14" style="display: none;"><a href="#_19">接口定义</a></li>
+            
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_22">局域网通信</a>
+        </li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
+<p>嵌入式设备开发指导</p>
 <h1 id="_1">开发准备</h1>
 <p>在进行设备开发前，需要先做以下准备：</p>
 <ol>
 <li>在管理后台创建产品，选择产品的数据类型。创建以后，会获得该款产品的subdomianID。</li>
-<li>在产品管理页面的功能点设置页面设置产品的数据点和数据包。设备和云端通信时，都要按照定义的数据包进行通信。</li>
+<li>在产品管理页面的功能点设置页面设置产品的<a href="../../introduction/#_5">数据点</a>和<a href="../../introduction/#_5">数据包</a>。设备和云端通信时，都要按照定义的数据包进行通信。</li>
 <li>在设备密钥页面选择设备和云端通信采用的加密方式。AbleCloud的环境分为开发使用的test环境和正式生产使用的生成环境。test环境下，可以不加密。正式环境中，必须加密。</li>
 </ol>
 <p>需要厂商烧制到设备中的信息包括：</p>
 <ul>
 <li>设备版本：4字节</li>
 <li>设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）</li>
-<li>设备ID：16字节，可使用WiFi模块的MAC地址</li>
+<li>设备ID：16字节，可独立烧制，也可使用WiFi模块的MAC地址。使用MAC地址作为设备ID时，需要在MAC地址前补四个0凑齐16字节。</li>
 <li>设备域信息：（两个字节的domain加上6个字节的subdomain）</li>
 </ul>
 <h1 id="_2">配置设备基本信息</h1>
@@ -285,8 +396,165 @@
 如下图所示：</p>
 <p><img alt="" src="../../pic/develop_guide/device_config.png" /></p>
 <h1 id="_3">设备激活</h1>
-<p>在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
-<h2 id="wifi">通过WiFi连接到云的设备（包括独立设备和网关)</h2>
+<p>设备连接到云端，和云端完成通信握手叫做设备激活。
+在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
+<h2 id="wifi">通过WiFi连接到云的设备</h2>
+<p>(包括独立设备和网关)</p>
+<p>对于市面上常见的WiFi模块，AbleCloud都进行了适配，已经完成适配的WiFi模块见下表：</p>
+<table>
+<thead>
+<tr>
+<th>合作厂商</th>
+<th>模块型号</th>
+<th>WIFI芯片</th>
+<th>AirKiss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>汉枫</td>
+<td>LPB100</td>
+<td>MTK</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>LPB200</td>
+<td>Marvell</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>LPT100</td>
+<td>MTK</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>LPT200</td>
+<td>MTK</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>庆科</td>
+<td>EMW3162</td>
+<td>broadcom</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>EMW3165</td>
+<td>broadcom</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>EMW3088</td>
+<td>Marvell</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>EMW1088</td>
+<td>Marvell</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>江波龙</td>
+<td>WK1230</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>GT1216</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>GT141</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>WK1221</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>思存</td>
+<td>ITM-IOE01</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td></td>
+<td>ITM-IOE20</td>
+<td>QCA4004</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>航锐</td>
+<td>HR WF411</td>
+<td>QCA4004</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td></td>
+<td>HR WF422</td>
+<td>QCA4004</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>Marvel</td>
+<td></td>
+<td>Marvel-88MC500</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>联盛德</td>
+<td></td>
+<td>HED10W07SN</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>卓立合</td>
+<td>LH781</td>
+<td>MTK7681</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>新岸线</td>
+<td></td>
+<td>NL6621</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>Realtek</td>
+<td></td>
+<td>RTL8711</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>村田</td>
+<td>MIDK</td>
+<td>QCA4002</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>TI</td>
+<td>cc3200</td>
+<td>cc3200</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<p>适配模块不断进行更新中，最新列表请联系技术支持。</p>
+<p>对于AbleCloud还没有进行适配的模块，AbleCloud提供上层交互所需要的SDK，厂商自己将下层驱动更改一下即可完成适配工作。</p>
+<p>对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动 即可完成适配。</p>
+<p>对于安装Android、Linux、Windows、Mico操作系统的设备，AbleCloud已完成操作系统的适配。</p>
 <p>WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：<a href="../../reference/device/#设备应用开发框架">reference-设备-设备应用开发框架</a> </p>
 <p>WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。</p>
 <p><img alt="device_wifi_activator" src="../../pic/develop_guide/device_WiFi_activator.png" /> </p>
@@ -1082,22 +1350,23 @@
 </table>
 <h1 id="_22">局域网通信</h1>
 <p>WiFi设备和以太网设备可以和客户端（APP）进行局域网通信。
-AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p></div>
+AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p>
+<p>Error Code</p></div>
             
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

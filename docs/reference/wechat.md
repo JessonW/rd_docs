@@ -1,3 +1,4 @@
+#微信客户端开发参考
 #架构框图
 AbleCloud实现的和微信云端对接，其架构如下：
 
@@ -29,7 +30,7 @@ AbleCloud提供了开发实现AbleCloud与微信云端对接的微信公众号�
 
     本SDK使用了PHP(v5.6及其后续版本)才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.2.2)的API说明。
+下文是PHP SDK (v1.2.x)的API说明。
 
 ##对接微信##
 
@@ -141,6 +142,16 @@ class ACBridgeWeChat {
      * @return 返回TRUE表示操作成功；返回FALSE表示操作失败，此时可调用getLastError()获取错误消息。
      */
     public function unbindDevice($openId, $physicalId, $isGateway = FALSE);
+    
+    /**
+     * 同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
+     * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
+     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据（比如处理蓝牙设备绑定关系的同步）。
+     * @param $openId 字符串，是待检查的用户的微信OpenID。
+     * @param $physicalIdOfStatus 字符串，是要查询其在线状态的设备的物理ID。
+     * @return 返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
+     */
+    public function syncBindings($openId, $physicalIdOfStatus = '');
     
     /**
      * 取最近一次错误消息。
@@ -1777,3 +1788,6 @@ class ACTimerTaskService extends ACService {
     public function startTask($user, $deviceId, $taskId);
 }
 ```
+
+#Error Code
+参考[reference-Error Code](../reference/error_code.md)

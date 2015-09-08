@@ -1,8 +1,47 @@
+#iOS客户端开发指导
 
-**iOS的开发的环境配置参考[开发框架-iOS-开发环境配置](../framework/iOS#开发环境配置)**
+#开发环境设置
+##系统准备
+
+在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。 + OS X 系统建议采用Mac OS X 10.8以上的版本 + Xcode 安装Xcode，建议采用6.0以上版本 + ablecloud 下载ablecloud开发框架并解压
+
+Xcode
+
+新建工程 选择新建iOS Application，根据需要选择，建议选择Single View Application。 点击Next进入下一个页面，根据情况填写Product Name/Organization Name/Organization Identifier等信息。 填好后点击Next，进入下一步，填写好存放路径。 至此，新建工程完成。
+导入AbleCloudLib 按照步骤1完成了工程的新建，接下来需要将AbleCloudLib导入到工程中。 右键点击工程中想要导入的Group选择 Add Files to "your project name"... 选择AbleCloudLib的路径，勾选Copy items if needed，点击Add添加。 完成上述步骤后，我们将在工程视图里面看到该目录。 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
+本地运行 Xcode下直接Command + R运行。
+注：如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+
+##配置开发参数
+
+```
+@interface ACloudLib : NSObject
+
+/**
+ * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
+ */
++ (void)setHost:(NSString *)host;
++ (NSString *)getHost;
+
+/**
+ * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
+ */
++ (void)setHttpRequestTimeout:(NSString *)timeout;
++ (NSString *)getHttpRequestTimeout;
+
+/**
+ * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
+ */
++ (void)setMajorDomain:(NSString *)majorDomain;
++ (NSString *)getMajorDomain;
+
+@end
+```
+
+
 
 #帐号管理
-建议的用户交互流程见 [用户交互-帐号管理](../user_interaction.md#账号管理)
+建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
 
 ##1、普通帐号注册
 
@@ -64,6 +103,9 @@
 ```
 
 #设备管理
+
+说明参见[功能说明-设备管理](../features.md#_12)
+
 ##独立设备
 
 用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。
@@ -84,9 +126,7 @@
 
 
 ##home模型
-说明参见[基本介绍-功能介绍-home模型](../introduction.md#功能介绍##home模型)
 
-建议的用户交互参见[用户交互-home模型](../user_interaction.md#home模型)
 
 ###home模型下添加独立设备
 
@@ -112,10 +152,34 @@
 
 <font color="red">**补充开发指导**</font>
 
-#OTA
-说明参见[基本介绍-功能介绍-OTA](../introduction.md#功能介绍##OTA)
 
-建议的用户交互参见[用户交互-OTA](../user_interaction.md#OTA)
+#和云端通信
+
+说明参见[功能说明-和云端通信](../introduction.md#_22)
+
+##1、发送到设备
+
+<font color="red">**补充开发指导**</font>
+
+##2、发送到服务
+
+<font color="red">**补充开发指导**</font>
+
+
+#局域网通信
+
+说明参见[功能说明-局域网通信](../features.md#_28)
+
+<font color="red">**补充开发指导**</font>
+
+#定时任务
+
+说明参见[功能说明-定时任务](../features.md#_29)
+
+
+#OTA
+
+说明参见[功能说明-OTA](../introduction.md#ota)
 
 ![OTA](../pic/develop_guide/OTA.png)
 
@@ -147,6 +211,9 @@
 
 
 #推送
+
+说明参见[功能说明-OTA](../features.md#_30)
+
 见[开发框架-开发环境配置](../framework/android#开发环境配置)
 
 <font color="red">**补充开发指导**</font>
@@ -155,25 +222,9 @@
 
 <font color="red">**补充开发指导**</font>
 
-#和云端通信
-说明参见[基本介绍-功能介绍-和云端通信](../introduction.md#功能介绍##云端通信)
 
-建议的用户交互参见[用户交互-和云端通信](../user_interaction.md#云端通信)
 
-##1、发送到设备
 
-<font color="red">**补充开发指导**</font>
 
-##2、发送到服务
-
-<font color="red">**补充开发指导**</font>
-
-#局域网通信
-说明参见[基本介绍-功能介绍-局域网通信](../introduction.md#功能介绍##局域网通信)
-
-建议的用户交互参见[用户交互-局域网通信](../user_interaction.md#局域网通信)
-
-<font color="red">**补充开发指导**</font>
-
-#定时任务
-
+#Error Code
+参考[reference-Error Code](../reference/error_code.md)

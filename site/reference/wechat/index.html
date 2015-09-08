@@ -27,8 +27,8 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -168,79 +168,151 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../error_code/">Error Code</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
                 </ul>
             
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                
-                    <li >
-                        <a rel="next" href="../iOS/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="prev" href="../device/">
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                
-                
-            </ul>
         </div>
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">架构框图</a></li>
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">微信客户端开发参考</a>
+        </li>
         
     
-        <li class="main "><a href="#php-sdk">PHP SDK</a></li>
         
-            <li><a href="#_2">对接微信</a></li>
         
-            <li><a href="#_3">基础工具</a></li>
         
-            <li><a href="#ablecloud">AbleCloud配置</a></li>
+        <li class="main">
+            <a href="#_2">架构框图</a>
+        </li>
         
-            <li><a href="#ablecloud_1">AbleCloud客户端</a></li>
+    
         
-            <li><a href="#ablecloud_2">AbleCloud帐号服务</a></li>
         
-            <li><a href="#ablecloud_3">AbleCloud文件存储服务</a></li>
+            
+                
+            
         
-            <li><a href="#ablecloud_4">AbleCloud设备管理服务</a></li>
+            
+                
+            
         
-            <li><a href="#ablecloud-ota">AbleCloud OTA服务</a></li>
+            
+                
+            
         
-            <li><a href="#ablecloud_5">AbleCloud数据库服务</a></li>
+            
+                
+            
         
-            <li><a href="#ablecloud_6">AbleCloud 定时任务</a></li>
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#php-sdk">PHP SDK<span class="main-set parent_php-sdk">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#_3">对接微信</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#_4">基础工具</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud">AbleCloud配置</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_1">AbleCloud客户端</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_2">AbleCloud帐号服务</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_3">AbleCloud文件存储服务</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_4">AbleCloud设备管理服务</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud-ota">AbleCloud OTA服务</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_5">AbleCloud数据库服务</a></li>
+            
+        
+            
+            <li class="sub parent_php-sdk" style="display: none;"><a href="#ablecloud_6">AbleCloud 定时任务</a></li>
+            
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#error-code">Error Code</a>
+        </li>
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">架构框图</h1>
+<h1 id="_1">微信客户端开发参考</h1>
+<h1 id="_2">架构框图</h1>
 <p>AbleCloud实现的和微信云端对接，其架构如下：</p>
 <p><img alt="arch" src="../../pic/reference/wechat/arch.png" /></p>
 <p>在整个架构中，<code>ac-weixin-server</code>代表厂商的公众号后台服务。</p>
@@ -268,8 +340,8 @@
 <p>本SDK使用了PHP(v5.6及其后续版本)才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。</p>
 </li>
 </ul>
-<p>下文是PHP SDK (v1.2.2)的API说明。</p>
-<h2 id="_2">对接微信</h2>
+<p>下文是PHP SDK (v1.2.x)的API说明。</p>
+<h2 id="_3">对接微信</h2>
 <h3 id="acbridgewechat">ACBridgeWeChat</h3>
 <pre><code class="php">/**
  * AbleCloud-微信公众号服务接口。
@@ -378,6 +450,16 @@ class ACBridgeWeChat {
     public function unbindDevice($openId, $physicalId, $isGateway = FALSE);
 
     /**
+     * 同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
+     * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
+     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据（比如处理蓝牙设备绑定关系的同步）。
+     * @param $openId 字符串，是待检查的用户的微信OpenID。
+     * @param $physicalIdOfStatus 字符串，是要查询其在线状态的设备的物理ID。
+     * @return 返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
+     */
+    public function syncBindings($openId, $physicalIdOfStatus = '');
+
+    /**
      * 取最近一次错误消息。
      * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
      */
@@ -385,7 +467,7 @@ class ACBridgeWeChat {
 }
 </code></pre>
 
-<h2 id="_3">基础工具</h2>
+<h2 id="_4">基础工具</h2>
 <h3 id="accontext">ACContext</h3>
 <pre><code class="php">/**
  * 访问AbleCloud服务时的环境信息。
@@ -1947,22 +2029,25 @@ class ACTimerTaskService extends ACService {
      */
     public function startTask($user, $deviceId, $taskId);
 }
-</code></pre></div>
+</code></pre>
+
+<h1 id="error-code">Error Code</h1>
+<p>参考<a href="../error_code/">reference-Error Code</a></p></div>
             
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

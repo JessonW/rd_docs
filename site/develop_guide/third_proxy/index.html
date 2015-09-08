@@ -27,8 +27,8 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
@@ -43,24 +43,24 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
                 <!-- Main navigation -->
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav nav-ac">
                 
                 
                     <li >
-                        <a href="../../introduction/">基本介绍</a>
+                        <a href="../../introduction/" >基本介绍</a>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../user_interaction/">用户交互</a>
+                        <a href="../../features/" >功能说明</a>
                     </li>
                 
                 
@@ -168,63 +168,70 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../../reference/error_code/">Error Code</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
                 
                 
                     <li >
-                        <a href="../../QandA/">Q&A</a>
+                        <a href="../../QandA/" >Q&A</a>
                     </li>
                 
                 
                 </ul>
             
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                
-                    <li >
-                        <a rel="next" href="../cloud/">
-                            <i class="fa fa-arrow-left"></i> Previous
-                        </a>
-                    </li>
-                    <li >
-                        <a rel="prev" href="../../reference/android/">
-                            Next <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </li>
-                
-                
-            </ul>
         </div>
     </div>
 </div>
 
-        <div class="container">
+        <div class="container container-ac">
             
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">京东</a></li>
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">第三方对接指导</a>
+        </li>
         
     
-        <li class="main "><a href="#_2">微信</a></li>
         
-            <li><a href="#1">1. 简介</a></li>
         
-            <li><a href="#2">2. 开发前准备工作</a></li>
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_2">微信<span class="main-set parent__2">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#1">1. 简介</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#2">2. 开发前准备工作</a></li>
+            
         
     
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">京东</h1>
+<h1 id="_1">第三方对接指导</h1>
 <h1 id="_2">微信</h1>
 <h2 id="1">1. 简介</h2>
 <p>AbleCloud实现了和微信的云端对接——支持用户同步、设备绑定关系同步、设备状态同步，及设备远程控制等功能——开启了微信硬件开发的全新模式。
@@ -253,7 +260,7 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
 <ul>
 <li>
 <p>id</p>
-<p>设备的物理ID。AbleCloud要求设备物理的ID为16个字符。</p>
+<p>设备的物理ID。AbleCloud要求设备的物理ID为16个字符。</p>
 </li>
 <li>
 <p>auth_key, crypt_method, auth_ver</p>
@@ -274,15 +281,15 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
         <footer class="col-md-12">
             <hr>
             
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
             <div class="modal-dialog">

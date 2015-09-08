@@ -1,5 +1,5 @@
-#安卓设备开发文档
-##开发步骤
+#安卓设备开发指导
+#开发准备
 ####SDK发布库
 AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还需要导入`libDevice-Service.so`文件（可根据不同cpu做不同选择）
 >具体步骤:把文件拷入你自己的工程的libs目录下并设置依赖
@@ -37,7 +37,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 ```
 
-##交互消息
+#交互消息
 首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与的消息：
 
 + **ACDeviceMsg：**安卓设备与服务或普通app之间的交互消息，使用二进制或json或klv通讯协议。
@@ -177,7 +177,7 @@ public class ACSubDevice {
     //getter
 ```
 
-##SDK
+#SDK
 ###消息处理接口Handler介绍
 
 ####ACConnectChangeListener
@@ -312,7 +312,7 @@ public class AC {
 }
 ```
 
-##Demo
+#Demo
 AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里com.accloud.ac_device_android_demo.config.Config.java文件里的配置项即可。
 
 下面以开关灯为例，简要介绍与安卓设备通讯的例子：
