@@ -1,6 +1,37 @@
 #安卓客户端开发指导
+
 #开发环境配置
-安卓开发的环境配置参考[reference-安卓-开发环境配置](../reference/android.md#开发环境配置)
+##SDK发布库
+ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.1.zip)
+
+
+><font color="red">注意:</font>
+
+>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下
+
+>2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下
+
+##开发环境设置
+以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
+```java
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+```
+##应用程序初始化
+在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
+继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
+
+开发阶段，请初始化测试环境
+```java
+AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
+```
+在完成测试阶段之后，需要迁移到正式环境下
+```java
+AC.init(this, MajorDomain, MajorDomainId);
+```
 
 #帐号管理
 建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
@@ -1087,7 +1118,19 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。
 
-开发前的配置工作参考[reference-安卓-推送开发准备](../framework/android#推送开发准备)
+##推送开发准备
+
+下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。
+
+首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示
+
+![push1](../pic/develop_guide/push1.png) 
+
+记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。
+
+![push2](../pic/develop_guide/push2.png) 
+
+友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
 
 
 ><font color="red">注意</font>
@@ -1098,7 +1141,9 @@ AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进�
 
 >3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。
 
-##一、开发环境配置
+
+
+##一、推送开发环境配置
 如果想使用推送服务，需要先配置AndroidManifest.xml环境变量
 ####1、在`<manifest>`标签下添加权限：
 ```java
