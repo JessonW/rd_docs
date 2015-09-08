@@ -4,53 +4,7 @@
 SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
 ><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。
 
-#开发环境配置
-##SDK发布库
-ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.1.zip)
 
-
-><font color="red">注意:</font>
-
->1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下
-
->2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下
-
-##开发环境设置
-以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
-```java
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-```
-##应用程序初始化
-在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
-
-开发阶段，请初始化测试环境
-```java
-AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
-```
-在完成测试阶段之后，需要迁移到正式环境下
-```java
-AC.init(this, MajorDomain, MajorDomainId);
-```
-
-
-#推送开发准备
-
-下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。
-
-首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示
-
-![push1](../pic/develop_guide/push1.png) 
-
-记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。
-
-![push2](../pic/develop_guide/push2.png) 
-
-友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
 
 
 #交互协议-基础数据结构
@@ -198,33 +152,6 @@ public class ACMsg extends ACObject {
 }
 ```
 
-####使用示例
-client端向UDS service发起请求（伪代码，完整代码请参看各部分demo）：
-```java
-ACMsg req = new ACMsg();								// 创建一个空请求消息
-req.setName("controlLight");							// 设置请求消息名
-req.put("deviceId", light.getId());						// 设置一个请求属性“设备id”
-req.put("action", "on");								// 设置另一属性"动作“，开灯
-AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallback<ACMsg>() {
-    @Override
-    public void finish(ACMsg resp) {
-        //发送成功并接收服务的响应消息
-    }
-
-    @Override
-    public void error(Exception e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
-    }
-});							                            // 发送请求并返回服务端响应
-```
-服务端处理请求（伪代码，完整代码请参看各部分demo）：
-```java
-private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
-    Long lightId = req.get("deviceId");		// 从请求中获取“设备id”
-    String action = req.get("action");		// 从请求中获取“动作”
-    // do something
-}
-```
 
 ###ACDeviceMsg
 在使用**二进制**或**json**格式通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。但是ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。ACDeviceMsg定义如下：
@@ -561,6 +488,173 @@ public class ACException extends Exception {
     }
 }
 ```
+
+
+##AC
+
+SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：
+```java
+public class AC {
+    public static Context context;
+    public static String majorDomain;
+    public static long majorDomainId;
+
+	/**
+     * 调试模式
+     */
+    public static final int TEST_MODE = 0;
+    public static final int PRODUCTION_MODE = 1;
+
+	/**
+     * 设备方案
+     */
+    public static final int DEVICE_MTK = 0;
+    public static final int DEVICE_HF = 1;
+    public static final int DEVICE_MX = 2;
+    public static final int DEVICE_MARVELL = 3;
+    public static final int DEVICE_QCA4004 = 4;
+    public static final int DEVICE_MURATA = 5;
+    public static final int DEVICE_WM = 6;
+    public static final int DEVICE_RAK = 7;
+
+	/**
+     * Timeout的默认时间
+     */
+    public static final int DEVICE_ACTIVATOR_DEFAULT_TIMEOUT = 5 * 60 * 1000;
+    public static final int FIND_DEVICE_DEFAULT_TIMEOUT = 1 * 60 * 1000;
+    public static final int SEND_TO_LOCAL_DEVICE_DEFAULT_TIMEOUT = 10 * 1000;
+
+	/**
+     * app与设备通讯方式
+     */
+    public static final int ONLY_LOCAL = 1;
+    public static final int ONLY_CLOUD = 2;
+    public static final int LOCAL_FIRST = 3;
+    public static final int CLOUD_FIRST = 4;
+    
+    private static HashMap<String, ACService> serviceStubs;
+
+	/**
+     * 初始化设备的主域信息，默认线上环境
+     */
+    public static void init(Application App, String MajorDomain, String MajorDomainId) {}
+    
+    /**
+     * 初始化设备的主域信息，可选模式为测试环境
+     */
+    public static void init(Application App, String MajorDomain, long MajorDomainId, int mode) {}
+
+    /**
+     * 往某一服务发送命令/消息
+     *
+     * @param subDomain	服务所属子域名
+     * @param name    	服务名
+     * @param version 	服务版本
+     * @param req     	具体的消息内容
+     *
+     * @return 返回结果的监听回调，返回服务端的响应消息
+     */
+    public static void sendToService(String subDomain, String name, int version,
+    								 ACMsg req, final PaylodCallback<ACMsg> callback) {}
+
+    /**
+ 	 * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
+ 	 *
+ 	 * @param timeout	发现本地设备的超时时间，单位毫秒
+ 	 * @param callback	返回结果的监听回调，返回设备列表
+ 	 */
+	public static void findLocalDevice(int timeout, PaylodCallback<List<ACDevice>> callback) {}
+    
+    /**
+     * 获取帐号管理器。
+     * 可以调用前面介绍的帐号管理ACAccountMgr提供的各个通用接口
+     *
+     * @return	帐号管理器
+     */
+    public static ACAccountMgr accountMgr() {}
+    
+	/**
+     * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
+     * @param deviceType 设备wifi模块类型
+     *
+     * @return	设备激活器
+     */
+    public static ACDeviceActivator deviceActivator(int deviceType) {}
+
+	 /**
+     * 获取简单无组的设备管理器
+     * 可以调用前面介绍的设备管理ACBindMgr提供的各个通用接口
+     *
+     * @return  绑定管理器
+     */
+    public static ACBindMgr bindMgr() {}
+
+    /**
+     * 获取分组管理器
+     * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
+     *
+     * @return 分组管理器
+     */
+    public static ACGroupMgr groupMgr() {}
+
+    /**
+     * 获取消息推送管理器（集成了友盟推送的一部分接口）
+     * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
+     *
+     * @return 推送通知管理器
+     */
+    public static ACNotificationMgr notificationMgr() {}
+
+    /**
+     * 获取实时消息管理器
+     * 可以调用前面介绍的实时消息管理ACPushMgr提供的各个通用接口
+     *
+     * @return 实时消息管理器
+     */
+    public static ACPushMgr pushMgr() {}
+
+    /**
+     * 获取定时管理器
+     * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
+     *
+     * @return 定时管理器
+     */
+    public static ACTimerMgr timerMgr() {}
+   
+    /**
+     * 获取定时管理器
+     * @param timeZone 自定义时区
+     *
+     * @return 定时管理器
+     */
+    public static ACTimerMgr timerMgr(TimeZone timeZone) {}
+    
+    /**
+     * 获取OTA管理器
+     * 可以调用前面介绍的OTA管理ACOTAMgr提供的各个通用接口
+     *
+     * @return OTA管理器
+     */
+    public static ACOTAMgr otaMgr() {}
+    
+    /**
+     * 获取文件上传下载管理器
+     * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
+     *
+     * @return 文件管理器
+     */
+    public static ACFileMgr fileMgr() {}
+
+    /**
+     * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
+     * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
+     *
+     * @param name	服务名
+     * @param stub	服务桩，需要开发者自己实现具体的stub
+     */
+    public static void addServiceStub(String name, ACService stub) {}
+```
+
 
 ##用户帐号管理
 
@@ -1943,169 +2037,6 @@ public abstract class ACService {
     public abstract void handleMsg(ACMsg req, ACMsg resp);
 ```
 
-##AC
-前面，我们分别介绍了ablecloud SDK提供的各种功能，这些功能包括设备激活、云端服务、测试桩等。SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口。AC的定义如下：
-```java
-public class AC {
-    public static Context context;
-    public static String majorDomain;
-    public static long majorDomainId;
-
-	/**
-     * 调试模式
-     */
-    public static final int TEST_MODE = 0;
-    public static final int PRODUCTION_MODE = 1;
-
-	/**
-     * 设备方案
-     */
-    public static final int DEVICE_MTK = 0;
-    public static final int DEVICE_HF = 1;
-    public static final int DEVICE_MX = 2;
-    public static final int DEVICE_MARVELL = 3;
-    public static final int DEVICE_QCA4004 = 4;
-    public static final int DEVICE_MURATA = 5;
-    public static final int DEVICE_WM = 6;
-    public static final int DEVICE_RAK = 7;
-
-	/**
-     * Timeout的默认时间
-     */
-    public static final int DEVICE_ACTIVATOR_DEFAULT_TIMEOUT = 5 * 60 * 1000;
-    public static final int FIND_DEVICE_DEFAULT_TIMEOUT = 1 * 60 * 1000;
-    public static final int SEND_TO_LOCAL_DEVICE_DEFAULT_TIMEOUT = 10 * 1000;
-
-	/**
-     * app与设备通讯方式
-     */
-    public static final int ONLY_LOCAL = 1;
-    public static final int ONLY_CLOUD = 2;
-    public static final int LOCAL_FIRST = 3;
-    public static final int CLOUD_FIRST = 4;
-    
-    private static HashMap<String, ACService> serviceStubs;
-
-	/**
-     * 初始化设备的主域信息，默认线上环境
-     */
-    public static void init(Application App, String MajorDomain, String MajorDomainId) {}
-    
-    /**
-     * 初始化设备的主域信息，可选模式为测试环境
-     */
-    public static void init(Application App, String MajorDomain, long MajorDomainId, int mode) {}
-
-    /**
-     * 往某一服务发送命令/消息
-     *
-     * @param subDomain	服务所属子域名
-     * @param name    	服务名
-     * @param version 	服务版本
-     * @param req     	具体的消息内容
-     *
-     * @return 返回结果的监听回调，返回服务端的响应消息
-     */
-    public static void sendToService(String subDomain, String name, int version,
-    								 ACMsg req, final PaylodCallback<ACMsg> callback) {}
-
-    /**
- 	 * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
- 	 *
- 	 * @param timeout	发现本地设备的超时时间，单位毫秒
- 	 * @param callback	返回结果的监听回调，返回设备列表
- 	 */
-	public static void findLocalDevice(int timeout, PaylodCallback<List<ACDevice>> callback) {}
-    
-    /**
-     * 获取帐号管理器。
-     * 可以调用前面介绍的帐号管理ACAccountMgr提供的各个通用接口
-     *
-     * @return	帐号管理器
-     */
-    public static ACAccountMgr accountMgr() {}
-    
-	/**
-     * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
-     * @param deviceType 设备wifi模块类型
-     *
-     * @return	设备激活器
-     */
-    public static ACDeviceActivator deviceActivator(int deviceType) {}
-
-	 /**
-     * 获取简单无组的设备管理器
-     * 可以调用前面介绍的设备管理ACBindMgr提供的各个通用接口
-     *
-     * @return  绑定管理器
-     */
-    public static ACBindMgr bindMgr() {}
-
-    /**
-     * 获取分组管理器
-     * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
-     *
-     * @return 分组管理器
-     */
-    public static ACGroupMgr groupMgr() {}
-
-    /**
-     * 获取消息推送管理器（集成了友盟推送的一部分接口）
-     * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
-     *
-     * @return 推送通知管理器
-     */
-    public static ACNotificationMgr notificationMgr() {}
-
-    /**
-     * 获取实时消息管理器
-     * 可以调用前面介绍的实时消息管理ACPushMgr提供的各个通用接口
-     *
-     * @return 实时消息管理器
-     */
-    public static ACPushMgr pushMgr() {}
-
-    /**
-     * 获取定时管理器
-     * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
-     *
-     * @return 定时管理器
-     */
-    public static ACTimerMgr timerMgr() {}
-   
-    /**
-     * 获取定时管理器
-     * @param timeZone 自定义时区
-     *
-     * @return 定时管理器
-     */
-    public static ACTimerMgr timerMgr(TimeZone timeZone) {}
-    
-    /**
-     * 获取OTA管理器
-     * 可以调用前面介绍的OTA管理ACOTAMgr提供的各个通用接口
-     *
-     * @return OTA管理器
-     */
-    public static ACOTAMgr otaMgr() {}
-    
-    /**
-     * 获取文件上传下载管理器
-     * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
-     *
-     * @return 文件管理器
-     */
-    public static ACFileMgr fileMgr() {}
-
-    /**
-     * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
-     * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
-     *
-     * @param name	服务名
-     * @param stub	服务桩，需要开发者自己实现具体的stub
-     */
-    public static void addServiceStub(String name, ACService stub) {}
-```
 
 
 #适用蓝牙的接口
