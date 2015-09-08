@@ -1,5 +1,44 @@
 #iOS客户端开发指导
-**iOS的开发的环境配置参考[开发框架-iOS-开发环境配置](../framework/iOS#开发环境配置)**
+
+#开发环境设置
+##系统准备
+
+在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。 + OS X 系统建议采用Mac OS X 10.8以上的版本 + Xcode 安装Xcode，建议采用6.0以上版本 + ablecloud 下载ablecloud开发框架并解压
+
+Xcode
+
+新建工程 选择新建iOS Application，根据需要选择，建议选择Single View Application。 点击Next进入下一个页面，根据情况填写Product Name/Organization Name/Organization Identifier等信息。 填好后点击Next，进入下一步，填写好存放路径。 至此，新建工程完成。
+导入AbleCloudLib 按照步骤1完成了工程的新建，接下来需要将AbleCloudLib导入到工程中。 右键点击工程中想要导入的Group选择 Add Files to "your project name"... 选择AbleCloudLib的路径，勾选Copy items if needed，点击Add添加。 完成上述步骤后，我们将在工程视图里面看到该目录。 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
+本地运行 Xcode下直接Command + R运行。
+注：如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+
+##配置开发参数
+
+```
+@interface ACloudLib : NSObject
+
+/**
+ * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
+ */
++ (void)setHost:(NSString *)host;
++ (NSString *)getHost;
+
+/**
+ * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
+ */
++ (void)setHttpRequestTimeout:(NSString *)timeout;
++ (NSString *)getHttpRequestTimeout;
+
+/**
+ * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
+ */
++ (void)setMajorDomain:(NSString *)majorDomain;
++ (NSString *)getMajorDomain;
+
+@end
+```
+
+
 
 #帐号管理
 建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
