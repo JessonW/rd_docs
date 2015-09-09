@@ -3,10 +3,10 @@
 
 开发者首先需要申请开通带设备功能的微信公众服务号。请参考[开发指导-第三方云对接-微信](third_proxy.md#微信)。
 
-在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户及用户与设备的绑定关系、同步设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
+在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户、用户与设备的绑定关系，及设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
 本文档中的代码示例均以PHP语言为例。PHP SDK的API详细说明请参见SDK下载包中附带的文档。
 
-开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置信息。
+开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置项。
 
 #帐号管理#
 
@@ -140,7 +140,7 @@ $qrCode = $wxBridge->getDeviceQRCode($physicalId, FALSE, $openId);
 2.处理用户扫描二维码的事件
 
 微信用户扫描设备的二维码后，微信公众号平台会向厂商的公众号后台推送两条事件消息："event"-"subscribe"及"device_event"-"bind"，分别表示用户关注公众号，以及用户绑定了指定设备。
-如果用户之前已经绑定过公众号，则仅推送第二条消息。
+如果用户之前已经关注过公众号，则仅推送第二条消息。
 
 处理事件"event"-"subscribe"：
 ```php
@@ -220,7 +220,7 @@ $qrCode = $wxBridge->getDeviceQRCode($physicalId, FALSE, $openId);
 2.处理用户扫描二维码的事件
 
 微信用户扫描设备的二维码后，微信公众号平台会向厂商的公众号后台推送两条事件消息："event"-"subscribe"及"device_event"-"bind"，分别表示用户关注公众号，以及用户绑定了指定设备。
-如果用户之前已经绑定过公众号，则仅推送第二条消息。
+如果用户之前已经关注过公众号，则仅推送第二条消息。
 
 处理事件"event"-"subscribe"：
 ```php
@@ -274,7 +274,7 @@ $deviceService->openGatewayMatch($gatewayId, $user, $timeout);
 $newSubDevices = $deviceService->listNewSubDevicesFromGateway($user, $gatewayId);
 // 绑定新子设备
 foreach ($newSubDevices as $dev) {
-    $deviceService–>addSubDeviceToGateway($user, $gatewayId, $dev->getPhysicalId(), $name)
+    $deviceService–>addSubDeviceToGateway($user, $gatewayId, $dev->getPhysicalId(), $name);
 }
 // 关闭网关接入功能
 $deviceService ->closeGatewayMatch($gatewayId, $user);
@@ -284,7 +284,7 @@ $deviceService ->closeGatewayMatch($gatewayId, $user);
 
 #### 1.解绑网关 ####
 
-解邦网关设备的过程与解邦独立设备一致，只是最后调用方法ACBridgeWeChat::unbindDevice的参数不一致。
+解绑网关设备的过程与解绑独立设备一致，只是最后调用方法ACBridgeWeChat::unbindDevice的参数不一致。
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken);
@@ -295,7 +295,7 @@ $wxBridge->unbindDevice($openId, $physicalId, TRUE);
 
 #### 2.解绑子设备 ####
 
-解邦子设备是指从网关设备中删除子设备。
+解绑子设备是指从网关设备中删除子设备。
 ```php
 // 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
