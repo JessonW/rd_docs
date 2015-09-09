@@ -215,15 +215,39 @@
         
         
         <li class="main">
-            <a href="#_1">帐号管理<span class="main-set parent__1">+</span></a>
+            <a href="#_1">开发环境设置<span class="main-set parent__1">+</span></a>
         </li>
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#1">1、普通帐号注册</a></li>
+            <li class="sub parent__1" style="display: none;"><a href="#_2">系统准备</a></li>
             
         
             
-            <li class="sub parent__1" style="display: none;"><a href="#2">2、第三方登录</a></li>
+            <li class="sub parent__1" style="display: none;"><a href="#_3">配置开发参数</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_4">帐号管理<span class="main-set parent__4">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#1">1、普通帐号注册</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#2">2、第三方登录</a></li>
             
         
     
@@ -243,19 +267,19 @@
         
         
         <li class="main">
-            <a href="#_2">设备管理<span class="main-set parent__2">+</span></a>
+            <a href="#_5">设备管理<span class="main-set parent__5">+</span></a>
         </li>
         
             
-            <li class="sub parent__2" style="display: none;"><a href="#_3">独立设备</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#_6">独立设备</a></li>
             
         
             
-            <li class="sub parent__2" style="display: none;"><a href="#_4">网关设备</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#_7">网关设备</a></li>
             
         
             
-            <li class="sub parent__2" style="display: none;"><a href="#home">home模型</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#home">home模型</a></li>
             
         
     
@@ -271,15 +295,15 @@
         
         
         <li class="main">
-            <a href="#_5">和云端通信<span class="main-set parent__5">+</span></a>
+            <a href="#_8">和云端通信<span class="main-set parent__8">+</span></a>
         </li>
         
             
-            <li class="sub parent__5" style="display: none;"><a href="#1_1">1、发送到设备</a></li>
+            <li class="sub parent__8" style="display: none;"><a href="#1_1">1、发送到设备</a></li>
             
         
             
-            <li class="sub parent__5" style="display: none;"><a href="#2_1">2、发送到服务</a></li>
+            <li class="sub parent__8" style="display: none;"><a href="#2_1">2、发送到服务</a></li>
             
         
     
@@ -287,7 +311,7 @@
         
         
         <li class="main">
-            <a href="#_6">局域网通信</a>
+            <a href="#_9">局域网通信</a>
         </li>
         
     
@@ -295,7 +319,7 @@
         
         
         <li class="main">
-            <a href="#_7">定时任务</a>
+            <a href="#_10">定时任务</a>
         </li>
         
     
@@ -311,7 +335,7 @@
         
         
         <li class="main">
-            <a href="#_8">推送</a>
+            <a href="#_11">推送</a>
         </li>
         
     
@@ -319,7 +343,7 @@
         
         
         <li class="main">
-            <a href="#_9">实时消息</a>
+            <a href="#_12">实时消息</a>
         </li>
         
     
@@ -336,8 +360,39 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="ios">iOS客户端开发指导</h1>
-<p><strong>iOS的开发的环境配置参考<a href="../../framework/iOS#开发环境配置">开发框架-iOS-开发环境配置</a></strong></p>
-<h1 id="_1">帐号管理</h1>
+<h1 id="_1">开发环境设置</h1>
+<h2 id="_2">系统准备</h2>
+<p>在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。 + OS X 系统建议采用Mac OS X 10.8以上的版本 + Xcode 安装Xcode，建议采用6.0以上版本 + ablecloud 下载ablecloud开发框架并解压</p>
+<p>Xcode</p>
+<p>新建工程 选择新建iOS Application，根据需要选择，建议选择Single View Application。 点击Next进入下一个页面，根据情况填写Product Name/Organization Name/Organization Identifier等信息。 填好后点击Next，进入下一步，填写好存放路径。 至此，新建工程完成。
+导入AbleCloudLib 按照步骤1完成了工程的新建，接下来需要将AbleCloudLib导入到工程中。 右键点击工程中想要导入的Group选择 Add Files to "your project name"... 选择AbleCloudLib的路径，勾选Copy items if needed，点击Add添加。 完成上述步骤后，我们将在工程视图里面看到该目录。 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
+本地运行 Xcode下直接Command + R运行。
+注：如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
+<h2 id="_3">配置开发参数</h2>
+<pre><code>@interface ACloudLib : NSObject
+
+/**
+ * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
+ */
++ (void)setHost:(NSString *)host;
++ (NSString *)getHost;
+
+/**
+ * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
+ */
++ (void)setHttpRequestTimeout:(NSString *)timeout;
++ (NSString *)getHttpRequestTimeout;
+
+/**
+ * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
+ */
++ (void)setMajorDomain:(NSString *)majorDomain;
++ (NSString *)getMajorDomain;
+
+@end
+</code></pre>
+
+<h1 id="_4">帐号管理</h1>
 <p>建议的用户交互流程见 <a href="../../features/#_11">功能说明-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
@@ -374,13 +429,13 @@
 <pre><code class="ObjC">
 </code></pre>
 
-<h1 id="_2">设备管理</h1>
+<h1 id="_5">设备管理</h1>
 <p>说明参见<a href="../../features/#_12">功能说明-设备管理</a></p>
-<h2 id="_3">独立设备</h2>
+<h2 id="_6">独立设备</h2>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。</p>
 <p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h2 id="_4">网关设备</h2>
+<h2 id="_7">网关设备</h2>
 <p>网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：</p>
 <p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
@@ -398,16 +453,16 @@
 <p>网关有二维码时，不需要通过接收广播来获取设备物理ID。流程如下：</p>
 <p><img alt="DM_home_gateway2" src="../../pic/develop_guide/DM_home_gateway2.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_5">和云端通信</h1>
+<h1 id="_8">和云端通信</h1>
 <p>说明参见<a href="../../introduction/#_22">功能说明-和云端通信</a></p>
 <h2 id="1_1">1、发送到设备</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="2_1">2、发送到服务</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_6">局域网通信</h1>
+<h1 id="_9">局域网通信</h1>
 <p>说明参见<a href="../../features/#_28">功能说明-局域网通信</a></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_7">定时任务</h1>
+<h1 id="_10">定时任务</h1>
 <p>说明参见<a href="../../features/#_29">功能说明-定时任务</a></p>
 <h1 id="ota">OTA</h1>
 <p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a></p>
@@ -430,11 +485,11 @@
 <pre><code class="ObjC">
 </code></pre>
 
-<h1 id="_8">推送</h1>
+<h1 id="_11">推送</h1>
 <p>说明参见<a href="../../features/#_30">功能说明-OTA</a></p>
 <p>见<a href="../../framework/android#开发环境配置">开发框架-开发环境配置</a></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_9">实时消息</h1>
+<h1 id="_12">实时消息</h1>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
