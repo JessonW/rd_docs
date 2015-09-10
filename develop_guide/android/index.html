@@ -1898,9 +1898,11 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
-<p><font color=red><strong>建议</strong></font>
-+ <strong>在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。</strong>
-+ <strong>调试阶段，可通过e.getErrorCode()获取错误码，e.getMessage()获取错误信息。参考</strong><a href="../../reference/error_code/">reference-Error Code</a></p></div>
+<p><font color=red><strong>建议</strong></font></p>
+<ul>
+<li><strong>在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。</strong></li>
+<li><strong>调试阶段，可通过<code>e.getErrorCode()</code>获取错误码，<code>e.getMessage()</code>获取错误信息。参考</strong><a href="../../reference/error_code/">reference-Error Code</a></li>
+</ul></div>
             
         </div>
 
