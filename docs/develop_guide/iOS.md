@@ -41,7 +41,7 @@ Xcode
 
 
 #帐号管理
-建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
 
 ##1、普通帐号注册
 
@@ -104,9 +104,9 @@ Xcode
 
 #设备管理
 
-说明参见[功能说明-设备管理](../features.md#_12)
-
 ##独立设备
+
+功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
 
 用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。
 
@@ -115,6 +115,8 @@ Xcode
 <font color="red">**补充开发指导**</font>
 
 ##网关设备
+
+功能介绍参见 [功能说明-功能介绍-网关型设备管理](../features/functions.md#_6)
 
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
@@ -126,7 +128,7 @@ Xcode
 
 
 ##home模型
-
+功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
 
 ###home模型下添加独立设备
 
@@ -152,10 +154,15 @@ Xcode
 
 <font color="red">**补充开发指导**</font>
 
+##设备附加属性
+
+功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
+
+
 
 #和云端通信
 
-说明参见[功能说明-和云端通信](../introduction.md#_22)
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#和云端通信)
 
 ##1、发送到设备
 

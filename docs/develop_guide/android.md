@@ -34,7 +34,8 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
-建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
+
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
 
 ##1、普通帐号注册
 
@@ -209,9 +210,10 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 #设备管理
 
-说明参见[功能说明-设备管理](../features.md#_12)
 
 ##独立设备
+
+功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
 
 用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
 
@@ -366,6 +368,9 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
 
 ##网关型设备
+
+功能介绍参见 [功能说明-功能介绍-网关型设备管理](../features/functions.md#_6)
+
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
 ![DM_gateway](../pic/develop_guide/DM_gateway.png)
@@ -496,6 +501,9 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
 ##Home模型
 
+功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
+
+
 创建家庭绑定WiFi设备的建议流程如下图：
 
 ![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
@@ -589,6 +597,9 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 
 ##设备附加属性
+
+功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
+
 **<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
 
 ####一、设置或者更新设备附加属性
@@ -631,8 +642,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
 #和云端通信
 
-说明参见[功能说明-和云端通信](../introduction.md#_22)
-
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#和云端通信)
 
 ##一、发送消息到设备
 ###1、KLV格式
@@ -859,7 +869,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 #局域网通信
 
-功能说明参见[功能说明-局域网通信](../features.md#_28)。
+功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#局域网通信)
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
@@ -915,7 +925,7 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
-功能说明参见[功能说明-定时任务](../features.md#_29)。
+功能介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#定时任务)
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1053,6 +1063,8 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 #OTA
 
+功能介绍参见 [功能说明-功能介绍-OTA](../features/functions.md#ota)
+
 ## <span class="skip">||SKIP||</span>
 
 
@@ -1105,7 +1117,7 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
-说明参见[功能说明-OTA](../features.md#_30)。
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#推送)
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 

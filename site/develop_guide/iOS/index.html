@@ -280,6 +280,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_5">设备管理<span class="main-set parent__5">+</span></a>
@@ -297,6 +301,10 @@
             <li class="sub parent__5" style="display: none;"><a href="#home">home模型</a></li>
             
         
+            
+            <li class="sub parent__5" style="display: none;"><a href="#_8">设备附加属性</a></li>
+            
+        
     
         
         
@@ -310,15 +318,15 @@
         
         
         <li class="main">
-            <a href="#_8">和云端通信<span class="main-set parent__8">+</span></a>
+            <a href="#_9">和云端通信<span class="main-set parent__9">+</span></a>
         </li>
         
             
-            <li class="sub parent__8" style="display: none;"><a href="#1_1">1、发送到设备</a></li>
+            <li class="sub parent__9" style="display: none;"><a href="#1_1">1、发送到设备</a></li>
             
         
             
-            <li class="sub parent__8" style="display: none;"><a href="#2_1">2、发送到服务</a></li>
+            <li class="sub parent__9" style="display: none;"><a href="#2_1">2、发送到服务</a></li>
             
         
     
@@ -326,7 +334,7 @@
         
         
         <li class="main">
-            <a href="#_9">局域网通信</a>
+            <a href="#_10">局域网通信</a>
         </li>
         
     
@@ -334,7 +342,7 @@
         
         
         <li class="main">
-            <a href="#_10">定时任务</a>
+            <a href="#_11">定时任务</a>
         </li>
         
     
@@ -350,7 +358,7 @@
         
         
         <li class="main">
-            <a href="#_11">推送</a>
+            <a href="#_12">推送</a>
         </li>
         
     
@@ -358,7 +366,7 @@
         
         
         <li class="main">
-            <a href="#_12">实时消息</a>
+            <a href="#_13">实时消息</a>
         </li>
         
     
@@ -408,7 +416,7 @@
 </code></pre>
 
 <h1 id="_4">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../features.md#_11">功能说明-帐号管理</a></p>
+<p>功能介绍参考： <a href="../../features/functions/#账号管理">功能说明-功能介绍-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font> </p>
@@ -445,17 +453,19 @@
 </code></pre>
 
 <h1 id="_5">设备管理</h1>
-<p>说明参见<a href="../features.md#_12">功能说明-设备管理</a></p>
 <h2 id="_6">独立设备</h2>
+<p>功能介绍参见 <a href="../../features/functions/#_3">功能说明-功能介绍-独立设备管理</a></p>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。</p>
 <p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="_7">网关设备</h2>
+<p>功能介绍参见 <a href="../../features/functions/#_6">功能说明-功能介绍-网关型设备管理</a></p>
 <p>网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：</p>
 <p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="home">home模型</h2>
+<p>功能介绍参见 <a href="../../features/functions/#home">功能说明-功能介绍-Home模型</a></p>
 <h3 id="home_1">home模型下添加独立设备</h3>
 <p>建议的流程如下：</p>
 <p><img alt="DM_home_WiFi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
@@ -468,16 +478,18 @@
 <p>网关有二维码时，不需要通过接收广播来获取设备物理ID。流程如下：</p>
 <p><img alt="DM_home_gateway2" src="../../pic/develop_guide/DM_home_gateway2.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_8">和云端通信</h1>
-<p>说明参见<a href="../../introduction/#_22">功能说明-和云端通信</a></p>
+<h2 id="_8">设备附加属性</h2>
+<p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备附加属性</a></p>
+<h1 id="_9">和云端通信</h1>
+<p>功能介绍参见 <a href="../../features/functions/#和云端通信">功能说明-功能介绍-和云端通信</a></p>
 <h2 id="1_1">1、发送到设备</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h2 id="2_1">2、发送到服务</h2>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_9">局域网通信</h1>
+<h1 id="_10">局域网通信</h1>
 <p>说明参见<a href="../features.md#_28">功能说明-局域网通信</a></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_10">定时任务</h1>
+<h1 id="_11">定时任务</h1>
 <p>说明参见<a href="../features.md#_29">功能说明-定时任务</a></p>
 <h1 id="ota">OTA</h1>
 <p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a></p>
@@ -500,11 +512,11 @@
 <pre><code class="ObjC">
 </code></pre>
 
-<h1 id="_11">推送</h1>
+<h1 id="_12">推送</h1>
 <p>说明参见<a href="../features.md#_30">功能说明-OTA</a></p>
 <p>见<a href="../../framework/android#开发环境配置">开发框架-开发环境配置</a></p>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
-<h1 id="_12">实时消息</h1>
+<h1 id="_13">实时消息</h1>
 <p><font color="red"><strong>补充开发指导</strong></font></p>
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
