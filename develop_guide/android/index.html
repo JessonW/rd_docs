@@ -1367,7 +1367,7 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 </li>
 </ul>
 </blockquote>
-<pre><code class="java">//设置序列化器
+<pre><code class="java">//设置序列化器，若有klv格式类型，则无需此步骤
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
@@ -1391,7 +1391,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数类型错误，请仔细阅读注意事项
      }
 });
 </code></pre>
@@ -1407,7 +1407,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 </code></pre>
@@ -1421,7 +1421,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 </code></pre>
@@ -1435,7 +1435,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 </code></pre>
@@ -1452,7 +1452,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 </code></pre>
@@ -1480,7 +1480,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
     }
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -1493,7 +1493,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
     }
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -1809,7 +1809,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
     }
 });
 </code></pre>
@@ -1828,7 +1828,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
     }
 });
 </code></pre>
@@ -1868,7 +1868,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
     }
 });
 </code></pre>
@@ -1892,16 +1892,15 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
     }
 });
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
-<blockquote>
-<p><font color=red><strong>建议</strong>：</font>在调用AbleCloud云服务之前先判断网络处于可访问状态之后再调用相关接口。调试阶段，可通过e.getErrorCode()获取<a href="../../reference/error_code/">错误码</a>，e.getMessage()获取错误信息。
-参考<a href="../../reference/error_code/">reference-Error Code</a></p>
-</blockquote></div>
+<p><font color=red><strong>建议</strong></font>
++ <strong>在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。</strong>
++ <strong>调试阶段，可通过e.getErrorCode()获取错误码，e.getMessage()获取错误信息。参考</strong><a href="../../reference/error_code/">reference-Error Code</a></p></div>
             
         </div>
 
