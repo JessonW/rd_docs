@@ -1695,10 +1695,12 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="_40">文件存储</h1>
 <blockquote>
-<p><font color="red">注意</font>：</p>
-<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限：</p>
+<p><font color="red">注意</font>：
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
 <p><code>&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
-<p>2、上传下载支持断点续传功能。</p>
+<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下
+3、上传下载支持断点续传功能</p>
 </blockquote>
 <h2 id="_41">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();

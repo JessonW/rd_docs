@@ -217,21 +217,25 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#-">交互协议-基础数据结构<span class="main-set parent_-">+</span></a>
+            <a href="#_3">交互协议<span class="main-set parent__3">+</span></a>
         </li>
         
             
-            <li class="sub parent_-" style="display: none;"><a href="#_3">基础数据结构</a></li>
+            <li class="sub parent__3" style="display: none;"><a href="#acmsg">ACMsg</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acdevicemsg">ACDeviceMsg</a></li>
             
         
     
         
-        
-            
-                
-            
         
             
                 
@@ -323,19 +327,15 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_10">和云端通信</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_10">实时消息同步</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_11">实时消息同步</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_11">局域网通信</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_12">局域网通信</a></li>
-            
-        
-            
-            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_13">桩模块</a></li>
             
         
     
@@ -367,31 +367,31 @@
         
         
         <li class="main">
-            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
+            <a href="#_16">适用蓝牙的接口<span class="main-set parent__16">+</span></a>
         </li>
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#1">1、帐号管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备管理</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#2">2、设备管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#3ota">3、OTA</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#3ota">3、OTA</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#4">4、消息推送</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#4">4、消息推送</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#5">5、和云端通信</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#5">5、和云端通信</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#6">6、文件存储</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#6">6、文件存储</a></li>
             
         
     
@@ -413,14 +413,14 @@
 <blockquote>
 <p><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。</p>
 </blockquote>
-<h1 id="-">交互协议-基础数据结构</h1>
-<p>首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了三种格式的消息：</p>
+<h1 id="_3">交互协议</h1>
+<p>首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了两种格式的消息：</p>
 <ul>
 <li><strong>ACMsg：</strong>APP与service之间的交互消息。</li>
 <li><strong>ACDeviceMsg：</strong>APP与device之间的交互消息，使用二进制或json通讯协议。</li>
-<li><strong>ACKLVDeviceMsg：</strong>APP与device之间的交互消息，使用KLV通讯协议。</li>
 </ul>
-<h2 id="_3">基础数据结构</h2>
+<h2 id="acmsg">ACMsg</h2>
+<p>介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject</p>
 <h3 id="acobject">ACObject</h3>
 <p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
 <pre><code class="java">public class ACObject {
@@ -465,7 +465,7 @@
 <blockquote>
 <p><font color="brown"><strong>注：</strong>最常用的三个接口是put/add/get，通过<strong>add</strong>接口保存在ACObject中的数据实际为List，相应的，get出来也是一个List。</font></p>
 </blockquote>
-<h3 id="acmsg">ACMsg</h3>
+<h3 id="acmsg_1">ACMsg</h3>
 <p>ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及<strong>其它形式</strong>的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的<strong>OBJECT_PAYLOAD</strong>格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。</p>
 <pre><code class="java">public class ACMsg extends ACObject {
     private String name;
@@ -556,8 +556,18 @@
 }
 </code></pre>
 
-<h3 id="acdevicemsg">ACDeviceMsg</h3>
-<p>在使用<strong>二进制</strong>或<strong>json</strong>格式通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。但是ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。ACDeviceMsg定义如下：</p>
+<h2 id="acdevicemsg">ACDeviceMsg</h2>
+<h3 id="acdevicemsg_1">ACDeviceMsg</h3>
+<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。并根据code的不同值做出不同的处理响应。</p>
+<blockquote>
+<ul>
+<li><strong>二进制/json</strong>
+在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。</li>
+<li><strong>KLV</strong>
+KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。</li>
+</ul>
+</blockquote>
+<p>ACDeviceMsg定义如下：</p>
 <pre><code class="java">public class ACDeviceMsg {
     private int code;           // 消息码，用于区分消息类型
     private Object content;     // 设备消息的具体内容
@@ -568,10 +578,12 @@
     public void setCode(int code) {}
     public Object getContent() {}
     public void setContent(Object content) {}
+    public void setKLVObject(ACKLVObject object) {}
+    public ACKLVObject getKLVObject() {}
 }
 </code></pre>
 
-<p>从上面的定义可以看到，设备消息的具体内容为Object类型，开发者根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。</p>
+<p><font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。</p>
 <h3 id="acdevicemsgmarshaller">ACDeviceMsgMarshaller</h3>
 <p>设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：</p>
 <pre><code class="java">public interface ACDeviceMsgMarshaller {
@@ -595,24 +607,8 @@
 }
 </code></pre>
 
-<h3 id="acklvdevicemsg">ACKLVDeviceMsg</h3>
-<p>在使用<strong>KLV</strong>通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACKLVDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。ACKLVDeviceMsg的ACKLVObject即消息体部分需要开发者到官网平台上填写申请不同key值代表的不同含义，在这里再把该key值对应的value put进去即可。定义如下：</p>
-<pre><code class="java">public class ACKLVDeviceMsg {
-    private int code;               // 消息码，用于区分消息类型
-    private ACKLVObject object;     // 设备消息的具体内容
-
-    public ACKLVDeviceMsg() {}
-    public ACKLVDeviceMsg(int code, ACKLVObject object) {}
-    public int getCode() {}
-    public void setCode(int code) {}
-    public ACKLVObject getKLVObject() {}
-    public void setKLVObject(ACKLVObject object) {}
-}
-</code></pre>
-
-<blockquote>
-<p><font color="brown">注：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer</font></p>
-</blockquote>
+<h3 id="acklvobject">ACKLVObject</h3>
+<p><font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。</p>
 <h1 id="sdk">SDK接口列表</h1>
 <h2 id="_4">基本对象结构</h2>
 <p>这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。</p>
@@ -872,7 +868,7 @@
 </code></pre>
 
 <h2 id="ac">AC</h2>
-<p>SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：</p>
+<p>SDK里所有接口均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：</p>
 <pre><code class="java">public class AC {
     public static Context context;
     public static String majorDomain;
@@ -1194,10 +1190,10 @@
 <p>调用激活器的以下接口，将wifi的ssid，密码广播给设备；</p>
 </li>
 <li>
-<p>通过扫码方式获取设备物理Id(每一台设备厂商都会给它分配一个设备号，AbleCloud称为设备的物理id)绑定指定的设备</p>
+<p>通过扫码方式获取设备物理Id(每一台设备厂商都会给它分配一个设备号，AbleCloud称为设备的物理id)，通过此物理ID激活并绑定指定的设备</p>
 </li>
 <li>
-<p>批量激活并绑定设备</p>
+<p>批量激活并绑定多个设备</p>
 </li>
 <li>
 <p>设备收到app端发过来的信息，完成激活并连上wifi；</p>
@@ -1531,7 +1527,7 @@
 
 
     /**
-     * 给设备发消息（binary or json）
+     * 给设备发消息
      *
      * @param subDomain 子域名，如djj（豆浆机）
      * @param deviceId  设备逻辑id
@@ -1543,24 +1539,10 @@
      * @param callback  返回结果的监听回调
      */
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACDeviceMsg&gt; callback);
-
-    /**
-     * 给设备发消息（klv）
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param deviceId  设备逻辑id
-     * @param deviceMsg 具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param option    AC.ONLY_LOCAL  只通过局域网直连方式给设备发消息
-     *                  AC.ONLY_CLOUD  只通过云端给设备发消息
-     *                  AC.LOCAL_FIRST 优先通过局域网直连方式给设备发消息
-     *                  AC.CLOUD_FIRST 优先通过云端给设备发消息
-     * @param callback  返回结果的监听回调
-     */
-    public void sendToDeviceWithOption(String subDomain, long deviceId, ACKLVDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACKLVDeviceMsg&gt; callback);
-}
 </code></pre>
 
 <h2 id="home">Home模型</h2>
+<p>除了绑定控制设备之外，你可能需要对设备进行合理的分组管理，AbleCloud提供的Home模型可以满足大部分复杂的模型场景。</p>
 <pre><code class="java">public interface ACGroupMgr {
 
     /**
@@ -1758,8 +1740,10 @@
 </code></pre>
 
 <h2 id="ota">OTA</h2>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong>
-接口定义如下：</p>
+<p>除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：</p>
+<blockquote>
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong></p>
+</blockquote>
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
@@ -1836,7 +1820,7 @@
 <p><strong>"year":</strong>在每年的<strong><code>MM-dd HH:mm:ss</code></strong>时间点循环执行</p>
 </li>
 <li>
-<p><strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周一，周五重复，则表示为"week[1,5]")</p>
+<p><strong>"week[0,1,2,3,4,5,6]":</strong>在每星期的<strong><code>HH:mm:ss</code></strong>时间点循环执行(如周日，周五重复，则表示为"week[0,5]")</p>
 </li>
 </ul>
 </blockquote>
@@ -1844,7 +1828,7 @@
 <pre><code class="java">public interface ACTimerMgr {
 
     /**
-     * 创建定时任务(使用二进制模型)
+     * 创建定时任务
      *
      * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
      * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
@@ -1862,25 +1846,7 @@
     public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
 
     /**
-     * 创建定时任务(使用KLV模型)
-     *
-     * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-     * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
-     * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
-     *                    按小时重复：hour
-     *                    按天重复：day
-     *                    按月重复：month
-     *                    按年复复：year
-     *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-     * @param description 自定义的任务描述
-     * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param callback    返回结果的监听回调
-     */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACKLVDeviceMsg msg, VoidCallback callback);
-
-    /**
-     * 修改定时任务(使用二进制模型)
+     * 修改定时任务
      *
      * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
      * @param taskId      任务id
@@ -1897,25 +1863,6 @@
      * @param callback    返回结果的监听回调
      */
     public void modifyTask(long deviceId, long taskId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
-
-    /**
-     * 修改定时任务(使用KLV模型)
-     *
-     * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-     * @param taskId      任务id
-     * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
-     * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
-     *                    按小时重复：hour
-     *                    按天重复：day
-     *                    按月重复：month
-     *                    按年复复：year
-     *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-     * @param description 自定义的任务描述
-     * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param callback    返回结果的监听回调
-     */
-    public void modifyTask(long deviceId, long taskId, String timePoint, String timeCycle, String description, ACKLVDeviceMsg msg, VoidCallback callback);
 
     /**
      * 开启定时任务
@@ -2007,7 +1954,7 @@
 </code></pre>
 
 <p>另外，还需要在<code>&lt;manifest&gt;</code>标签下添加权限：</p>
-<pre><code class="java">&lt;!-- 必选 --&gt;
+<pre><code class="xml">&lt;!-- 必选 --&gt;
 &lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot;/&gt;
@@ -2027,7 +1974,7 @@
 
 <p>在<code>&lt;application&gt;</code>标签下添加组件：</p>
 <p><font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。</p>
-<pre><code class="java">&lt;!-- 监听通知点击或者忽略处理的广播 --&gt;
+<pre><code class="xml">&lt;!-- 监听通知点击或者忽略处理的广播 --&gt;
 &lt;receiver
     android:name=&quot;com.umeng.message.NotificationProxyBroadcastReceiver&quot;
     android:exported=&quot;false&quot; &gt;
@@ -2085,7 +2032,7 @@
 </code></pre>
 
 <p>可以根据需要自行设置 android:label 中的服务名 ：</p>
-<pre><code class="java">&lt;!-- Umeng的长连服务，用来建立推送的长连接的 --&gt;
+<pre><code class="xml">&lt;!-- Umeng的长连服务，用来建立推送的长连接的 --&gt;
 &lt;!-- 【应用包名】字符串需要替换成本应用的应用包名 --&gt;
 &lt;service
     android:name=&quot;com.umeng.message.UmengService&quot;
@@ -2140,7 +2087,7 @@
 </code></pre>
 
 <p>最后，添加 <strong>AppKey</strong> 和 <strong>Umeng Message Secret</strong></p>
-<pre><code class="java">&lt;!-- V1.3.0添加的service，负责下载通知的资源 --&gt;
+<pre><code class="xml">&lt;!-- V1.3.0添加的service，负责下载通知的资源 --&gt;
 &lt;service android:name=&quot;com.umeng.message.UmengDownloadResourceService&quot; /&gt;
 
 &lt;!-- 添加 AppKey 和 Umeng Message Secret --&gt;
@@ -2189,38 +2136,7 @@
 }
 </code></pre>
 
-<h2 id="_10">和云端通信</h2>
-<pre><code>
-public class AC {
-    /**
-     * 往某一服务发送命令/消息
-     *
-     * @param subDomain 服务所属子域名
-     * @param name      服务名
-     * @param version   服务版本
-     * @param req       具体的消息内容
-     * @param callback  返回结果的监听回调，返回服务端的响应消息
-     * @throws Exception
-     */
-    public static void sendToService(String subDomain, String name, int version,
-                                 ACMsg req, PaylodCallback&lt;ACMsg&gt; callback) {}
-
-
-     /**
-     * 通过云端给设备发消息
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id），不提供时传0
-     * @param msg       具体的消息内容
-     * @param callback  返回结果的监听回调
-     */
-    public void sendToDevice(String subDomain, Long deviceId, ACDeviceMsg msg, PayloadCallback&lt;ACDeviceMsg&gt; callback){} 
-}
-
-
-</code></pre>
-
-<h2 id="_11">实时消息同步</h2>
+<h2 id="_10">实时消息同步</h2>
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong>
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
 <pre><code class="java">public interface ACPushMgr {
@@ -2249,7 +2165,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 }
 </code></pre>
 
-<h2 id="_12">局域网通信</h2>
+<h2 id="_11">局域网通信</h2>
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <pre><code class="java">/**
  * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
@@ -2260,7 +2176,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
 </code></pre>
 
-<h3 id="_13">文件存储</h3>
+<h3 id="_12">文件存储</h3>
 <p>如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
 <pre><code class="java">public interface ACFileMgr {
 
@@ -2365,9 +2281,9 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h2 id="_14">桩模块</h2>
+<h2 id="_13">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_15">设备桩</h4>
+<h4 id="_14">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2375,7 +2291,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h4 id="_16">服务桩</h4>
+<h4 id="_15">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，其定义如下：</p>
 <pre><code class="java">public abstract class ACService {
     /**
@@ -2387,7 +2303,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     public abstract void handleMsg(ACMsg req, ACMsg resp);
 </code></pre>
 
-<h1 id="_17">适用蓝牙的接口</h1>
+<h1 id="_16">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
