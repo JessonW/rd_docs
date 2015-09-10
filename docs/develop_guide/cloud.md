@@ -823,7 +823,9 @@ ac.store("test_data", context).batchDelete("deviceId", "12345")
                     .or(f3)
                     .execute();
 ```
-##基于SimpleFullScan和Scan的全表分页浏览
+##SimpleFullScan和Scan
+**基于SimpleFullScan和Scan的全表分页浏览**
+
 全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。
 
 ###非分区数据集

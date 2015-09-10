@@ -1710,12 +1710,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="_40">文件存储</h1>
 <blockquote>
-<p><font color="red">注意</font>：
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
+<p><font color="red">注意</font>：</p>
+<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
 <p><code>&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
-<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下
-3、上传下载支持断点续传功能</p>
+<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
+<p>3、上传下载支持断点续传功能</p>
 </blockquote>
 <h2 id="_41">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
@@ -1796,6 +1795,7 @@ acl.setUserDeny(ACACL.OpType.READ, 1);
 acl.setUserAccess(ACACL.OpType.WRITE, 1);
 </code></pre>
 
+<p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
 <h3 id="2_10">2、上传文件</h3>
 <h4 id="1sdcard_1">1)、上传sdcard文件</h4>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);

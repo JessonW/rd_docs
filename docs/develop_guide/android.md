@@ -1391,7 +1391,7 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 
 #文件存储
 ><font color="red">注意</font>：
-<<<<<<< HEAD
+
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
 
 > ```
@@ -1399,6 +1399,7 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 > ```
 
 >2、使用文件存储需导入jar包`android-async-http-1.4.8`和`qiniu-android-sdk-7.0.7`到libs目录下
+
 >3、上传下载支持断点续传功能
 
 
@@ -1484,6 +1485,8 @@ acl.setUserDeny(ACACL.OpType.READ, 1);
 //设置白名单，userId为1的用户有写的权限
 acl.setUserAccess(ACACL.OpType.WRITE, 1);
 ```
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+ 
 ###2、上传文件
 ####1)、上传sdcard文件
 ```java
