@@ -1606,6 +1606,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 
 #Error Code
+参考[reference-Error Code](../reference/error_code.md)
 
-+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
-+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。参考**[reference-Error Code](../reference/error_code.md)
+>+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
+>+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**

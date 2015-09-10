@@ -436,7 +436,7 @@
 </ul>
 <h2 id="acmsg">ACMsg</h2>
 <p>介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject</p>
-<h3 id="acobject">ACObject</h3>
+<h4 id="acobject">ACObject</h4>
 <p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
 <pre><code class="java">public class ACObject {
     private HashMap&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
@@ -480,7 +480,7 @@
 <blockquote>
 <p><font color="brown"><strong>注：</strong>最常用的三个接口是put/add/get，通过<strong>add</strong>接口保存在ACObject中的数据实际为List，相应的，get出来也是一个List。</font></p>
 </blockquote>
-<h3 id="acmsg_1">ACMsg</h3>
+<h4 id="acmsg_1">ACMsg</h4>
 <p>ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及<strong>其它形式</strong>的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的<strong>OBJECT_PAYLOAD</strong>格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。</p>
 <pre><code class="java">public class ACMsg extends ACObject {
     private String name;
@@ -572,7 +572,7 @@
 </code></pre>
 
 <h2 id="acdevicemsg">ACDeviceMsg</h2>
-<h3 id="acdevicemsg_1">ACDeviceMsg</h3>
+<h4 id="acdevicemsg_1">ACDeviceMsg</h4>
 <p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。并根据code的不同值做出不同的处理响应。</p>
 <blockquote>
 <ul>
@@ -599,7 +599,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <p><font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。</p>
-<h3 id="acdevicemsgmarshaller">ACDeviceMsgMarshaller</h3>
+<h4 id="acdevicemsgmarshaller">ACDeviceMsgMarshaller</h4>
 <p>设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：</p>
 <pre><code class="java">public interface ACDeviceMsgMarshaller {
     /**
@@ -622,12 +622,12 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acklvobject">ACKLVObject</h3>
+<h4 id="acklvobject">ACKLVObject</h4>
 <p><font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。</p>
 <h1 id="sdk">SDK接口列表</h1>
 <h2 id="_4">基本对象结构</h2>
 <p>这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。</p>
-<h3 id="acaccount">ACAccount</h3>
+<h4 id="acaccount">ACAccount</h4>
 <p>用来表示AbleCloud的一个注册帐号信息，定义如下：</p>
 <pre><code class="java">public class ACUserInfo {
     private long userId;  //用户id
@@ -639,7 +639,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acopenidinfo">ACOpenIdInfo</h3>
+<h4 id="acopenidinfo">ACOpenIdInfo</h4>
 <p>用来表示AbleCloud的一个第三方登录信息，定义如下：</p>
 <pre><code class="java">public class ACOpenIdInfo {
     //第三方登录类型，通过ACThirdPlatform.QQ|SINA|WEIXIN|JINDONG|OTHER区分
@@ -653,7 +653,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acuserdevice">ACUserDevice</h3>
+<h4 id="acuserdevice">ACUserDevice</h4>
 <p>设备管理模式下，用来表示一个设备，定义如下：</p>
 <pre><code class="java">public class ACUserDevice {
     //设备逻辑ID
@@ -683,7 +683,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acdeviceuser">ACDeviceUser</h3>
+<h4 id="acdeviceuser">ACDeviceUser</h4>
 <p>设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：</p>
 <pre><code class="java">public class ACDeviceUser {
     //用户ID
@@ -705,7 +705,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="achome">ACHome</h3>
+<h4 id="achome">ACHome</h4>
 <p>说明：分组模型下，Home模型定义如下：</p>
 <pre><code class="java">public class ACHome {
     private long homeId;
@@ -718,7 +718,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acroom">ACRoom</h3>
+<h4 id="acroom">ACRoom</h4>
 <p>说明：分组模型下，Room模型定义如下：</p>
 <pre><code class="java">public class ACRoom {
     private long homeId;
@@ -732,7 +732,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="actimertask">ACTimerTask</h3>
+<h4 id="actimertask">ACTimerTask</h4>
 <p>说明：列举定时任务列表时用来表示定时任务信息，定义如下：</p>
 <pre><code class="java">public class ACTimerTask {
     //创建任务ID
@@ -764,7 +764,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acpushtable">ACPushTable</h3>
+<h4 id="acpushtable">ACPushTable</h4>
 <p>说明：用来表示订阅的数据集实时消息内容，定义如下：</p>
 <pre><code class="java">public class ACPushTable {
     public static final int OPTYPE_CREATE = 1;
@@ -787,7 +787,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acfileinfo">ACFileInfo</h3>
+<h4 id="acfileinfo">ACFileInfo</h4>
 <p>说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：</p>
 <pre><code class="java">public class ACFileInfo {
     //自定义文件目录，如ota
@@ -806,7 +806,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acdevicefind">ACDeviceFind</h3>
+<h4 id="acdevicefind">ACDeviceFind</h4>
 <p>说明：用来获取局域网本地设备，定义如下：</p>
 <pre><code class="java">public class ACDeviceFind {
     private String ip;
@@ -819,10 +819,10 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p>注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断
-如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
+<p>注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断</p>
+<p>如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
 </blockquote>
-<h3 id="acotaupgradeinfo">ACOTAUpgradeInfo</h3>
+<h4 id="acotaupgradeinfo">ACOTAUpgradeInfo</h4>
 <p>说明：用来获取OTA升级状态信息，定义如下：</p>
 <pre><code class="java">public class ACOTAUpgradeInfo {
     //当前版本号
@@ -850,7 +850,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="acexception">ACException</h3>
+<h4 id="acexception">ACException</h4>
 <p>说明：用来表示所有错误信息，定义如下：</p>
 <pre><code class="java">public class ACException extends Exception {
     private int errorCode;
@@ -1268,7 +1268,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p>通过以上ACDeviceActivator提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
+<p>通过以上<code>ACDeviceActivator</code>提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
 </blockquote>
 <h2 id="_7">设备管理( 独立和网关型）</h2>
 <p>将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。</p>
@@ -1750,9 +1750,6 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 
 <h2 id="ota">OTA</h2>
 <p>除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：</p>
-<blockquote>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong></p>
-</blockquote>
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
@@ -1803,6 +1800,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
+<blockquote>
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong></p>
+</blockquote>
 <h2 id="_8">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
@@ -1911,7 +1911,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <h2 id="_9">消息推送</h2>
-<p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
+<p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：</p>
 <pre><code class="java">public interface ACNotificationMgr {
 
     /**
@@ -2146,8 +2146,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <h2 id="_10">实时消息同步</h2>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong>
-AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
+<p>AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
 <pre><code class="java">public interface ACPushMgr {
 
     /**
@@ -2174,8 +2173,8 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 }
 </code></pre>
 
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong></p>
 <h2 id="_11">局域网通信</h2>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <pre><code class="java">/**
  * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
  *
@@ -2185,6 +2184,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
 </code></pre>
 
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <h3 id="_12">文件存储</h3>
 <p>如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
 <pre><code class="java">public interface ACFileMgr {
@@ -2765,7 +2765,11 @@ public class ACACL {
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
-<p>参考<a href="../error_code/">reference-Error Code</a></p></div>
+<p>参考<a href="../error_code/">reference-Error Code</a></p>
+<ul>
+<li><strong>建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。</strong></li>
+<li><strong>调试阶段，可通过<code>e.getErrorCode()</code>获取错误码，<code>e.getMessage()</code>获取错误信息。</strong></li>
+</ul></div>
             
         </div>
 
