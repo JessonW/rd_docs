@@ -34,9 +34,10 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
-建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
 
+<<<<<<< HEAD
 ##一、普通帐号注册
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
 ![account_register](../pic/develop_guide/account_register.png)
 
@@ -164,6 +165,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 ##三、添加帐号扩展属性
+
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、获取账号管理器
@@ -209,9 +211,9 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 #设备管理
 
-说明参见[功能说明-设备管理](../features/functions.md#_12)
-
 ##独立设备
+
+功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
 
 **用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。**
 
@@ -285,8 +287,8 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 ><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
-+ 第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；
-+ 第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
++ **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；**
++ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给普通用户
 ```java
@@ -334,7 +336,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
 ###三．设备解绑
 
 ####1、管理员或普通用户解绑设备
-如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
+<font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
 ```java
 bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     @Override
@@ -367,6 +369,9 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
 
 ##网关型设备
+
+功能介绍参见 [功能说明-功能介绍-网关型设备管理](../features/functions.md#_6)
+
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
 ![DM_gateway](../pic/develop_guide/DM_gateway.png)
@@ -497,6 +502,9 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
 ##Home模型
 
+功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
+
+
 创建家庭绑定WiFi设备的建议流程如下图：
 
 ![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
@@ -590,6 +598,9 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 
 ##设备附加属性
+
+功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
+
 **<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
 
 ####一、设置或者更新设备附加属性
@@ -632,8 +643,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
 #和云端通信
 
-说明参见[功能说明-和云端通信](../introduction.md#_22)
-
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
 
 ##一、发送消息到设备
 ###1、KLV格式
@@ -916,7 +926,8 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
-功能说明参见[功能说明-定时任务](../features/functions.md#_29)。
+功能介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#_19)
+
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1054,6 +1065,8 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 #OTA
 
+功能介绍参见 [功能说明-功能介绍-OTA](../features/functions.md#ota)
+
 ## <span class="skip">||SKIP||</span>
 
 
@@ -1106,7 +1119,9 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
-说明参见[功能说明-OTA](../features/functions.md#_30)。
+
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#20)
+
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 
@@ -1391,6 +1406,9 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 ```
 
 #文件存储
+
+功能介绍参见 [功能说明-功能介绍-文件存储](../features/functions.md#_21)
+
 ><font color="red">注意</font>：
 
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
