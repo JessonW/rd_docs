@@ -1021,9 +1021,33 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 <p><strong>例如</strong>：以开启设备为例,协议如下:</p>
 <blockquote>
 <ul>
-<li>数据点：key:1  value:int8(0为关闭，1为开启)</li>
-<li>数据包：code:68  </li>
+<li><strong>请求数据包code:68</strong></li>
 </ul>
+<blockquote>
+<p>数据点key:1</p>
+<ul>
+<li>
+<p>value:0       //关闭</p>
+</li>
+<li>
+<p>value:1       //开启</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>响应数据包code:102</strong></li>
+</ul>
+<blockquote>
+<p>数据点key:1</p>
+<ul>
+<li>
+<p>value:0       //失败</p>
+</li>
+<li>
+<p>value:1       //成功 </p>
+</li>
+</ul>
+</blockquote>
 </blockquote>
 <pre><code class="java">ACKLVObject req = new ACKLVObject();
 //只需要告诉设备指令，而不需要payload时，传null
