@@ -5,7 +5,9 @@ theme: readthedocs
 pages:
 #- Home: index.md
 - 基本介绍: introduction.md
-- 功能说明: features.md
+- 功能说明:
+    - 基本概念: features/concepts.md
+    - 功能介绍: features/functions.md
 - 开发指导:
     - 客户端-安卓: develop_guide/android.md
     - 客户端-iOS: develop_guide/iOS.md
