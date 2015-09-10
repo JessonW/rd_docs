@@ -383,12 +383,6 @@ public class ACPushTable {
 public class ACFileInfo {
     //自定义文件目录，如ota
     private String bucket;
-    /**
-     * 目录类型（若为私有目录，则会对下载链接进行加密且下载链接具有有效期）
-     * 
-     * 只能填"public"或"private"
-     */
-    private String bucketType;
     //文件名
     private String filename;
     //上传文件数据
@@ -398,7 +392,7 @@ public class ACFileInfo {
     //权限管理
     private ACACL acl;
 
-    public ACFileInfo(String bucket, String bucketType, String filename) {
+    public ACFileInfo(String bucket, String filename) {
     }
 }
 ```
