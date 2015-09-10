@@ -1,4 +1,4 @@
-嵌入式设备开发指导
+#嵌入式设备开发指导
 #开发准备
 
 在进行设备开发前，需要先做以下准备：
@@ -10,14 +10,14 @@
 
 需要厂商烧制到设备中的信息包括：
 
-- 	设备版本：4字节
-- 	设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）
+- 	设备版本：4字节。
+- 	设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）。
 - 	设备ID：16字节，可独立烧制，也可使用WiFi模块的MAC地址。使用MAC地址作为设备ID时，需要在MAC地址前补四个0凑齐16字节。
-- 	设备域信息：（两个字节的domain加上6个字节的subdomain）
+- 	设备域信息：两个字节的domain加上6个字节的subdomain。
 
 
 #配置设备基本信息
-打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID
+打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID。
 
 如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不填写。
 如下图所示：
@@ -66,16 +66,11 @@
 
 对于AbleCloud还没有进行适配的模块，AbleCloud提供上层交互所需要的SDK，厂商自己将下层驱动更改一下即可完成适配工作。
 
-对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动 即可完成适配。
+对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动即可完成适配。
 
 对于安装Android、Linux、Windows、Mico操作系统的设备，AbleCloud已完成操作系统的适配。
 
-
-
-
-
-
-WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：[reference-设备-设备应用开发框架](../reference/device.md#设备应用开发框架) 
+WiFi模块和MCU之间采用自定义的通信协议，通信协议的具体描述参见：[reference-设备-设备应用开发框架](../reference/device.md#设备应用开发框架) 。
 
 WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。
 
@@ -86,8 +81,8 @@ WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手�
 
 设备在两种场景下会进入Smartconfig状态：
 
-1)	用户首次绑定配置家庭路由器的密码
-2)	更新路由器密码
+1)	用户首次绑定配置家庭路由器的密码；
+2)	更新路由器密码。
 
 这里智能灯演示系统是通过MCU按键进入Smartconfig状态，其示例如下：
 
@@ -115,7 +110,6 @@ void KeyIntHandle(void)
 ```c
 void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
 {
-    
     //处理wifi模块的通知类消息
     switch(pstruMsg->MsgCode)
     {
@@ -140,28 +134,13 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 }
 ```
 
-
-
 ##通过蜂窝网络连接到云端的设备
 
-
-蜂窝网络判断用户打开数据并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。
-
-
-
-
-
-
+蜂窝网络判断用户打开数据连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。
 
 ##通过以太网连接到云端的设备
 
-
-设备在太网判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。
-
-
-
-
-
+设备判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。
 
 
 #设备绑定管理
@@ -170,9 +149,9 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 对于通过蜂窝网络连接到云端的设备，无法通过局域网将设备的信息广播给客户端（APP），所以，需要在设备上印刷二维码进行绑定。
 
-对于通过以太网连接到云端的设备，设备连接到云端成功以后，同样可以在局域网中广播设备的subdomian和物理ID。
+对于通过以太网连接到云端的设备，设备连接到云端成功以后，同样可以在局域网中广播设备的subdomianID和物理ID。
 
-对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomian和物理ID的二维码。微信的开发准备工作请参考：[开发指导-第三方云对接-微信](third_proxy.md#微信)
+对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomianID和物理ID的二维码。微信的开发准备工作请参考：[开发指导-第三方云对接-微信](third_proxy.md#微信)。
 
 
 ##子设备的绑定
@@ -182,7 +161,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
  
 ###网关网络打开
-云端首先调用AC_CODE_GATEWAY_CTRL消息请求网关打开对应的网络供子设备接入，该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息
+云端首先调用AC_CODE_GATEWAY_CTRL消息请求网关打开对应的网络供子设备接入，该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 消息格式定义如下：
 ```c 
@@ -197,7 +176,6 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 参考代码如下：
 
 ```c
-
     void AC_MgmtPermitJoin(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
        /*打开网络*/
@@ -219,14 +197,12 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
        /*给云端回响应*/
        AC_SendAckMsg(pstruOptList,pstruMsg->MsgId);
     }
-
 ```
 ###查询子设备列表
- 云端调用AC_CODE_LIST_SUBDEVICES_REQ消息，请求网关发送子设备列表给网关, 网关收到AC_CODE_LIST_SUBDEVICES_REQ后，发送AC_CODE_LIST_SUBDEVICES_RSP并携带所有子设备的信息给云端。
+ 云端调用AC_CODE_LIST_SUBDEVICES_REQ消息，请求网关发送子设备列表给云端。 网关收到AC_CODE_LIST_SUBDEVICES_REQ后，发送AC_CODE_LIST_SUBDEVICES_RSP并携带所有子设备的信息给云端。
 
 消息格式定义如下：
 ```c
-   
     typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息   
@@ -239,16 +215,13 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         u8 u8Pad[3];  
         ZC_SubDeviceInfo StruSubDeviceInfo[0];
     }ZC_SubDeviceList;
-
 ```
 
 参考代码如下：
 
 ```c
-
     void AC_ListSubDevices(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-    
         u8 *pu8Msg = osal_mem_alloc(sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList) + g_struDeviceStatus.num*    (sizeof(ZC_SubDeviceInfo)));
         ZC_SubDeviceList *pu8DeviceListInfo = (ZC_SubDeviceList *)(pu8Msg + sizeof(AC_MessageHead));
         ZC_SubDeviceInfo *pu8SubDeviceInfo = (ZC_SubDeviceInfo *)(pu8Msg + sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList));
@@ -277,15 +250,14 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         AC_SendMessage(pu8Msg, u16DataLen);
         osal_mem_free(pu8Msg);
     }
-
 ```
 
-###云端查询子设备是否在线。
+###云端查询子设备是否在线
 
 消息格式定义如下：
+
 云端下发到网关，查询子设备是否在线。
 ```c
-
     typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
@@ -295,17 +267,14 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 网关响应到云端子设备在线信息。
 ```c
-
     typedef struct
     {
         u8 u8DeviceOnline;	//在线状态，1：在线，0：不在线
         u8 u8Pad[3];
     }ZC_DeviceOnline;
-
 ```
 参考代码如下：
 ```c
-
     void AC_GetDeviceStatus(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
     
@@ -333,29 +302,25 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         AC_SendMessage(pu8Msg, u16DataLen);
         osal_mem_free(pu8Msg);
     }
-
 ```
 
 ##子设备解除绑定
 
-云端调用AC_CODE_LEAVE_DEVICE消息请求网关将子设备移除网络，该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息
+云端调用AC_CODE_LEAVE_DEVICE消息请求网关将子设备移除网络，该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 消息格式定义如下：
 
 ```c
-
     typedef struct
     {    
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息    
         u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
     }ZC_SubDeviceInfo;
-
 ```
 
 参考代码如下：
 
 ```c
-
     void AC_LeaveDevice(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
     
@@ -377,9 +342,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
             AC_SendErrMsg(pstruOptList,pstruMsg->MsgId);
         }
     }
-
 ```
-
 
 
 #OTA
@@ -388,12 +351,11 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 ![device_OTA](../pic/develop_guide/device_OTA.png)
 
 ##OTA启动消息
-OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+OTA启动请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 消息格式如下：
 
 ```c
-
     typedef struct
     {
         u8 u8FileNum;//用以指示本次升级时文件个数。文件类型在该消息体之后，按字节依次排列。
@@ -404,22 +366,19 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*本例只升级本地设备，因而不记录文件数目*/
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);  
     }
-
 ```
 
 ##OTA文件传输消息
-OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+OTA文件传输启动请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
   
 消息格式如下：
 
 ```c
-
     typedef struct
     {
        u8  u8FileType;//文件类型
@@ -432,7 +391,6 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaFileBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 ret =0;
@@ -457,16 +415,14 @@ OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失�
         /*回响应*/                     
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
     }
-
 ```
 ##OTA文件块传输消息
 
-OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。
+OTA文件块传输请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。整个升级文件会被拆分成若干文件块进行传输。一次升级会有若干文件块。
 
 消息格式如下：
 
 ```c
-
     typedef struct
     {
         u32 u32Offset;//文件块传输偏移
@@ -476,7 +432,6 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaFileChunkMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 u32RetVal = AC_RET_OK;
@@ -510,16 +465,14 @@ OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败�
         /*回响应*/ 
         AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
     }
-
 ```
 ##OTA文件传输结束消息
 
-OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。无消息体
+OTA升级文件传输结束消息无消息体。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*回响应*/
@@ -529,12 +482,11 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ```
 ##OTA结束消息
 
-无消息体，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+无消息体。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
          u32 u32RetVal = AC_RET_OK;
@@ -546,25 +498,21 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
          if (AC_RET_OK == u32RetVal)
          {
              AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
-             
-     
          }
          else
          {
              AC_SendErrMsg(pstruOptList, pstruMsg->MsgId, NULL, 0);
          }
-    } 
-     
+    }
 ```
 
 ##OTA确认升级消息
 
-无消息体，收到该消息设备侧启动更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+无消息体。设备侧收到该消息后启动更新固件流程。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。
 
 参考代码如下:
 
 ```c
-
     void AC_HandleOtaConfirmMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 u32RetVal = AC_RET_OK;
@@ -585,16 +533,8 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
         {
             AC_SendErrMsg(pstruOptList, pstruMsg->MsgId, NULL, 0);
         }
-    
     }
-     
 ```
-
-
-
-
-
-
 
 #和云端通信
 ##设备上报消息
@@ -602,13 +542,11 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 
 下面的例子是上报demo灯状态到云端。
 
-
 ###二进制
 参考代码如下：
 
 上报数据包=code:201 + req:{1,0,0,0} 
-```c    
-    
+```c
     void AC_SendStatus2Server()
     {
         /*上报demo灯的状态*/
@@ -631,8 +569,7 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 
 上报数据包=code:201+key:1 value:int8(0为关闭，1为开启)
 
-```c    
-    
+```c
     void AC_SendStatus2Server()
     {
          /*上报demo灯的状态*/
@@ -653,10 +590,9 @@ OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，
 ###JSON格式
 参考代码如下：
 
-JSON格式用户调用第三方源码构造json格式的消息体。
+用户可调用第三方源码构造JSON格式的消息体。
 控制数据包= code:201 + req:{"switch",1}     
-```c    
-    
+```c
     void AC_SendLedStatus2Server()
     {
          /*上报demo灯的状态*/
@@ -682,7 +618,6 @@ JSON格式用户调用第三方源码构造json格式的消息体。
          /*JSON协议内存释放*/
         free(out);
     }
-
 ```
 ##设备接收云端指令
 
@@ -701,8 +636,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。
 
 响应数据包=code:102 + resp:{1,0,0,0}
 
-```c    
-
+```c
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u16 u16DataLen;
@@ -734,8 +668,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。
 
 响应数据点：key:1 value:int8(0为关闭，1为开启)
 
-```c  
-  
+```c
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*KLV协议内存申请,接口含义详见下节接口定义*/
@@ -767,8 +700,7 @@ JSON格式用户调用第三方源码构造json格式的消息体。
 
 响应数据包= code:102 +resp:{"result",1}
 
-```c  
-
+```c
     void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
         /*处理设备自定义控制消息*/
@@ -791,24 +723,25 @@ JSON格式用户调用第三方源码构造json格式的消息体。
         cJSON_AddNumberToObject(root,"result",		1);
         out=cJSON_Print(root);	
         cJSON_Delete(root);
-        /*发送JSON消息,接口含义详见下节接口定义*
+        /*发送JSON消息,接口含义详见下节接口定义*/
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen);	
-         /*释放JSON消息,接口含义详见下节接口定义*
+        /*释放JSON消息,接口含义详见下节接口定义*/
         free(out);   
      }
 ```
+
 ##接口定义
 
 ###数据发送接口
 
 函数定义
-
+```c
 void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
-
+```
 参数
 
 |字段|类型|说明|
@@ -816,16 +749,15 @@ void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
 |pu8Msg|u8 *|待发送的数据缓存|
 |u16DataLen|u16|待发送的数据长度|
 
-说明
 ###协议消息组包接口
 
 函数定义
-
+```c
 void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
     u8 *pu8Payload, u16 u16PayloadLen,
     AC_OptList *pstruOptList,
     u8 *pu8Msg, u16 *pu16Len);
-
+```
 参数
 
 |字段	|类型	|说明|
@@ -837,11 +769,12 @@ void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId,
 |pstruOptList	|AC_OptList *|	Option项列表|
 |pu8Msg|	u8 *	|组好的消息数据的存储buffer|
 |pu16Len|	u8 *	|组好的数据长度|
+
 ###KLV协议解析包接口
 函数定义
-
+```c
 s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
-
+```
 参数
 
 |字段|类型|说明|
@@ -855,22 +788,27 @@ s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 
 
 ###KLV协议内存分配接口
 函数定义
-
+```c
 AC_KLV * AC_CreateObj()
+```
+返回值： 申请出来的内存指针。
 
-返回值： 申请出来的内存指针
 ###KLV协议内存释放接口
 函数定义
-
-参数：需要释放的内存指针
-
+```c
 void AC_FreeObj(AC_KLV * pOut);
+```
+参数
+
+|字段|类型|说明|
+| ----|----|----|
+|pOut|AC_KLV *|需要释放的内存指针|
+
 ###KLV协议组包接口
 函数定义
-
-
+```c
 s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
-
+```
 参数
 
 | 字段|类型|说明|
@@ -881,13 +819,9 @@ s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
 | pu8Type|u8 *|该关键字对应的数据类型|
 | pValue|void *|该关键字对应的数据|
 
-
-
-
-
 #局域网通信
-WiFi设备和以太网设备可以和客户端（APP）进行局域网通信。
-AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。
+WiFi设备及以太网设备可以和客户端（APP）进行局域网通信。
+AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网内通信。
 
-
-Error Code
+#Error Code
+参考[reference-Error Code](../reference/error_code.md)。
