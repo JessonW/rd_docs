@@ -25,7 +25,7 @@ start.cmd
 
 <font color="red">**在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖**</font>
 
-#本地启动命令
+##本地启动命令
 开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
 
 <b>*linux*</b>下在终端运行如下命令启动服务进行测试：
