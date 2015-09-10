@@ -492,7 +492,7 @@
 </code></pre>
 
 <h1 id="_5">帐号管理</h1>
-<p>建议的用户交互流程见 <a href="../features.md#_11">功能说明-帐号管理</a></p>
+<p>建议的用户交互流程见 <a href="../../features/functions/#_11">功能说明-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p>获取账号管理对象</p>
@@ -639,7 +639,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 </code></pre>
 
 <h1 id="_6">设备管理</h1>
-<p>说明参见<a href="../features.md#_12">功能说明-设备管理</a></p>
+<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a></p>
 <h2 id="_7">独立设备</h2>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
 <p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
@@ -1224,7 +1224,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 </code></pre>
 
 <h1 id="_23">局域网通信</h1>
-<p>功能说明参见<a href="../features.md#_28">功能说明-局域网通信</a>。</p>
+<p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
@@ -1276,7 +1276,7 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 
 <p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
 <h1 id="_24">定时任务</h1>
-<p>功能说明参见<a href="../features.md#_29">功能说明-定时任务</a>。</p>
+<p>功能说明参见<a href="../../features/functions/#_29">功能说明-定时任务</a>。</p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="_25">获取定时管理器</h4>
 <h5 id="_26">使用默认时区</h5>
@@ -1448,7 +1448,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h1 id="_36">推送</h1>
-<p>说明参见<a href="../features.md#_30">功能说明-OTA</a>。</p>
+<p>说明参见<a href="../../features/functions/#_30">功能说明-OTA</a>。</p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
 <h2 id="_37">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
