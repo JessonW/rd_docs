@@ -898,16 +898,20 @@ public class LightStub extends ACDeviceStub {
 start.sh
 start.cmd</code>
 2、服务启动成功后，会在根目录下生成<code>log</code>的文件夹，进入该文件夹查看<code>service.log</code>文件，若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。</p>
-<p><code>java
-2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...
-2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]
-.
-.
-2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms
-2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505
-2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad{HTTP/1.1}{0.0.0.0:8080}
-2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms
-2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.</code></p>
+<p>```java
+2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...</p>
+</blockquote>
+<p>2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]</p>
+<p>.</p>
+<p>.</p>
+<p>2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms</p>
+<p>2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505</p>
+<p>2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad
+{HTTP/1.1}{0.0.0.0:8080}</p>
+<p>2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms</p>
+<p>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.</p>
+<blockquote>
+<p>```</p>
 </blockquote>
 <h3 id="http">用任意客户端发送http请求</h3>
 <p>使用任意客户端发送http请求测试自己的接口正确性，例如用curl或自己开发的客户端都可以。以下详细介绍如何使用curl命令进行进一步测试。</p>
