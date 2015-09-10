@@ -34,8 +34,12 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
+<<<<<<< HEAD
 
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
+=======
+建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##1、普通帐号注册
 
@@ -210,6 +214,10 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 #设备管理
 
+<<<<<<< HEAD
+=======
+说明参见[功能说明-设备管理](../features/functions.md#_12)
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##独立设备
 
@@ -869,7 +877,11 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 #局域网通信
 
+<<<<<<< HEAD
 功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#局域网通信)
+=======
+功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
@@ -925,7 +937,11 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
+<<<<<<< HEAD
 功能介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#定时任务)
+=======
+功能说明参见[功能说明-定时任务](../features/functions.md#_29)。
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1117,7 +1133,11 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
+<<<<<<< HEAD
 功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#推送)
+=======
+说明参见[功能说明-OTA](../features/functions.md#_30)。
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 
@@ -1403,7 +1423,7 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 
 #文件存储
 ><font color="red">注意</font>：
-<<<<<<< HEAD
+
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
 
 > ```
@@ -1411,6 +1431,7 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 > ```
 
 >2、使用文件存储需导入jar包`android-async-http-1.4.8`和`qiniu-android-sdk-7.0.7`到libs目录下
+
 >3、上传下载支持断点续传功能
 
 
@@ -1421,7 +1442,7 @@ ACFileMgr fileMgr = AC.fileMgr();
 ##二、下载文件
 ###1、获取下载url
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback<String>() {
     @Override
     public void success(String url) {
@@ -1496,10 +1517,12 @@ acl.setUserDeny(ACACL.OpType.READ, 1);
 //设置白名单，userId为1的用户有写的权限
 acl.setUserAccess(ACACL.OpType.WRITE, 1);
 ```
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+ 
 ###2、上传文件
 ####1)、上传sdcard文件
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //设置上传文件的sdcard路径
@@ -1523,7 +1546,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 ####2)、上传小文件，比如头像
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //比如头像比特流数组

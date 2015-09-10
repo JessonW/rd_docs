@@ -41,7 +41,11 @@ Xcode
 
 
 #帐号管理
+<<<<<<< HEAD
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
+=======
+建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##1、普通帐号注册
 
@@ -104,6 +108,11 @@ Xcode
 
 #设备管理
 
+<<<<<<< HEAD
+=======
+说明参见[功能说明-设备管理](../features/functions.md#_12)
+
+>>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 ##独立设备
 
 功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
@@ -175,13 +184,13 @@ Xcode
 
 #局域网通信
 
-说明参见[功能说明-局域网通信](../features.md#_28)
+说明参见[功能说明-局域网通信](../features/functions.md#_28)
 
 <font color="red">**补充开发指导**</font>
 
 #定时任务
 
-说明参见[功能说明-定时任务](../features.md#_29)
+说明参见[功能说明-定时任务](../features/functions.md#_29)
 
 
 #OTA
@@ -219,7 +228,7 @@ Xcode
 
 #推送
 
-说明参见[功能说明-OTA](../features.md#_30)
+说明参见[功能说明-OTA](../features/functions.md#_30)
 
 见[开发框架-开发环境配置](../framework/android#开发环境配置)
 

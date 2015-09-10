@@ -526,7 +526,7 @@ $openId = $accountService-&gt;getUserOpenId($userId, 'weixin');
 </code></pre>
 
 <h1 id="_10">设备管理</h1>
-<p>说明参见<a href="../features.md#_12">功能说明-设备管理</a></p>
+<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a></p>
 <h2 id="_11">独立设备</h2>
 <p>设备绑定的交互流程如下图所示：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
@@ -838,10 +838,18 @@ $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion())
 <p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>，将消息推送给微信公众号后台；</p>
 </li>
 <li>
-<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API获取用户的OpenID，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。</p>
+<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API<a href="#openid">获取用户的OpenID</a>，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。</p>
 </li>
 </ul>
+<p><strong>注：</strong></p>
+<ol>
+<li>
 <p>上述两种情况下，“开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。</p>
+</li>
+<li>
+<p>UDS调用微信公众号的数据推送接口时，涉及访问AbleCloud之外的远程服务，需要通过AbleCloud UDS SDK提供的专门访问远程服务的API来实现。</p>
+</li>
+</ol>
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
             

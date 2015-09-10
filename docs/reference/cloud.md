@@ -25,7 +25,7 @@ start.cmd
 
 <font color="red">**在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖**</font>
 
-#本地启动命令
+##本地启动命令
 开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
 
 <b>*linux*</b>下在终端运行如下命令启动服务进行测试：
@@ -654,6 +654,8 @@ public abstract class AC {
 ```java
 ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
 ```
+><font color="red">注意</font>：此处传开发者或用户上下文都可以
+
 ###接口说明
 ```java
 public interface ACAccountMgr {
@@ -743,6 +745,8 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 ```
+><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`
+
 ###接口说明
 ```java
 public interface ACBindMgr {
@@ -983,6 +987,8 @@ ablecloud目前提供基于mysql的分布式存储服务，开发者需要预先
 ```java
 ACFilter filter = ac.filter();
 ```
+><font color="red">注意</font>：此处使用开发者或用户上下文都可以
+
 接口定义如下：
 ```java
 public class ACFilter {
@@ -1307,248 +1313,6 @@ public interface ACStoreForTest {
 }
 ```
 
-###使用示例
-以数据集`test_data`为例，假定其分区键为`deviceId`（字符串型）；主键为`deviceId`（字符串型）和`timestamp`（整型）；其他字段包括`status`（字符串型）、`mode`（字符串型）、`speed`（整型）和`pm25`（浮点型）等。
-
-####Create
-方式一：显示的传入primary keys的k-v对
-```java
-ac.store("test_data", context).create("deviceId", "12345", "timestamp", 1L)	// 这里是k-v对
-                    .put("status", "run")
-                    .put("mode", "auto")
-                    .put("speed", 45L)
-                    .put("pm25", 35.5)
-                    .execute();
-```
-方式二：传入primary keys的对象
-```java
-ACObject pk = new ACObject();
-pk.put("deviceId", "12345");
-pk.put("timestamp", 1L);
-ac.store("test_data", context).create(pk)	// 这里是primary keys的对象
-                    .put("status", "run")
-                    .put("mode", "auto")
-                    .put("speed", 45L)
-                    .put("pm25", 35.5)
-                    .execute();
-```
-####Find
-```java
-ACObject ao = ac.store("test_data", context)
-                    .find("deviceId", "12345", "timestamp", 1L)
-                    .execute();
-String status = ao.get("status");
-String mode = ao.get("mode");
-Long speed = ao.get("speed");
-```
-####Scan
-由于是分区数据集，在Scan时需要传入分区键值对，这里是`deviceId`及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如`ac.store("test_data", context).scan()...`
-><font color=red>务必注意</font>：存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
-
-示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列
-```java
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .limit(10)
-                    .execute();
-```
-示例二：设定start和end，由start开始正向扫描到end，返回start和end之间的结果集，其中各数据记录按主键自然正序排列
-```java
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .end("timestamp", 10L)
-                    .execute();
-```
-示例三：设定end和limit，由end开始逆向扫描，返回limit数量的数据集，注意其中各数据记录按主键倒序排列。
-><font color="brown">**注：**我们经常遇到的获取设备最新的n条数据的需求就可以用这个接口组合来实现。</font>
-```java
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .end("timestamp", 10L)
-                    .limit(10)
-                    .execute();
-```
-示例四：指定查询过滤器进行查询
-```java
-// 查询条件1：状态是正在运行并且转速大于等于300
-ACFilter f1 = ac.filter().whereEqualTo("status", "running")
-                    .whereGreaterThanOrEqualTo("speed", 300L);
-
-// 查询条件2：状态是已停止并且PM2.5监控值小于50.0
-ACFilter f2 = ac.filter().whereEqualTo("status", "stopped")
-                    .whereLessThan("pm25", 50.0);
-
-// 查询设备ID为"12345"的设备在一段时间内所有满足条件1或条件2的数据记录
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .end("timestamp", 10L)
-                    .where(f1)
-                    .or(f2)
-                    .execute();
-```
-示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高
-```java
-// 查询条件：状态是正在运行
-ACFilter f = ac.filter().whereEqualTo("status", "running");
-
-// 查询设备ID为"12345"的设备在一段时间内所有满足条件的数据记录并按照转速（正序）、PM2.5监控值（倒序）以及时间戳（倒序）排序
-// 本示例的意图为：查询设备ID为"12345"的设备在"1L"到"10L"这段时间内所有正在运转时上报的数据，同时进行排序，转速越低越靠前，转速相同的PM2.5越高越靠前，PM2.5也相同的时间越近越靠前
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .end("timestamp", 10L)
-                    .where(f)
-                    .orderByAsc("speed")
-                    .orderByDesc("pm25", "timestamp")
-                    .execute();
-```
-示例六：分组并进行简单的数值统计
-```java
-/*
- 将设备ID为"12345"的设备在一段时间内的数据记录按照运行状态和控制模式分组，假设有四种情况：
- -------------------------
- | status    |    mode   |
- -------------------------
- | running   |    auto   |
- -------------------------
- | running   |    manual |
- -------------------------
- | stopped   |    auto   |
- -------------------------
- | stopped   |    manual |
- -------------------------
- 本示例的意图为：统计设备ID为"12345"的设备在"1L"到"10L"这段时间内所有上报的数据，按照"status"和"mode"分组，统计每个分组的记录总数、合计转速、平均转速和平均PM2.5以及最大转速和最大PM2.5.
-*/
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .end("timestamp", 10L)
-                    .groupBy("status", "mode")
-                    .count()
-                    .sum("speed")
-                    .avg("speed", "pm25")
-                    .max("speed", "pm25")
-                    .execute();
-```
-示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求
-```java
-// 将设备ID为"12345"的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
-ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
-                    .whereLessThan("speed", 50L);
-ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo("speed", 300L);
-ACFilter f3 = ac.filter().whereLessThan("pm25", 30.0);
-ac.store("test_data", context).scan("deviceId", "12345")
-                    .start("timestamp", 1L)
-                    .end("timestamp", 100L)
-                    .where(f1)
-                    .or(f2)
-                    .or(f3)
-                    .groupBy("status", "mode")
-                    .orderByAsc("status", "mode")
-                    .count()
-                    .max("speed")
-                    .min("speed", "pm25")
-                    .execute();
-```
-####FullScan
-分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
-同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法返回为空
-```java
-// 延续Scan示例七中的查询条件进行全表所有分区的扫描
-ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
-                    .whereLessThan("speed", 50L);
-
-ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo("speed", 300L);
-
-ACFilter f3 = ac.filter().whereLessThan("pm25", 30.0);
-
-ACIterator it = ac.store("test_data", context).fullScan()
-                    .start("timestamp", 1L)
-                    .end("timestamp", 100L)
-                    .where(f1)
-                    .or(f2)
-                    .or(f3)
-                    .groupBy("status", "mode")
-                    .orderByAsc("status", "mode")
-                    .count()
-                    .max("speed")
-                    .min("speed", "pm25")
-                    .execute();
-
-List<ACObject> zos;
-while((zos = it.next()) != null) {
-	// 处理当前分区中的数据
-        ...
-}
-```
-####BatchDelete
-分区或者非分区的数据集都可以使用BatchDelete接口来支持批量删除。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。
-```java
-ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
-                    .whereLessThan("speed", 50L);
-
-ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo("speed", 300L);
-
-ACFilter f3 = ac.filter().whereLessThan("pm25", 30.0);
-
-ac.store("test_data", context).batchDelete("deviceId", "12345")
-                    .where(f1)
-                    .or(f2)
-                    .or(f3)
-                    .execute();
-```
-####基于SimpleFullScan和Scan的全表分页浏览
-全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。
-
-非分区数据集
-```java
-// limit是每个分页的最大数据条数，举例为50
-int limit = 50;
-List<ACObject> zos;
-
-// 第一次调用scan，由非分区表的起始向下扫描limit+1条数据。注意每次多取一条，呈现前limit条，最后一条用作下一次取数据的start；同时注意非分区数据集的scan不需要传分区键
-zos = ac.store("test_data", context)
-	.scan()
-	.limit(limit + 1)
-	.execute();
-
-// 后续调用scan接口，start使用上一次扫描的结果数据集的最后一条
-while (zos.size() >= limit + 1) {
-	zos = ac.store("test_data", context)
-		.scan()
-		.start(zos.get(limit))
-		.limit(limit + 1)
-		.execute();
-}
-
-```
-分区数据集
-```java
-// limit是每个分页的最大数据条数，举例为50
-int limit = 50;
-
-// 可以定义一些查询条件的过滤器
-ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
-                    .whereLessThan("speed", 50L);
-
-ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo("speed", 300L);
-
-ACFilter f3 = ac.filter().whereLessThan("pm25", 30.0);
-
-ACRowIterator it = ac.store(TEST_CLASS, context)
-		.simpleFullScan()
-		.where(f1)
-		.and(f2)
-		.or(f3)
-		.execute();
-
-// 注意这里可以直接使用每次期望获取的数据条数limit，不需要传入limit+1;同时每次迭代给定的limit可以不同
-List<ACObject> zos;
-while ((zos = it.next(limit)) != null) {
-	// 处理本次迭代取到的数据集
-        ...
-}
-```
-####其它
-`delete/update/replace`的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。
-
 ##推送服务接口
 该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）
 ###获取方式
@@ -1669,6 +1433,7 @@ public class ACNotification {
 ```java
 ACTimerTaskMgr timerMgr = ac.timerTaskMgr(ACContext context);
 ```
+><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`
 ###接口说明
 ```java
 public interface ACTimerTaskMgr {
@@ -1701,7 +1466,7 @@ public interface ACTimerTaskMgr {
      * @return 返回用户（userId）针对设备（deviceId）设置的所有定时任务的列表。
      * @throws Exception
      */
-    public ArrayList<ACTimerTask> listTasks(long userId, long deviceId) throws Exception;
+    public ArrayList<ACTimerTask> listTasks(long deviceId) throws Exception;
 
     /**
      * 删除一个定时任务。

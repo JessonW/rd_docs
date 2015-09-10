@@ -113,7 +113,7 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 
 #设备管理#
 
-说明参见[功能说明-设备管理](../features.md#_12)
+说明参见[功能说明-设备管理](../features/functions.md#_12)
 
 ##独立设备##
 
@@ -501,9 +501,13 @@ $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
 
 - AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**，将消息推送给微信公众号后台；
 
-- 开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API获取用户的OpenID，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。
+- 开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API[获取用户的OpenID](#openid)，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。
 
-上述两种情况下，“开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。
+**注：**
+
+1. 上述两种情况下，“开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。
+
+1. UDS调用微信公众号的数据推送接口时，涉及访问AbleCloud之外的远程服务，需要通过AbleCloud UDS SDK提供的专门访问远程服务的API来实现。
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
