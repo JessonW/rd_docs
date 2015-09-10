@@ -41,11 +41,8 @@ Xcode
 
 
 #帐号管理
-<<<<<<< HEAD
+
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
-=======
-建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##1、普通帐号注册
 
@@ -108,11 +105,6 @@ Xcode
 
 #设备管理
 
-<<<<<<< HEAD
-=======
-说明参见[功能说明-设备管理](../features/functions.md#_12)
-
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 ##独立设备
 
 功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)

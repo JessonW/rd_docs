@@ -34,12 +34,8 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
-<<<<<<< HEAD
 
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
-=======
-建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##1、普通帐号注册
 
@@ -169,6 +165,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 ##3、添加帐号扩展属性
+
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、获取账号管理器
@@ -213,11 +210,6 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 
 #设备管理
-
-<<<<<<< HEAD
-=======
-说明参见[功能说明-设备管理](../features/functions.md#_12)
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 ##独立设备
 
