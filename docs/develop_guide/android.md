@@ -35,21 +35,20 @@ AC.init(this, MajorDomain, MajorDomainId);
 
 #帐号管理
 
-<<<<<<< HEAD
 ##一、普通帐号注册
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
 ![account_register](../pic/develop_guide/account_register.png)
 
-获取账号管理对象
+###获取账号管理对象
 
 ```java
     ACAccountMgr accountMgr=AC.accountMgr();
 ```
 
-普通帐号注册流程
+###普通帐号注册流程
 
-1、检查手机号是否已注册
+####1、检查手机号是否已注册
 
 ```java
 	AC.accountMgr().checkExist(phone, new PayloadCallback<Boolean>() {
@@ -69,7 +68,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 
-2、发送验证码
+####2、发送验证码
 
 ```java
 	AC.accountMgr().sendVerifyCode(phone, 1, new VoidCallback() {
@@ -84,7 +83,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-3、检测验证码正确性
+####3、检测验证码正确性
 
 ```java
 	AC.accountMgr().checkVerifyCode(phone，code, new PayloadCallback<Boolean>() {
@@ -103,7 +102,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-4、注册
+####4、注册
 
 ```java
 	AC.accountMgr().register("", phone, password, name, verifyCode, new PayloadCallback<ACUserInfo>() {
@@ -122,7 +121,7 @@ AC.init(this, MajorDomain, MajorDomainId);
  
 ![account_Oauth](../pic/develop_guide/account_Oauth.png)
 
-1、直接使用第三方登录
+####1、直接使用第三方登录
 
 ```java
 	//APP端在完成OAuth认证登陆之后获取openId和accessToken
@@ -149,7 +148,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-2、在已有普通账号登录时绑定第三方账号
+####2、在已有普通账号登录时绑定第三方账号
 
 ```java
 	AC.accountMgr().bindWithAccount( email, phone, password, nickName, verifyCode, new VoidCallback() {
@@ -248,7 +247,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 
     @Override
     public void error(ACException e) {
-        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 ```
@@ -406,7 +405,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 ```
@@ -422,7 +421,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -438,7 +437,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -461,7 +460,7 @@ AC.bindMgr().openGatewayMatch(subDomain, gatewayDeviceId, AC.DEVICE_ACTIVATOR_DE
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
@@ -475,7 +474,7 @@ AC.bindMgr().listNewDevices(subDomain, gatewayDeviceId, new PayloadCallback<List
     }
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
@@ -492,7 +491,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -538,7 +537,7 @@ groupMgr.createHome(name, new PayloadCallback<ACHome>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为网络错误
     }
 });
 ```
@@ -553,7 +552,7 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -561,7 +560,9 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 ###二、添加或移动设备到分组里
 
 ><font color="red">特别注意</font>：
->1、绑定设备流程。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+
+>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+
 >2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。
 
 ####添加设备到Home里
@@ -575,7 +576,7 @@ groupMgr.addDeviceToHome(subDomain, physicalDeviceId, homeId, deviceName, new Pa
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -590,7 +591,7 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -619,7 +620,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照平台申请的key与value类型
     }
 });
 ```
@@ -635,7 +636,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -651,8 +652,24 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
 
 **例如**：以开启设备为例,协议如下:
->+ 数据点：key:1  value:int8(0为关闭，1为开启)
->+ 数据包：code:68  
+```
+//请求数据包
+{ 68 ：[
+     //数据点（key：value）
+     //关灯
+     { 1 : 0 },
+     //开灯      
+     { 1 : 1 }
+]}
+//响应数据包  
+{ 102 ：[
+     //数据点（key：value）
+     //失败
+     { 1 : 0 },
+     //成功      
+     { 1 : 1 }
+]}
+```
 ```java
 ACKLVObject req = new ACKLVObject();
 //只需要告诉设备指令，而不需要payload时，传null
