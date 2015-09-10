@@ -41,7 +41,7 @@ Xcode
 
 
 #帐号管理
-建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
+建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
 
 ##1、普通帐号注册
 
@@ -104,7 +104,7 @@ Xcode
 
 #设备管理
 
-说明参见[功能说明-设备管理](../features.md#_12)
+说明参见[功能说明-设备管理](../features/functions.md#_12)
 
 ##独立设备
 
@@ -168,13 +168,13 @@ Xcode
 
 #局域网通信
 
-说明参见[功能说明-局域网通信](../features.md#_28)
+说明参见[功能说明-局域网通信](../features/functions.md#_28)
 
 <font color="red">**补充开发指导**</font>
 
 #定时任务
 
-说明参见[功能说明-定时任务](../features.md#_29)
+说明参见[功能说明-定时任务](../features/functions.md#_29)
 
 
 #OTA
@@ -212,7 +212,7 @@ Xcode
 
 #推送
 
-说明参见[功能说明-OTA](../features.md#_30)
+说明参见[功能说明-OTA](../features/functions.md#_30)
 
 见[开发框架-开发环境配置](../framework/android#开发环境配置)
 

@@ -60,11 +60,11 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 
 开发指导请参考：
 
-[开发指导-安卓-帐号管理](develop_guide/android.md#帐号管理)
+[开发指导-安卓-帐号管理](../develop_guide/android.md#帐号管理)
 
-[开发指导-iOS-帐号管理](develop_guide/iOS.md#帐号管理)
+[开发指导-iOS-帐号管理](../develop_guide/iOS.md#帐号管理)
 
-[开发指导-微信-帐号管理](develop_guide/wechat.md#帐号管理)
+[开发指导-微信-帐号管理](../develop_guide/wechat.md#帐号管理)
 
 
 如果需要存储用户的头像，请参考 [文件存储]
@@ -129,13 +129,13 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 开发指导参考：
 
-[开发指导-安卓-独立设备管理](develop_guide/android.md#_4)
+[开发指导-安卓-独立设备管理](../develop_guide/android.md#_4)
 
-[开发指导-iOS-独立设备管理](develop_guide/iOS.md#独立设备)
+[开发指导-iOS-独立设备管理](../develop_guide/iOS.md#独立设备)
 
-[开发指导-微信-独立设备管理](develop_guide/wechat.md#_5)
+[开发指导-微信-独立设备管理](../develop_guide/wechat.md#_5)
 
-[开发指导-设备-设备激活](develop_guide/device.md#_3)
+[开发指导-设备-设备激活](../develop_guide/device.md#_3)
 
 
 ##网关型设备管理
@@ -209,13 +209,13 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 开发指导参考：
 
-[开发指导-安卓-网关型设备管理](develop_guide/android.md#_9)
+[开发指导-安卓-网关型设备管理](../develop_guide/android.md#_9)
 
-[开发指导-iOS-网关型设备管理](develop_guide/iOS.md#网关型设备管理)
+[开发指导-iOS-网关型设备管理](../develop_guide/iOS.md#网关型设备管理)
 
-[开发指导-微信-网关型设备管理](develop_guide/wechat.md#_10)
+[开发指导-微信-网关型设备管理](../develop_guide/wechat.md#_10)
 
-[开发指导-设备-设备绑定管理](develop_guide/device.md#_6)
+[开发指导-设备-设备绑定管理](../develop_guide/device.md#_6)
 
 ##home模型
 
@@ -302,11 +302,11 @@ AbleCloud支持两种设备分享模式。一种是通过分享码，普通用�
 
 开发指导参考：
 
-[开发指导-安卓-home模型](develop_guide/android.md#home)
+[开发指导-安卓-home模型](../develop_guide/android.md#home)
 
-[开发指导-iOS-home模型](develop_guide/iOS.md#home)
+[开发指导-iOS-home模型](../develop_guide/iOS.md#home)
 
-[开发指导-微信-home模型](develop_guide/wechat.md#home)
+[开发指导-微信-home模型](../develop_guide/wechat.md#home)
 
 
 
@@ -326,11 +326,11 @@ AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户�
 
 开发指导参考：
 
-[开发指导-安卓-设备附加属性](develop_guide/android.md#_14)
+[开发指导-安卓-设备附加属性](../develop_guide/android.md#_14)
 
-[开发指导-iOS-设备附加属性](develop_guide/iOS.md#设备附加属性)
+[开发指导-iOS-设备附加属性](../develop_guide/iOS.md#设备附加属性)
 
-[开发指导-微信-设备附加属性](develop_guide/wechat.md#设备附加属性)
+[开发指导-微信-设备附加属性](../develop_guide/wechat.md#设备附加属性)
 
 
 #和云端通信
@@ -344,7 +344,7 @@ AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：
 
 - JSON格式，适合MCU支持JSON解析的设备或者使用安卓系统的设备。
  
-- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV协议介绍](reference/device.md#klv)；
+- KLV格式，采用AbleCloud自定义的协议，与二进制码流类似，节省设备的运算资源，具体协议格式参见：[reference-设备-KLV协议介绍](../reference/device.md#klv)；
 - 二进制，这种数据格式AbleCloud不能够解析，因此部分可视化功能不可用，如设备虚拟。
 
 <font color="red"> 注:</font>对于网关型设备，AbleCloud并不关心子设备和网关的具体通信协议和数据格式。云端能够看到的是网关上报的子设备的数据格式。例如，网关是安卓设备、子设备计算能力比较弱数据格式是二进制，但是安卓网关能够将子设备的数据解析然后重新打包成JSON格式和云端进行交互，那么在云端管理后台设置的时候，子设备的数据格式也需要设置成JSON格式。
@@ -393,11 +393,11 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 **开发指导请参考：**
 
-[开发指导-安卓-和云端通信](develop_guide/android.md#_17)
+[开发指导-安卓-和云端通信](../develop_guide/android.md#_17)
 
-[开发指导-iOS-和云端通信](develop_guide/iOS.md#和云端通信)
+[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
 
-[开发指导-微信-和云端通信](develop_guide/wechat.md#_16)
+[开发指导-微信-和云端通信](../develop_guide/wechat.md#_16)
 
 
 ##设备上报消息
@@ -415,7 +415,7 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 开发指导请参考：
 
-[开发指导-设备-和云端通信](develop_guide/device.md#_14)
+[开发指导-设备-和云端通信](../develop_guide/device.md#_14)
 
 
 #局域网通信
@@ -432,7 +432,7 @@ AbleCloud提供了非常简单的接口实现设备的局域网发现和状态�
 
 我们提供的接口能够帮助厂商直接获取到当前设备的在线状态：云端和局域网在线、云端在线、局域网在线、云端和局域网都不在线。因此APP开发人员可以根据设备的在线情况调用相关的处理接口，是用户感受不到网络的切换。
 
-具体请参考[开发指导-设备-局域网通信](develop_guide/device.md#局域网通信)
+具体请参考[开发指导-设备-局域网通信](../develop_guide/device.md#局域网通信)
 
 
 **安全机制**
@@ -458,11 +458,11 @@ AbleCloud的定时任务功能支持单次任务、按天重复、按星期重�
 
 开发指导请参考：
 
-[开发指导-安卓-定时任务](develop_guide/android.md#_22)
+[开发指导-安卓-定时任务](../develop_guide/android.md#_22)
 
-[开发指导-iOS-定时任务](develop_guide/iOS.md#定时任务)
+[开发指导-iOS-定时任务](../develop_guide/iOS.md#定时任务)
 
-[开发指导-微信-定时任务](develop_guide/wechat.md#定时任务)
+[开发指导-微信-定时任务](../develop_guide/wechat.md#定时任务)
 
 #OTA
 
@@ -490,11 +490,11 @@ OTA（Over－the－Air Technology），即空中下载技术。
 
 开发指导参考：
 
-[开发指导-安卓-OTA](develop_guide/android.md#ota)
+[开发指导-安卓-OTA](../develop_guide/android.md#ota)
 
-[开发指导-iOS-OTA](develop_guide/iOS.md#ota)
+[开发指导-iOS-OTA](../develop_guide/iOS.md#ota)
 
-[开发指导-微信-OTA](develop_guide/wechat.md#ota)
+[开发指导-微信-OTA](../develop_guide/wechat.md#ota)
 
 
 #推送
@@ -525,11 +525,11 @@ AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发�
 
 安卓、iOS和微信实现推送的方式不同，具体开发请参考开发指导：
 
-[开发指导-安卓-推送](develop_guide/android.md#_34)
+[开发指导-安卓-推送](../develop_guide/android.md#_34)
 
-[开发指导-iOS-推送](develop_guide/iOS.md#推送)
+[开发指导-iOS-推送](../develop_guide/iOS.md#推送)
 
-[开发指导-微信-推送](develop_guide/wechat.md#推送)
+[开发指导-微信-推送](../develop_guide/wechat.md#推送)
 
 #文件存储
 
@@ -539,11 +539,11 @@ AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发�
 
 使用方法请参考
 
-[开发指导-安卓-文件存储](develop_guide/android.md#_37)
+[开发指导-安卓-文件存储](../develop_guide/android.md#_37)
 
-[开发指导-iOS-文件存储](develop_guide/iOS.md#文件存储)
+[开发指导-iOS-文件存储](../develop_guide/iOS.md#文件存储)
 
-[开发指导-微信-文件存储](develop_guide/wechat.md#文件存储)
+[开发指导-微信-文件存储](../develop_guide/wechat.md#文件存储)
 
 #第三方云对接
 
@@ -556,9 +556,9 @@ AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发�
 AbleCloud打通了和微信硬件平台的接入，实现了双方的云端对接，开启了微信硬件开发的全新模式。在该模式下，结合AbleCloud提供的PHP SDK，厂商可以在其微信服务号里实现和native app几乎一样的智能硬件功能特性，如设备绑定、解绑、网关和网关子设备的绑定解绑以及Home模型的使用，并且保证足够的安全性。
 
 微信的对接和开发流程参考：
-[开发指导-第三方云对接-微信](develop_guide/third_proxy.md#微信)
+[开发指导-第三方云对接-微信](../develop_guide/third_proxy.md#微信)
 
-具体的功能开发请参考：[开发指导-微信](develop_guide/wechat.md)
+具体的功能开发请参考：[开发指导-微信](../develop_guide/wechat.md)
 
 
 ##京东云对接
@@ -569,7 +569,7 @@ AbleCloud打通了和微信硬件平台的接入，实现了双方的云端对�
 
 具体的开发流程请参考：
 
-[开发指导-第三方云对接-京东](develop_guide/third_proxy.md#京东)
+[开发指导-第三方云对接-京东](../develop_guide/third_proxy.md#京东)
 
 
 

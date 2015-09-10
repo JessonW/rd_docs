@@ -34,7 +34,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
-建议的用户交互流程见 [功能说明-帐号管理](../features.md#_11)
+建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
 
 ##1、普通帐号注册
 
@@ -209,7 +209,7 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 #设备管理
 
-说明参见[功能说明-设备管理](../features.md#_12)
+说明参见[功能说明-设备管理](../features/functions.md#_12)
 
 ##独立设备
 
@@ -859,7 +859,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 #局域网通信
 
-功能说明参见[功能说明-局域网通信](../features.md#_28)。
+功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
@@ -915,7 +915,7 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
-功能说明参见[功能说明-定时任务](../features.md#_29)。
+功能说明参见[功能说明-定时任务](../features/functions.md#_29)。
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1105,7 +1105,7 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
-说明参见[功能说明-OTA](../features.md#_30)。
+说明参见[功能说明-OTA](../features/functions.md#_30)。
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 
