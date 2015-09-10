@@ -346,11 +346,11 @@
             
         
             
-            <li class="sub parent__24" style="display: none;"><a href="#_26">二、发送消息到服务</a></li>
+            <li class="sub parent__24" style="display: none;"><a href="#_27">二、发送消息到服务</a></li>
             
         
             
-            <li class="sub parent__24" style="display: none;"><a href="#_27">三、实时消息</a></li>
+            <li class="sub parent__24" style="display: none;"><a href="#_28">三、实时消息</a></li>
             
         
     
@@ -358,7 +358,7 @@
         
         
         <li class="main">
-            <a href="#_28">局域网通信</a>
+            <a href="#_29">局域网通信</a>
         </li>
         
     
@@ -368,7 +368,7 @@
         
         
         <li class="main">
-            <a href="#_29">定时任务</a>
+            <a href="#_30">定时任务</a>
         </li>
         
             
@@ -402,19 +402,19 @@
         
         
         <li class="main">
-            <a href="#_41">推送<span class="main-set parent__41">+</span></a>
+            <a href="#_42">推送<span class="main-set parent__42">+</span></a>
         </li>
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_42">推送开发准备</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_43">推送开发准备</a></li>
             
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_43">一、推送开发环境配置</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_44">一、推送开发环境配置</a></li>
             
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_44">二、开启推送服务</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_45">二、开启推送服务</a></li>
             
         
     
@@ -434,19 +434,19 @@
         
         
         <li class="main">
-            <a href="#_45">文件存储<span class="main-set parent__45">+</span></a>
+            <a href="#_46">文件存储<span class="main-set parent__46">+</span></a>
         </li>
         
             
-            <li class="sub parent__45" style="display: none;"><a href="#_46">一、获取文件管理器</a></li>
+            <li class="sub parent__46" style="display: none;"><a href="#_47">一、获取文件管理器</a></li>
             
         
             
-            <li class="sub parent__45" style="display: none;"><a href="#_47">二、下载文件</a></li>
+            <li class="sub parent__46" style="display: none;"><a href="#_48">二、下载文件</a></li>
             
         
             
-            <li class="sub parent__45" style="display: none;"><a href="#_48">三、上传文件</a></li>
+            <li class="sub parent__46" style="display: none;"><a href="#_49">三、上传文件</a></li>
             
         
     
@@ -1015,13 +1015,13 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <h1 id="_24">和云端通信</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
 <h2 id="_25">一、发送消息到设备</h2>
-<h3 id="1klv">1、KLV格式</h3>
+<h3 id="klv">KLV格式</h3>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包。</strong>
 KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
+<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
 { 68 ：[
-     //数据点（key：value）
+     //数据点[key：value(int8)]
      //关灯
      { 1 : 0 },
      //开灯      
@@ -1029,7 +1029,7 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 ]}
 //响应数据包  
 { 102 ：[
-     //数据点（key：value）
+     //数据点[key：value(int8)]
      //失败
      { 1 : 0 },
      //成功      
@@ -1037,6 +1037,7 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 ]}
 </code></pre>
 
+<p>截取开灯代码，如下:</p>
 <pre><code class="java">ACKLVObject req = new ACKLVObject();
 //只需要告诉设备指令，而不需要payload时，传null
 req.put(1, 1);
@@ -1046,6 +1047,12 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
         //发送成功并接收设备的响应消息
+        int value = resp.get(1);
+        if(value==0){
+            //开灯失败
+        }else if(value==1){
+            //开灯成功
+        }
     }
 
     @Override
@@ -1055,15 +1062,26 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 });
 </code></pre>
 
-<h3 id="2_6">2、二进制格式</h3>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
-<blockquote>
-<p><strong>数据包</strong> 
-+ code:68 
-+ req:{1,0,0,0}
-+ resp:{1,0,0,0}</p>
-</blockquote>
-<h4 id="1_6">1)、设置序列化器</h4>
+<h3 id="_26">二进制格式</h3>
+<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
+<pre><code>//请求数据包
+{ 68 ：[
+     //关灯(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //开灯(二进制流，由厂商自己解析)   
+     { 1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+     //失败(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //成功(二进制流，由厂商自己解析)        
+     { 1 , 0 , 0 , 0 }
+]}
+</code></pre>
+
+<p>截取开灯代码，如下:</p>
+<h4 id="1_6">1、设置序列化器</h4>
 <pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
@@ -1077,7 +1095,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 });
 </code></pre>
 
-<h4 id="2_7">2)、发送到设备</h4>
+<h4 id="2_6">2、发送到设备</h4>
 <pre><code class="java">bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte[]{1, 0, 0, 0}), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
@@ -1097,13 +1115,23 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 </code></pre>
 
 <h3 id="3json">3、json格式</h3>
-<p><strong>例如</strong>：以开启设备为例,协议如下:</p>
-<blockquote>
-<p><strong>数据包</strong> 
-+ code:68 
-+ req:{"switch","open"}
-+ resp:{"result",1}</p>
-</blockquote>
+<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
+<pre><code>//请求数据包
+{ 68 ：[
+     //关灯
+     {&quot;switch&quot;,&quot;close&quot;}
+     //开灯
+     {&quot;switch&quot;,&quot;open&quot;}
+]}
+//响应数据包  
+{ 102 ：[
+     //失败
+     {&quot;result&quot;,0},
+     //成功   
+     {&quot;result&quot;,1}
+]}
+</code></pre>
+
 <h4 id="1_7">1、设置序列化器</h4>
 <pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
@@ -1120,7 +1148,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 });
 </code></pre>
 
-<h4 id="2_8">2、发送到设备</h4>
+<h4 id="2_7">2、发送到设备</h4>
 <pre><code class="java">ACObject req = new ACObject();
 req.put(&quot;switch&quot;, &quot;open&quot;);
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
@@ -1142,7 +1170,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC
 });
 </code></pre>
 
-<h2 id="_26">二、发送消息到服务</h2>
+<h2 id="_27">二、发送消息到服务</h2>
 <p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为主版本号，比如1-0-0，则version为1。</strong></p>
 <pre><code class="java">ACMsg req = new ACMsg();
 req.setName(&quot;queryData&quot;);
@@ -1162,14 +1190,14 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 });
 </code></pre>
 
-<h2 id="_27">三、实时消息</h2>
+<h2 id="_28">三、实时消息</h2>
 <p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。</p>
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <h4 id="1_8">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
 </code></pre>
 
-<h4 id="2_9">2、创建与服务器的连接</h4>
+<h4 id="2_8">2、创建与服务器的连接</h4>
 <pre><code class="java">pushMgr.connect(new VoidCallback() {
     @Override
     public void success() {
@@ -1245,7 +1273,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 });
 </code></pre>
 
-<h1 id="_28">局域网通信</h1>
+<h1 id="_29">局域网通信</h1>
 <p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
@@ -1297,19 +1325,19 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 </code></pre>
 
 <p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
-<h1 id="_29">定时任务</h1>
+<h1 id="_30">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
-<h4 id="_30">获取定时管理器</h4>
-<h5 id="_31">使用默认时区</h5>
+<h4 id="_31">获取定时管理器</h4>
+<h5 id="_32">使用默认时区</h5>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
 </code></pre>
 
-<h5 id="_32">使用自定义时区</h5>
+<h5 id="_33">使用自定义时区</h5>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 </code></pre>
 
-<h4 id="_33">添加定时任务</h4>
+<h4 id="_34">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
@@ -1368,9 +1396,9 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_34">修改定时任务</h4>
+<h4 id="_35">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
-<h4 id="_35">开启定时任务</h4>
+<h4 id="_36">开启定时任务</h4>
 <pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1384,7 +1412,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_36">关闭定时任务</h4>
+<h4 id="_37">关闭定时任务</h4>
 <pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1398,7 +1426,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_37">删除定时任务</h4>
+<h4 id="_38">删除定时任务</h4>
 <pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1412,7 +1440,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_38">获取定时任务列表</h4>
+<h4 id="_39">获取定时任务列表</h4>
 <pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
      @Override
      public void success(List&lt;ACTimerTask&gt; timerTasks) {
@@ -1439,7 +1467,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
-<h4 id="_39">二. 检查升级</h4>
+<h4 id="_40">二. 检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
 <pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
@@ -1457,7 +1485,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_40">三．确认升级</h4>
+<h4 id="_41">三．确认升级</h4>
 <pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     @Override
     public void success() {
@@ -1470,10 +1498,10 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_41">推送</h1>
+<h1 id="_42">推送</h1>
 <p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
-<h2 id="_42">推送开发准备</h2>
+<h2 id="_43">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
 <p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。</p>
 <p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
@@ -1486,7 +1514,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。</p>
 <p>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。</p>
 </blockquote>
-<h2 id="_43">一、推送开发环境配置</h2>
+<h2 id="_44">一、推送开发环境配置</h2>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
@@ -1641,7 +1669,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 &lt;/meta-data&gt;
 </code></pre>
 
-<h2 id="_44">二、开启推送服务</h2>
+<h2 id="_45">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1_9">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
@@ -1731,7 +1759,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_45">文件存储</h1>
+<h1 id="_46">文件存储</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_21">功能说明-功能介绍-文件存储</a></p>
 <blockquote>
 <p><font color="red">注意</font>：</p>
@@ -1740,11 +1768,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
 <p>3、上传下载支持断点续传功能</p>
 </blockquote>
-<h2 id="_46">一、获取文件管理器</h2>
+<h2 id="_47">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
 </code></pre>
 
-<h2 id="_47">二、下载文件</h2>
+<h2 id="_48">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback&lt;String&gt;() {
@@ -1786,7 +1814,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 });
 </code></pre>
 
-<h4 id="2_10">2)、下载文件到内存，比如头像下载</h4>
+<h4 id="2_9">2)、下载文件到内存，比如头像下载</h4>
 <pre><code class="java">fileMgr.downloadFile(url, new ProgressCallback() {
     @Override
     public void progress(double progress) {
@@ -1805,7 +1833,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 });
 </code></pre>
 
-<h2 id="_48">三、上传文件</h2>
+<h2 id="_49">三、上传文件</h2>
 <h3 id="1_10">1、设置上传文件的权限管理</h3>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
@@ -1820,7 +1848,7 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
-<h3 id="2_11">2、上传文件</h3>
+<h3 id="2_10">2、上传文件</h3>
 <h4 id="1sdcard_1">1)、上传sdcard文件</h4>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
@@ -1845,7 +1873,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 });
 </code></pre>
 
-<h4 id="2_12">2)、上传小文件，比如头像</h4>
+<h4 id="2_11">2)、上传小文件，比如头像</h4>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
