@@ -362,7 +362,7 @@
             
         
             
-            <li class="sub parent_store" style="display: none;"><a href="#simplefullscanscan">基于SimpleFullScan和Scan的全表分页浏览</a></li>
+            <li class="sub parent_store" style="display: none;"><a href="#simplefullscanscan">SimpleFullScan和Scan</a></li>
             
         
             
@@ -1218,7 +1218,8 @@ ac.store(&quot;test_data&quot;, context).batchDelete(&quot;deviceId&quot;, &quot
                     .execute();
 </code></pre>
 
-<h2 id="simplefullscanscan">基于SimpleFullScan和Scan的全表分页浏览</h2>
+<h2 id="simplefullscanscan">SimpleFullScan和Scan</h2>
+<p><strong>基于SimpleFullScan和Scan的全表分页浏览</strong></p>
 <p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
 <h3 id="_17">非分区数据集</h3>
 <pre><code class="java">// limit是每个分页的最大数据条数，举例为50
