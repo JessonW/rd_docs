@@ -252,14 +252,6 @@
     
         
         
-        
-        <li class="main">
-            <a href="#_5">帐号管理</a>
-        </li>
-        
-    
-        
-        
             
                 
             
@@ -274,28 +266,20 @@
         
         
         <li class="main">
-            <a href="#-">功能介绍参考： 功能说明-功能介绍-帐号管理<span class="main-set parent_-">+</span></a>
+            <a href="#_5">帐号管理<span class="main-set parent__5">+</span></a>
         </li>
         
             
-            <li class="sub parent_-" style="display: none;"><a href="#1">1、普通帐号注册</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#1">1、普通帐号注册</a></li>
             
         
             
-            <li class="sub parent_-" style="display: none;"><a href="#2">2、第三方登录</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#2">2、第三方登录</a></li>
             
         
             
-            <li class="sub parent_-" style="display: none;"><a href="#3">3、添加帐号扩展属性</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#3">3、添加帐号扩展属性</a></li>
             
-        
-    
-        
-        
-        
-        <li class="main">
-            <a href="#_6">设备管理</a>
-        </li>
         
     
         
@@ -318,23 +302,23 @@
         
         
         <li class="main">
-            <a href="#head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<span class="main-set parent_head">+</span></a>
+            <a href="#_6">设备管理<span class="main-set parent__6">+</span></a>
         </li>
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_7">独立设备</a></li>
+            <li class="sub parent__6" style="display: none;"><a href="#_7">独立设备</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_11">网关型设备</a></li>
+            <li class="sub parent__6" style="display: none;"><a href="#_11">网关型设备</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#home">Home模型</a></li>
+            <li class="sub parent__6" style="display: none;"><a href="#home">Home模型</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_16">设备附加属性</a></li>
+            <li class="sub parent__6" style="display: none;"><a href="#_16">设备附加属性</a></li>
             
         
     
@@ -508,24 +492,7 @@
 </code></pre>
 
 <h1 id="_5">帐号管理</h1>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<h1 id="-">功能介绍参考： <a href="../../features/functions/#账号管理">功能说明-功能介绍-帐号管理</a></h1>
-<p>建议的用户交互流程见 <a href="../../features/functions/#_11">功能说明-帐号管理</a></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>2419e5f25e739caceaac28f18f8939ff347ef0e9</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>功能介绍参考： <a href="../../features/functions/#账号管理">功能说明-功能介绍-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p>获取账号管理对象</p>
@@ -672,23 +639,6 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 </code></pre>
 
 <h1 id="_6">设备管理</h1>
-<h1 id="head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>2419e5f25e739caceaac28f18f8939ff347ef0e9</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h2 id="_7">独立设备</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_3">功能说明-功能介绍-独立设备管理</a></p>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
