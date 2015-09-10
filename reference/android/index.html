@@ -819,8 +819,8 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p>注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断
-如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
+<p>注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断</p>
+<p>如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
 </blockquote>
 <h4 id="acotaupgradeinfo">ACOTAUpgradeInfo</h4>
 <p>说明：用来获取OTA升级状态信息，定义如下：</p>
@@ -1268,7 +1268,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p>通过以上ACDeviceActivator提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
+<p>通过以上<code>ACDeviceActivator</code>提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
 </blockquote>
 <h2 id="_7">设备管理( 独立和网关型）</h2>
 <p>将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。</p>
@@ -1750,9 +1750,6 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 
 <h2 id="ota">OTA</h2>
 <p>除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：</p>
-<blockquote>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong></p>
-</blockquote>
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
@@ -1803,6 +1800,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
+<blockquote>
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;OTA</strong></p>
+</blockquote>
 <h2 id="_8">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
@@ -1911,7 +1911,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <h2 id="_9">消息推送</h2>
-<p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
+<p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：</p>
 <pre><code class="java">public interface ACNotificationMgr {
 
     /**
@@ -2146,8 +2146,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <h2 id="_10">实时消息同步</h2>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong>
-AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
+<p>AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
 <pre><code class="java">public interface ACPushMgr {
 
     /**
@@ -2174,8 +2173,8 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 }
 </code></pre>
 
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong></p>
 <h2 id="_11">局域网通信</h2>
-<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <pre><code class="java">/**
  * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
  *
@@ -2185,6 +2184,7 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevice&gt;&gt; callback) {}
 </code></pre>
 
+<p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <h3 id="_12">文件存储</h3>
 <p>如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
 <pre><code class="java">public interface ACFileMgr {
@@ -2765,7 +2765,10 @@ public class ACACL {
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
-<p>参考<a href="../error_code/">reference-Error Code</a></p></div>
+<ul>
+<li><strong>建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。</strong></li>
+<li><strong>调试阶段，可通过<code>e.getErrorCode()</code>获取错误码，<code>e.getMessage()</code>获取错误信息。参考</strong><a href="../error_code/">reference-Error Code</a></li>
+</ul></div>
             
         </div>
 
