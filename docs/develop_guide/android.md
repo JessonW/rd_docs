@@ -1391,11 +1391,7 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 
 #文件存储
 ><font color="red">注意</font>：
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
->>>>>>> 9a70a363e26e3c5a38065f9fd1d251b3e7c8bcc8
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
 
 > ```
@@ -1403,12 +1399,8 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 > ```
 
 >2、使用文件存储需导入jar包`android-async-http-1.4.8`和`qiniu-android-sdk-7.0.7`到libs目录下
-<<<<<<< HEAD
 
 >3、上传下载支持断点续传功能
-=======
->3、上传下载支持断点续传功能
->>>>>>> 9a70a363e26e3c5a38065f9fd1d251b3e7c8bcc8
 
 
 ##一、获取文件管理器
@@ -1418,7 +1410,7 @@ ACFileMgr fileMgr = AC.fileMgr();
 ##二、下载文件
 ###1、获取下载url
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback<String>() {
     @Override
     public void success(String url) {
@@ -1498,7 +1490,7 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 ###2、上传文件
 ####1)、上传sdcard文件
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //设置上传文件的sdcard路径
@@ -1522,7 +1514,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 ####2)、上传小文件，比如头像
 ```java
-ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //比如头像比特流数组
