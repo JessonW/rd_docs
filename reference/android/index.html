@@ -2290,6 +2290,9 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
+<blockquote>
+<p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
+</blockquote>
 <h2 id="_13">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
 <h4 id="_14">设备桩</h4>
