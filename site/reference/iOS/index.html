@@ -219,38 +219,6 @@
         
         
         <li class="main">
-            <a href="#_1">开发环境设置<span class="main-set parent__1">+</span></a>
-        </li>
-        
-            
-            <li class="sub parent__1" style="display: none;"><a href="#_2">系统准备</a></li>
-            
-        
-            
-            <li class="sub parent__1" style="display: none;"><a href="#_3">配置开发参数</a></li>
-            
-        
-            
-            <li class="sub parent__1" style="display: none;"><a href="#_4">配置推送</a></li>
-            
-        
-    
-        
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-        
-        <li class="main">
             <a href="#-">交互协议-基础数结构<span class="main-set parent_-">+</span></a>
         </li>
         
@@ -315,7 +283,7 @@
         </li>
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_5">基本对象结构</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_1">基本对象结构</a></li>
             
         
             
@@ -327,31 +295,31 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_6">账号管理</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_2">账号管理</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_9">设备激活</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_5">设备激活</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_10">设备管理( 独立设备和网关型设备）</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_6">设备管理( 独立设备和网关型设备）</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_13">设备定时任务</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_9">设备定时任务</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_14">消息推送管理</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_10">消息推送管理</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_15">和云端通信</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_11">和云端通信</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_16">本地局域网通信</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_12">本地局域网通信</a></li>
             
         
     
@@ -368,39 +336,6 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="ios">iOS客户端开发参考</h1>
-<h1 id="_1">开发环境设置</h1>
-<h2 id="_2">系统准备</h2>
-<p>在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。 + OS X 系统建议采用Mac OS X 10.8以上的版本 + Xcode 安装Xcode，建议采用6.0以上版本 + ablecloud 下载ablecloud开发框架并解压</p>
-<p>Xcode</p>
-<p>新建工程 选择新建iOS Application，根据需要选择，建议选择Single View Application。 点击Next进入下一个页面，根据情况填写Product Name/Organization Name/Organization Identifier等信息。 填好后点击Next，进入下一步，填写好存放路径。 至此，新建工程完成。
-导入AbleCloudLib 按照步骤1完成了工程的新建，接下来需要将AbleCloudLib导入到工程中。 右键点击工程中想要导入的Group选择 Add Files to "your project name"... 选择AbleCloudLib的路径，勾选Copy items if needed，点击Add添加。 完成上述步骤后，我们将在工程视图里面看到该目录。 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
-本地运行 Xcode下直接Command + R运行。
-注：如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
-<h2 id="_3">配置开发参数</h2>
-<pre><code>@interface ACloudLib : NSObject
-
-/**
- * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
- */
-+ (void)setHost:(NSString *)host;
-+ (NSString *)getHost;
-
-/**
- * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
- */
-+ (void)setHttpRequestTimeout:(NSString *)timeout;
-+ (NSString *)getHttpRequestTimeout;
-
-/**
- * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
- */
-+ (void)setMajorDomain:(NSString *)majorDomain;
-+ (NSString *)getMajorDomain;
-
-@end
-</code></pre>
-
-<h2 id="_4">配置推送</h2>
 <h1 id="-">交互协议-基础数结构</h1>
 <p>整个服务框架采用两种消息进行交互，ACMsg、ACDeviceMsg，其中框架提供了对ACMsg的解析，而ACDeviceMsg则由厂商自定义，框架透传其内容。</p>
 <h2 id="acobject">ACObject</h2>
@@ -550,7 +485,7 @@ extern NSString *const ACMsgErrMSG;
 客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。</font></p>
 </blockquote>
 <h1 id="sdk">SDK接口列表</h1>
-<h2 id="_5">基本对象结构</h2>
+<h2 id="_1">基本对象结构</h2>
 <h2 id="acloudlib">ACloudLib</h2>
 <p>ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。</p>
 <pre><code>@interface ACloudLib : NSObject
@@ -593,13 +528,13 @@ extern NSString *const ACMsgErrMSG;
 @end
 </code></pre>
 
-<h2 id="_6">账号管理</h2>
+<h2 id="_2">账号管理</h2>
 <p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
-<h3 id="_7">引入头文件</h3>
+<h3 id="_3">引入头文件</h3>
 <pre><code>#import &quot;ACAccountManager.h&quot;
 </code></pre>
 
-<h3 id="_8">接口说明</h3>
+<h3 id="_4">接口说明</h3>
 <pre><code>@interface ACAccountManager : NSObject
 
 /**
@@ -659,14 +594,14 @@ extern NSString *const ACMsgErrMSG;
 
 </code></pre>
 
-<h2 id="_9">设备激活</h2>
-<h2 id="_10">设备管理( 独立设备和网关型设备）</h2>
+<h2 id="_5">设备激活</h2>
+<h2 id="_6">设备管理( 独立设备和网关型设备）</h2>
 <p>该服务用于基于某一单个设备的绑定授权管理，比如查看所有绑定的设备列表等，绑定、解绑、分享设备等操作。第一个绑定设备的人是设备的Owner管理员,管理员Owner具有超级权限，可以分享授权，可以通过删除或解绑，解除设备所有的已绑定关系，也可以转让Owner身份给已绑定设备的普通用户。</p>
-<h3 id="_11">引入头文件</h3>
+<h3 id="_7">引入头文件</h3>
 <pre><code>#import &quot;ACBindManager.h&quot;
 </code></pre>
 
-<h3 id="_12">接口说明</h3>
+<h3 id="_8">接口说明</h3>
 <pre><code>@interface ACBindManager : NSObject
 
 /**
@@ -800,10 +735,10 @@ extern NSString *const ACMsgErrMSG;
 @end
 </code></pre>
 
-<h2 id="_13">设备定时任务</h2>
-<h2 id="_14">消息推送管理</h2>
-<h2 id="_15">和云端通信</h2>
-<h2 id="_16">本地局域网通信</h2>
+<h2 id="_9">设备定时任务</h2>
+<h2 id="_10">消息推送管理</h2>
+<h2 id="_11">和云端通信</h2>
+<h2 id="_12">本地局域网通信</h2>
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../error_code/">reference-Error Code</a></p></div>
             

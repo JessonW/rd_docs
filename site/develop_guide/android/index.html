@@ -626,23 +626,23 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <h1 id="_6">设备管理</h1>
 <p>说明参见<a href="../../features/#_12">功能说明-设备管理</a></p>
 <h2 id="_7">独立设备</h2>
-<p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，App拿到这些信息后调用bindDevice接口绑定设备。对于gprs设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
+<p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
 <p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <h3 id="_8">一．绑定设备</h3>
-<h3 id="wifi">wifi设备</h3>
+<h3 id="wifi">WiFi设备</h3>
 <h4 id="1acdeviceactivator">1.获取ACDeviceActivator激活器</h4>
 <p>Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如下：</p>
 <pre><code class="java">ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 </code></pre>
 
-<p><font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的
-目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK</p>
-<h4 id="2wifi-ssid">2.获取wifi ssid</h4>
+<p><font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
+目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。</p>
+<h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
 </code></pre>
 
 <h4 id="3_2">3.激活设备</h4>
-<p>app通过startAbleLink广播自己的wifi密码，设备成功连上云之后通过广播通知app同时获取设备物理id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的wifi</p>
+<p>APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。</p>
 <pre><code class="java">deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback&lt;List&lt;ACDeviceBind&gt;&gt;() {
     @Override
     public void success(List&lt;ACDeviceBind&gt; deviceBinds) {
@@ -657,7 +657,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 </code></pre>
 
 <h4 id="4">4.绑定设备</h4>
-<p>在成功激活设备后的回调方法中，通过物理id绑定设备</p>
+<p>在成功激活设备后的回调方法中，通过物理Id绑定设备。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -671,9 +671,8 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
-<h3 id="gprs">gprs设备</h3>
-<p><strong><font color="red">注</font>：gprs设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备</strong>
-建议通过扫二维码的形式获取物理id进行绑定</p>
+<h3 id="gprs">GPRS设备</h3>
+<p><strong><font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -687,9 +686,9 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
-<p><font color="red">建议流程</font>：若设备上有是否连接上ablecloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。</p>
+<p><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。</p>
 <h3 id="_9">二．分享设备</h3>
-<p><strong>第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权，推荐使用第二种分享机制。</strong></p>
+<p><strong>第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。</strong></p>
 <h4 id="1_2">1、管理员直接分享设备给普通用户</h4>
 <pre><code class="java">bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
     @Override
@@ -733,7 +732,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <h3 id="_10">三．设备解绑</h3>
 <h4 id="1_3">1、管理员或普通用户解绑设备</h4>
-<p>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权</p>
+<p>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。</p>
 <pre><code class="java">bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     @Override
     public void success() {
@@ -766,20 +765,20 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
 <h3 id="_12">一．绑定网关</h3>
-<h3 id="wifi_1">wifi网关</h3>
+<h3 id="wifi_1">WiFi网关</h3>
 <h4 id="1acdeviceactivitor">1.获取ACDeviceActivitor激活器</h4>
-<p>AbleCloud提供了ACDeviceActivitor激活器供你使用</p>
+<p>AbleCloud提供了ACDeviceActivitor激活器供你使用。</p>
 <pre><code class="java">ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 </code></pre>
 
 <p><font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK</p>
-<h4 id="2wifi-ssid_1">2.得到wifi ssid</h4>
+目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。</p>
+<h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
 </code></pre>
 
 <h4 id="3_3">3.激活网关</h4>
-<p>app通过startAbleLink广播自己的wifi密码，设备成功连上云之后通过广播通知app同时获取设备物理id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的wifi</p>
+<p>APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。</p>
 <pre><code class="java">deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback&lt;List&lt;ACDeviceBind&gt;&gt;() {
     @Override
     public void success(List&lt;ACDeviceBind&gt; deviceBinds) {
@@ -794,7 +793,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <h4 id="4_1">4.绑定网关</h4>
-<p>在成功激活设备后的回调方法中，通过物理id绑定网关</p>
+<p>在成功激活设备后的回调方法中，通过物理Id绑定网关。</p>
 <pre><code class="java">AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -809,8 +808,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <h3 id="_13">以太网网关</h3>
-<p><strong><font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备</strong>
-建议通过扫码的形式获取网关物理id进行绑定</p>
+<p><strong><font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫码的形式获取网关物理Id进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -847,7 +845,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <h4 id="2_4">2．列举所有新加入的子设备列表</h4>
 <pre><code class="java">AC.bindMgr().listNewDevices(subDomain, gatewayDeviceId, new PayloadCallback&lt;List&lt;ACDeviceBind&gt;&gt;() {
-  @Override
+    @Override
     public void success(List&lt;ACDeviceBind&gt; deviceBinds) {
         //建议此处更新新加入子设备列表的界面
     }
@@ -860,7 +858,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <h4 id="3_4">3．绑定子设备</h4>
 <p>通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
-如有用户确认过程的话，则在用户点击确认之后循环调用此接口把用户选择的子设备列表绑定</p>
+如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。</p>
 <pre><code class="java">AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice acUserDevice) {
@@ -874,7 +872,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId 的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
+<p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
 <p>创建家庭绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
@@ -920,11 +918,11 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <h3 id="_15">二、添加或移动设备到分组里</h3>
 <blockquote>
 <p><font color="red">特别注意</font>：
-1、绑定设备流程，建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome，gprs设备或以太网网关则直接调addDeviceToHome
-2、不能跨级移动设备；比如独立设备要移到room里，则需要先把它移动到home，再移动到room</p>
+1、绑定设备流程。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。</p>
 </blockquote>
 <h4 id="home_2">添加设备到Home里</h4>
-<p>创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bingDevice改成如下接口即可</p>
+<p>创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
 <pre><code class="java">groupMgr.addDeviceToHome(subDomain, physicalDeviceId, homeId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -953,7 +951,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <h2 id="_16">设备附加属性</h2>
-<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口</strong></p>
+<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口。</strong></p>
 <h4 id="_17">一、设置或者更新设备附加属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
@@ -993,8 +991,8 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <p>说明参见<a href="../../introduction/#_22">功能说明-和云端通信</a></p>
 <h2 id="_20">一、发送消息到设备</h2>
 <h3 id="1klv">1、KLV格式</h3>
-<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
-KLV协议介绍参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a></p>
+<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包。</strong>
+KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
 <p><strong>例如</strong>：以开启设备为例,协议如下:</p>
 <blockquote>
 <ul>
@@ -1108,7 +1106,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC
 </code></pre>
 
 <h2 id="_21">二、发送消息到服务</h2>
-<p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致，进入版本管理之后，查看已上线版本，serviceVersion为主版本号，比如1-0-0，则version为1</strong></p>
+<p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为主版本号，比如1-0-0，则version为1。</strong></p>
 <pre><code class="java">ACMsg req = new ACMsg();
 req.setName(&quot;queryData&quot;);
 req.put(&quot;deviceId&quot;, deviceId);
@@ -1128,9 +1126,8 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 </code></pre>
 
 <h2 id="_22">三、实时消息</h2>
-<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到app</p>
+<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。</p>
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
-<p>cloud_syn.png</p>
 <h4 id="1_7">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
 </code></pre>
@@ -1190,7 +1187,7 @@ pushMgr.watch(table, new VoidCallback() {
 </code></pre>
 
 <h4 id="5">5、取消订阅</h4>
-<p>建议在退出订阅的activity之后调用，避免造成流量浪费</p>
+<p>建议在退出订阅的activity之后调用，避免造成流量浪费。</p>
 <pre><code class="java">//实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
@@ -1212,8 +1209,8 @@ pushMgr.unwatch(table, new VoidCallback() {
 </code></pre>
 
 <h1 id="_23">局域网通信</h1>
-<p>说明参见<a href="../../features/#_28">功能说明-局域网通信</a></p>
-<p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）</p>
+<p>功能说明参见<a href="../../features/#_28">功能说明-局域网通信</a>。</p>
+<p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
     public void success(List&lt;ACUserDevice&gt; deviceList) {
@@ -1234,7 +1231,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 });
 </code></pre>
 
-<p>因为局域网通讯要求设备与app处于同一个wifi下，若网络环境变化，如切换wifi时，直连的状态会发生改变，所以需要监听网络环境变化</p>
+<p>因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。</p>
 <pre><code class="java">//监听网络变化
 ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
     @Override
@@ -1245,7 +1242,7 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
 });
 </code></pre>
 
-<p>此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态</p>
+<p>此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。</p>
 <pre><code class="java">//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
 AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
     @Override
@@ -1262,9 +1259,9 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 });
 </code></pre>
 
-<p>最后，至于如何通过直连方式给设备发消息，详情见<code>和云端通讯</code>部分</p>
+<p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
 <h1 id="_24">定时任务</h1>
-<p>说明参见<a href="../../features/#_29">功能说明-定时任务</a></p>
+<p>功能说明参见<a href="../../features/#_29">功能说明-定时任务</a>。</p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="_25">获取定时管理器</h4>
 <h5 id="_26">使用默认时区</h5>
@@ -1278,9 +1275,9 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 <h4 id="_28">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
+<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败。</strong></p>
+<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式。</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -1335,7 +1332,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h4 id="_29">修改定时任务</h4>
-<p>接口为modifyTask，其他参数与定义与创建定时任务相同</p>
+<p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
 <h4 id="_30">开启定时任务</h4>
 <pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
@@ -1398,14 +1395,14 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <h1 id="ota">OTA</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
-<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a></p>
-<p>若使用场景为开启app之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示，如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
+<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
+<p>若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota_1">一.获取OTA管理器对象</h4>
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
 <h4 id="_34">二. 检查升级</h4>
-<p>1.检查设备是否有新的OTA版本，同时获取升级日志</p>
+<p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
 <pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
     public void success(ACOTAUpgradeInfo info) {
@@ -1436,23 +1433,23 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h1 id="_36">推送</h1>
-<p>说明参见<a href="../../features/#_30">功能说明-OTA</a></p>
-<p>AbleCloud的推送使用友盟的服务，在开发进行之前，现需要进行一些配置。</p>
+<p>说明参见<a href="../../features/#_30">功能说明-OTA</a>。</p>
+<p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
 <h2 id="_37">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
-<p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示</p>
+<p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。</p>
 <p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
 <p>记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。</p>
 <p><img alt="push2" src="../../pic/develop_guide/push2.png" /> </p>
 <p>友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。</p>
 <blockquote>
 <p><font color="red">注意</font></p>
-<p>1、调试的时候若开发环境配置有变化的话尽量手动卸载app之后再重新安装</p>
-<p>2、推荐通过登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与uds服务进行下一步测试</p>
-<p>3、推荐通过友盟推送后台的工具，通过设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）确认是否成功注册推送，若注册成功之后仍没有收到通知消息的话，建议再检查下开发环境配置。</p>
+<p>1、调试的时候若开发环境配置有变化的话尽量手动卸载APP之后再重新安装。</p>
+<p>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。</p>
+<p>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。</p>
 </blockquote>
 <h2 id="_38">一、推送开发环境配置</h2>
-<p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量</p>
+<p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
 &lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot;/&gt;
@@ -1607,7 +1604,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h2 id="_39">二、开启推送服务</h2>
-<p>在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：</p>
+<p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1_8">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
 </code></pre>
@@ -1698,11 +1695,12 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="_40">文件存储</h1>
 <blockquote>
-<p><font color="red">注意</font>：</p>
-<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
-<p><code>java
-&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
-<p>2、上传下载支持断点续传功能</p>
+<p><font color="red">注意</font>：
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
+<p><code>&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
+<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下
+3、上传下载支持断点续传功能</p>
 </blockquote>
 <h2 id="_41">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
