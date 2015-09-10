@@ -268,14 +268,6 @@
     
         
         
-        
-        <li class="main">
-            <a href="#_5">设备管理</a>
-        </li>
-        
-    
-        
-        
             
                 
             
@@ -294,23 +286,23 @@
         
         
         <li class="main">
-            <a href="#head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<span class="main-set parent_head">+</span></a>
+            <a href="#_5">设备管理<span class="main-set parent__5">+</span></a>
         </li>
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_6">独立设备</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#_6">独立设备</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_7">网关设备</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#_7">网关设备</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#home">home模型</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#home">home模型</a></li>
             
         
             
-            <li class="sub parent_head" style="display: none;"><a href="#_8">设备附加属性</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#_8">设备附加属性</a></li>
             
         
     
@@ -424,25 +416,7 @@
 </code></pre>
 
 <h1 id="_4">帐号管理</h1>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-功能介绍参考： <a href="../../features/functions/#账号管理">功能说明-功能介绍-帐号管理</a>
-=======
-建议的用户交互流程见 <a href="../../features/functions/#_11">功能说明-帐号管理</a></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>2419e5f25e739caceaac28f18f8939ff347ef0e9</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>功能介绍参考： <a href="../../features/functions/#账号管理">功能说明-功能介绍-帐号管理</a></p>
 <h2 id="1">1、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <p><font color="red"><strong>补充开发指导</strong></font> </p>
@@ -479,23 +453,6 @@
 </code></pre>
 
 <h1 id="_5">设备管理</h1>
-<h1 id="head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>2419e5f25e739caceaac28f18f8939ff347ef0e9</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h2 id="_6">独立设备</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_3">功能说明-功能介绍-独立设备管理</a></p>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于没有二维码的设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示。然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的subdomainID。App拿到这些信息后调用bindDevice接口绑定设备。</p>

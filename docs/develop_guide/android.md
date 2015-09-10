@@ -35,7 +35,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 
 #帐号管理
 
-功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#账号管理)
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
 ##1、普通帐号注册
 
@@ -642,7 +642,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
 #和云端通信
 
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#和云端通信)
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
 
 ##一、发送消息到设备
 ###1、KLV格式
@@ -870,7 +870,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 #局域网通信
 
 <<<<<<< HEAD
-功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#局域网通信)
+功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
 =======
 功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
 >>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
@@ -929,11 +929,8 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 
 #定时任务
 
-<<<<<<< HEAD
-功能介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#定时任务)
-=======
-功能说明参见[功能说明-定时任务](../features/functions.md#_29)。
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
+功能介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#_19)
+
 
 ## <span class="skip">||SKIP||</span>
 
@@ -1125,11 +1122,9 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 
 #推送
 
-<<<<<<< HEAD
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#推送)
-=======
-说明参见[功能说明-OTA](../features/functions.md#_30)。
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
+
+功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#20)
+
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
 
@@ -1414,6 +1409,9 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 ```
 
 #文件存储
+
+功能介绍参见 [功能说明-功能介绍-文件存储](../features/functions.md#_21)
+
 ><font color="red">注意</font>：
 
 >1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
