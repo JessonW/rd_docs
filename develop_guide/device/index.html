@@ -214,7 +214,7 @@
         
         
         <li class="main active">
-            <a href="#_1">开发准备</a>
+            <a href="#_1">嵌入式设备开发指导</a>
         </li>
         
     
@@ -222,40 +222,16 @@
         
         
         <li class="main">
-            <a href="#_2">配置设备基本信息</a>
+            <a href="#_2">开发准备</a>
         </li>
         
     
         
         
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
         
         <li class="main">
-            <a href="#_3">设备激活<span class="main-set parent__3">+</span></a>
+            <a href="#_3">配置设备基本信息</a>
         </li>
-        
-            
-            <li class="sub parent__3" style="display: none;"><a href="#wifi">通过WiFi连接到云的设备</a></li>
-            
-        
-            
-            <li class="sub parent__3" style="display: none;"><a href="#_4">通过蜂窝网络连接到云端的设备</a></li>
-            
-        
-            
-            <li class="sub parent__3" style="display: none;"><a href="#_5">通过以太网连接到云端的设备</a></li>
-            
         
     
         
@@ -268,17 +244,49 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_6">设备绑定管理<span class="main-set parent__6">+</span></a>
+            <a href="#_4">设备激活<span class="main-set parent__4">+</span></a>
         </li>
         
             
-            <li class="sub parent__6" style="display: none;"><a href="#_7">子设备的绑定</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#wifi">通过WiFi连接到云的设备</a></li>
             
         
             
-            <li class="sub parent__6" style="display: none;"><a href="#_12">子设备解除绑定</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#_5">通过蜂窝网络连接到云端的设备</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#_6">通过以太网连接到云端的设备</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_7">设备绑定管理<span class="main-set parent__7">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#_8">子设备的绑定</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#_13">子设备解除绑定</a></li>
             
         
     
@@ -318,7 +326,7 @@
         </li>
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#_13">设备与云端交互流程</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#_14">设备与云端交互流程</a></li>
             
         
             
@@ -362,19 +370,19 @@
         
         
         <li class="main">
-            <a href="#_14">和云端通信<span class="main-set parent__14">+</span></a>
+            <a href="#_15">和云端通信<span class="main-set parent__15">+</span></a>
         </li>
         
             
-            <li class="sub parent__14" style="display: none;"><a href="#_15">设备上报消息</a></li>
+            <li class="sub parent__15" style="display: none;"><a href="#_16">设备上报消息</a></li>
             
         
             
-            <li class="sub parent__14" style="display: none;"><a href="#_17">设备接收云端指令</a></li>
+            <li class="sub parent__15" style="display: none;"><a href="#_18">设备接收云端指令</a></li>
             
         
             
-            <li class="sub parent__14" style="display: none;"><a href="#_19">接口定义</a></li>
+            <li class="sub parent__15" style="display: none;"><a href="#_20">接口定义</a></li>
             
         
     
@@ -382,7 +390,15 @@
         
         
         <li class="main">
-            <a href="#_22">局域网通信</a>
+            <a href="#_23">局域网通信</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#error-code">Error Code</a>
         </li>
         
     
@@ -390,8 +406,8 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<p>嵌入式设备开发指导</p>
-<h1 id="_1">开发准备</h1>
+<h1 id="_1">嵌入式设备开发指导</h1>
+<h1 id="_2">开发准备</h1>
 <p>在进行设备开发前，需要先做以下准备：</p>
 <ol>
 <li>在管理后台创建产品，选择产品的数据类型。创建以后，会获得该款产品的subdomianID。</li>
@@ -400,17 +416,17 @@
 </ol>
 <p>需要厂商烧制到设备中的信息包括：</p>
 <ul>
-<li>设备版本：4字节</li>
-<li>设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）</li>
+<li>设备版本：4字节。</li>
+<li>设备密钥（RSA256）：112字节（需要和提供给Ablecloud的公钥保持一致）。</li>
 <li>设备ID：16字节，可独立烧制，也可使用WiFi模块的MAC地址。使用MAC地址作为设备ID时，需要在MAC地址前补四个0凑齐16字节。</li>
-<li>设备域信息：（两个字节的domain加上6个字节的subdomain）</li>
+<li>设备域信息：两个字节的domain加上6个字节的subdomain。</li>
 </ul>
-<h1 id="_2">配置设备基本信息</h1>
-<p>打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID</p>
+<h1 id="_3">配置设备基本信息</h1>
+<p>打开工程里的ac_cfg.h文件，将上述申请到的主域id更新到MAJOR_DOMAIN_ID，子域id更新到SUB_DOMAIN_ID，设备物理id更新到DEVICE_ID。</p>
 <p>如果使用WIFI的MAC地址作为DEVICE_ID，DEVICE_ID可以不填写。
 如下图所示：</p>
 <p><img alt="" src="../../pic/develop_guide/device_config.png" /></p>
-<h1 id="_3">设备激活</h1>
+<h1 id="_4">设备激活</h1>
 <p>设备连接到云端，和云端完成通信握手叫做设备激活。
 在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。</p>
 <h2 id="wifi">通过WiFi连接到云的设备</h2>
@@ -568,15 +584,15 @@
 </table>
 <p>适配模块不断进行更新中，最新列表请联系技术支持。</p>
 <p>对于AbleCloud还没有进行适配的模块，AbleCloud提供上层交互所需要的SDK，厂商自己将下层驱动更改一下即可完成适配工作。</p>
-<p>对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动 即可完成适配。</p>
+<p>对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动即可完成适配。</p>
 <p>对于安装Android、Linux、Windows、Mico操作系统的设备，AbleCloud已完成操作系统的适配。</p>
-<p>WiFi模块和MCU之间的采用自定义的通信协议，通信协议的具体描述参见：<a href="../../reference/device/#设备应用开发框架">reference-设备-设备应用开发框架</a> </p>
+<p>WiFi模块和MCU之间采用自定义的通信协议，通信协议的具体描述参见：<a href="../../reference/device/#设备应用开发框架">reference-设备-设备应用开发框架</a> 。</p>
 <p>WiFi设备启动后用户触发设备进入Smartconfig状态，然后通过手机给设备配置WiFi密码，WiFi密码配置成功后，设备连接到云端进行设备激活然后局域网广播设备物理ID。这个过程中，设备MCU和WiFi模块的交互流程如下图所示。</p>
 <p><img alt="device_wifi_activator" src="../../pic/develop_guide/device_WiFi_activator.png" /> </p>
 <p><strong>上电配置进入Smartconfig状态</strong></p>
 <p>设备在两种场景下会进入Smartconfig状态：</p>
-<p>1)  用户首次绑定配置家庭路由器的密码
-2)  更新路由器密码</p>
+<p>1)  用户首次绑定配置家庭路由器的密码；
+2)  更新路由器密码。</p>
 <p>这里智能灯演示系统是通过MCU按键进入Smartconfig状态，其示例如下：</p>
 <pre><code class="c">void KeyIntHandle(void)
 {
@@ -598,7 +614,6 @@
 云端激活需要MCU处理WiFi模块的相应通知，当MCU收到WiFi连接成功的消息时，它需要把设备的注册信息(包括设备域信息，设备密钥，设备ID，设备版本)发给WiFi模块，WiFi模块之后会启动连接云的流程，WiFi连接到云端后，会给设备发送连接云端成功的通知消息，其处理Demo Code如下：</p>
 <pre><code class="c">void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
 {
-
     //处理wifi模块的通知类消息
     switch(pstruMsg-&gt;MsgCode)
     {
@@ -623,20 +638,20 @@
 }
 </code></pre>
 
-<h2 id="_4">通过蜂窝网络连接到云端的设备</h2>
-<p>蜂窝网络判断用户打开数据并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
-<h2 id="_5">通过以太网连接到云端的设备</h2>
-<p>设备在太网判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。</p>
-<h1 id="_6">设备绑定管理</h1>
+<h2 id="_5">通过蜂窝网络连接到云端的设备</h2>
+<p>蜂窝网络判断用户打开数据连接并且获取到IP地址，设备就可以将注册信息发送给GPRS模块，启动连接云端流程。</p>
+<h2 id="_6">通过以太网连接到云端的设备</h2>
+<p>设备判断本地网络已连接并且获取到IP地址，就可以将注册信息发送给云端，启动连接云端流程。</p>
+<h1 id="_7">设备绑定管理</h1>
 <p>对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成和用户的绑定。</p>
 <p>对于通过蜂窝网络连接到云端的设备，无法通过局域网将设备的信息广播给客户端（APP），所以，需要在设备上印刷二维码进行绑定。</p>
-<p>对于通过以太网连接到云端的设备，设备连接到云端成功以后，同样可以在局域网中广播设备的subdomian和物理ID。</p>
-<p>对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomian和物理ID的二维码。微信的开发准备工作请参考：<a href="../third_proxy/#微信">开发指导-第三方云对接-微信</a></p>
-<h2 id="_7">子设备的绑定</h2>
-<h3 id="_8">云端设备和网关设备交互流程</h3>
+<p>对于通过以太网连接到云端的设备，设备连接到云端成功以后，同样可以在局域网中广播设备的subdomianID和物理ID。</p>
+<p>对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomianID和物理ID的二维码。微信的开发准备工作请参考：<a href="../third_proxy/#微信">开发指导-第三方云对接-微信</a>。</p>
+<h2 id="_8">子设备的绑定</h2>
+<h3 id="_9">云端设备和网关设备交互流程</h3>
 <p><img alt="device_SubdeviceBind.png" src="../../pic/develop_guide/device_SubdeviceBind.png" /></p>
-<h3 id="_9">网关网络打开</h3>
-<p>云端首先调用AC_CODE_GATEWAY_CTRL消息请求网关打开对应的网络供子设备接入，该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息</p>
+<h3 id="_10">网关网络打开</h3>
+<p>云端首先调用AC_CODE_GATEWAY_CTRL消息请求网关打开对应的网络供子设备接入，该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>消息格式定义如下：</p>
 <pre><code class="c">    typedef struct
     {   
@@ -647,8 +662,7 @@
 </code></pre>
 
 <p>参考代码如下：</p>
-<pre><code class="c">
-    void AC_MgmtPermitJoin(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_MgmtPermitJoin(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
        /*打开网络*/
        zAddrType_t dstAddr; 
@@ -669,14 +683,12 @@
        /*给云端回响应*/
        AC_SendAckMsg(pstruOptList,pstruMsg-&gt;MsgId);
     }
-
 </code></pre>
 
-<h3 id="_10">查询子设备列表</h3>
-<p>云端调用AC_CODE_LIST_SUBDEVICES_REQ消息，请求网关发送子设备列表给网关, 网关收到AC_CODE_LIST_SUBDEVICES_REQ后，发送AC_CODE_LIST_SUBDEVICES_RSP并携带所有子设备的信息给云端。</p>
+<h3 id="_11">查询子设备列表</h3>
+<p>云端调用AC_CODE_LIST_SUBDEVICES_REQ消息，请求网关发送子设备列表给云端。 网关收到AC_CODE_LIST_SUBDEVICES_REQ后，发送AC_CODE_LIST_SUBDEVICES_RSP并携带所有子设备的信息给云端。</p>
 <p>消息格式定义如下：</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息   
         u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
@@ -688,14 +700,11 @@
         u8 u8Pad[3];  
         ZC_SubDeviceInfo StruSubDeviceInfo[0];
     }ZC_SubDeviceList;
-
 </code></pre>
 
 <p>参考代码如下：</p>
-<pre><code class="c">
-    void AC_ListSubDevices(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_ListSubDevices(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-
         u8 *pu8Msg = osal_mem_alloc(sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList) + g_struDeviceStatus.num*    (sizeof(ZC_SubDeviceInfo)));
         ZC_SubDeviceList *pu8DeviceListInfo = (ZC_SubDeviceList *)(pu8Msg + sizeof(AC_MessageHead));
         ZC_SubDeviceInfo *pu8SubDeviceInfo = (ZC_SubDeviceInfo *)(pu8Msg + sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList));
@@ -724,14 +733,12 @@
         AC_SendMessage(pu8Msg, u16DataLen);
         osal_mem_free(pu8Msg);
     }
-
 </code></pre>
 
-<h3 id="_11">云端查询子设备是否在线。</h3>
-<p>消息格式定义如下：
-云端下发到网关，查询子设备是否在线。</p>
-<pre><code class="c">
-    typedef struct
+<h3 id="_12">云端查询子设备是否在线</h3>
+<p>消息格式定义如下：</p>
+<p>云端下发到网关，查询子设备是否在线。</p>
+<pre><code class="c">    typedef struct
     {
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
         u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
@@ -739,18 +746,15 @@
 </code></pre>
 
 <p>网关响应到云端子设备在线信息。</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {
         u8 u8DeviceOnline;  //在线状态，1：在线，0：不在线
         u8 u8Pad[3];
     }ZC_DeviceOnline;
-
 </code></pre>
 
 <p>参考代码如下：</p>
-<pre><code class="c">
-    void AC_GetDeviceStatus(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_GetDeviceStatus(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
 
         u8 *pu8Msg = osal_mem_alloc(sizeof(AC_MessageHead) + sizeof(ZC_DeviceOnline));
@@ -777,24 +781,20 @@
         AC_SendMessage(pu8Msg, u16DataLen);
         osal_mem_free(pu8Msg);
     }
-
 </code></pre>
 
-<h2 id="_12">子设备解除绑定</h2>
-<p>云端调用AC_CODE_LEAVE_DEVICE消息请求网关将子设备移除网络，该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息</p>
+<h2 id="_13">子设备解除绑定</h2>
+<p>云端调用AC_CODE_LEAVE_DEVICE消息请求网关将子设备移除网络，该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>消息格式定义如下：</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {    
         u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息    
         u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
     }ZC_SubDeviceInfo;
-
 </code></pre>
 
 <p>参考代码如下：</p>
-<pre><code class="c">
-    void AC_LeaveDevice(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_LeaveDevice(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
 
         NLME_LeaveReq_t req;
@@ -815,17 +815,15 @@
             AC_SendErrMsg(pstruOptList,pstruMsg-&gt;MsgId);
         }
     }
-
 </code></pre>
 
 <h1 id="ota">OTA</h1>
-<h2 id="_13">设备与云端交互流程</h2>
+<h2 id="_14">设备与云端交互流程</h2>
 <p><img alt="device_OTA" src="../../pic/develop_guide/device_OTA.png" /></p>
 <h2 id="ota_1">OTA启动消息</h2>
-<p>OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>OTA启动请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>消息格式如下：</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {
         u8 u8FileNum;//用以指示本次升级时文件个数。文件类型在该消息体之后，按字节依次排列。
         u8 u8Pad[3];
@@ -833,20 +831,17 @@
 </code></pre>
 
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*本例只升级本地设备，因而不记录文件数目*/
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);  
     }
-
 </code></pre>
 
 <h2 id="ota_2">OTA文件传输消息</h2>
-<p>OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>OTA文件传输启动请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>消息格式如下：</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {
        u8  u8FileType;//文件类型
        u8  u8FileVersion;//文件版本号
@@ -856,8 +851,7 @@
 </code></pre>
 
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaFileBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaFileBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 ret =0;
         u32 i = 0;
@@ -881,22 +875,19 @@
         /*回响应*/                     
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
     }
-
 </code></pre>
 
 <h2 id="ota_3">OTA文件块传输消息</h2>
-<p>OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
+<p>OTA文件块传输请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。整个升级文件会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
 <p>消息格式如下：</p>
-<pre><code class="c">
-    typedef struct
+<pre><code class="c">    typedef struct
     {
         u32 u32Offset;//文件块传输偏移
     }AC_OtaFileChunkReq;
 </code></pre>
 
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaFileChunkMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaFileChunkMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 u32RetVal = AC_RET_OK;
         ZC_OtaFileChunkReq *pstruOta = (ZC_OtaFileChunkReq *)(pu8Playload);   
@@ -929,14 +920,12 @@
         /*回响应*/ 
         AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
     }
-
 </code></pre>
 
 <h2 id="ota_4">OTA文件传输结束消息</h2>
-<p>OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。无消息体</p>
+<p>OTA升级文件传输结束消息无消息体。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*回响应*/
         AC_Printf(&quot;Ota File End\n&quot;);
@@ -945,10 +934,9 @@
 </code></pre>
 
 <h2 id="ota_5">OTA结束消息</h2>
-<p>无消息体，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>无消息体。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
          u32 u32RetVal = AC_RET_OK;
          u16 u16DataLen;
@@ -959,22 +947,18 @@
          if (AC_RET_OK == u32RetVal)
          {
              AC_SendAckMsg(pstruOptList, pstruMsg-&gt;MsgId);
-
-
          }
          else
          {
              AC_SendErrMsg(pstruOptList, pstruMsg-&gt;MsgId, NULL, 0);
          }
-    } 
-
+    }
 </code></pre>
 
 <h2 id="ota_6">OTA确认升级消息</h2>
-<p>无消息体，收到该消息设备侧启动更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>无消息体。设备侧收到该消息后启动更新固件流程。该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>参考代码如下:</p>
-<pre><code class="c">
-    void AC_HandleOtaConfirmMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_HandleOtaConfirmMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u32 u32RetVal = AC_RET_OK;
         u16 u16DataLen;
@@ -994,20 +978,17 @@
         {
             AC_SendErrMsg(pstruOptList, pstruMsg-&gt;MsgId, NULL, 0);
         }
-
     }
-
 </code></pre>
 
-<h1 id="_14">和云端通信</h1>
-<h2 id="_15">设备上报消息</h2>
+<h1 id="_15">和云端通信</h1>
+<h2 id="_16">设备上报消息</h2>
 <p>设备可以在定时或者根据外界条件触发的情况下将设备数据和状态主动上报到云端。其中上报的消息号必须大于等于200。</p>
 <p>下面的例子是上报demo灯状态到云端。</p>
-<h3 id="_16">二进制</h3>
+<h3 id="_17">二进制</h3>
 <p>参考代码如下：</p>
 <p>上报数据包=code:201 + req:{1,0,0,0} </p>
-<pre><code class="c">
-    void AC_SendStatus2Server()
+<pre><code class="c">    void AC_SendStatus2Server()
     {
         /*上报demo灯的状态*/
         STRU_LED_ONOFF struRsp;
@@ -1028,8 +1009,7 @@
 <h3 id="klv">KLV格式</h3>
 <p>参考代码如下：</p>
 <p>上报数据包=code:201+key:1 value:int8(0为关闭，1为开启)</p>
-<pre><code class="c">
-    void AC_SendStatus2Server()
+<pre><code class="c">    void AC_SendStatus2Server()
     {
          /*上报demo灯的状态*/
          u8 u8LedOnOff ;
@@ -1049,10 +1029,9 @@
 
 <h3 id="json">JSON格式</h3>
 <p>参考代码如下：</p>
-<p>JSON格式用户调用第三方源码构造json格式的消息体。
+<p>用户可调用第三方源码构造JSON格式的消息体。
 控制数据包= code:201 + req:{"switch",1}     </p>
-<pre><code class="c">
-    void AC_SendLedStatus2Server()
+<pre><code class="c">    void AC_SendLedStatus2Server()
     {
          /*上报demo灯的状态*/
         cJSON *root;
@@ -1077,20 +1056,18 @@
          /*JSON协议内存释放*/
         free(out);
     }
-
 </code></pre>
 
-<h2 id="_17">设备接收云端指令</h2>
+<h2 id="_18">设备接收云端指令</h2>
 <p>设备接收云端指令可以控制设备，并返回执行结果，其中控制指令和响应指令的消息号必须大于64且小于200。</p>
 <p>设备接收云端指令可以查询设备，并返回查询结果，其中查询指令和响应指令的消息号必须大于64且小于200。</p>
 <p>设备接收到云端指令必须回响应。</p>
 <p>下面的例子是云端下发控制demo灯开关状态，收到指令回应响应。</p>
-<h3 id="_18">二进制</h3>
+<h3 id="_19">二进制</h3>
 <p>参考代码如下：</p>
 <p>控制数据包=code:68 + req:{1,0,0,0} </p>
 <p>响应数据包=code:102 + resp:{1,0,0,0}</p>
-<pre><code class="c">
-    void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u16 u16DataLen;
         u8 resp[4] = {0};
@@ -1118,8 +1095,7 @@
 <p>控制数据点：key:1 value:int8(0为关闭，1为开启)</p>
 <p>控制数据包：code:68</p>
 <p>响应数据点：key:1 value:int8(0为关闭，1为开启)</p>
-<pre><code class="c">
-    void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         /*KLV协议内存申请,接口含义详见下节接口定义*/
         AC_KLV *pOut = AC_CreateObj();
@@ -1148,8 +1124,7 @@
 <p>参考代码如下：</p>
 <p>控制数据包= code:68 + req:{"switch",1} </p>
 <p>响应数据包= code:102 +resp:{"result",1}</p>
-<pre><code class="c">
-    void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
+<pre><code class="c">    void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
         /*处理设备自定义控制消息*/
         u16 u16DataLen;
@@ -1171,21 +1146,23 @@
         cJSON_AddNumberToObject(root,&quot;result&quot;,      1);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
-        /*发送JSON消息,接口含义详见下节接口定义*
+        /*发送JSON消息,接口含义详见下节接口定义*/
         AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
         AC_SendMessage(g_u8MsgBuildBuffer, u16DataLen); 
-         /*释放JSON消息,接口含义详见下节接口定义*
+        /*释放JSON消息,接口含义详见下节接口定义*/
         free(out);   
      }
 </code></pre>
 
-<h2 id="_19">接口定义</h2>
-<h3 id="_20">数据发送接口</h3>
+<h2 id="_20">接口定义</h2>
+<h3 id="_21">数据发送接口</h3>
 <p>函数定义</p>
-<p>void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);</p>
+<pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
+</code></pre>
+
 <p>参数</p>
 <table>
 <thead>
@@ -1208,13 +1185,14 @@
 </tr>
 </tbody>
 </table>
-<p>说明</p>
-<h3 id="_21">协议消息组包接口</h3>
+<h3 id="_22">协议消息组包接口</h3>
 <p>函数定义</p>
-<p>void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
-    u8 <em>pu8Payload, u16 u16PayloadLen,
-    AC_OptList </em>pstruOptList,
-    u8 <em>pu8Msg, u16 </em>pu16Len);</p>
+<pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
+    u8 *pu8Payload, u16 u16PayloadLen,
+    AC_OptList *pstruOptList,
+    u8 *pu8Msg, u16 *pu16Len);
+</code></pre>
+
 <p>参数</p>
 <table>
 <thead>
@@ -1260,19 +1238,13 @@
 <td>u8 *</td>
 <td>组好的数据长度</td>
 </tr>
-<tr>
-<td>###KLV协议解析包接口</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>函数定义</td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
-<p>s8 AC_GetKeyValue(u8 <em>pu8Playload, u16 u16PayloadLen, u8 u8Key,void </em>pValue,u16 <em>pu16Length,u8 </em>pu8Type)</p>
+<h3 id="klv_2">KLV协议解析包接口</h3>
+<p>函数定义</p>
+<pre><code class="c">s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
+</code></pre>
+
 <p>参数</p>
 <table>
 <thead>
@@ -1315,17 +1287,39 @@
 </tr>
 </tbody>
 </table>
-<h3 id="klv_2">KLV协议内存分配接口</h3>
+<h3 id="klv_3">KLV协议内存分配接口</h3>
 <p>函数定义</p>
-<p>AC_KLV * AC_CreateObj()</p>
-<p>返回值： 申请出来的内存指针</p>
-<h3 id="klv_3">KLV协议内存释放接口</h3>
+<pre><code class="c">AC_KLV * AC_CreateObj()
+</code></pre>
+
+<p>返回值： 申请出来的内存指针。</p>
+<h3 id="klv_4">KLV协议内存释放接口</h3>
 <p>函数定义</p>
-<p>参数：需要释放的内存指针</p>
-<p>void AC_FreeObj(AC_KLV * pOut);</p>
-<h3 id="klv_4">KLV协议组包接口</h3>
+<pre><code class="c">void AC_FreeObj(AC_KLV * pOut);
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pOut</td>
+<td>AC_KLV *</td>
+<td>需要释放的内存指针</td>
+</tr>
+</tbody>
+</table>
+<h3 id="klv_5">KLV协议组包接口</h3>
 <p>函数定义</p>
-<p>s8 AC_SetKeyValue(AC_KLV <em>pOut,u8 u8Key,u16 u16Length,u8 u8Type, void </em>pValue);</p>
+<pre><code class="c">s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
+</code></pre>
+
 <p>参数</p>
 <table>
 <thead>
@@ -1363,10 +1357,11 @@
 </tr>
 </tbody>
 </table>
-<h1 id="_22">局域网通信</h1>
-<p>WiFi设备和以太网设备可以和客户端（APP）进行局域网通信。
-AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网进行通信。</p>
-<p>Error Code</p></div>
+<h1 id="_23">局域网通信</h1>
+<p>WiFi设备及以太网设备可以和客户端（APP）进行局域网通信。
+AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网内通信。</p>
+<h1 id="error-code">Error Code</h1>
+<p>参考<a href="../../reference/error_code/">reference-Error Code</a>。</p></div>
             
         </div>
 
