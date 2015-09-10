@@ -420,14 +420,6 @@
     
         
         
-        
-        <li class="main">
-            <a href="#_40">文件存储</a>
-        </li>
-        
-    
-        
-        
             
                 
             
@@ -442,19 +434,19 @@
         
         
         <li class="main">
-            <a href="#3_7">&gt;3、上传下载支持断点续传功能<span class="main-set parent_3_7">+</span></a>
+            <a href="#_40">文件存储<span class="main-set parent__40">+</span></a>
         </li>
         
             
-            <li class="sub parent_3_7" style="display: none;"><a href="#_41">一、获取文件管理器</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_41">一、获取文件管理器</a></li>
             
         
             
-            <li class="sub parent_3_7" style="display: none;"><a href="#_42">二、下载文件</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_42">二、下载文件</a></li>
             
         
             
-            <li class="sub parent_3_7" style="display: none;"><a href="#_43">三、上传文件</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_43">三、上传文件</a></li>
             
         
     
@@ -1718,46 +1710,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h1 id="_40">文件存储</h1>
 <blockquote>
-<p><font color="red">注意</font>：
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-</blockquote>
-<p>=======
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>9a70a363e26e3c5a38065f9fd1d251b3e7c8bcc8
-1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p><font color="red">注意</font>：</p>
+<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
 <p><code>&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
-<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-</blockquote>
-<h1 id="3_7">&gt;3、上传下载支持断点续传功能</h1>
-<blockquote>
+<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
 <p>3、上传下载支持断点续传功能</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>9a70a363e26e3c5a38065f9fd1d251b3e7c8bcc8</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 </blockquote>
 <h2 id="_41">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
@@ -1765,7 +1722,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
 <h2 id="_42">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
-<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
@@ -1841,7 +1798,7 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
 <h3 id="2_10">2、上传文件</h3>
 <h4 id="1sdcard_1">1)、上传sdcard文件</h4>
-<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //设置上传文件的sdcard路径
@@ -1865,7 +1822,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h4 id="2_11">2)、上传小文件，比如头像</h4>
-<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, bucketType, name);
+<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //比如头像比特流数组
