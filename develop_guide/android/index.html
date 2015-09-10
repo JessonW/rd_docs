@@ -402,19 +402,19 @@
         
         
         <li class="main">
-            <a href="#_42">推送<span class="main-set parent__42">+</span></a>
+            <a href="#_40">推送<span class="main-set parent__40">+</span></a>
         </li>
         
             
-            <li class="sub parent__42" style="display: none;"><a href="#_43">推送开发准备</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_41">推送开发准备</a></li>
             
         
             
-            <li class="sub parent__42" style="display: none;"><a href="#_44">一、推送开发环境配置</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_42">一、推送开发环境配置</a></li>
             
         
             
-            <li class="sub parent__42" style="display: none;"><a href="#_45">二、开启推送服务</a></li>
+            <li class="sub parent__40" style="display: none;"><a href="#_43">二、开启推送服务</a></li>
             
         
     
@@ -434,19 +434,19 @@
         
         
         <li class="main">
-            <a href="#_46">文件存储<span class="main-set parent__46">+</span></a>
+            <a href="#_44">文件存储<span class="main-set parent__44">+</span></a>
         </li>
         
             
-            <li class="sub parent__46" style="display: none;"><a href="#_47">一、获取文件管理器</a></li>
+            <li class="sub parent__44" style="display: none;"><a href="#_45">一、获取文件管理器</a></li>
             
         
             
-            <li class="sub parent__46" style="display: none;"><a href="#_48">二、下载文件</a></li>
+            <li class="sub parent__44" style="display: none;"><a href="#_46">二、下载文件</a></li>
             
         
             
-            <li class="sub parent__46" style="display: none;"><a href="#_49">三、上传文件</a></li>
+            <li class="sub parent__44" style="display: none;"><a href="#_47">三、上传文件</a></li>
             
         
     
@@ -1057,7 +1057,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 </code></pre>
@@ -1109,7 +1109,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 </code></pre>
@@ -1165,13 +1165,13 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 </code></pre>
 
 <h2 id="_27">二、发送消息到服务</h2>
-<p><strong><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为主版本号，比如1-0-0，则version为1。</strong></p>
+<p><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的<strong>服务名称</strong>，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为<strong>主版本号</strong>，比如1-0-0，则version为1。</p>
 <pre><code class="java">ACMsg req = new ACMsg();
 req.setName(&quot;queryData&quot;);
 req.put(&quot;deviceId&quot;, deviceId);
@@ -1185,7 +1185,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为UDS云端问题，可到AbleCloud平台查看log日志
     }
 });
 </code></pre>
@@ -1230,7 +1230,7 @@ pushMgr.watch(table, new VoidCallback() {
     }
     @Override
     public void error(ACException e) {
-        //订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+        //订阅失败，请自行检查参数类型，表名，columns以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
     }
 });
 </code></pre>
@@ -1246,7 +1246,7 @@ pushMgr.watch(table, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-    //永远不会执行
+        //永远不会执行
     }
 });
 </code></pre>
@@ -1268,7 +1268,7 @@ pushMgr.unwatch(table, new VoidCallback() {
     }
     @Override
     public void error(ACException e) {
-        //取消订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+        //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
     }
 });
 </code></pre>
@@ -1279,7 +1279,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
     @Override
     public void success(List&lt;ACUserDevice&gt; deviceList) {
-        For(ACUserDevice device:deviceList){
+        for(ACUserDevice device:deviceList){
             /**
               * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
               * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
@@ -1329,15 +1329,15 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="_31">获取定时管理器</h4>
-<h5 id="_32">使用默认时区</h5>
+<p><strong>使用默认时区</strong></p>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
 </code></pre>
 
-<h5 id="_33">使用自定义时区</h5>
+<p><strong>使用自定义时区</strong></p>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 </code></pre>
 
-<h4 id="_34">添加定时任务</h4>
+<h4 id="_32">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
@@ -1396,9 +1396,9 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_35">修改定时任务</h4>
+<h4 id="_33">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
-<h4 id="_36">开启定时任务</h4>
+<h4 id="_34">开启定时任务</h4>
 <pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1412,7 +1412,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_37">关闭定时任务</h4>
+<h4 id="_35">关闭定时任务</h4>
 <pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1426,7 +1426,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_38">删除定时任务</h4>
+<h4 id="_36">删除定时任务</h4>
 <pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1440,7 +1440,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_39">获取定时任务列表</h4>
+<h4 id="_37">获取定时任务列表</h4>
 <pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
      @Override
      public void success(List&lt;ACTimerTask&gt; timerTasks) {
@@ -1467,7 +1467,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
-<h4 id="_40">二. 检查升级</h4>
+<h4 id="_38">二. 检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
 <pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
@@ -1485,7 +1485,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_41">三．确认升级</h4>
+<h4 id="_39">三．确认升级</h4>
 <pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     @Override
     public void success() {
@@ -1498,10 +1498,10 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_42">推送</h1>
+<h1 id="_40">推送</h1>
 <p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
-<h2 id="_43">推送开发准备</h2>
+<h2 id="_41">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
 <p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。</p>
 <p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
@@ -1514,7 +1514,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。</p>
 <p>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。</p>
 </blockquote>
-<h2 id="_44">一、推送开发环境配置</h2>
+<h2 id="_42">一、推送开发环境配置</h2>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
@@ -1669,7 +1669,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 &lt;/meta-data&gt;
 </code></pre>
 
-<h2 id="_45">二、开启推送服务</h2>
+<h2 id="_43">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1_9">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
@@ -1759,7 +1759,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_46">文件存储</h1>
+<h1 id="_44">文件存储</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_21">功能说明-功能介绍-文件存储</a></p>
 <blockquote>
 <p><font color="red">注意</font>：</p>
@@ -1768,11 +1768,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
 <p>3、上传下载支持断点续传功能</p>
 </blockquote>
-<h2 id="_47">一、获取文件管理器</h2>
+<h2 id="_45">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
 </code></pre>
 
-<h2 id="_48">二、下载文件</h2>
+<h2 id="_46">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 fileMgr.getDownloadUrl(fileInfo, new PayloadCallback&lt;String&gt;() {
@@ -1833,7 +1833,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 });
 </code></pre>
 
-<h2 id="_49">三、上传文件</h2>
+<h2 id="_47">三、上传文件</h2>
 <h3 id="1_10">1、设置上传文件的权限管理</h3>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
