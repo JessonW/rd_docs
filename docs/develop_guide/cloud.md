@@ -586,9 +586,11 @@ public class LightStub extends ACDeviceStub {
 
 ###在本地机器或任意开发机上启动服务
 按照[开发环境设置](dev_guide "开发环境设置")章节，通过运行`start.cmd`或`start.sh`启动服务
->注意
->1、运行`start.cmd`或`start.sh`的条件，需满足启动的根目录的结构如下：
->```java
+
+<font color="red">**注意**</font>
+
+1、运行`start.cmd`或`start.sh`的条件，需满足启动的根目录的结构如下：
+```
 /config
 	/cloudservice-conf.xml
 /lib
@@ -601,19 +603,18 @@ public class LightStub extends ACDeviceStub {
     /...
 start.sh
 start.cmd
->```
->2、服务启动成功后，会在根目录下生成`log`的文件夹，进入该文件夹查看`service.log`文件，若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。
->```java
+```
+2、服务启动成功后，会在根目录下生成`log`的文件夹，进入该文件夹查看`service.log`文件，若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。
+```
 2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...
 2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]
-.
-.
+...
 2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505
 2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad{HTTP/1.1}{0.0.0.0:8080}
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms
 2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.
->```
+```
 
 ###用任意客户端发送http请求
 使用任意客户端发送http请求测试自己的接口正确性，例如用curl或自己开发的客户端都可以。以下详细介绍如何使用curl命令进行进一步测试。
