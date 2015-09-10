@@ -883,30 +883,29 @@ public class LightStub extends ACDeviceStub {
 <p>按照<a href="../dev_guide" title="开发环境设置">开发环境设置</a>章节，通过运行<code>start.cmd</code>或<code>start.sh</code>启动服务</p>
 <blockquote>
 <p>注意
-1、运行<code>start.cmd</code>或<code>start.sh</code>的条件，需满足启动的根目录的结构如下：
-<code>java
-/config
-  /cloudservice-conf.xml
-/lib
-  /ablecloud-framework-1.1.0.jar
-   /ac-java-api-1.0.0.jar
-  /commons-collections-3.2.1.jar
-   /commons-configuration-1.10.jar
-   /commons-lang-2.6.jar
-   /slf4j-api-1.7.7.jar
-   /...
-start.sh
-start.cmd</code>
+1、运行<code>start.cmd</code>或<code>start.sh</code>的条件，需满足启动的根目录的结构如下：</p>
+<p><code>/config</code>
+<code>/cloudservice-conf.xml</code>
+<code>/lib</code>
+<code>/ablecloud-framework-1.1.0.jar</code>
+<code>/ac-java-api-1.0.0.jar</code>
+<code>/commons-collections-3.2.1.jar</code>
+<code>/commons-configuration-1.10.jar</code>
+<code>/commons-lang-2.6.jar</code>
+<code>/slf4j-api-1.7.7.jar</code>
+<code>/...</code>
+<code>start.sh</code>
+<code>start.cmd</code>
 2、服务启动成功后，会在根目录下生成<code>log</code>的文件夹，进入该文件夹查看<code>service.log</code>文件，若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。</p>
 <p><code>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...</code>
-<code>2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]</code></p>
-<p><code>...</code></p>
-<p><code>2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms</code></p>
-<p><code>2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505</code></p>
-<p><code>2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad
-{HTTP/1.1}{0.0.0.0:8080}</code></p>
-<p><code>2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms</code></p>
-<p><code>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.</code></p>
+<code>2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]</code>
+<code>...</code>
+<code>2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms</code>
+<code>2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505</code>
+<code>2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad
+{HTTP/1.1}{0.0.0.0:8080}</code>
+<code>2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms</code>
+<code>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.</code></p>
 </blockquote>
 <h3 id="http">用任意客户端发送http请求</h3>
 <p>使用任意客户端发送http请求测试自己的接口正确性，例如用curl或自己开发的客户端都可以。以下详细介绍如何使用curl命令进行进一步测试。</p>
