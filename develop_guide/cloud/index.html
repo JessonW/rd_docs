@@ -308,6 +308,94 @@
     
         
         
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#store">store存储接口示例<span class="main-set parent_store">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#create">Create</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#find">Find</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#scan">Scan</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#fullscan">FullScan</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#batchdelete">BatchDelete</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#simplefullscanscan">基于SimpleFullScan和Scan的全表分页浏览</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#_19">其它</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#uds">UDS访问外网示例<span class="main-set parent_uds">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_uds" style="display: none;"><a href="#get">GET</a></li>
+            
+        
+            
+            <li class="sub parent_uds" style="display: none;"><a href="#post">POST</a></li>
+            
+        
+    
+        
+        
         
         <li class="main">
             <a href="#error-code">Error Code</a>
@@ -941,6 +1029,304 @@ start.cmd
 <blockquote>
 <p><font color="red"><strong>注：</strong>若在HandleMsg接口的处理中使用<code>req.getContext()</code>获取请求的用户信息，则在构造http请求的时候，需要使用<code>-H</code>增加如下三个头域：<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code></font></p>
 </blockquote>
+<h1 id="store">store存储接口示例</h1>
+<p>以数据集<code>test_data</code>为例，假定其分区键为<code>deviceId</code>（字符串型）；主键为<code>deviceId</code>（字符串型）和<code>timestamp</code>（整型）；其他字段包括<code>status</code>（字符串型）、<code>mode</code>（字符串型）、<code>speed</code>（整型）和<code>pm25</code>（浮点型）等。</p>
+<h2 id="create">Create</h2>
+<h3 id="primary-keysk-v">方式一：显示的传入primary keys的k-v对</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).create(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L) // 这里是k-v对
+                    .put(&quot;status&quot;, &quot;run&quot;)
+                    .put(&quot;mode&quot;, &quot;auto&quot;)
+                    .put(&quot;speed&quot;, 45L)
+                    .put(&quot;pm25&quot;, 35.5)
+                    .execute();
+</code></pre>
+
+<h3 id="primary-keys">方式二：传入primary keys的对象</h3>
+<pre><code class="java">ACObject pk = new ACObject();
+pk.put(&quot;deviceId&quot;, &quot;12345&quot;);
+pk.put(&quot;timestamp&quot;, 1L);
+ac.store(&quot;test_data&quot;, context).create(pk)   // 这里是primary keys的对象
+                    .put(&quot;status&quot;, &quot;run&quot;)
+                    .put(&quot;mode&quot;, &quot;auto&quot;)
+                    .put(&quot;speed&quot;, 45L)
+                    .put(&quot;pm25&quot;, 35.5)
+                    .execute();
+</code></pre>
+
+<h2 id="find">Find</h2>
+<pre><code class="java">ACObject ao = ac.store(&quot;test_data&quot;, context)
+                    .find(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .execute();
+String status = ao.get(&quot;status&quot;);
+String mode = ao.get(&quot;mode&quot;);
+Long speed = ao.get(&quot;speed&quot;);
+</code></pre>
+
+<h2 id="scan">Scan</h2>
+<p>由于是分区数据集，在Scan时需要传入分区键值对，这里是<code>deviceId</code>及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如<code>ac.store("test_data", context).scan()...</code></p>
+<blockquote>
+<p><font color=red>务必注意</font>：存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。</p>
+</blockquote>
+<h3 id="startlimitstartlimit">示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .limit(10)
+                    .execute();
+</code></pre>
+
+<h3 id="startendstartendstartend">示例二：设定start和end，由start开始正向扫描到end，返回start和end之间的结果集，其中各数据记录按主键自然正序排列</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 10L)
+                    .execute();
+</code></pre>
+
+<h3 id="endlimitendlimit">示例三：设定end和limit，由end开始逆向扫描，返回limit数量的数据集，注意其中各数据记录按主键倒序排列。</h3>
+<blockquote>
+<p><font color="brown"><strong>注：</strong>我们经常遇到的获取设备最新的n条数据的需求就可以用这个接口组合来实现。</font></p>
+</blockquote>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .end(&quot;timestamp&quot;, 10L)
+                    .limit(10)
+                    .execute();
+</code></pre>
+
+<h3 id="_13">示例四：指定查询过滤器进行查询</h3>
+<pre><code class="java">// 查询条件1：状态是正在运行并且转速大于等于300
+ACFilter f1 = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;)
+                    .whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
+
+// 查询条件2：状态是已停止并且PM2.5监控值小于50.0
+ACFilter f2 = ac.filter().whereEqualTo(&quot;status&quot;, &quot;stopped&quot;)
+                    .whereLessThan(&quot;pm25&quot;, 50.0);
+
+// 查询设备ID为&quot;12345&quot;的设备在一段时间内所有满足条件1或条件2的数据记录
+ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 10L)
+                    .where(f1)
+                    .or(f2)
+                    .execute();
+</code></pre>
+
+<h3 id="_14">示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高</h3>
+<pre><code class="java">// 查询条件：状态是正在运行
+ACFilter f = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;);
+
+// 查询设备ID为&quot;12345&quot;的设备在一段时间内所有满足条件的数据记录并按照转速（正序）、PM2.5监控值（倒序）以及时间戳（倒序）排序
+// 本示例的意图为：查询设备ID为&quot;12345&quot;的设备在&quot;1L&quot;到&quot;10L&quot;这段时间内所有正在运转时上报的数据，同时进行排序，转速越低越靠前，转速相同的PM2.5越高越靠前，PM2.5也相同的时间越近越靠前
+ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 10L)
+                    .where(f)
+                    .orderByAsc(&quot;speed&quot;)
+                    .orderByDesc(&quot;pm25&quot;, &quot;timestamp&quot;)
+                    .execute();
+</code></pre>
+
+<h3 id="_15">示例六：分组并进行简单的数值统计</h3>
+<pre><code class="java">/*
+ 将设备ID为&quot;12345&quot;的设备在一段时间内的数据记录按照运行状态和控制模式分组，假设有四种情况：
+ -------------------------
+ | status    |    mode   |
+ -------------------------
+ | running   |    auto   |
+ -------------------------
+ | running   |    manual |
+ -------------------------
+ | stopped   |    auto   |
+ -------------------------
+ | stopped   |    manual |
+ -------------------------
+ 本示例的意图为：统计设备ID为&quot;12345&quot;的设备在&quot;1L&quot;到&quot;10L&quot;这段时间内所有上报的数据，按照&quot;status&quot;和&quot;mode&quot;分组，统计每个分组的记录总数、合计转速、平均转速和平均PM2.5以及最大转速和最大PM2.5.
+*/
+ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 10L)
+                    .groupBy(&quot;status&quot;, &quot;mode&quot;)
+                    .count()
+                    .sum(&quot;speed&quot;)
+                    .avg(&quot;speed&quot;, &quot;pm25&quot;)
+                    .max(&quot;speed&quot;, &quot;pm25&quot;)
+                    .execute();
+</code></pre>
+
+<h3 id="_16">示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求</h3>
+<pre><code class="java">// 将设备ID为&quot;12345&quot;的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
+ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
+                    .whereLessThan(&quot;speed&quot;, 50L);
+ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
+ACFilter f3 = ac.filter().whereLessThan(&quot;pm25&quot;, 30.0);
+ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 100L)
+                    .where(f1)
+                    .or(f2)
+                    .or(f3)
+                    .groupBy(&quot;status&quot;, &quot;mode&quot;)
+                    .orderByAsc(&quot;status&quot;, &quot;mode&quot;)
+                    .count()
+                    .max(&quot;speed&quot;)
+                    .min(&quot;speed&quot;, &quot;pm25&quot;)
+                    .execute();
+</code></pre>
+
+<h2 id="fullscan">FullScan</h2>
+<p>分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
+同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法返回为空</p>
+<pre><code class="java">// 延续Scan示例七中的查询条件进行全表所有分区的扫描
+ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
+                    .whereLessThan(&quot;speed&quot;, 50L);
+
+ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
+
+ACFilter f3 = ac.filter().whereLessThan(&quot;pm25&quot;, 30.0);
+
+ACIterator it = ac.store(&quot;test_data&quot;, context).fullScan()
+                    .start(&quot;timestamp&quot;, 1L)
+                    .end(&quot;timestamp&quot;, 100L)
+                    .where(f1)
+                    .or(f2)
+                    .or(f3)
+                    .groupBy(&quot;status&quot;, &quot;mode&quot;)
+                    .orderByAsc(&quot;status&quot;, &quot;mode&quot;)
+                    .count()
+                    .max(&quot;speed&quot;)
+                    .min(&quot;speed&quot;, &quot;pm25&quot;)
+                    .execute();
+
+List&lt;ACObject&gt; zos;
+while((zos = it.next()) != null) {
+    // 处理当前分区中的数据
+        ...
+}
+</code></pre>
+
+<h2 id="batchdelete">BatchDelete</h2>
+<p>分区或者非分区的数据集都可以使用BatchDelete接口来支持批量删除。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。</p>
+<pre><code class="java">ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
+                    .whereLessThan(&quot;speed&quot;, 50L);
+
+ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
+
+ACFilter f3 = ac.filter().whereLessThan(&quot;pm25&quot;, 30.0);
+
+ac.store(&quot;test_data&quot;, context).batchDelete(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .where(f1)
+                    .or(f2)
+                    .or(f3)
+                    .execute();
+</code></pre>
+
+<h2 id="simplefullscanscan">基于SimpleFullScan和Scan的全表分页浏览</h2>
+<p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
+<h3 id="_17">非分区数据集</h3>
+<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
+int limit = 50;
+List&lt;ACObject&gt; zos;
+
+// 第一次调用scan，由非分区表的起始向下扫描limit+1条数据。注意每次多取一条，呈现前limit条，最后一条用作下一次取数据的start；同时注意非分区数据集的scan不需要传分区键
+zos = ac.store(&quot;test_data&quot;, context)
+    .scan()
+    .limit(limit + 1)
+    .execute();
+
+// 后续调用scan接口，start使用上一次扫描的结果数据集的最后一条
+while (zos.size() &gt;= limit + 1) {
+    zos = ac.store(&quot;test_data&quot;, context)
+        .scan()
+        .start(zos.get(limit))
+        .limit(limit + 1)
+        .execute();
+}
+
+</code></pre>
+
+<h3 id="_18">分区数据集</h3>
+<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
+int limit = 50;
+
+// 可以定义一些查询条件的过滤器
+ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
+                    .whereLessThan(&quot;speed&quot;, 50L);
+
+ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
+
+ACFilter f3 = ac.filter().whereLessThan(&quot;pm25&quot;, 30.0);
+
+ACRowIterator it = ac.store(TEST_CLASS, context)
+        .simpleFullScan()
+        .where(f1)
+        .and(f2)
+        .or(f3)
+        .execute();
+
+// 注意这里可以直接使用每次期望获取的数据条数limit，不需要传入limit+1;同时每次迭代给定的limit可以不同
+List&lt;ACObject&gt; zos;
+while ((zos = it.next(limit)) != null) {
+    // 处理本次迭代取到的数据集
+        ...
+}
+</code></pre>
+
+<h2 id="_19">其它</h2>
+<p><code>delete/update/replace</code>的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。</p>
+<h1 id="uds">UDS访问外网示例</h1>
+<p>由于uds本身无法访问正常的外网服务，所以AbleCloud内部实现了正向代理，并提供ACHttpClient以访问外网服务</p>
+<h2 id="get">GET</h2>
+<pre><code class="java">@Test
+public void testGet() {
+    try {
+        //获取访问外网的ACHttpClient客户端
+        ACHttpClient client = ac.getHttpClient(&quot;http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC&quot;);
+        //默认为GET方法
+        client.setRequestMethod(&quot;GET&quot;);
+        //默认超时时间为5000
+        client.setConnectTime(5000);
+        //设置访问外网头域
+        client.setHeader(&quot;apikey&quot;, &quot;caf46348383a17f6070e0bda0e361a28&quot;);
+        //连接url
+        client.connect();
+        //AbleCloud签名认证失败
+        if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            assertEquals(client.getResponseMessage(), &quot;OK&quot;);
+            //通过getData()或getInputStream()获取response,不能同时一起调用
+        }
+    } catch (IOException e) {
+        fail(e.toString());
+    }
+}
+</code></pre>
+
+<h2 id="post">POST</h2>
+<pre><code class="java">@Test
+public void testPost() {
+    try {
+        String body = &quot;fromdevice=pc&amp;clientip=10.10.10.0&amp;detecttype=LocateRecognize&amp;languagetype=CHN_ENG&amp;imagetype=1&amp;image=/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDABMNDxEPDBMREBEWFRMXHTAfHRsbHTsqLSMwRj5KSUU+RENNV29eTVJpU0NEYYRiaXN3fX59S12Jkoh5kW96fXj/2wBDARUWFh0ZHTkfHzl4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHj/wAARCAAfACEDAREAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDBQb/xAAjEAACAgICAgEFAAAAAAAAAAABAgADBBESIRMxBSIyQXGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APawEBAQEBAgy8i8ZTVV3UY6V1eU2XoWDDZB19S646Gz39w9fkKsW1r8Wm2yo1PYis1be0JG9H9QNYCAgc35Cl3yuVuJZl0cB41rZQa32dt2y6OuOiOxo61vsLcVblxaVyXD3hFFjL6La7I/sDWAgICAgICB/9k=&quot;;
+        //获取访问外网的ACHttpClient客户端
+        ACHttpClient client = ac.getHttpClient(&quot;http://apis.baidu.com/apistore/idlocr/ocr&quot;);
+        //默认为GET方法
+        client.setRequestMethod(&quot;POST&quot;);
+        //默认超时时间为5000
+        client.setConnectTime(5000);
+        //设置访问外网头域
+        client.setHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+        client.setHeader(&quot;apikey&quot;, &quot;caf46348383a17f6070e0bda0e361a28&quot;);
+        //连接url
+        client.connect();
+        //设置访问外网消息体
+        client.setEntity(body.getBytes(&quot;UTF-8&quot;));
+        //AbleCloud签名认证失败
+        if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            assertEquals(client.getResponseMessage(), &quot;OK&quot;);
+            //通过getData()或getInputStream()获取response,不能同时一起调用
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+</code></pre>
+
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
             

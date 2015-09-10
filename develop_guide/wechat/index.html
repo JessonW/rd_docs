@@ -823,7 +823,7 @@ $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion())
 <p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
 </li>
 <li>
-<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个数据推送接口（Web服务），将消息推送给微信公众号后台；</p>
+<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>，将消息推送给微信公众号后台；</p>
 </li>
 <li>
 <p>开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。</p>
@@ -835,12 +835,13 @@ $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion())
 <p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
 </li>
 <li>
-<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个数据推送接口（Web服务），将消息推送给微信公众号后台；</p>
+<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>，将消息推送给微信公众号后台；</p>
 </li>
 <li>
 <p>开发者的微信公众号后台收到该消息后，识别目标用户，通过AbleCloud API获取用户的OpenID，调用微信公众平台的消息推送接口向用户推送消息。不过，微信公众平台的模板消息接口有调用频次的限制。</p>
 </li>
 </ul>
+<p>上述两种情况下，“开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。</p>
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p></div>
             
