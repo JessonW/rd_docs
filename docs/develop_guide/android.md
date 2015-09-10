@@ -1391,14 +1391,15 @@ notificationMgr.removeAlias(userId, new VoidCallback() {
 
 #文件存储
 ><font color="red">注意</font>：
-
->1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限：
+<<<<<<< HEAD
+>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 **application** 标签下增加如下权限
 
 > ```
 > <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 > ```
 
->2、上传下载支持断点续传功能。
+>2、使用文件存储需导入jar包`android-async-http-1.4.8`和`qiniu-android-sdk-7.0.7`到libs目录下
+>3、上传下载支持断点续传功能
 
 
 ##一、获取文件管理器

@@ -4,19 +4,15 @@
 SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
 ><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。
 
+#交互协议
 
-
-
-#交互协议-基础数据结构
-
-
-首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了三种格式的消息：
+首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了两种格式的消息：
 
 + **ACMsg：**APP与service之间的交互消息。
 + **ACDeviceMsg：**APP与device之间的交互消息，使用二进制或json通讯协议。
-+ **ACKLVDeviceMsg：**APP与device之间的交互消息，使用KLV通讯协议。
 
-##基础数据结构
+##ACMsg 
+介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
 ###ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
 ```java
@@ -153,8 +149,15 @@ public class ACMsg extends ACObject {
 ```
 
 
+##ACDeviceMsg
 ###ACDeviceMsg
-在使用**二进制**或**json**格式通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。但是ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。ACDeviceMsg定义如下：
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
+>+ **二进制/json**
+>在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
+>+ **KLV**
+>KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
+
+ACDeviceMsg定义如下：
 ```java
 public class ACDeviceMsg {
     private int code;			// 消息码，用于区分消息类型
@@ -166,10 +169,12 @@ public class ACDeviceMsg {
     public void setCode(int code) {}
     public Object getContent() {}
     public void setContent(Object content) {}
+    public void setKLVObject(ACKLVObject object) {}
+    public ACKLVObject getKLVObject() {}
 }
 ```
 
-从上面的定义可以看到，设备消息的具体内容为Object类型，开发者根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
+<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
 
 ###ACDeviceMsgMarshaller
 设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：
@@ -195,34 +200,14 @@ public interface ACDeviceMsgMarshaller {
 }
 ```
 
-###ACKLVDeviceMsg
-在使用**KLV**通讯协议的情况下,该消息用于处理服务和设备之间的交互，框架会将ACKLVDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。ACKLVDeviceMsg的ACKLVObject即消息体部分需要开发者到官网平台上填写申请不同key值代表的不同含义，在这里再把该key值对应的value put进去即可。定义如下：
-```java
-public class ACKLVDeviceMsg {
-    private int code;               // 消息码，用于区分消息类型
-    private ACKLVObject object;     // 设备消息的具体内容
-
-    public ACKLVDeviceMsg() {}
-    public ACKLVDeviceMsg(int code, ACKLVObject object) {}
-    public int getCode() {}
-    public void setCode(int code) {}
-    public ACKLVObject getKLVObject() {}
-    public void setKLVObject(ACKLVObject object) {}
-}
-```
-><font color="brown">注：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer</font>
-
-
-
-
+###ACKLVObject
+<font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。
 
 
 #SDK接口列表
 
-
 ##基本对象结构
 这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。
-
 
 ###ACAccount
 用来表示AbleCloud的一个注册帐号信息，定义如下：
@@ -491,8 +476,7 @@ public class ACException extends Exception {
 
 
 ##AC
-
-SDK均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：
+SDK里所有接口均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：
 ```java
 public class AC {
     public static Context context;
@@ -817,9 +801,9 @@ public interface ACAccountMgr {
  
 >1. 调用激活器的以下接口，将wifi的ssid，密码广播给设备；
 
->+ 通过扫码方式获取设备物理Id(每一台设备厂商都会给它分配一个设备号，AbleCloud称为设备的物理id)绑定指定的设备
+>+ 通过扫码方式获取设备物理Id(每一台设备厂商都会给它分配一个设备号，AbleCloud称为设备的物理id)，通过此物理ID激活并绑定指定的设备
 
->+ 批量激活并绑定设备
+>+ 批量激活并绑定多个设备
 
 >2. 设备收到app端发过来的信息，完成激活并连上wifi；
 
@@ -1153,7 +1137,7 @@ public interface ACBindMgr {
 
 
     /**
-     * 给设备发消息（binary or json）
+     * 给设备发消息
      *
      * @param subDomain 子域名，如djj（豆浆机）
      * @param deviceId  设备逻辑id
@@ -1165,27 +1149,11 @@ public interface ACBindMgr {
      * @param callback  返回结果的监听回调
      */
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback<ACDeviceMsg> callback);
-
-    /**
-     * 给设备发消息（klv）
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param deviceId  设备逻辑id
-     * @param deviceMsg 具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param option    AC.ONLY_LOCAL  只通过局域网直连方式给设备发消息
-     *                  AC.ONLY_CLOUD  只通过云端给设备发消息
-     *                  AC.LOCAL_FIRST 优先通过局域网直连方式给设备发消息
-     *                  AC.CLOUD_FIRST 优先通过云端给设备发消息
-     * @param callback  返回结果的监听回调
-     */
-    public void sendToDeviceWithOption(String subDomain, long deviceId, ACKLVDeviceMsg deviceMsg, int option, PayloadCallback<ACKLVDeviceMsg> callback);
-}
 ```
 
 
 ##Home模型
-
-
+除了绑定控制设备之外，你可能需要对设备进行合理的分组管理，AbleCloud提供的Home模型可以满足大部分复杂的模型场景。
 ```java
 public interface ACGroupMgr {
 
@@ -1385,8 +1353,10 @@ public interface ACGroupMgr {
 
 
 ##OTA
-**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
-接口定义如下：
+除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：
+>**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
+
+
 ```java
 public interface ACOTAMgr {
 
@@ -1439,8 +1409,6 @@ public interface ACOTAMgr {
 ```
 
 
-
-
 ##设备定时任务
 
 >**<font color="red">注意</font>：**
@@ -1463,14 +1431,14 @@ public interface ACOTAMgr {
 
 >+ **"year":**在每年的**`MM-dd HH:mm:ss`**时间点循环执行
 
->+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
+>+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周日，周五重复，则表示为"week[0,5]")
 
 接口定义如下：
 ```java
 public interface ACTimerMgr {
 
     /**
-     * 创建定时任务(使用二进制模型)
+     * 创建定时任务
      *
      * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
      * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
@@ -1488,25 +1456,7 @@ public interface ACTimerMgr {
     public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
 
     /**
-     * 创建定时任务(使用KLV模型)
-     *
-     * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-     * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-     * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
-     *                    按小时重复：hour
-     *                    按天重复：day
-     *                    按月重复：month
-     *                    按年复复：year
-     *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-     * @param description 自定义的任务描述
-     * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param callback    返回结果的监听回调
-     */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACKLVDeviceMsg msg, VoidCallback callback);
-
-    /**
-     * 修改定时任务(使用二进制模型)
+     * 修改定时任务
      *
      * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
      * @param taskId      任务id
@@ -1523,25 +1473,6 @@ public interface ACTimerMgr {
      * @param callback    返回结果的监听回调
      */
     public void modifyTask(long deviceId, long taskId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
-
-    /**
-     * 修改定时任务(使用KLV模型)
-     *
-     * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-     * @param taskId      任务id
-     * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-     * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
-     *                    按小时重复：hour
-     *                    按天重复：day
-     *                    按月重复：month
-     *                    按年复复：year
-     *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-     * @param description 自定义的任务描述
-     * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-     * @param callback    返回结果的监听回调
-     */
-    public void modifyTask(long deviceId, long taskId, String timePoint, String timeCycle, String description, ACKLVDeviceMsg msg, VoidCallback callback);
     
     /**
      * 开启定时任务
@@ -1635,7 +1566,7 @@ public interface ACNotificationMgr {
 }
 ```
 另外，还需要在`<manifest>`标签下添加权限：
-```java
+```xml
 <!-- 必选 -->
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -1656,7 +1587,7 @@ public interface ACNotificationMgr {
 在`<application>`标签下添加组件：
 
 <font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。
-```java
+```xml
 <!-- 监听通知点击或者忽略处理的广播 -->
 <receiver
     android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
@@ -1714,7 +1645,7 @@ public interface ACNotificationMgr {
 </receiver>
 ```
 可以根据需要自行设置 android:label 中的服务名 ：
-```java
+```xml
 <!-- Umeng的长连服务，用来建立推送的长连接的 -->
 <!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
 <service
@@ -1769,7 +1700,7 @@ public interface ACNotificationMgr {
 </service>
 ```
 最后，添加 **AppKey** 和 **Umeng Message Secret**
-```java
+```xml
 <!-- V1.3.0添加的service，负责下载通知的资源 -->
 <service android:name="com.umeng.message.UmengDownloadResourceService" />
 
@@ -1819,45 +1750,6 @@ public interface ACNotificationMgr {
 }
 ```
 
-
-
-
-
-
-
-##和云端通信
-
-```
-
-public class AC {
-	/**
-	 * 往某一服务发送命令/消息
-	 *
- 	 * @param subDomain	服务所属子域名
-	 * @param name    	服务名
-	 * @param version 	服务版本
-	 * @param req     	具体的消息内容
-	 * @param callback 	返回结果的监听回调，返回服务端的响应消息
- 	 * @throws Exception
-	 */
-	public static void sendToService(String subDomain, String name, int version,
-								 ACMsg req, PaylodCallback<ACMsg> callback) {}
-
-
-	 /**
-     * 通过云端给设备发消息
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id），不提供时传0
-     * @param msg       具体的消息内容
-     * @param callback  返回结果的监听回调
-     */
-    public void sendToDevice(String subDomain, Long deviceId, ACDeviceMsg msg, PayloadCallback<ACDeviceMsg> callback){} 
-}
-
-
-```
-
 ##实时消息同步
 **<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
@@ -1887,8 +1779,6 @@ public interface ACPushMgr {
     public void onReceive(PayloadCallback<ACPushReceive> callback);
 }
 ```
-
-
 
 
 ##局域网通信
