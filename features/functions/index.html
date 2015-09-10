@@ -414,7 +414,7 @@
 </ul>
 <p>AbleCloud建议每个APP页面只实现一个功能，该功能用户操作成功以后再跳转到下个页面。APP开发者需要将整个流程中的意外情况做合理的处理，保证用户在使用过程中所有流程都是通顺的。</p>
 <p>建议的流程如下图：</p>
-<p><img alt="account1" src="../pic/features/account1.png" /> </p>
+<p><img alt="account1" src="../../pic/features/account1.png" /> </p>
 <h2 id="2">2、普通帐号和第三方帐号绑定</h2>
 <ul>
 <li>普通帐号在登录后，可以绑定多个第三方帐号（微信、微博、QQ等）。绑定第三方帐号成功后，可以通过第三方帐号直接登录系统，并获取此普通帐号的相关数据，比如获取设备列表信息。普通帐号绑定第三方帐号时，不允许绑定一个已经注册或者已经被绑定的第三方帐号；</li>
@@ -422,18 +422,18 @@
 </ul>
 <p>建议的交互流程如下图：</p>
 <p><strong>第三方帐号登录</strong></p>
-<p><img alt="account2" src="../pic/features/account2.png" /> </p>
+<p><img alt="account2" src="../../pic/features/account2.png" /> </p>
 <p><strong>普通帐号注册后绑定第三方帐号</strong></p>
-<p><img alt="account3" src="../pic/features/account3.png" /> </p>
+<p><img alt="account3" src="../../pic/features/account3.png" /> </p>
 <p><strong>第三方帐号登录后绑定普通帐号</strong></p>
-<p><img alt="account4" src="../pic/features/account4.png" /> </p>
+<p><img alt="account4" src="../../pic/features/account4.png" /> </p>
 <h2 id="3">3、帐号附加属性</h2>
 <p>AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。如果厂商的APP中需要用户填写更多信息，如性别，年龄等，需要用到帐号附加属性。若要使用帐号的附加属性，首先需要在管理后台的帐号管理中进行定义。如下图所示：</p>
-<p><img alt="account_appendix" src="../pic/features/account_appendix.png" /> </p>
+<p><img alt="account_appendix" src="../../pic/features/account_appendix.png" /> </p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的附加属性接口中需要作为参数。</p>
 <p>在当前主流的设计中，为了简化用户的注册流程，帐号的附加属性一般都是在用户完成注册以后补充填写，在帐号的注册过程中不填写。</p>
 <p>建议的交互流程如下：</p>
-<p><img alt="account5" src="../pic/features/account5.png" /> </p>
+<p><img alt="account5" src="../../pic/features/account5.png" /> </p>
 <p>开发指导请参考：</p>
 <p><a href="develop_guide/android.md#帐号管理">开发指导-安卓-帐号管理</a></p>
 <p><a href="develop_guide/iOS.md#帐号管理">开发指导-iOS-帐号管理</a></p>
@@ -459,15 +459,15 @@
 </ol>
 <h3 id="_5">建议的交互流程</h3>
 <p>对于WiFi类设备，可以通过局域网广播自己的物理ID，APP接收广播完成绑定。</p>
-<p><img alt="DM_WiFi1" src="../pic/features/DM_WiFi1.png" /> </p>
+<p><img alt="DM_WiFi1" src="../../pic/features/DM_WiFi1.png" /> </p>
 <p>对于蜂窝网络设备，没有局域网，需要APP扫描设备的物理ID（一般是二维码）来完成设备的绑定。</p>
 <p>客户端为微信时，绑定不要求设备在线（与APP相比，微信的特殊之处）,微信的绑定流程如下所示：</p>
-<p><img alt="DM_WiFi2" src="../pic/features/DM_WiFi2.png" /> </p>
+<p><img alt="DM_WiFi2" src="../../pic/features/DM_WiFi2.png" /> </p>
 <p>第一个绑定的用户绑定成功后成为该设备的管理员，可以通过生成设备分享二维码或者邀请其他用户的方式分享设备的使用权。</p>
 <p><strong>1、管理员分享</strong></p>
-<p><img alt="DM_WiFi3" src="../pic/features/DM_WiFi3.png" /> </p>
+<p><img alt="DM_WiFi3" src="../../pic/features/DM_WiFi3.png" /> </p>
 <p><strong>2、管理员邀请</strong></p>
-<p><img alt="DM_WiFi4" src="../pic/features/DM_WiFi4.png" /> </p>
+<p><img alt="DM_WiFi4" src="../../pic/features/DM_WiFi4.png" /> </p>
 <p>对于使用二维码分享方式分享设备使用权的，开发者可以自己定义二维码有效期，过了有效期再扫描的时候也不能够获得设备使用权。</p>
 <p>对于使用邀请方式分享的，要求被邀请人已经注册。</p>
 <p>客户端为微信时，目前AbleCloud只能够支持管理员分享的方式分享设备。</p>
@@ -479,7 +479,7 @@
 <h2 id="_6">网关型设备管理</h2>
 <h3 id="_7">功能介绍</h3>
 <p>网关型设备是指结构如下图所示包括网关和子设备类型的设备。</p>
-<p><img alt="gateway" src="../pic/features/gatewaydevice.png" /> </p>
+<p><img alt="gateway" src="../../pic/features/gatewaydevice.png" /> </p>
 <p>其中网关是只能够通过TCP/IP协议和云端通信并且能够将其他协议转换为TCP/IP协议的设备。网关与子设备通信可以是Zigbee、蓝牙、RF、Z-wave、易能森、PLC等任意协议。AbleCloud只能够直接管理到网关，并不能够和网关下面的子设备直接通信。</p>
 <p>网关和子设备都需要在管理后台进行独立的产品定义，子设备有独立的产品名称和subdomain用以区分子设备类型。</p>
 <p>为了对子设备进行管理，需要网关按照约定的格式上报子设备的subdomian信息和物理ID信息。</p>
@@ -501,19 +501,19 @@
 <h3 id="_8">建议的交互流程</h3>
 <p><strong>1、绑定网关</strong>
 对于一台（或一套）新设备，首先要绑定网关才能够使用，第一个绑定的人成为管理员。和WiFi设备的绑定一样，为了防止被恶意攻击，要求网关云端在线（微信不需要）。如果网关是通过WiFi连接无线路由器的，绑定网关的建议操作流程和绑定WiFi设备是一样的。对于网关是通过以太网连接路由器的场景，建议的用户交互流程如下：</p>
-<p><img alt="DM_gateway1" src="../pic/features/DM_gateway1.png" /> </p>
+<p><img alt="DM_gateway1" src="../../pic/features/DM_gateway1.png" /> </p>
 <p>客户端为微信,网关为WiFi设备时，同绑定WiFi设备的流程一样。客户端为微信，网关通过以太网连接路由器时，直接扫描网关上的二维码就完成了设备的绑定（不要求网关在线），流程如下：</p>
-<p><img alt="DM_gateway2" src="../pic/features/DM_gateway2.png" />  </p>
+<p><img alt="DM_gateway2" src="../../pic/features/DM_gateway2.png" />  </p>
 <p><strong>2、添加子设备</strong></p>
 <p>子设备作为独立设备时，同样有所有权问题，所以为了保证安全，同样要求子设备绑定时子设备是云端在线的（子设备能够连接上网关时基本都是云端在线的）。</p>
-<p><img alt="DM_gateway3" src="../pic/features/DM_gateway3.png" /> </p>
+<p><img alt="DM_gateway3" src="../../pic/features/DM_gateway3.png" /> </p>
 <p>客户端为微信时，操作流程是一样的。</p>
 <p><strong>3、设备分享</strong>
 第一个绑定的用户绑定成功后成为该设备的管理员，可以通过生成设备分享二维码或者邀请其他用户的方式分享设备的使用权。对于网关型设备，管理员可以分享网关，此时网关即下面所有的子设备的使用权全部分享出去；也可以只分享子设备，此时被分享用户只有子设备的使用权。开发者也可以开发普通用户向管理员申请权限的功能，管理员同意后普通用户即有了设备的使用权。</p>
 <p><em>1、管理员分享</em></p>
-<p><img alt="DM_gateway4" src="../pic/features/DM_gateway4.png" /> </p>
+<p><img alt="DM_gateway4" src="../../pic/features/DM_gateway4.png" /> </p>
 <p><em>2、管理员邀请</em></p>
-<p><img alt="DM_gateway5" src="../pic/features/DM_gateway5.png" /> </p>
+<p><img alt="DM_gateway5" src="../../pic/features/DM_gateway5.png" /> </p>
 <p>对于使用二维码分享方式分享设备使用权的，开发者可以自己定义二维码有效期，过了有效期再扫描的时候也不能够获得设备使用权。</p>
 <p>对于使用邀请方式分享的，要求被邀请人已经注册。</p>
 <p>客户端为微信时，只能够使用“管理员分享”的模式分享设备。</p>
@@ -527,7 +527,7 @@
 <p>考虑到用户管理的设备量变多的时候的分组管理需求，AbleCloud开发了home模型。</p>
 <p>AbleCloud的home模型在权限管理上继承之前的WiFi设备以及网关型设备，这也正好和HomeKit的权限管理方式一致——基于管理员的权限管理。</p>
 <p>home模型的组层次如下图所示：</p>
-<p><img alt="home" src="../pic/features/home.png" /> </p>
+<p><img alt="home" src="../../pic/features/home.png" /> </p>
 <p><strong>说明：</strong></p>
 <ul>
 <li>home是有管理权限的组。创建home的人成为该home的管理员。类似于网关，home的管理员是下面所有设备的管理员。管理员可以将home授权给普通用户，这时候，home下面的所有设备都授权给该用户。Home的管理员只能够将新设备或者自己有管理权限的设备放到home里。普通用户不能够在home中添加或者删除设备。</li>
@@ -579,7 +579,7 @@
 <p>为了简化设备绑定流程，一般设备附加属性可在设备绑定完成后补充填写，在绑定过程中不填写。</p>
 <p>若要使用设备的附加属性，首先需要在产品管理中进行定义。</p>
 <p>产品管理中选择要管理的产品，在产品属性页面创建该产品的设备的附加属性。如下图所示：</p>
-<p><img alt="device_appendix" src="../pic/features/device_appendix.png" /> </p>
+<p><img alt="device_appendix" src="../../pic/features/device_appendix.png" /> </p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的附加属性接口中需要作为参数。</p>
 <p>开发指导参考：</p>
 <p><a href="develop_guide/android.md#_14">开发指导-安卓-设备附加属性</a></p>
@@ -587,7 +587,7 @@
 <p><a href="develop_guide/wechat.md#设备附加属性">开发指导-微信-设备附加属性</a></p>
 <h1 id="_12">和云端通信</h1>
 <p>云端通信指的是APP到云端、设备到云端的通信。分别对应下图中的绿色和紫色线所标注的数据流。</p>
-<p><img alt="cloudcommunication" src="../pic/features/cloudcommunication.png" /> </p>
+<p><img alt="cloudcommunication" src="../../pic/features/cloudcommunication.png" /> </p>
 <p>AbleCloud支持三种数据格式，分别是JSON、KLV和二进制：</p>
 <ul>
 <li>
@@ -652,7 +652,7 @@
 </tbody>
 </table>
 <p>云端通信的详细通信类型见下图：</p>
-<p><img alt="cloudintaraction" src="../pic/features/cloudinteraction.png" /> </p>
+<p><img alt="cloudintaraction" src="../../pic/features/cloudinteraction.png" /> </p>
 <h2 id="_13">发送消息到设备</h2>
 <p>客户端的指令接口为sendToDevice。云端直接将消息透传，发送到设备。如果不需要存储，直接调用SDK接口即可实现。如果需要存储，需要开发相关的存储服务。</p>
 <p>根据网络条件不同，会有或长或短的响应时间。因此，我们建议，对于控制类指令，当用户控制指令发送以后APP即显示已经控制成功，当设备响应结果返回时，再根据返回结果修正APP状态：如果确实控制成功了，则不需要再给出提示，如果没有控制成功，修改APP相应显示为没有控制成功的状态并给出控制失败的提示。例如，APP远程控制一个插座的打开，当用户在APP上点击打开按钮的时候，APP上的按钮直接显示操作成功，以给用户及时的响应。如果APP远程打开插座成功，则APP不再有任何变化和提示；如果APP远程打开插座失败了，则APP页面上给出打开插座失败的提示，并把APP上显示的开关状态变为关闭。如果用户点击完打开就退出APP了，这时候如果打开失败了，建议给用户发送打开失败的推送通知。</p>
