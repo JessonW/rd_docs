@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>基本概念 - AbleCloud 开发文档</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
+                
+                
+                    <li >
+                        <a href="../../introduction/" >基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">基本概念</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../functions/">功能介绍</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/device_linux/">设备-linux系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/third_proxy/">第三方云对接</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../reference/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device_linux/">设备-linux系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/error_code/">Error Code</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../QandA/" >Q&A</a>
+                    </li>
+                
+                
+                </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container container-ac">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">智能硬件架构模型</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#ablecloud">AbleCloud的功能模块</a>
+        </li>
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_2">名词解释<span class="main-set parent__2">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_3">通用</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_4">产品定义相关</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_5">服务相关</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_6">帐号相关</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_7">设备相关</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_8">开发调试相关</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="_1">智能硬件架构模型</h1>
+<p><img alt="arch" src="../pic/features/architecture.png" /> </p>
+<p>上图是目前常见的智能硬件联网解决方案，从图中可以看到，整个硬件联网闭环存在三条消息流，分别表示不同的消息传递方式。</p>
+<p><strong>远程控制 --</strong>
+如图中绿色箭头所示，用户在终端(如智能手机上)，发送控制命令到AbleCloud的云端，云端再将消息发往具体的某一设备，实现远程控制。
+比如在酷热的夏天，下班回家前，您可以提前通过手机将家里的空调打开，并及时的查看家里温度情况，当您回到家时即可享受一片清凉。</p>
+<p><strong>局域网通信 --</strong>
+如图中棕色箭头所示，当用户和设备在同一局域网内时，用户可以通过终端直接向设备发送控制命令实现直连，从而实现更加可靠的控制。设备直连的优势在于，当家里的公网访问出现故障时，您的智能设备仍然具备可用性。</p>
+<p><strong>事件上报 --</strong>
+如图中紫色箭头所示，设备可以将运行中的状态、传感器采集到的各类数据上传到云端进行数据存储，供厂商进行数据分析和设备管理，也可以将上报的消息推送数据给用户。例如，当家里的安防系统出现异常时，发送报警数据到云端，云端再将该消息通过设定好的方式推送给客户，让用户及时了解家里所发生的情况，方便及时处理和应对。</p>
+<h1 id="ablecloud">AbleCloud的功能模块</h1>
+<p><strong>1. 联网固件</strong></p>
+<p>智能设备需要连接到云端，因此需要联网模块实现和互联网的连接。目前最主流的和互联网连接的联网模块是WiFi模块。除此之外还有蜂窝网络、以太网等联网方式。使用AbleCloud云服务的设备需要保证能够正常连接到AbleCloud的云端。因此，对于主流的WiFi模块，AbleCloud提供了联网固件，只要将这些联网固件烧入这些厂商的WiFi模块，就能够实现设备到云端的连接。对于目前AbleCloud尚未适配的联网模块，AbleCloud提供模块和云端握手的SDK，厂商只需要对SDK中的底层驱动部分进行适配即可实现设备到云端的连接。对于安卓设备、linux设备等自带网卡的设备，AbleCloud提供了SDK，只要使用SDK开发，即可让设备连接到AbleCloud的云端。</p>
+<p><strong>2. 客户端SDK</strong></p>
+<p>为了帮助开发者快速开发智能设备的客户端应用，我们提供Android、iOS和微信三大平台的SDK。厂商可利用AbleCloud提供的SDK快速开发控制智能硬件的APP。SDK提供了”帐号管理”、“设备管理”、“局域网通信”、“定时任务”、“和云端通信”、“实时消息同步”、”OTA管理”、“推送服务”等功能。 </p>
+<p><strong>3. 云服务引擎</strong></p>
+<p>云服务引擎，是我们提供的PaaS平台，包括开发、测试框架以及完整的运行平台。云服务引擎上提供通用服务和开发运行平台。通用服务包括：帐号管理、设备管理、定时任务、实时消息同步、OTA、推送服务、第三方云对接、存储管理、虚拟设备、设备调试等。对于通用服务，只需要调用SDK相关的接口或者在管理后台页面上操作即可使用，不需要在云端进行任何开发。</p>
+<p>通用服务能满足智能联网设备的通用需求。对于个性化、定制化需求，我们提供云端服务开发引擎和运行平台,厂商也可以快速开发出自己的定制云端服务。</p>
+<p><strong><em>云服务开发引擎</em></strong>
+AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个开发框架，可以完全不用关注服务和APP端、和设备端RPC交互的细节，而是将全部精力集中在服务具体业务逻辑的实现上。开发框架提供了完整的web service框架，让您用很少的代码即可实现一个服务，并提供了完备的单元测试、集成测试方案和工具包。</p>
+<p><strong><em>云服务运行平台</em></strong>
+当厂商的自定义云端服务开发完毕并测试完成后，开发人员只需要将服务可执行程序提交到AbleCloud提供的PaaS平台，之后AbleCloud将自动完成发布、运维、日志收集、故障自动修复、服务监控报警、定时任务等工作。</p>
+<h1 id="_2">名词解释</h1>
+<h2 id="_3">通用</h2>
+<ul>
+<li>
+<p><strong>设备绑定</strong>：用户通过APP端对设备进行绑定，第一个绑定的人成为管理员，其他人只能够通过管理员的分享或者邀请绑定设备。只有通过绑定的用户才能控制设备。</p>
+</li>
+<li>
+<p><strong>设备解绑</strong>：管理员解绑设备相当于删除设备，所有和该设备的绑定关系都删除。设备从逻辑上变为一台新的设备，所有注册用户可以绑定，且绑定后不会看到该设备的历史数据。普通用户进行设备解绑只是放弃对该设备的使用权。</p>
+</li>
+<li>
+<p><strong>设备分享</strong>：管理员将设备的使用权分享给其他用户，一般模式下只有管理员才能够分享设备。设备的普通用户不能分享该设备。</p>
+</li>
+</ul>
+<h2 id="_4">产品定义相关</h2>
+<ul>
+<li>
+<p><strong>主域</strong>：Major Domain，是公司层面的概念，AbleCloud为每一个使用AbleCloud平台的公司分配一个唯一主域，如Google。</p>
+</li>
+<li>
+<p><strong>产品子域</strong>：SubDomain，是公司的某一款产品，如Glass。在管理后台创建产品时需要填入相应的产品子域名称。</p>
+</li>
+<li>
+<p><strong>产品</strong>：和产品子域等同的概念。一款产品包括产品名称和产品型号，如空调XXL。一款产品就是一个子域。对于网关型设备，网关和子设备分别要独立创建产品。因为不同的子设备看作是不同的产品。</p>
+</li>
+<li>
+<p><strong>设备</strong>：Device，即厂商生产的具体的一台设备。只有被绑定的设备才能被控制。在没有指明是“网关”还是“子设备”时，Devie可以表示任何有设备ID的独立设备、网关、子设备。一台设备一定是属于某款产品的。</p>
+</li>
+<li>
+<p><strong>网关</strong>：Gateway,是指自身具有联网能力，且可以连接控制其他设备的设备，如Zigbee网关、蓝牙网关等。网关下面的设备我们成为子设备。网关可以有独立的功能也可以纯粹作为一个协议转换的通道。</p>
+</li>
+<li>
+<p><strong>子设备</strong>：Subdevice,指通过网关和云端进行通信的设备。子设备和网关有隶属关系，对网关有权限的用户也对子设备有权限。子设备可以单独进行权限管理。</p>
+</li>
+<li>
+<p><strong>数据点</strong>：指设备的功能点。产品的所有功能都可以对应成响应的数据格式。在创建产品的时候，需要在云端创建该产品的数据点。</p>
+</li>
+<li>
+<p><strong>数据包</strong>：数据点的集合。一个数据包中有一个或者多个数据点。每一个数据包有一个message code，作为不同数据包的区分，也作为该数据包功能的标识。</p>
+</li>
+</ul>
+<h2 id="_5">服务相关</h2>
+<ul>
+<li>
+<p><strong>服务</strong>：即开发者开发的具体Service，如Controller。一个服务，必须属于某一主域、子域。</p>
+</li>
+<li>
+<p><strong>版本</strong>：为了支持服务升级、回滚等，AbleCloud支持为同一服务创建多个版本。版本由Major Version、Minor Version、Patch Version来标示。</p>
+</li>
+<li>
+<p><strong>云端通用服务</strong>：由AbleCloud提供的云服务，如帐号管理、设备管理。</p>
+</li>
+<li>
+<p><strong>自定义服务</strong>：由厂商基于AbleCloud的云服务引擎开发的自定义后端服务，也记为User Defined Service（UDS）。</p>
+</li>
+</ul>
+<h2 id="_6">帐号相关</h2>
+<ul>
+<li>
+<p><strong>管理员</strong>：对设备有终极权限的用户。可以对设备进行绑定、解绑、分享、添加子设备、删除子设备等操作，还可以将设备对普通用户进行授权管理。</p>
+</li>
+<li>
+<p><strong>普通用户</strong>：即智能设备的终端用户，对设备有查看和控制权限，但是没有管理权限。</p>
+</li>
+<li>
+<p><strong>开发者</strong>：产品的开发者。在AbleCloud的Web页面完成注册后可以在AbleCloud的后台进行产品的开发和管理。免费使用AbleCloud提供的各种开发工具和源代码。</p>
+</li>
+</ul>
+<h2 id="_7">设备相关</h2>
+<ul>
+<li>
+<p><strong>Smartconfig</strong>：是德州仪器开发的针对智能设备的APP端SDK。它支持将家庭WiFi的SSID以及密码通过加密后广播给智能设备，智能设备收到后自动完成配置并连上WiFi。 </p>
+</li>
+<li>
+<p><strong>Ablelink</strong>：AbleCloud对Smartconfig协议进行封装然后添加云端握手和本地局域网广播后的协议。</p>
+</li>
+<li>
+<p><strong>流量控制</strong>：对带宽等资源进行合理分配，防止资源抢占和拥堵。</p>
+</li>
+<li>
+<p><strong>握手认证</strong>：采用优化后的非对称加密算法，提升设备的安全性。</p>
+</li>
+<li>
+<p><strong>局域网直连</strong>：让手机可以在局域网内直接连接和控制设备。</p>
+</li>
+<li>
+<p><strong>命令转发</strong>：采用AbleCloud优化的传输协议，将APP的对设备的指令通过云端发送到设备。</p>
+</li>
+<li>
+<p><strong>数据上报</strong>：基于AbleCloud和设备的安全长链接通路，设备将数据上报到云端然后云端推送给用户或厂商自定义服务。</p>
+</li>
+<li>
+<p><strong>设备物理ID</strong>：简称设备ID，设备出厂时，由厂商生成的ID，通常为16个字符的字符串。可以使用每台设备单独烧制的方式生成，也可以使用设备的MAC地址等信息生成。</p>
+</li>
+<li>
+<p><strong>设备逻辑ID</strong>：设备在激活后被管理员绑定时生成的ID，通常为长整数。客户端（安卓、微信、iOS）对设备的控制和管理都使用逻辑ID。</p>
+</li>
+<li>
+<p><strong>设备密钥</strong>：设备和云端交互的时候，在握手阶段需要进行密钥验证。握手阶段采用RSA非对称加密，云端需要有设备的公钥。AbleCloud支持两种密钥管理方式。一种是该产品的所有设备使用相同的密钥对；一种是该产品的每台设备有独立的密钥对。对于第一种，AbleCloud可以直接生成密钥对，设备开发人员将私钥烧到设备固件中即可。对于第二种，AbleCloud提供密钥生成工具，可以生成和设备物理ID一一对应的密钥对。将密钥文件上传到云端后，设备才能够和云端通信握手成功。</p>
+</li>
+<li>
+<p><strong>设备公钥</strong>（RSA256）：32字节的整数，与设备私钥是一对。在设备批量出货前需要在管理后台提交设备公钥。在设备首次连接云端握手时，AbleCloud服务器用该公钥来加密给设备发送的消息。可以一款产品设置一对公钥私钥。对于安全性要求高的产品，也可以每台设备一个独立的公私钥对。</p>
+</li>
+<li>
+<p><strong>设备私钥</strong>（RSA256）：112字节的整数（需要和设备公钥保持匹配）。</p>
+</li>
+<li>
+<p><strong>设备版本</strong>：设备固件的版本信息，长度为4个字节。</p>
+</li>
+<li>
+<p><strong>设备域信息</strong>：设备所属产品的domainID和subdomianID，长度8字节（两个字节的DomainID加上6个字节的SubDomainID）。</p>
+</li>
+</ul>
+<h2 id="_8">开发调试相关</h2>
+<ul>
+<li>
+<p><strong>设备调试</strong>：一般指开发者对设备功能进行调试。AbleCloud云端提供了辅助调试的工具，称作设备调试。该工具可以将设备上的数据通过网页直接展示出来。方便在APP还没有开发的阶段对设备的功能进行调试。用户可以在网页上查看数据，还可以模拟APP在网页上给设备发送指令。</p>
+</li>
+<li>
+<p><strong>虚拟设备</strong>：指云端虚拟出一个用户已经定义的产品的设备。方便在设备还没有开发完成时对APP的调试。虚拟设备可以模拟真实设备上报数据，也可以显示APP发来的指令。</p>
+</li>
+</ul></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
