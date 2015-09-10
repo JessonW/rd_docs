@@ -562,7 +562,7 @@
 
 <h2 id="_9">二、第三方登录</h2>
 <p><img alt="account_Oauth" src="../../pic/develop_guide/account_Oauth.png" /></p>
-<h3 id="1_1">1、直接使用第三方登录</h3>
+<h4 id="1_1">1、直接使用第三方登录</h4>
 <pre><code class="java">    //APP端在完成OAuth认证登陆之后获取openId和accessToken
     AC.accountMgr().loginWithOpenId(ACThirdPlatform.QQ, openId, accessToken, new PayloadCallback&lt;ACUserInfo&gt;() {
         @Override
@@ -587,7 +587,7 @@
     });
 </code></pre>
 
-<h3 id="2_1">2、在已有普通账号登录时绑定第三方账号</h3>
+<h4 id="2_1">2、在已有普通账号登录时绑定第三方账号</h4>
 <pre><code class="java">    AC.accountMgr().bindWithAccount( email, phone, password, nickName, verifyCode, new VoidCallback() {
         @Override
         public void success() {
@@ -668,7 +668,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 </code></pre>
@@ -810,7 +810,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 </code></pre>
@@ -825,7 +825,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -840,7 +840,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -861,7 +861,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 </code></pre>
@@ -874,7 +874,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
     }
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 </code></pre>
@@ -890,7 +890,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -920,7 +920,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为网络错误
     }
 });
 </code></pre>
@@ -934,16 +934,16 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
 
 <h3 id="_20">二、添加或移动设备到分组里</h3>
 <blockquote>
-<p><font color="red">特别注意</font>：
-1、绑定设备流程。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
-2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。</p>
+<p><font color="red">特别注意</font>：</p>
+<p>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。</p>
+<p>2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。</p>
 </blockquote>
 <h4 id="home_2">添加设备到Home里</h4>
 <p>创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
@@ -955,7 +955,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -969,7 +969,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -992,7 +992,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照平台申请的key与value类型
     }
 });
 </code></pre>
@@ -1007,7 +1007,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
