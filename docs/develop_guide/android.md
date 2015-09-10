@@ -24,11 +24,11 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
-开发阶段，请初始化测试环境
+开发阶段，请初始化**测试环境**
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```
-在完成测试阶段之后，需要迁移到正式环境下
+在完成测试阶段之后，需要迁移到**正式环境**下
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
@@ -36,7 +36,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 #帐号管理
 建议的用户交互流程见 [功能说明-帐号管理](../features/functions.md#_11)
 
-##1、普通帐号注册
+##一、普通帐号注册
 
 ![account_register](../pic/develop_guide/account_register.png)
 
@@ -117,7 +117,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
  
-##2、第三方登录
+##二、第三方登录
  
 ![account_Oauth](../pic/develop_guide/account_Oauth.png)
 
@@ -163,7 +163,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-##3、添加帐号扩展属性
+##三、添加帐号扩展属性
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、获取账号管理器
@@ -174,7 +174,7 @@ accountMgr=AC.accountMgr();
 ####2、设置用户自定义扩展属性
 ```java
 ACObject userProfile = new ACObject();
-//注意此处put进去的key需要跟官网添加的附加属性key值一致
+//注意此处put进去的key与value类型需要跟平台添加的附加属性一致
 userProfile.put("c1", "北京");
 userProfile.put("c2", "生日");
 accountMgr.setUserProfile(userProfile, new VoidCallback() {
@@ -213,7 +213,7 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 ##独立设备
 
-用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
+**用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。**
 
 ![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
@@ -226,8 +226,8 @@ Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
-<font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。
+><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
+目前支持的开发板有`AC.DEVICE_MTK`、`AC.DEVICE_MX`、`AC.DEVICE_MARVELL`、`AC.DEVICE_MURATA`、`AC.DEVICE_WM`、`AC.DEVICE_RAK`。
 
 ####2.获取WiFi SSID
 ```java
@@ -246,7 +246,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -262,7 +262,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -278,14 +278,15 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
-<font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
+><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
-**第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
++ 第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；
++ 第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给普通用户
 ```java
@@ -297,7 +298,7 @@ bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -313,7 +314,7 @@ bindMgr.getShareCode(subDomain, deviceId, new PayloadCallback<String>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 //普通用户通过分享码绑定设备
@@ -325,7 +326,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -343,7 +344,7 @@ bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -358,7 +359,7 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -1538,4 +1539,5 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 
 #Error Code
+><font color=red>**建议**：</font>在调用AbleCloud云服务之前先判断网络处于可访问状态之后再调用相关接口。调试阶段，可通过e.getErrorCode()获取[错误码](../reference/error_code.md)，e.getMessage()获取错误信息。
 参考[reference-Error Code](../reference/error_code.md)
