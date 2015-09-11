@@ -510,4 +510,4 @@ $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
 1. UDS调用微信公众号的数据推送接口时，涉及访问AbleCloud之外的远程服务，需要通过AbleCloud UDS SDK提供的专门访问远程服务的API来实现。
 
 #Error Code
-参考[reference-Error Code](../reference/error_code.md)
+参考[reference-Error Code](../reference/error_code.md)。

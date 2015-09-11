@@ -13,7 +13,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 
 ##ACMsg 
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
-###ACObject
+####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
 ```java
 public class ACObject {
@@ -56,7 +56,7 @@ public class ACObject {
 ```
 ><font color="brown">**注：**最常用的三个接口是put/add/get，通过**add**接口保存在ACObject中的数据实际为List，相应的，get出来也是一个List。</font>
 
-###ACMsg
+####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
 ```java
 public class ACMsg extends ACObject {
@@ -150,7 +150,7 @@ public class ACMsg extends ACObject {
 
 
 ##ACDeviceMsg
-###ACDeviceMsg
+####ACDeviceMsg
 该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
 >+ **二进制/json**
 >在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
@@ -176,7 +176,7 @@ public class ACDeviceMsg {
 
 <font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
 
-###ACDeviceMsgMarshaller
+####ACDeviceMsgMarshaller
 设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：
 ```java
 public interface ACDeviceMsgMarshaller {
@@ -200,7 +200,7 @@ public interface ACDeviceMsgMarshaller {
 }
 ```
 
-###ACKLVObject
+####ACKLVObject
 <font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。
 
 
@@ -209,7 +209,7 @@ public interface ACDeviceMsgMarshaller {
 ##基本对象结构
 这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。
 
-###ACAccount
+####ACAccount
 用来表示AbleCloud的一个注册帐号信息，定义如下：
 ```java
 public class ACUserInfo {
@@ -222,7 +222,7 @@ public class ACUserInfo {
 }
 ```
 
-###ACOpenIdInfo
+####ACOpenIdInfo
 用来表示AbleCloud的一个第三方登录信息，定义如下：
 ```java
 public class ACOpenIdInfo {
@@ -237,7 +237,7 @@ public class ACOpenIdInfo {
 }
 ```
 
-###ACUserDevice
+####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
 ```java
 public class ACUserDevice {
@@ -268,7 +268,7 @@ public class ACUserDevice {
 }
 ```
 
-###ACDeviceUser
+####ACDeviceUser
 设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：
 ```java
 public class ACDeviceUser {
@@ -291,7 +291,7 @@ public class ACDeviceUser {
 }
 ```
 
-###ACHome
+####ACHome
 说明：分组模型下，Home模型定义如下：
 ```java
 public class ACHome {
@@ -305,7 +305,7 @@ public class ACHome {
 }
 ```
 
-###ACRoom
+####ACRoom
 说明：分组模型下，Room模型定义如下：
 ```java
 public class ACRoom {
@@ -320,7 +320,7 @@ public class ACRoom {
 }
 ```
 
-###ACTimerTask
+####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
 ```java
 public class ACTimerTask {
@@ -353,7 +353,7 @@ public class ACTimerTask {
 }
 ```
 
-###ACPushTable
+####ACPushTable
 说明：用来表示订阅的数据集实时消息内容，定义如下：
 ```java
 public class ACPushTable {
@@ -377,7 +377,7 @@ public class ACPushTable {
 }
 ```
 
-###ACFileInfo
+####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
 ```java
 public class ACFileInfo {
@@ -397,7 +397,7 @@ public class ACFileInfo {
 }
 ```
 
-###ACDeviceFind
+####ACDeviceFind
 说明：用来获取局域网本地设备，定义如下：
 ```java
 public class ACDeviceFind {
@@ -410,9 +410,10 @@ public class ACDeviceFind {
 }
 ```
 >注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断
+
 >如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）
 
-###ACOTAUpgradeInfo
+####ACOTAUpgradeInfo
 说明：用来获取OTA升级状态信息，定义如下：
 ```java
 public class ACOTAUpgradeInfo {
@@ -441,7 +442,7 @@ public class ACOTAUpgradeInfo {
 }
 ```
 
-###ACException
+####ACException
 说明：用来表示所有错误信息，定义如下：
 ```java
 public class ACException extends Exception {
@@ -858,7 +859,7 @@ public class ACDeviceBind {
    //getter
 }
 ```
->通过以上ACDeviceActivator提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定
+>通过以上`ACDeviceActivator`提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定
 
 
 
@@ -1348,7 +1349,6 @@ public interface ACGroupMgr {
 
 ##OTA
 除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：
->**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
 
 
 ```java
@@ -1401,6 +1401,7 @@ public interface ACOTAMgr {
     public void bluetoothFile(String subDomain, int type, int checksum, String version, PayloadCallback<byte[]> callback);
 }
 ```
+>**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
 
 
 ##设备定时任务
@@ -1508,7 +1509,7 @@ public interface ACTimerMgr {
 
 ##消息推送
 
-如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟的部分接口），定义如下：
+如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
 ```java
 public interface ACNotificationMgr {
 
@@ -1745,7 +1746,6 @@ public interface ACNotificationMgr {
 ```
 
 ##实时消息同步
-**<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
 ```java
 public interface ACPushMgr {
@@ -1773,10 +1773,9 @@ public interface ACPushMgr {
     public void onReceive(PayloadCallback<ACPushReceive> callback);
 }
 ```
-
+**<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 
 ##局域网通信
-**<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
 
 ```java
 /**
@@ -1787,7 +1786,7 @@ public interface ACPushMgr {
  */
 public static void findLocalDevice(int timeout, PaylodCallback<List<ACDevice>> callback) {}
 ```
-
+**<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
 
 ###文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
@@ -1894,7 +1893,7 @@ public class ACACL {
     public void unsetUserDeny(OpType opType, long userId);
 }
 ```
-
+><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
 
 
 ##桩模块
@@ -2393,3 +2392,6 @@ public class ACACL {
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
+
+>+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
+>+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**

@@ -24,32 +24,31 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
-开发阶段，请初始化测试环境
+开发阶段，请初始化**测试环境**
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```
-在完成测试阶段之后，需要迁移到正式环境下
+在完成测试阶段之后，需要迁移到**正式环境**下
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 #帐号管理
 
+##一、普通帐号注册
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
-
-##1、普通帐号注册
 
 ![account_register](../pic/develop_guide/account_register.png)
 
-获取账号管理对象
+###获取账号管理对象
 
 ```java
     ACAccountMgr accountMgr=AC.accountMgr();
 ```
 
-普通帐号注册流程
+###普通帐号注册流程
 
-1、检查手机号是否已注册
+####1、检查手机号是否已注册
 
 ```java
 	AC.accountMgr().checkExist(phone, new PayloadCallback<Boolean>() {
@@ -69,7 +68,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 ```
 
 
-2、发送验证码
+####2、发送验证码
 
 ```java
 	AC.accountMgr().sendVerifyCode(phone, 1, new VoidCallback() {
@@ -84,7 +83,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-3、检测验证码正确性
+####3、检测验证码正确性
 
 ```java
 	AC.accountMgr().checkVerifyCode(phone，code, new PayloadCallback<Boolean>() {
@@ -103,7 +102,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-4、注册
+####4、注册
 
 ```java
 	AC.accountMgr().register("", phone, password, name, verifyCode, new PayloadCallback<ACUserInfo>() {
@@ -118,11 +117,11 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
  
-##2、第三方登录
+##二、第三方登录
  
 ![account_Oauth](../pic/develop_guide/account_Oauth.png)
 
-1、直接使用第三方登录
+####1、直接使用第三方登录
 
 ```java
 	//APP端在完成OAuth认证登陆之后获取openId和accessToken
@@ -149,7 +148,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-2、在已有普通账号登录时绑定第三方账号
+####2、在已有普通账号登录时绑定第三方账号
 
 ```java
 	AC.accountMgr().bindWithAccount( email, phone, password, nickName, verifyCode, new VoidCallback() {
@@ -164,7 +163,7 @@ AC.init(this, MajorDomain, MajorDomainId);
 	});
 ```
 
-##3、添加帐号扩展属性
+##三、添加帐号扩展属性
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
@@ -176,7 +175,7 @@ accountMgr=AC.accountMgr();
 ####2、设置用户自定义扩展属性
 ```java
 ACObject userProfile = new ACObject();
-//注意此处put进去的key需要跟官网添加的附加属性key值一致
+//注意此处put进去的key与value类型需要跟平台添加的附加属性一致
 userProfile.put("c1", "北京");
 userProfile.put("c2", "生日");
 accountMgr.setUserProfile(userProfile, new VoidCallback() {
@@ -215,7 +214,7 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
 
-用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
+**用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。**
 
 ![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
@@ -228,8 +227,8 @@ Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
-<font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。
+><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
+目前支持的开发板有`AC.DEVICE_MTK`、`AC.DEVICE_MX`、`AC.DEVICE_MARVELL`、`AC.DEVICE_MURATA`、`AC.DEVICE_WM`、`AC.DEVICE_RAK`。
 
 ####2.获取WiFi SSID
 ```java
@@ -248,7 +247,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 ```
@@ -264,7 +263,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -280,14 +279,15 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
-<font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
+><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
-**第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
++ **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；**
++ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给普通用户
 ```java
@@ -299,7 +299,7 @@ bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -315,7 +315,7 @@ bindMgr.getShareCode(subDomain, deviceId, new PayloadCallback<String>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 //普通用户通过分享码绑定设备
@@ -327,7 +327,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -335,7 +335,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
 ###三．设备解绑
 
 ####1、管理员或普通用户解绑设备
-如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
+<font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
 ```java
 bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     @Override
@@ -345,7 +345,7 @@ bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -360,7 +360,7 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -405,7 +405,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //根据e.getErrorCode()做不同的提示或处理，此处一般为1993配置超时错误
     }
 });
 ```
@@ -421,7 +421,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -437,7 +437,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -460,7 +460,7 @@ AC.bindMgr().openGatewayMatch(subDomain, gatewayDeviceId, AC.DEVICE_ACTIVATOR_DE
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
@@ -474,7 +474,7 @@ AC.bindMgr().listNewDevices(subDomain, gatewayDeviceId, new PayloadCallback<List
     }
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息，此处一般为网络错误
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
@@ -491,7 +491,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -537,7 +537,7 @@ groupMgr.createHome(name, new PayloadCallback<ACHome>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为网络错误
     }
 });
 ```
@@ -552,7 +552,7 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -560,7 +560,9 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 ###二、添加或移动设备到分组里
 
 ><font color="red">特别注意</font>：
->1、绑定设备流程。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+
+>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+
 >2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。
 
 ####添加设备到Home里
@@ -574,7 +576,7 @@ groupMgr.addDeviceToHome(subDomain, physicalDeviceId, homeId, deviceName, new Pa
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -589,7 +591,7 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -618,7 +620,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照平台申请的key与value类型
     }
 });
 ```
@@ -634,7 +636,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -645,13 +647,30 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
 
 ##一、发送消息到设备
-###1、KLV格式
+###KLV格式
 **在新建产品的时候选择klv通讯协议，并填写数据点与数据包。**
 KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
 
-**例如**：以开启设备为例,协议如下:
->+ 数据点：key:1  value:int8(0为关闭，1为开启)
->+ 数据包：code:68  
+**例如**：以开关设备为例,协议如下:
+```
+//请求数据包
+{ 68 ：[
+     //数据点[key：value(int8)]
+     //关灯
+     { 1 : 0 },
+     //开灯      
+     { 1 : 1 }
+]}
+//响应数据包  
+{ 102 ：[
+     //数据点[key：value(int8)]
+     //失败
+     { 1 : 0 },
+     //成功      
+     { 1 : 1 }
+]}
+```
+截取开灯代码，如下:
 ```java
 ACKLVObject req = new ACKLVObject();
 //只需要告诉设备指令，而不需要payload时，传null
@@ -662,21 +681,40 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
         //发送成功并接收设备的响应消息
+        int value = resp.get(1);
+        if(value==0){
+            //开灯失败
+        }else if(value==1){
+            //开灯成功
+        }
     }
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
-###2、二进制格式
-**例如**：以开启设备为例,协议如下:
->**数据包** 
->+ code:68 
->+ req:{1,0,0,0}
->+ resp:{1,0,0,0}
-####1)、设置序列化器
+###二进制格式
+**例如**：以开关设备为例,协议如下:
+```
+//请求数据包
+{ 68 ：[
+     //关灯(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //开灯(二进制流，由厂商自己解析)   
+     { 1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+     //失败(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //成功(二进制流，由厂商自己解析)        
+     { 1 , 0 , 0 , 0 }
+]}
+```
+截取开灯代码，如下:
+####1、设置序列化器
 ```java
 bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
@@ -690,7 +728,7 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     }
 });
 ```
-####2)、发送到设备
+####2、发送到设备
 ```java
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte[]{1, 0, 0, 0}), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
@@ -705,16 +743,28 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
 ###3、json格式
-**例如**：以开启设备为例,协议如下:
-> **数据包** 
->+ code:68 
->+ req:{"switch","open"}
->+ resp:{"result",1}
+**例如**：以开关设备为例,协议如下:
+```
+//请求数据包
+{ 68 ：[
+     //关灯
+     {"switch","close"}
+     //开灯
+     {"switch","open"}
+]}
+//响应数据包  
+{ 102 ：[
+     //失败
+     {"result",0},
+     //成功   
+     {"result",1}
+]}
+```
 ####1、设置序列化器
 ```java
 bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
@@ -749,13 +799,13 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
     }
 });
 ```
 
 ##二、发送消息到服务
-**<font color="red">注意</font>：serviceName对应服务管理里UDS服务里的服务名称，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为主版本号，比如1-0-0，则version为1。**
+<font color="red">注意</font>：serviceName对应服务管理里UDS服务里的**服务名称**，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为**主版本号**，比如1-0-0，则version为1。
 
 ```java
 ACMsg req = new ACMsg();
@@ -771,7 +821,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为UDS云端问题，可到AbleCloud平台查看log日志
     }
 });
 ```
@@ -822,7 +872,7 @@ pushMgr.watch(table, new VoidCallback() {
     }
     @Override
     public void error(ACException e) {
-        //订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+        //订阅失败，请自行检查参数类型，表名，columns以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
     }
 });
 ```
@@ -839,7 +889,7 @@ pushMgr.onReceive(new PayloadCallback<ACPushReceive>() {
 
     @Override
     public void error(ACException e) {
-    //永远不会执行
+        //永远不会执行
     }
 });
 ```
@@ -862,25 +912,21 @@ pushMgr.unwatch(table, new VoidCallback() {
     }
     @Override
     public void error(ACException e) {
-        //取消订阅失败e.getErrorCode为错误码，e.getMessage为错误信息
+        //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
     }
 });
 ```
 
 #局域网通信
 
-<<<<<<< HEAD
-功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
-=======
 功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
->>>>>>> 2419e5f25e739caceaac28f18f8939ff347ef0e9
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
 bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
     @Override
     public void success(List<ACUserDevice> deviceList) {
-        For(ACUserDevice device:deviceList){
+        for(ACUserDevice device:deviceList){
             /**
               * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
               * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
@@ -935,11 +981,11 @@ AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
 ## <span class="skip">||SKIP||</span>
 
 ####获取定时管理器
-#####使用默认时区
+**使用默认时区**
 ```java
 ACTimerMgr timerMgr=AC.timerMgr();
 ```
-#####使用自定义时区
+**使用自定义时区**
 ```java
 ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 ```
@@ -968,7 +1014,7 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
 
 ```java
-//设置序列化器
+//设置序列化器，若有klv格式类型，则无需此步骤
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
@@ -993,7 +1039,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数类型错误，请仔细阅读注意事项
      }
 });
 ```
@@ -1011,7 +1057,7 @@ timerMgr.openTask(deviceId, taskId, new VoidCallback() {
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 ```
@@ -1026,7 +1072,7 @@ timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 ```
@@ -1041,7 +1087,7 @@ timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 ```
@@ -1059,7 +1105,7 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
      @Override
      public void error(ACException e) {
-          //e.getErrorCode为错误码，e.getMessage为错误信息
+          //参数无误下一般为网络错误
      }
 });
 ```
@@ -1100,7 +1146,7 @@ otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() 
     }
     @Override
     public void error(ACException e) {
-        //e.getErrorCode为错误码，e.getMessage为错误信息
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -1114,7 +1160,7 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     }
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -1467,7 +1513,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
     }
 });
 ```
@@ -1487,7 +1533,7 @@ fileMgr.downloadFile(url, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
     }
 });
 ```
@@ -1530,7 +1576,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
     }
 });
 ```
@@ -1554,10 +1600,13 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
     @Override
     public void error(ACException e) {
-         //e.getErrorCode为错误码，e.getMessage为错误信息
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
     }
 });
 ```
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
+
+>+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
+>+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**
