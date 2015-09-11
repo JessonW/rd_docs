@@ -348,10 +348,11 @@ span.main-set {
 }
 
 p {
-    line-height: 1.8em;
+    line-height: 1.6em;
 	font-size: 16px;
 }
 
 ol > li {
-    line-height: 1.5em;
+    line-height: 1.6em;
+	font-size: 16px;
 }
