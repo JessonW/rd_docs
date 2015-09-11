@@ -2,7 +2,8 @@
 #开发准备
 ####SDK发布库
 AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还需要导入`libDevice-Service.so`文件（可根据不同cpu做不同选择）
->具体步骤:把文件拷入你自己的工程的libs目录下并设置依赖
+
+>**具体步骤**:把文件拷入你自己的工程的libs目录下并设置依赖
  
 ####开发环境设置
 以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
@@ -16,6 +17,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 
 ####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
+
 > 具体步骤:在启动App的`MainActivity`的`onCreate()`方法中调用此方法来进行初始化
 
 开发阶段，请初始化测试环境
@@ -36,13 +38,14 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 ```java
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 ```
+><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认使用为`4个0加上mac地址`
 
 #交互消息
-首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与的消息：
+首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与云端的消息格式：
 
 + **ACDeviceMsg：**安卓设备与服务或普通app之间的交互消息，使用二进制或json或klv通讯协议。
 
-###基础数据结构
+##ACDeviceMsg
 ####ACDeviceMsg
 该消息用于处理安卓设备与服务之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。但是ACDeviceMsg的payload部分由开发者解释，框架透传。ACDeviceMsg定义如下：
 ```java
@@ -162,7 +165,7 @@ public class ACKLVObject {
 ><font color="brown">**注：**最常用的两个接口是put/get，若使用二进制或json的通讯协议，则不需要用到该类</font>
 
 ####ACSubDevice
-该对象为网关子设备承载信息，独立设备无需关心，具体接口定义如下：
+该对象为网关子设备承载信息，独立设备则无需关心，具体接口定义如下：
 ```java
 public class ACSubDevice {
     //子设备主域
@@ -178,7 +181,67 @@ public class ACSubDevice {
 ```
 
 #SDK
-###消息处理接口Handler介绍
+##AC
+前面，我们介绍了ablecloud SDK的交互消息，那到底具体该如何使用呢？SDK入口均通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口。AC的定义如下：
+```java
+public class AC {
+
+    /**
+     * 调试模式
+     */
+    public static final int TEST_MODE = 1;
+    public static final int PRODUCTION_MODE = 0;
+    
+    public static void init(Context context, long MajorDomainId, long SubDomainId, String secretKey, String version, int mode) {}
+
+    /**
+     * 获取本机Mac地址，即AbleCloud物理Id，可用于生成二维码进行绑定
+     *
+     * @return 物理Id
+     */
+    public static String getMacAddress() {}
+    
+    /**
+     * 设置安卓设备连接状态的监听器
+     * 注意：若多次设置监听，则只有最后一次设置有效，以下handleMsg接口也是如此；
+     * 若提示消息或其他操作不涉及activity的其他元素，比如只需要显示toast，建议把它放在application里
+     * 若有多个activity需要监听网络状态，则建议把它放在前一个activity的onResume函数里，当后一个activity返回时前一个activity依然生效
+     *
+     * @param listener sdk内部会自动进行断线重连，所以此处只需要取状态用于更新界面显示或提示用户
+     */
+    public static void setConnectListener(ACConnectChangeListener listener) {}
+    
+    /**
+     * 处理Service-->安卓设备之间的交互消息
+     *
+     * @param handler 根据msgCode做不同处理并设置resp
+     */
+    public static void handleMsg(ACMsgHandler handler) {}
+    
+    /**
+     * 处理网关子设备接入的交互消息
+     *
+     * @param handler 具体定义如下所示
+     */
+    public static void handleGatewayMsg(ACGatewayHandler handler) {}
+    
+    /**
+     * 安卓设备主动上报数据到云端
+     * 设备汇报的消息不需要响应。
+     *
+     * @param reqMsg 请求消息体
+     * @throws Exception
+     */
+    public static void reportDeviceMsg(ACDeviceMsg reqMsg) {}
+   
+    /**
+     * 在退出app的时候调用
+     */
+    public static void DeviceSleep() {
+}
+```
+
+##消息处理接口Handler介绍
 
 ####ACConnectChangeListener
 ```java
@@ -252,90 +315,33 @@ public interface ACGatewayHandler {
 }
 ```
 
-###AC
-前面，我们介绍了ablecloud SDK的交互消息，那到底具体该如何使用呢？SDK入口均通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口。AC的定义如下：
-```java
-public class AC {
-
-    /**
-     * 调试模式
-     */
-    public static final int TEST_MODE = 1;
-    public static final int PRODUCTION_MODE = 0;
-    
-    public static void init(Context context, long MajorDomainId, long SubDomainId, String secretKey, String version, int mode) {}
-
-    /**
-     * 获取本机Mac地址，即AbleCloud物理Id，可用于生成二维码进行绑定
-     *
-     * @return 物理Id
-     */
-    public static String getMacAddress() {}
-    
-    /**
-     * 设置安卓设备连接状态的监听器
-     * 注意：若多次设置监听，则只有最后一次设置有效，以下handleMsg接口也是如此；
-     * 若提示消息或其他操作不涉及activity的其他元素，比如只需要显示toast，建议把它放在application里
-     * 若有多个activity需要监听网络状态，则建议把它放在前一个activity的onResume函数里，当后一个activity返回时前一个activity依然生效
-     *
-     * @param listener sdk内部会自动进行断线重连，所以此处只需要取状态用于更新界面显示或提示用户
-     */
-    public static void setConnectListener(ACConnectChangeListener listener) {}
-    
-    /**
-     * 处理Service-->安卓设备之间的交互消息
-     *
-     * @param handler 根据msgCode做不同处理并设置resp
-     */
-    public static void handleMsg(ACMsgHandler handler) {}
-    
-    /**
-     * 处理网关子设备接入的交互消息
-     *
-     * @param handler 具体定义如下所示
-     */
-    public static void handleGatewayMsg(ACGatewayHandler handler) {}
-    
-    /**
-     * 安卓设备主动上报数据到云端
-     * 设备汇报的消息不需要响应。
-     *
-     * @param reqMsg 请求消息体
-     * @throws Exception
-     */
-    public static void reportDeviceMsg(ACDeviceMsg reqMsg) {}
-   
-    /**
-     * 在退出app的时候调用
-     */
-    public static void DeviceSleep() {
-}
-```
-
-#Demo
-AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里com.accloud.ac_device_android_demo.config.Config.java文件里的配置项即可。
+##Demo
+AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里`com.accloud.ac_device_android_demo.config.Config.java`文件里的配置项即可。
 
 下面以开关灯为例，简要介绍与安卓设备通讯的例子：
 
-###1、使用KLV消息格式进行通讯
+####1、使用KLV消息格式进行通讯
 **在新建产品的时候选择klv通讯协议，并填写数据点与数据包**
 **例如**：以开关灯为例,协议如下:
 
->+  **请求数据包code:68**
-
->> 数据点key:1
-
->>+ value:0       //关闭
-
->>+ value:1       //开启
-
->+ **响应数据包code:102**
-
->> 数据点key:1
-
->>+ value:0       //失败
-
->>+ value:1       //成功
+```
+//请求数据包
+{ 68 ：[
+     //数据点[key：value(int8)]
+     //关灯
+     { 1 : 0 },
+     //开灯      
+     { 1 : 1 }
+]}
+//响应数据包  
+{ 102 ：[
+     //数据点[key：value(int8)]
+     //失败
+     { 1 : 0 },
+     //成功      
+     { 1 : 1 }
+]}
+```
 ```java
 AC.handleMsg(new ACMsgHandler() {
     @Override
@@ -375,15 +381,24 @@ AC.handleMsg(new ACMsgHandler() {
 });
 ```
 
-###2、使用二进制消息格式进行通讯
+####2、使用二进制消息格式进行通讯
 **例如**：以开关灯为例,协议如下:
->+ **请求数据包code:68** 
->>+ 开灯:{1,0,0,0}
->>+ 关灯:{0,0,0,0}
-
->+ **响应数据包code:102**
->>+ 成功:{1,0,0,0}
->>+ 失败:{0,0,0,0}
+```
+//请求数据包
+{ 68 ：[
+     //关灯(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //开灯(二进制流，由厂商自己解析)   
+     { 1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+     //失败(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //成功(二进制流，由厂商自己解析)        
+     { 1 , 0 , 0 , 0 }
+]}
+```
 ```java
 AC.handleMsg(new ACMsgHandler() {
     @Override
