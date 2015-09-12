@@ -1,5 +1,396 @@
 #云端自定义服务开发指导
 
+#开发准备
+**本章首先我们先来了解一下UDS开发最终需要发布提交什么东西到AbleCloud平台上，然后我们从DemoService讲起，从官网下载文件开始到如何使它在本机跑起来，以及最后如何新建一个属于自己的UDS服务。**
+##服务框架发布库
+ablecloud一期发布java版本服务开发框架，其发布目录、文件如下所示
+```java
+/config
+	/cloudservice-conf.xml
+/lib
+	/ablecloud-framework-1.1.0.jar
+    /ac-java-api-1.0.0.jar
+	/commons-collections-3.2.1.jar
+    /commons-configuration-1.10.jar
+    /commons-lang-2.6.jar
+    /slf4j-api-1.7.7.jar
+    /...
+start.sh
+start.cmd
+```
+
+><font color=red>注意事项：</font>
+
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为ablecloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。各jar包版本根据ablecloud发行的大版本不同可能不同。
+
+>1. 在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖
+
+>1. 注意服务框架发布库结构不允许修改，否则发布失败
+
+##本机启动DemoService
+**本机启动要求本机上已装jre虚拟机**
+
+1、首先，从AbleCloud官网下载中下载DemoService.zip，解压之后修改config文件夹下的cloudservice-conf.xml文件
+
+        <?xml version="1.0" encoding="UTF-8"?>
+		<configuration>
+	    	<developer>
+                <!-- 对应 个人信息-->个人信息-->开发者ID -->
+        		<id>4</id>
+    		</developer>
+
+    		<authentication>
+                <!-- 对应 密钥对管理-->全部密钥对，选择已启用的随便一对 -->
+        		<access-key>33df24a54054067e80af49d939b429c2</access-key>
+        		<secret-key>5e2fec3440e23c5e807910b13b672015</secret-key>
+	    	</authentication>
+
+    		<service>
+        		<!-- 此处为本机启动的端口号 -->
+        		<port>8080</port>
+                <!-- 对应 产品管理-->产品列表-->主域名 -->
+        		<major-domain>ablecloud</major-domain>
+                <!-- 对应 产品管理-->产品列表-->子域 -->
+        		<sub-domain>demo</sub-domain>
+    		</service>
+		</configuration>
+	
+><font color="brown">**注:**开发者id，access-key，secret-key等信息，均能通过登录ablecloud测试环境的web console获取。其他不需要修改</font>
+
+2、接着我们还需要在**数据存储-->概况**中新建数据集light-action-data，如下所示：
+
+![demoservice_class](../pic/develop_guide/DemoService_Class.png)
+
+3、最后我们就可以在本机启动服务并进行测试了。
+
+<b>*linux*</b>下在终端运行如下命令启动服务进行测试：
+```sh
+sh start.sh
+```
+<b>*windows*</b>下在cmd中运行如下命令启动服务进行测试：
+```cmd
+start.cmd
+```
+
+本地启动成功后，我们使用curl命令进行开灯测试
+
+<b>*linux*</b>下使用curl命令
+```curl
+curl -v -X POST -H "Content-Type:application/x-zc-object"  -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" -d '{"deviceId":1,"action":"on"}' 'http://localHost:8080/controlLight'
+```
+<b>*windows*</b>下使用curl命令请求
+```curl
+curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H ":test" -H ":1" --data-ascii "{\"deviceId\":1,\"action\":\"on\"}" "http://localHost:8080/controlLight"
+```
+><font color="red">**注：**</font>请自行修改`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`和`deviceId`的值
+
+##开发工具设置
+测试通过之后，我们就可以开始写自己的UDS程序了，以下从新建maven工程开始讲解，带你一步步建立起自己的工程。
+####系统准备
+在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如jdk、maven等。
+
++ **JDK** 
+
+	安装JDK，建议采用1.7版本JDK
+    
++ **maven**
+
+	安装maven，建议采用3.2以上版本
+    
++ **ablecloud**
+
+	下载ablecloud-framework-1.1.0.zip并解压
+
+####Intellij
+1. **新建工程**
+	
+    选择新建maven工程，JDK选择正确的版本。
+    
+    ![new project](../pic/reference/intellij/new_project_1_1.png)
+    
+    选择**maven**工程
+    
+    ![info](../pic/reference/intellij/new_project_1_2.png)
+    
+    注意jdk版本选择安装的1.7+
+    点击**next**即可。
+    
+    ![next](../pic/reference/intellij/next.png)
+    
+    进入下一个页面，根据情况填写groupid/artifactid/version等信息。
+    
+    ![info](../pic/reference/intellij/new_project_1_3.png)
+    
+    填好后点击**next**，进入下一步，填写工程名以及存放路径。
+    
+    ![name](../pic/reference/intellij/new_project_1_4.png)
+    
+    然后点击**finish**完成新建工程向导。
+    
+    ![finish](../pic/reference/intellij/new_project_1_5.png)
+    
+    至此，新建工程完成。
+   
+1. **设置工程**
+
+	按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
+    点击**File** -> **Project Structure...**
+    
+    ![setting](../pic/reference/intellij/set_project_1_1.png)
+    
+    首先设置工程所使用的JDK版本1.7+和语言级别7.0
+    
+    ![lib](../pic/reference/intellij/set_project_1_2.png)
+    
+    设置开发服务所要依赖的ablecloud框架包，点击**+**号，选择下载并解压后的ablecloud开发框架的**lib目录**即可。
+    同上，打开**Project Structure...**,然后选择**Libraries**，点击右边的**+**号，选择**Java**，如下图所示
+    
+    ![lib](../pic/reference/intellij/set_project_2_1.png)
+    
+    在弹出的对话框中选择下载并解压后的ablecloud中的lib目录，并点击**OK**
+    
+    ![lib](../pic/reference/intellij/set_project_2_2.png)
+    
+    回到上一个窗口后再次点击**OK**确认
+    
+    ![lib](../pic/reference/intellij/set_project_2_3.png)
+    
+    这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为**ablecloud-libs**。点击**OK**完成添加。
+    
+    ![lib](../pic/reference/intellij/set_project_2_4.png)
+    
+    完成上述步骤后，我们将在工程视图里面看到新添加的该目录，如下
+    
+    ![lib](../pic/reference/intellij/set_project_2_5.png))
+    
+    至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
+    
+1. **修改pom.xml文件**
+
+	下面是一个demo的完整pom.xml文件，如下：
+    
+		<?xml version="1.0" encoding="UTF-8"?>
+		<project xmlns="http://maven.apache.org/POM/4.0.0"
+         	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    		<modelVersion>4.0.0</modelVersion>
+
+    		<groupId>com.ablecloud.demo</groupId>
+    		<artifactId>SmartHome</artifactId>
+    		<version>1.0.0</version>
+
+    		<properties>
+        		<ablecloud.lib.dir>/home/chenpeng/IdeaProjects/ablecloud-framework/target/lib</ablecloud.lib.dir>
+    		</properties>
+
+    		<build>
+	        	<plugins>
+	            	<plugin>
+	                	<!--this plugin and dependency jars are used for testing-->
+	                	<groupId>org.apache.maven.plugins</groupId>
+	                	<artifactId>maven-surefire-plugin</artifactId>
+	                	<version>2.18.1</version>
+                        <dependencies>
+                    		<dependency>
+                        		<groupId>org.apache.maven.surefire</groupId>
+                        		<artifactId>surefire-junit47</artifactId>
+                        		<version>2.18.1</version>
+                    		</dependency>
+                		</dependencies>
+	                	<configuration>
+	                    	<argLine>-Dmode=test</argLine>
+	                    	<additionalClasspathElements>
+    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/ablecloud-framework-1.1.0.jar</additionalClasspathElement>
+                                <additionalClasspathElement>${ablecloud.lib.dir}/ac-java-api-1.0.0.jar</additionalClasspathElement>
+        	                	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar</additionalClasspathElement>
+            	            	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-api-1.7.7.jar</additionalClasspathElement>
+                	        	<additionalClasspathElement>${ablecloud.lib.dir}/log4j-1.2.17.jar</additionalClasspathElement>
+                    	    	<additionalClasspathElement>${ablecloud.lib.dir}/junit-4.11.jar</additionalClasspathElement>
+                                <additionalClasspathElement>${ablecloud.lib.dir}/hamcrest-core-1.3.jar</additionalClasspathElement>
+                        		<additionalClasspathElement>${ablecloud.lib.dir}/commons-configuration-1.10.jar</additionalClasspathElement>
+                        		<additionalClasspathElement>${ablecloud.lib.dir}/commons-collections-3.2.1.jar</additionalClasspathElement>
+                        		<additionalClasspathElement>${ablecloud.lib.dir}/commons-lang-2.6.jar</additionalClasspathElement>
+	                        	<additionalClasspathElement>${ablecloud.lib.dir}/commons-logging-1.1.1.jar</additionalClasspathElement>
+    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/jetty-all-9.2.10.v20150310.jar</additionalClasspathElement>
+        	                	<additionalClasspathElement>${ablecloud.lib.dir}/jackson-core-2.3.2.jar</additionalClasspathElement>
+            	            	<additionalClasspathElement>${ablecloud.lib.dir}/jackson-annotations-2.3.2.jar</additionalClasspathElement>
+                	        	<additionalClasspathElement>${ablecloud.lib.dir}/jackson-databind-2.3.2.jar</additionalClasspathElement>
+                    		</additionalClasspathElements>
+	                	</configuration>
+	            	</plugin>
+	            	<plugin>
+    	            	<groupId>org.apache.maven.plugins</groupId>
+            	    	<artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.3</version>
+        	        	<configuration>
+                	    	<source>1.7</source>
+                    		<target>1.7</target>
+                    		<encoding>UTF-8</encoding>
+                    		<compilerArguments>
+	                        	<extdirs>${ablecloud.lib.dir}</extdirs>
+    	                	</compilerArguments>
+        	        	</configuration>
+            		</plugin>
+            		<plugin>
+                		<groupId>org.apache.maven.plugins</groupId>
+                		<artifactId>maven-jar-plugin</artifactId>
+                        <version>2.6</version>
+                		<executions>
+	                    	<execution>
+	    	                    <phase>package</phase>
+    	    	                <goals>
+        	    	                <goal>jar</goal>
+            	    	        </goals>
+                	    	</execution>
+                		</executions>
+                		<configuration>
+                    		<outputDirectory>${project.build.directory}/lib</outputDirectory>
+                		</configuration>
+            		</plugin>
+        		</plugins>
+    		</build>
+		</project>
+
+    <font style="background:cyan">完整拷贝该示例pom.xml文件内容，其中绝大部分内容都无须修改，开发者仅需修改如下几个配置项即可：</font>
+    
+    	<project>
+    		<groupId>your service group id</groupId>
+       		<artifactId>your service artifact id</artifactId>
+       		<version>your service version</version>
+       		<properties>
+        		<ablecloud.lib.dir>unzipped ablecloud lib dir where you put</ablecloud.lib.dir>
+       		</properties>
+    	</project>
+        
+	<font style="background:cyan">注意以下配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</font>
+        
+1. **修改配置文件**
+
+	配置文件位于ablecloud发行库的config文件夹下，名字为cloudservice-conf.xml。
+    
+		<?xml version="1.0" encoding="UTF-8"?>
+		<configuration>
+	    	<developer>
+        		<id>4</id>
+    		</developer>
+
+    		<authentication>
+        		<access-key>33df24a54054067e80af49d939b429c2</access-key>
+        		<secret-key>5e2fec3440e23c5e807910b13b672015</secret-key>
+        		<timeout>5000</timeout>
+	    	</authentication>
+
+    		<framework>
+        		<router>test.ablecloud.cn:5000</router>
+    		</framework>
+
+    		<service>
+        		<name>SmartHome</name>
+        		<class>com.ablecloud.demo.DemoService</class>
+        		<port>1234</port>
+        		<major-domain>ablecloud</major-domain>
+        		<sub-domain>demo</sub-domain>
+        		<major-version>1</major-version>
+        		<minor-version>0</minor-version>
+        		<patch-version>0</patch-version>
+    		</service>
+		</configuration>
+	
+    ><font color="brown">**注:**开发者id，access-key，secret-key等信息，均能通过登录ablecloud测试环境的web console获取。
+    除了**service.class**配置项在测试环境和线上环境均生效外，所有的其它配置项只在测试环境有效。线上服务将忽略配置文件中的配置项。</font>
+    
+1. **编译单测**
+
+	在IDE的终端（terminal）或系统终端中运行命令`mvn package`即可完整的执行编译、单元测试（如果写了单测代码的话）。
+    
+1. **本地运行**
+
+	如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到ablecloud框架的lib目录下，在ablecloud的框架主目录执行ablecloud提供的脚本`sh start.sh -m test`或`start.cmd -m test`，即可在您的开发机上启动您编写好的服务程序。
+    
+	><font color="brown">**注：**在本机上运行服务测试时必须加**-m test**参数，否则无法启动服务。服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。</font>
+    
+1. **提交到平台**
+
+	将你编译好的服务jar包（位于你服务代码主目录下的target/lib文件夹中，如`~/SmartHome/target/lib/SmartHome-1.0.0.jar`）放入ablecloud框架的lib目录下，然后将ablecloud的config目录、lib目录、start.sh打成zip包，通过ablecloud的web平台提交。
+
+####Eclipse
+1. **新建工程**
+
+	选择**File-->New-->Project...**
+    
+    ![new project](../pic/reference/eclipse/new_project_1_1.png)
+    
+    选择**maven**工程
+    
+    ![new project](../pic/reference/eclipse/new_project_1_2.png)
+    
+    点击**Next**进入下一步
+    
+    ![next](../pic/reference/eclipse/next.png)
+    
+    填写groupId,artifactId,version等信息，并点击**Finish**完成新建工程。
+    
+    ![info](../pic/reference/eclipse/new_project_1_3.png)
+    
+1. **设置工程**
+	在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置
+    
+    ![setting](../pic/reference/eclipse/set_project_1_1.png)
+    
+    首先设置工程对ablecloud发行库的依赖。如图选择**Java Build Path**的**Libaries**标签页，点击**Add Library...**
+    
+    ![setting](../pic/reference/eclipse/set_project_1_2.png)
+    
+    在**Add Library**页选择**User Library**
+    
+    ![setting](../pic/reference/eclipse/set_project_1_3.png)
+    
+    继续点击**User Libraries...**按钮
+    
+    ![setting](../pic/reference/eclipse/set_project_1_4.png)
+    
+    然后点击**New...**新建一个用户library文件夹
+    
+    ![setting](../pic/reference/eclipse/set_project_1_5.png)
+    
+    这里可以给该用户lib重命名，如图中命名为ablecloud-libs，点击**OK**完成
+    
+    ![setting](../pic/reference/eclipse/set_project_1_6.png)
+    
+    回到**User Libraries**页面，点击右方的**Add External JARs...**按钮，选择下载并解压的ablecloud发行库中的**lib**目录，将该目录中所有的jars添加到新建的user library中。
+    
+    ![setting](../pic/reference/eclipse/set_project_1_7.png)
+    
+    勾选上新建的user library，并点击**Finish**将ablecloud的jars添加到新建的工程中。
+    
+    ![setting](../pic/reference/eclipse/set_project_1_8.png)
+    
+    下面进行java语言的设置，类似上面的设置，先进入**Properties**窗口，选择**Java Compiler**，**去掉**默认的*Use compliance from execution environment...*，并且选择*Compiler compliance level*为**1.7**
+    
+    ![setting](../pic/reference/eclipse/set_project_2_1.png)
+    
+1. **修改pom.xml文件**
+
+	同**intellij**章节
+    
+1. **修改配置文件**
+
+	同**intellij**章节
+
+1. **编译单测**
+
+	TBD
+
+1. **本地运行**
+
+	同**intellij**章节
+    
+1. **提交到平台**
+
+	同**intellij**章节
+   
+
+
 #UDS Demo
 这里我们以一个完整的demo程序做示例，通过真实代码介绍如何基于ACService开发用户自己的服务程序。demo场景不一定完全符合常识，其目的是为了尽量简单而全面的演示服务框架提供的功能。
 ##场景介绍
@@ -546,7 +937,7 @@ public class DemoServiceTest {
 
 ><font color="red">**注意：**可以看到，所有的单元test case，我们均是直接调用`handleMsg`或`handleDeviceMsg`驱动测试，无需编写或使用client工具。
 
-此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签**@FixMethodOrder(MethodSorters.NAME_ASCENDING)**固定test case的执行顺序，因为我们的test case可能前后依赖，比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系的，需要考虑命名的规则按ascii字典序。</font>
+>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签**@FixMethodOrder(MethodSorters.NAME_ASCENDING)**固定test case的执行顺序，因为我们的test case可能前后依赖，比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系的，需要考虑命名的规则按ascii字典序。</font>
 
 ####测试桩
 从前面的场景分析我们知道，开发的DemoService会和等交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。这中情况在生产环境很常见，我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，ablecloud在服务开发框架中提供了设备桩`ACDeviceStub`功能，开发者只需要依照此接口实现具体的设备桩即可。

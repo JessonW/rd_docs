@@ -21,9 +21,13 @@ ablecloud一期发布java版本服务开发框架，其发布目录、文件如�
 start.sh
 start.cmd
 ```
-><font color="red">**注：**所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为ablecloud的服务框架**ablecloud-framework-1.1.0.jar**和**ac-java-api-1.0.0.jar**。各jar包版本根据ablecloud发行的大版本不同可能不同。</font>
+><font color=red>注意事项：</font>
 
-<font color="red">**在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖**</font>
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为ablecloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。各jar包版本根据ablecloud发行的大版本不同可能不同。
+
+>1. 在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖
+
+>1. 注意服务框架发布库结构不允许修改，否则发布失败
 
 ##本地启动命令
 开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
@@ -36,6 +40,7 @@ sh start.sh
 ```cmd
 start.cmd
 ```
+
 本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分
 1.**linux下使用curl命令**
 ```curl
@@ -745,7 +750,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`
+><font color="red">注意</font>：此处应该传用户上下文(listDevices和listUsers除外)，即`ac.newContext(userId)`或`req.getContext()`
 
 ###接口说明
 ```java
