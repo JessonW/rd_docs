@@ -662,7 +662,7 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
      { 1 : 1 }
 ]}
 //响应数据包  
-{ 102 ：[
+{ 60 ：[
      //数据点[key：value(int8)]
      //失败
      { 1 : 0 },
