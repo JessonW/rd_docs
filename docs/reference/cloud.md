@@ -34,19 +34,20 @@ start.cmd
 
 <b>*linux*</b>下在终端运行如下命令启动服务进行测试：
 ```sh
-sh start.sh
+sh start.sh -m test
 ```
 <b>*windows*</b>下在cmd中运行如下命令启动服务进行测试：
 ```cmd
-start.cmd
+start.cmd -m test
 ```
 
-本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分
-1.**linux下使用curl命令**
+本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分。
+
+**linux**下使用curl命令
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object"  -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" -d '{"deviceId":1,"action":"on"}' 'http://localHost:8080/controlLight'
 ```
-2.**windows下使用curl命令请求**
+**windows**下使用curl命令请求
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" --data-ascii "{\"deviceId\":1,\"action\":\"on\"}" "http://localHost:8080/controlLight"
 ```
@@ -330,8 +331,7 @@ public interface ACDeviceMsgMarshaller {
 ablecloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:
 ```java
 public abstract class ACService {
-	// ac是非常重要的ablecloud云框架服务，ablecloud提供了默认实现ACCloud，
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务，后文会有详述
+    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
     protected AC ac;
     
     // 以下信息可用于服务内部追踪问题等用，比如打印到日志中
@@ -418,8 +418,7 @@ public abstract class ACService {
 ablecloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：
 ```java
 public abstract class ACCronJob {
-    // ac是非常重要的ablecloud云框架服务，ablecloud提供了默认实现ACCloud，
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务，后文会有详述
+    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
     protected AC ac;
     
     // 以下信息可用于任务内部追踪问题等用，比如打印到日志中等。
@@ -432,9 +431,7 @@ public abstract class ACCronJob {
 
     /**
      * 内部调用接口，开发者不用关注且不能修改。
-     * 设置服务相关的信息，并将全局AC框架传给服务
-     * 服务内部可以使用AC框架提供的各种功能，如
-     * 帐号管理、设备管理、存储服务等
+     * 设置服务相关的信息，并将全局AC框架传给服务。服务内部可以使用AC框架提供的各种功能，如帐号管理、设备管理、存储服务等。
      * @param ac
      * @param config
      */
@@ -449,7 +446,7 @@ public abstract class ACCronJob {
     }
 
     /**
-     * 内部调用接口，开发者不用关注且不能修改。
+     * 用于获取AC框架。
      * @return AC对象。
      */
     public final AC getAc() {
