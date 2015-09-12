@@ -3,7 +3,7 @@
 ####SDK发布库
 AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还需要导入`libDevice-Service.so`文件（可根据不同cpu做不同选择）
 
->**具体步骤**:把文件拷入你自己的工程的libs目录下并设置依赖
+>**具体步骤**:把文件拷入你自己的工程的libs目录下并设置依赖。
  
 ####开发环境设置
 以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
@@ -18,7 +18,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 ####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 
-> 具体步骤:在启动App的`MainActivity`的`onCreate()`方法中调用此方法来进行初始化
+> 具体步骤:在启动App的`MainActivity`的`onCreate()`方法中调用此方法来进行初始化。
 
 开发阶段，请初始化测试环境
 ```java
@@ -34,20 +34,20 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
      */
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 ```
-在完成测试阶段之后，需要迁移到正式环境下
+在完成测试阶段之后，需要迁移到正式环境下。
 ```java
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 ```
-><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认使用为`4个0加上mac地址`
+><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认使用为`4个0加上mac地址`。
 
 #Demo
-AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里`com.accloud.ac_device_android_demo.config.Config.java`文件里的配置项即可。
+AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里`com.accloud.ac_device_android_demo.config.Config.java`文件里的配置项。
 
 下面以开关灯为例，简要介绍与安卓设备通讯的例子：
 
 ####1、使用KLV消息格式进行通讯
-**在新建产品的时候选择klv通讯协议，并填写数据点与数据包**
-**例如**：以开关灯为例,协议如下:
+**在新建产品的时候选择KLV通讯协议，并填写数据点与数据包**。
+以开关灯为例,协议如下：
 
 ```
 //请求数据包
@@ -107,7 +107,7 @@ AC.handleMsg(new ACMsgHandler() {
 ```
 
 ####2、使用二进制消息格式进行通讯
-**例如**：以开关灯为例,协议如下:
+以开关灯为例，协议如下：
 ```
 //请求数据包
 { 68 ：[

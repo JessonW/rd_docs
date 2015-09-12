@@ -283,7 +283,7 @@
 <h4 id="sdk">SDK发布库</h4>
 <p>AbleCloud发布的安卓设备SDK为<code>ac_device_android.jar</code>，除此之外，还需要导入<code>libDevice-Service.so</code>文件（可根据不同cpu做不同选择）</p>
 <blockquote>
-<p><strong>具体步骤</strong>:把文件拷入你自己的工程的libs目录下并设置依赖</p>
+<p><strong>具体步骤</strong>:把文件拷入你自己的工程的libs目录下并设置依赖。</p>
 </blockquote>
 <h4 id="_3">开发环境设置</h4>
 <p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
@@ -297,7 +297,7 @@
 <h4 id="_4">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。</p>
 <blockquote>
-<p>具体步骤:在启动App的<code>MainActivity</code>的<code>onCreate()</code>方法中调用此方法来进行初始化</p>
+<p>具体步骤:在启动App的<code>MainActivity</code>的<code>onCreate()</code>方法中调用此方法来进行初始化。</p>
 </blockquote>
 <p>开发阶段，请初始化测试环境</p>
 <pre><code class="java">/**
@@ -313,19 +313,19 @@
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 </code></pre>
 
-<p>在完成测试阶段之后，需要迁移到正式环境下</p>
+<p>在完成测试阶段之后，需要迁移到正式环境下。</p>
 <pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 </code></pre>
 
 <blockquote>
-<p><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个<code>物理ID</code>，为保证物理ID的唯一性，默认使用为<code>4个0加上mac地址</code></p>
+<p><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个<code>物理ID</code>，为保证物理ID的唯一性，默认使用为<code>4个0加上mac地址</code>。</p>
 </blockquote>
 <h1 id="demo">Demo</h1>
-<p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息，若想开发自己的工程，则需要通过修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里的配置项即可。</p>
+<p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里的配置项。</p>
 <p>下面以开关灯为例，简要介绍与安卓设备通讯的例子：</p>
 <h4 id="1klv">1、使用KLV消息格式进行通讯</h4>
-<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包</strong>
-<strong>例如</strong>：以开关灯为例,协议如下:</p>
+<p><strong>在新建产品的时候选择KLV通讯协议，并填写数据点与数据包</strong>。
+以开关灯为例,协议如下：</p>
 <pre><code>//请求数据包
 { 68 ：[
      //数据点[key：value(int8)]
@@ -383,7 +383,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 </code></pre>
 
 <h4 id="2">2、使用二进制消息格式进行通讯</h4>
-<p><strong>例如</strong>：以开关灯为例,协议如下:</p>
+<p>以开关灯为例，协议如下：</p>
 <pre><code>//请求数据包
 { 68 ：[
      //关灯(二进制流，由厂商自己解析)

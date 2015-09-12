@@ -427,19 +427,19 @@ start.cmd
 <h2 id="_4">本地启动命令</h2>
 <p>开发者写好服务后，可在本机启动服务进行测试集成或功能测试。</p>
 <p><b><em>linux</em></b>下在终端运行如下命令启动服务进行测试：</p>
-<pre><code class="sh">sh start.sh
+<pre><code class="sh">sh start.sh -m test
 </code></pre>
 
 <p><b><em>windows</em></b>下在cmd中运行如下命令启动服务进行测试：</p>
-<pre><code class="cmd">start.cmd
+<pre><code class="cmd">start.cmd -m test
 </code></pre>
 
-<p>本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分
-1.<strong>linux下使用curl命令</strong></p>
+<p>本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分。</p>
+<p><strong>linux</strong>下使用curl命令</p>
 <pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot;  -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; -d '{&quot;deviceId&quot;:1,&quot;action&quot;:&quot;on&quot;}' 'http://localHost:8080/controlLight'
 </code></pre>
 
-<p>2.<strong>windows下使用curl命令请求</strong></p>
+<p><strong>windows</strong>下使用curl命令请求</p>
 <pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot; -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; --data-ascii &quot;{\&quot;deviceId\&quot;:1,\&quot;action\&quot;:\&quot;on\&quot;}&quot; &quot;http://localHost:8080/controlLight&quot;
 </code></pre>
 
@@ -723,8 +723,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <h2 id="acservice">ACService：自定义后端服务</h2>
 <p>ablecloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:</p>
 <pre><code class="java">public abstract class ACService {
-    // ac是非常重要的ablecloud云框架服务，ablecloud提供了默认实现ACCloud，
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务，后文会有详述
+    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
     protected AC ac;
 
     // 以下信息可用于服务内部追踪问题等用，比如打印到日志中
@@ -811,8 +810,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <h2 id="accronjob">ACCronJob：云端定时任务</h2>
 <p>ablecloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：</p>
 <pre><code class="java">public abstract class ACCronJob {
-    // ac是非常重要的ablecloud云框架服务，ablecloud提供了默认实现ACCloud，
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务，后文会有详述
+    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
     protected AC ac;
 
     // 以下信息可用于任务内部追踪问题等用，比如打印到日志中等。
@@ -825,9 +823,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 
     /**
      * 内部调用接口，开发者不用关注且不能修改。
-     * 设置服务相关的信息，并将全局AC框架传给服务
-     * 服务内部可以使用AC框架提供的各种功能，如
-     * 帐号管理、设备管理、存储服务等
+     * 设置服务相关的信息，并将全局AC框架传给服务。服务内部可以使用AC框架提供的各种功能，如帐号管理、设备管理、存储服务等。
      * @param ac
      * @param config
      */
@@ -842,7 +838,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     }
 
     /**
-     * 内部调用接口，开发者不用关注且不能修改。
+     * 用于获取AC框架。
      * @return AC对象。
      */
     public final AC getAc() {

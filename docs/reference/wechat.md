@@ -1,6 +1,6 @@
 #微信客户端开发参考
 #架构框图
-AbleCloud实现的和微信云端对接，其架构如下：
+AbleCloud实现了和微信的云端对接，其架构如下：
 
 ![arch](../pic/reference/wechat/arch.png)
 
@@ -16,7 +16,7 @@ AbleCloud提供了开发实现AbleCloud与微信云端对接的微信公众号�
 
 - 子目录 lib/bridge
 
-    AbleCloud与第三方云平台对接工具。与微信对接：ACBridgeWeChat
+    AbleCloud与第三方云平台对接的工具。与微信对接：ACBridgeWeChat。
 
 - 子目录 demo
 
@@ -28,7 +28,7 @@ AbleCloud提供了开发实现AbleCloud与微信云端对接的微信公众号�
 
 - 适用PHP版本
 
-    本SDK使用了PHP(v5.6及其后续版本)才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
+    本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
 下文是PHP SDK (v1.2.x)的API说明。
 
@@ -443,7 +443,7 @@ class ACResponse {
     
     /**
      * 取响应的内容。
-     * @return 本方法返回的内容与getResponse()方法返回的内容是一致的。只是从概念上来看，本方法返回的是成功状态下的消息内容。
+     * @return 本方法返回的内容与getErrorMessage()方法返回的内容是一致的。只是从概念上来看，本方法返回的是成功状态下的消息内容。
      */
     public function getResponse();
 }
