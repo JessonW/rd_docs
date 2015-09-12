@@ -258,7 +258,7 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
 <p>为帮助厂商开发支持硬件功能的微信公众号，AbleCloud提供了PHP及Java语言的SDK。厂商的微信公众号主要通过HTML5页面及公众号菜单等界面向用户提供交互功能。</p>
 <h2 id="2">2. 开发前准备工作</h2>
 <h3 id="1_1">(1) 申请微信公众号</h3>
-<p>微信公众号是属于各个厂商，因此，申请公众号这个步骤由厂商完成。申请好后，会得到微信公众平台分配的appID和appsecret。如下图所示：
+<p>微信公众号是属于各个厂商的，因此，申请公众号这个步骤由厂商完成。申请好后，会得到微信公众平台分配的appID和appsecret。如下图所示：
 <img alt="" src="../../pic/develop_guide/weixin.png" />
 微信公众号需要为<strong>服务号</strong>，并开启<strong>设备功能</strong>，如下图：
 <img alt="" src="../../pic/develop_guide/weixin_device_api.png" /></p>
@@ -275,7 +275,7 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
 <ul>
 <li>
 <p>id</p>
-<p>设备的物理ID。AbleCloud要求设备的物理ID为16个字符。</p>
+<p>设备的物理ID。AbleCloud要求非蓝牙设备的物理ID为16个字符，而蓝牙设备的物理ID为10个字符。</p>
 </li>
 <li>
 <p>auth_key, crypt_method, auth_ver</p>
@@ -286,7 +286,7 @@ AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信
 </ul>
 <p>其它参数请根据实际情况配置。</p>
 <p>为方便用户绑定、使用设备，厂商需要为设备创建二维码。微信硬件平台提供了两种创建设备二维码的方法。
-为了满足设备物理ID的长度为16个字符的要求，开发者应使用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>提供的接口创建二维码。</p>
+为了满足设备物理ID的长度为16个字符（蓝牙设备为10个字符）的要求，开发者应使用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>提供的接口创建二维码。</p>
 <h3 id="4">(4) 配置微信公众号菜单</h3>
 <p>创建微信公众号菜单可参考<a href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">微信官方文档</a>。</p>
 <h3 id="5">(5) 开发微信公众号功能</h3></div>
