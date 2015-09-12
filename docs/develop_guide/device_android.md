@@ -59,7 +59,7 @@ AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自�
      { 1 : 1 }
 ]}
 //响应数据包  
-{ 102 ：[
+{ 60 ：[
      //数据点[key：value(int8)]
      //失败
      { 1 : 0 },
