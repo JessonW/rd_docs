@@ -616,7 +616,7 @@ class LightMsg {
 ```
 
 ###LightMsgMarshaller
-该序列化/反序列化器用于序列化智能灯控制消息，如果一个服务会和多类智能设备交互，则在你自定义的marshaller中可以对多中设备消息进行序列化/反序列化操作。
+该序列化/反序列化器用于序列化智能灯控制消息，如果一个服务会和多类智能设备交互，则在你自定义的marshaller中可以对多种设备消息进行序列化/反序列化操作。
 ```java
 package com.ablecloud.demo;
 
