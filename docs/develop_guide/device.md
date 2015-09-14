@@ -547,17 +547,26 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 
 上报数据包=code:201 + req:{1,0,0,0} 
 ```c
-    void AC_SendStatus2Server()
+
+    typedef struct tag_STRU_LED_ONOFF
+    {		
+        u8	     u8LedOnOff ; // 0:关，1：开
+        u8	     u8ControlStatus;//0为APP控制开关，1为按键控制开关	
+        u8	     u8Pad[2];		 
+    }STRU_LED_ONOFF;
+
+    void AC_SendStatus2Server(u8 u8control)
     {
         /*上报demo灯的状态*/
-        STRU_LED_ONOFF struRsp;
+        STRU_LED_ONOFF struReport;
         u16 u16DataLen;
         /*读取demo灯状态*/
-        struRsp.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
-        struRsp.u8LedOnOff = struRsp.u8LedOnOff>>2;
+        struReport.u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
+        struReport.u8LedOnOff = struRsp.u8LedOnOff>>2;
+        struReport.u8ControlStatus = u8control;
         /*构造消息*/
         AC_BuildMessage(201,0,
-                        (u8*)&struRsp, sizeof(STRU_LED_ONOFF),
+                        (u8*)&struReport, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
         /*发送消息*/
@@ -567,10 +576,10 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 ###KLV格式
 参考代码如下：
 
-上报数据包=code:201+key:1 value:int8(0为关闭，1为开启)
+上报数据包=code:201+key:KEY_LED_ON_OFF value:int8(0为关闭，1为开启) + key:KEY_LED_CONTROL_STATUS value:int8(0为APP控制开关，1为按键控制开关) 
 
 ```c
-    void AC_SendStatus2Server()
+    void AC_SendStatus2Server(u8 u8control)
     {
          /*上报demo灯的状态*/
          u8 u8LedOnOff ;
@@ -580,7 +589,8 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
          u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
          u8LedOnOff = u8LedOnOff>>2;
          /*构造KLV消息*/
-         AC_SetKeyValue(pOut,1,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+         AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
+         AC_SetKeyValue(pOut,KEY_LED_CONTROL_STATUS,sizeof(u8value),INT8_TYPE,&u8control);
          /*上报KLV消息*/
          AC_ReportKLVMessage(201, NULL, pOut);
          /*KLV协议内存释放*/
@@ -591,9 +601,10 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 参考代码如下：
 
 用户可调用第三方源码构造JSON格式的消息体。
-控制数据包= code:201 + req:{"switch",1}     
+控制数据包= code:201 + req:{"switch",0为关闭，1为开启} + req:{"switch",0为关闭，1为开启} +(0为APP控制开关，1为按键控制开关) 
+     
 ```c
-    void AC_SendLedStatus2Server()
+    void AC_SendLedStatus2Server(u8 u8control)
     {
          /*上报demo灯的状态*/
         cJSON *root;
@@ -605,7 +616,8 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff>>2;
          /*构造JSON消息体*/
-        cJSON_AddNumberToObject(root,"switch",		u8LedOnOff);
+        cJSON_AddNumberToObject(root,"switch",u8LedOnOff);
+        cJSON_AddNumberToObject(root,"controlstatus",u8control);
         out=cJSON_Print(root);	
         cJSON_Delete(root);
         /*构造消息*/
@@ -632,11 +644,19 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 ###二进制
 参考代码如下：
 
-控制数据包=code:68 + req:{1,0,0,0} 
-
-响应数据包=code:102 + resp:{1,0,0,0}
-
 ```c
+
+    控制数据包=code:68 
+    typedef struct tag_STRU_LED_ONOFF
+    {		
+        u8	     u8LedOnOff ; // 0:关，1：开
+        u8	     u8ControlStatus;//控制消息忽略
+        u8	     u8Pad[2];		 
+    }STRU_LED_ONOFF;
+
+    响应数据包=code:102 
+    byte0:（1：命令执行成功，0：命令执行错误）
+
     void AC_DealLed(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
         u16 u16DataLen;
@@ -664,7 +684,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 
 控制数据点：key:1 value:int8(0为关闭，1为开启)
 
-控制数据包：code:68
+控制数据包：code:69
 
 响应数据点：key:1 value:int8(0为关闭，1为开启)
 
@@ -696,7 +716,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 ###JSON格式
 参考代码如下：
 
-控制数据包= code:68 + req:{"switch",1} 
+控制数据包= code:70 + req:{"switch",1} 
 
 响应数据包= code:102 +resp:{"result",1}
 
