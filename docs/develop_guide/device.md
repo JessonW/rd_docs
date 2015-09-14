@@ -151,7 +151,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 对于通过以太网连接到云端的设备，设备连接到云端成功以后，同样可以在局域网中广播设备的subdomianID和物理ID。
 
-对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomianID和物理ID的二维码。微信的开发准备工作请参考：[开发指导-第三方云对接-微信](third_proxy.md#微信)。
+对于使用微信客户端控制的设备，设备的绑定只能够通过使用微信扫描二维码实现。因此，设备上必须要有包含设备subdomianID和物理ID的二维码。微信的开发准备工作请参考：[开发指导-微信](wechat.md)。
 
 
 ##子设备的绑定
