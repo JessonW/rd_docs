@@ -126,12 +126,6 @@
 </li>
 
                         
-                            
-<li >
-    <a href="../third_proxy/">第三方云对接</a>
-</li>
-
-                        
                         </ul>
                     </li>
                 
@@ -1020,7 +1014,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
-{ 68 ：[
+{ 69 ：[
      //数据点[key：value(int8)]
      //关灯
      { 1 : 0 },
@@ -1042,7 +1036,7 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 //只需要告诉设备指令，而不需要payload时，传null
 req.put(1, 1);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
     @Override
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
@@ -1117,18 +1111,18 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 <h3 id="3json">3、json格式</h3>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
-{ 68 ：[
+{ 70 ：[
      //关灯
-     {&quot;switch&quot;,&quot;close&quot;}
+     {&quot;switch&quot;, 0}
      //开灯
-     {&quot;switch&quot;,&quot;open&quot;}
+     {&quot;switch&quot;, 1}
 ]}
 //响应数据包  
 { 102 ：[
      //失败
-     {&quot;result&quot;,0},
+     {&quot;result&quot;, false},
      //成功   
-     {&quot;result&quot;,1}
+     {&quot;result&quot;, true}
 ]}
 </code></pre>
 
@@ -1150,13 +1144,13 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req),
 
 <h4 id="2_7">2、发送到设备</h4>
 <pre><code class="java">ACObject req = new ACObject();
-req.put(&quot;switch&quot;, &quot;open&quot;);
+req.put(&quot;switch&quot;, 1);
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
-        long result = resp.get(&quot;result&quot;);
-        if (result == 1) {
+        boolean result = resp.get(&quot;result&quot;);
+        if (result) {
             //开灯成功
         } else {
             //开灯失败
