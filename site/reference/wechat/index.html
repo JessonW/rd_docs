@@ -328,7 +328,7 @@
 
 <h1 id="_1">微信客户端开发参考</h1>
 <h1 id="_2">架构框图</h1>
-<p>AbleCloud实现的和微信云端对接，其架构如下：</p>
+<p>AbleCloud实现了和微信的云端对接，其架构如下：</p>
 <p><img alt="arch" src="../../pic/reference/wechat/arch.png" /></p>
 <p>在整个架构中，<code>ac-weixin-server</code>代表厂商的公众号后台服务。</p>
 <h1 id="php-sdk">PHP SDK</h1>
@@ -340,7 +340,7 @@
 </li>
 <li>
 <p>子目录 lib/bridge</p>
-<p>AbleCloud与第三方云平台对接工具。与微信对接：ACBridgeWeChat</p>
+<p>AbleCloud与第三方云平台对接的工具。与微信对接：ACBridgeWeChat。</p>
 </li>
 <li>
 <p>子目录 demo</p>
@@ -352,7 +352,7 @@
 </li>
 <li>
 <p>适用PHP版本</p>
-<p>本SDK使用了PHP(v5.6及其后续版本)才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。</p>
+<p>本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第49行及第81行，去掉行中函数参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。</p>
 </li>
 </ul>
 <p>下文是PHP SDK (v1.2.x)的API说明。</p>
@@ -751,7 +751,7 @@ class ACResponse {
 
     /**
      * 取响应的内容。
-     * @return 本方法返回的内容与getResponse()方法返回的内容是一致的。只是从概念上来看，本方法返回的是成功状态下的消息内容。
+     * @return 本方法返回的内容与getErrorMessage()方法返回的内容是一致的。只是从概念上来看，本方法返回的是成功状态下的消息内容。
      */
     public function getResponse();
 }

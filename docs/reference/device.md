@@ -83,6 +83,9 @@ AC_MessageHead中各个字段的说明：
 |48		|AC_CODE_IS_DEVICEONLINE_REQ|查询子设备是否在线请求|
 |49		|AC_CODE_IS_DEVICEONLINE_RSP|查询子设备是否在线响应|
 |50		|AC_CODE_LEAVE_DEVICE		|从网络中移除子设备|
+|60		|AC_CODE_KLV_RSP			|KLV响应消息|
+|61		|AC_CODE_JSON_RSP			|JSON响应消息|
+|63		|AC_CODE_EXT			|扩展消息|
 |64		|AC_EVENT_BASE			|设备自定义控制消息基址|
 |(64,200)|AC_EVENT_CONTROL_AND_RESPONSE|由服务或APP发给设备的控制消息以及设备的应答消息|
 |[200,255]|	AC_EVENT_DEVICE_REPORT		|设备上报信息|
@@ -318,7 +321,18 @@ OTA升级结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应
 ***Message code 36: AC_CODE_UNBIND***
 
 该消息用以设备解除自己绑定。相当于管理员删除设备。
-
+消息格式定义如下：
+```
+typedef struct
+{   
+    u8 UnbindFlag;//0:解绑，1：重置wifi密码并解绑
+    u8 Pad[3]; 
+}AC_GateWay_Ctrl;
+```
+|名称		|	作用								|
+|-----------|-----------------------------------|
+|UnbindFlag |解绑功能标志位，0:解绑，1：重置wifi密码并解绑|
+|			|	 								|
 ***Message code 45:  AC_CODE_GATEWAY_CTRL***
 
 该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
@@ -374,6 +388,26 @@ typedef struct
     u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 }ZC_SubDeviceInfo;
 ```
+
+***Message code 63:  AC_CODE_EXT ***
+
+设备下发给联网模块，消息定义如下：
+
+```
+typedef struct
+{
+    u8  ExtMsgCode;//扩展消息号
+    u8  Pad[3];            
+}AC_ExtMessageHead;
+```
+扩展消息类型表（ExtMsgCode）如下：
+|ExtMsgCode|	消息类型				|消息类型说明			|
+|-------|-----------------------|-------------------|
+|0		|AC_CODE_EXT_REGSITER		|使用mac地址注册接入请求			|
+|1		|AC_CODE_EXT_REBOOT		|WIFI设备重启	|
+|	     |				|				|
+
+AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体
 
 ***Message code 64:  AC_EVENT_BASE ***
 
