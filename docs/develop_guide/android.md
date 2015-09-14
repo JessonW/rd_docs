@@ -654,7 +654,7 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 **例如**：以开关设备为例,协议如下:
 ```
 //请求数据包
-{ 68 ：[
+{ 69 ：[
      //数据点[key：value(int8)]
      //关灯
      { 1 : 0 },
@@ -676,7 +676,7 @@ ACKLVObject req = new ACKLVObject();
 //只需要告诉设备指令，而不需要payload时，传null
 req.put(1, 1);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
     @Override
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
@@ -751,18 +751,18 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte
 **例如**：以开关设备为例,协议如下:
 ```
 //请求数据包
-{ 68 ：[
+{ 70 ：[
      //关灯
-     {"switch","close"}
+     {"switch", 0}
      //开灯
-     {"switch","open"}
+     {"switch", 1}
 ]}
 //响应数据包  
 { 102 ：[
      //失败
-     {"result",0},
+     {"result", false},
      //成功   
-     {"result",1}
+     {"result", true}
 ]}
 ```
 ####1、设置序列化器
@@ -784,13 +784,13 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ####2、发送到设备
 ```java
 ACObject req = new ACObject();
-req.put("switch", "open");
+req.put("switch", 1);
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
-        long result = resp.get("result");
-        if (result == 1) {
+        boolean result = resp.get("result");
+        if (result) {
             //开灯成功
         } else {
             //开灯失败

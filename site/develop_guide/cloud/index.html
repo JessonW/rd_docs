@@ -467,7 +467,7 @@ start.cmd
 </blockquote>
 <h2 id="demoservice">本机启动DemoService</h2>
 <p><strong>本机启动要求本机上已装jre虚拟机。</strong></p>
-<p>1、首先，从AbleCloud官网下载栏目下载DemoService.zip，解压之后修改config文件夹下的cloudservice-conf.xml文件。</p>
+<p>1、首先，从AbleCloud官网下载栏目下载DemoService.zip，解压后进入package目录，修改config文件夹下的cloudservice-conf.xml文件。</p>
 <pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;configuration&gt;
     &lt;developer&gt;
@@ -499,11 +499,11 @@ start.cmd
 <p><img alt="demoservice_class" src="../../pic/develop_guide/DemoService_Class.png" /></p>
 <p>3、最后我们就可以在本机启动服务并进行测试了。</p>
 <p><b><em>linux</em></b>下在终端运行如下命令启动服务进行测试：</p>
-<pre><code class="sh">sh start.sh -m test
+<pre><code class="sh">sh start.sh
 </code></pre>
 
 <p><b><em>windows</em></b>下在cmd中运行如下命令启动服务进行测试：</p>
-<pre><code class="cmd">start.cmd -m test
+<pre><code class="cmd">start.cmd 
 </code></pre>
 
 <p>本地启动成功后，我们使用curl命令进行开灯测试。</p>
@@ -533,7 +533,7 @@ start.cmd
 </li>
 <li>
 <p><strong>ablecloud</strong></p>
-<p>下载ablecloud-framework-1.1.0.zip并解压。</p>
+<p>下载ablecloud-framework-1.1.0.zip</p>
 </li>
 </ul>
 <h4 id="intellij">Intellij</h4>
@@ -552,7 +552,9 @@ start.cmd
 <p><img alt="name" src="../../pic/reference/intellij/new_project_1_4.png" /></p>
 <p>然后点击<strong>finish</strong>完成新建工程向导。</p>
 <p><img alt="finish" src="../../pic/reference/intellij/new_project_1_5.png" /></p>
-<p>至此，新建工程完成。</p>
+<p>至此，新建工程完成。
+1. <strong>布署AbleCloud框架便于本机测试以及提交版本</strong></p>
+<p>新建package目录，将ablecloud-framework-1.1.0.zip解压到package目录下，参照DemoService（或者拷贝DemoService中整个package目录，除了lib目录下的DemoService-1.1.0.jar文件）。</p>
 </li>
 <li>
 <p><strong>设置工程</strong></p>
@@ -584,11 +586,11 @@ start.cmd
     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
 
     &lt;groupId&gt;com.ablecloud.demo&lt;/groupId&gt;
-    &lt;artifactId&gt;SmartHome&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;artifactId&gt;DemoService&lt;/artifactId&gt;
+    &lt;version&gt;1.1.0&lt;/version&gt;
 
     &lt;properties&gt;
-        &lt;ablecloud.lib.dir&gt;/home/chenpeng/IdeaProjects/ablecloud-framework/target/lib&lt;/ablecloud.lib.dir&gt;
+        &lt;ablecloud.lib.dir&gt;./package/lib&lt;/ablecloud.lib.dir&gt;
     &lt;/properties&gt;
 
     &lt;build&gt;
@@ -606,7 +608,6 @@ start.cmd
                     &lt;/dependency&gt;
                 &lt;/dependencies&gt;
                 &lt;configuration&gt;
-                    &lt;argLine&gt;-Dmode=test&lt;/argLine&gt;
                     &lt;additionalClasspathElements&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.1.0.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ac-java-api-1.0.0.jar&lt;/additionalClasspathElement&gt;
@@ -652,35 +653,43 @@ start.cmd
                     &lt;/execution&gt;
                 &lt;/executions&gt;
                 &lt;configuration&gt;
-                    &lt;outputDirectory&gt;${project.build.directory}/lib&lt;/outputDirectory&gt;
+                    &lt;outputDirectory&gt;${ablecloud.lib.dir}&lt;/outputDirectory&gt;
                 &lt;/configuration&gt;
             &lt;/plugin&gt;
         &lt;/plugins&gt;
     &lt;/build&gt;
 &lt;/project&gt;
 </code></pre>
-<p><font style="background:cyan">完整拷贝该示例pom.xml文件内容，其中绝大部分内容都无须修改，开发者仅需修改如下几个配置项即可：</font></p>
+<p>完整拷贝该示例pom.xml文件内容，其中绝大部分内容都无须修改，开发者仅需修改如下几个配置项即可：</p>
 <pre><code>&lt;project&gt;
     &lt;groupId&gt;your service group id&lt;/groupId&gt;
     &lt;artifactId&gt;your service artifact id&lt;/artifactId&gt;
     &lt;version&gt;your service version&lt;/version&gt;
-    &lt;properties&gt;
-        &lt;ablecloud.lib.dir&gt;unzipped ablecloud lib dir where you put&lt;/ablecloud.lib.dir&gt;
-    &lt;/properties&gt;
 &lt;/project&gt;
 </code></pre>
-<p><font style="background:cyan">注意以下配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</font></p>
+<p>注意以下配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</p>
 </li>
 <li>
 <p><strong>修改配置文件</strong></p>
+<p><service></p>
+<pre><code>&lt;port&gt;8080&lt;/port&gt;
+
+&lt;major-domain&gt;ablecloud&lt;/major-domain&gt;
+
+&lt;sub-domain&gt;demo&lt;/sub-domain&gt;
+</code></pre>
+<p></service>
+</configuration></p>
 <p>配置文件位于AbleCloud发行库的config文件夹下，名字为cloudservice-conf.xml。</p>
 <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;configuration&gt;
     &lt;developer&gt;
+        &lt;!-- 对应 个人信息--&gt;个人信息--&gt;开发者ID --&gt;
         &lt;id&gt;4&lt;/id&gt;
     &lt;/developer&gt;
 
     &lt;authentication&gt;
+        &lt;!-- 对应 密钥对管理--&gt;全部密钥对，选择已启用的随便一对 --&gt;
         &lt;access-key&gt;33df24a54054067e80af49d939b429c2&lt;/access-key&gt;
         &lt;secret-key&gt;5e2fec3440e23c5e807910b13b672015&lt;/secret-key&gt;
         &lt;timeout&gt;5000&lt;/timeout&gt;
@@ -691,21 +700,31 @@ start.cmd
     &lt;/framework&gt;
 
     &lt;service&gt;
-        &lt;name&gt;SmartHome&lt;/name&gt;
+        &lt;!-- 此处为继承ACService的类的名称以及其相对路径 --&gt;
+        &lt;name&gt;DemoService&lt;/name&gt;
         &lt;class&gt;com.ablecloud.demo.DemoService&lt;/class&gt;
-        &lt;port&gt;1234&lt;/port&gt;
+        &lt;!-- 此处为本机启动的端口号 --&gt;
+        &lt;port&gt;8080&lt;/port&gt;
+        &lt;!-- 对应 产品管理--&gt;产品列表--&gt;主域名 --&gt;
         &lt;major-domain&gt;ablecloud&lt;/major-domain&gt;
+        &lt;!-- 对应 产品管理--&gt;产品列表--&gt;子域 --&gt;
         &lt;sub-domain&gt;demo&lt;/sub-domain&gt;
+
+        &lt;!-- 以下为主版本号，副版本号，修订版本号 --&gt;
         &lt;major-version&gt;1&lt;/major-version&gt;
         &lt;minor-version&gt;0&lt;/minor-version&gt;
         &lt;patch-version&gt;0&lt;/patch-version&gt;
     &lt;/service&gt;
 &lt;/configuration&gt;
 </code></pre>
+<p>至此，即完成新建一个工程所需的所有准备以及环境配置，接下来就可以进行真正的程序编写了</p>
 <blockquote>
-<p><font color="brown"><strong>注:</strong>开发者id，access-key，secret-key等信息，均能通过登录AbleCloud网站（开发者管理控制台）获取。
-除了<strong>service.class</strong>配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。</font></p>
+<p><font color="brown"><strong>注:</strong></font>开发者id，access-key，secret-key等信息，均能通过登录AbleCloud网站（开发者管理控制台）获取。除了<strong>service.class</strong>配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。</p>
 </blockquote>
+</li>
+<li>
+<p><strong>新建Class并继承ACService</strong></p>
+<p>参照DemoService或者reference里ACSevice介绍</p>
 </li>
 <li>
 <p><strong>编译单测</strong></p>
@@ -713,14 +732,14 @@ start.cmd
 </li>
 <li>
 <p><strong>本地运行</strong></p>
-<p>如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下，在AbleCloud的框架主目录执行AbleCloud提供的脚本<code>sh start.sh -m test</code>或<code>start.cmd -m test</code>，即可在您的开发机上启动您编写好的服务程序。</p>
+<p>如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下，在AbleCloud的框架主目录执行AbleCloud提供的脚本<code>sh start.sh</code>或<code>start.cmd</code>，即可在您的开发机上启动您编写好的服务程序。</p>
 <blockquote>
-<p><font color="brown"><strong>注：</strong>在本机上运行服务测试时必须加<strong>-m test</strong>参数，否则无法启动服务。服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。</font></p>
+<p><font color="brown"><strong>注：</strong></font>服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。</p>
 </blockquote>
 </li>
 <li>
 <p><strong>提交到平台</strong></p>
-<p>将你编译好的服务jar包（位于你服务代码主目录下的target/lib文件夹中，如<code>~/SmartHome/target/lib/SmartHome-1.0.0.jar</code>）放入AbleCloud框架的lib目录下，然后将AbleCloud的config目录、lib目录、start.sh打成zip包，通过AbleCloud的web平台提交。</p>
+<p>将AbleCloud框架放在pac的lib目录下，然后将AbleCloud的config目录、lib目录、start.sh打成zip包，通过AbleCloud的web平台提交。</p>
 </li>
 </ol>
 <h4 id="eclipse">Eclipse</h4>
