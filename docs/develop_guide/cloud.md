@@ -270,15 +270,6 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
         
 1. **修改配置文件**
 
-	<service>
-		
-		<port>8080</port>
-		
-		<major-domain>ablecloud</major-domain>
-		
-		<sub-domain>demo</sub-domain>
-	</service>
-</configuration>
 
 	配置文件位于AbleCloud发行库的config文件夹下，名字为cloudservice-conf.xml。
     
