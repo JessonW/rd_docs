@@ -318,14 +318,15 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     		</service>
 		</configuration>
 	
-    至此，即完成新建一个工程所需的所有准备以及环境配置，接下来就可以进行真正的程序编写了
     
     ><font color="brown">**注:**</font>开发者id，access-key，secret-key等信息，均能通过登录AbleCloud网站（开发者管理控制台）获取。除了**service.class**配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。
     
 1. **新建Class并继承ACService**
+ 
+    至此，即完成新建一个工程所需的所有准备以及环境配置，接下来就可以进行真正的程序编写了
 
     参照DemoService或者reference里ACSevice介绍
-
+    
 1. **编译单测**
 
 	在IDE的终端（terminal）或系统终端中运行命令`mvn package`即可完整的执行编译、单元测试（如果写了单测代码的话）。
