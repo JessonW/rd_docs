@@ -448,11 +448,10 @@ import java.util.List;
 
 public class DemoService extends ACService {
     private static final Logger logger = LoggerFactory.getLogger(DemoService.class);
-    private static final String DATA_CLASS_NAME = "light-action-data";
-    private static final long FROM_APP = 0;
-    private static final long FROM_SWITCH = 1;
+    private static final String DATA_CLASS_NAME = "light_action_data";
 
-	/**
+
+    /**
      * 重载init函数。
      * 因为我们的服务要处理和设备交互的消息，因此在该函数中将序列化/反序列化器设置到ac框架中。
      *
@@ -462,11 +461,11 @@ public class DemoService extends ACService {
         ac.setDeviceMsgMarshaller(new LightMsgMarshaller());
     }
 
-	/**
+    /**
      * 处理来自APP或其它service发来消息的入口函数
      *
-     * @param req   请求消息
-     * @param resp  响应消息
+     * @param req  请求消息
+     * @param resp 响应消息
      * @throws Exception
      */
     public void handleMsg(ACMsg req, ACMsg resp) throws Exception {
@@ -487,64 +486,59 @@ public class DemoService extends ACService {
         }
     }
 
-	/**
+    /**
      * 处理来自设备上报消息的入口函数
      *
-     * @param context       上下文信息，在设备联动情况下，可能会跨子域访问
-     * @param deviceId      设备的逻辑id
-     * @param req           设备上报消息
+     * @param context          上下文信息，在设备联动情况下，可能会跨子域访问
+     * @param deviceId         设备的逻辑id
+     * @param physicalDeviceId 设备的物理id
+     * @param req              设备上报消息
      * @throws Exception
      */
-    public void handleDeviceMsg(ACContext context, long deviceId, ACDeviceMsg req) throws Exception {
+    public void handleDeviceMsg(ACContext context, long deviceId, String physicalDeviceId, ACDeviceMsg req) throws Exception {
         Integer msgCode = req.getCode();
         switch (msgCode) {
-            case LightMsg.CODE:
-                handleLightReport(context, subDomain, deviceId, req);
+            case LightMsg.REPORT_CODE:
+                handleLightReport(context, deviceId, req);
                 break;
             default:
                 logger.warn("got an unknown report, opcode[" + msgCode + "]");
         }
     }
 
-	//////////////////////////////////////
+    //////////////////////////////////////
     // 具体的私有handler
 
     /**
-     *  处理来自APP端的智能灯控制命令，再将命令发往具体的设备
+     * 处理来自APP端的智能灯控制命令，再将命令发往具体的设备
+     * <p/>
+     * 实际上，厂商在实现后端服务的时候，通常情况下自定义服务不用处理APP端发来的设备控制请求也
+     * 能实现远程控制。因为ablecloud在云端提供了设备管理服务，APP通过APP端的sendToDevice
+     * 接口可以将控制命令远程发往ablecloud的设备管理服务，设备管理服务再将控制命令发给设备。
+     * <p/>
+     * 本示例在开发者自定义的这个服务中实现对灯的控制，一方面是为了展示后端服务的灵活性，可以作
+     * 各种事情，包括对设备的控制，比如后端服务在多设备联动的时候，可能会主动往设备发控制命令。
      *
-     *  实际上，厂商在实现后端服务的时候，通常情况下自定义服务不用处理APP端发来的设备控制请求也
-     *  能实现远程控制。因为ablecloud在云端提供了设备管理服务，APP通过APP端的sendToDevice
-     *  接口可以将控制命令远程发往ablecloud的设备管理服务，设备管理服务再将控制命令发给设备。
-     *
-     *  本示例在开发者自定义的这个服务中实现对灯的控制，一方面是为了展示后端服务的灵活性，可以作
-     *  各种事情，包括对设备的控制，比如后端服务在多设备联动的时候，可能会主动往设备发控制命令。
-     *  另外一方面，为了将控制数据存入ablecloud提供的云存储服务中以供查询之用。
-     *
-     * @param req       请求消息
-     * @param resp      响应消息
+     * @param req  请求消息
+     * @param resp 响应消息
      * @throws Exception
      */
     private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
         Long lightId = req.get("deviceId");
         String action = req.get("action");
-        byte deviceAction = LightMsg.OFF;
+        byte deviceAction;
         if (action.equalsIgnoreCase("on")) {
             deviceAction = LightMsg.ON;
-        }
-        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction));
+        } else
+            deviceAction = LightMsg.OFF;
+        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction, LightMsg.FROM_APP));
         ACDeviceMsg deviceRespMsg;
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
             deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg);
-            // do some check of deviceRespMsg.getCode()
-            resp.put("code", deviceRespMsg.getCode());
-            long timestamp = System.currentTimeMillis();
-            // 通过ac框架，将APP对智能灯的控制数据存入云端存储
-            ac.store(DATA_CLASS_NAME, req.getContext())
-                    .create("deviceId", lightId, "time", timestamp)
-                    .put("action", (long) deviceAction)
-                    .put("type", FROM_APP)
-                    .execute();
+            // 获取控制开关结果
+            byte result = (Byte) deviceRespMsg.getContent();
+            resp.put("result", result == 1 ? "success" : "fail");
             resp.setAck();
             logger.info("handle control light ok, action[" + action + "].");
         } catch (ACServiceException e) {
@@ -553,35 +547,36 @@ public class DemoService extends ACService {
         }
     }
 
-	/**
+    /**
      * 处理智能灯汇报的消息，在该函数中，服务还将收到的汇报数据写入ablecloud提供的云端存储中。
      *
-     * @param context   汇报设备的上下文数据，包括主域/子域等。
-     * @param deviceId  汇报设备的逻辑id
-     * @param req       汇报的消息
+     * @param context  汇报设备的上下文数据，包括主域/子域等。
+     * @param deviceId 汇报设备的逻辑id
+     * @param req      汇报的消息
      * @throws Exception
      */
     private void handleLightReport(ACContext context, long deviceId, ACDeviceMsg req) throws Exception {
         try {
             LightMsg lightMsg = (LightMsg) req.getContent();
-            long onOff = lightMsg.getLedOnOff();
+            byte onOff = lightMsg.getLedOnOff();
+            byte type = lightMsg.getType();
             long timestamp = System.currentTimeMillis();
             // 通过ac框架，将智能灯汇报的数据存入云端存储
             ac.store(DATA_CLASS_NAME, context)
                     .create("deviceId", deviceId, "time", timestamp)
                     .put("action", onOff)
-                    .put("type", FROM_SWITCH)
+                    .put("type", type)
                     .execute();
         } catch (ACServiceException e) {
             logger.error("handle light report error:", e);
         }
     }
 
-	/**
+    /**
      * 处理APP端发来的数据查询，并将查询到的智能等开/关记录数据返回
      *
-     * @param req       请求消息
-     * @param resp      响应消息
+     * @param req  请求消息
+     * @param resp 响应消息
      * @throws Exception
      */
     private void handleQueryData(ACMsg req, ACMsg resp) throws Exception {
@@ -613,31 +608,30 @@ package com.ablecloud.demo;
 
 class LightMsg {
     public static final int CODE = 68;
+    public static final int RESP_CODE = 102;
     public static final int REPORT_CODE = 203;
+
+    //0代表关，1代表开
     public static final byte ON = 1;
     public static final byte OFF = 0;
-    private byte ledOnOff;				// 1表示开灯，0表示关灯
-    private byte[] pad;
+    //控制类型，0代表app控制，1代表物理开关控制
+    public static final byte FROM_APP = 0;
+    public static final byte FROM_SWITCH = 1;
 
-    public LightMsg(byte ledOnOff) {
+    private byte ledOnOff;
+    private byte type;
+
+    public LightMsg(byte ledOnOff, byte type) {
         this.ledOnOff = ledOnOff;
-        pad = new byte[3];
+        this.type = type;
     }
 
-    public void setLedOnOff(byte ledOnOff) {
-        this.ledOnOff = ledOnOff;
-    }
-
-    public void setPad(byte[] pad) {
-        this.pad = pad;
-    }
-
-    byte getLedOnOff() {
+    public byte getLedOnOff() {
         return ledOnOff;
     }
 
-    byte[] getPad() {
-        return pad;
+    public byte getType() {
+        return type;
     }
 }
 ```
@@ -657,11 +651,11 @@ import org.slf4j.LoggerFactory;
 public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
     private static final Logger logger = LoggerFactory.getLogger(LightMsgMarshaller.class);
 
-	/**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络传输给设备
+    /**
+     * 将具体的ACDeviceMsg序列化成字节数组，用于控制灯时通过网络传输给灯
      *
-     * @param msg       设备消息
-     * @return          序列化后的字节数组
+     * @param msg 设备消息
+     * @return 序列化后的字节数组
      * @throws Exception
      */
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
@@ -669,44 +663,43 @@ public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
         ByteBuffer bb;
         switch (msgCode) {
             case LightMsg.CODE:
-            case LightMsg.REPORT_CODE:
-                LightMsg lightMsg = (LightMsg)msg.getContent();
+                LightMsg lightMsg = (LightMsg) msg.getContent();
                 bb = ByteBuffer.allocate(4);
                 bb.put(lightMsg.getLedOnOff());
-                bb.put(lightMsg.getPad());
+                byte[] pad = new byte[3];
+                bb.put(pad);
                 return bb.array();
             default:
                 logger.warn("got an unknown msgCode[" + msgCode + "]");
-                throw new IllegalArgumentException("got an unknown msgCode[" + msgCode + "]");
+                return null;
         }
     }
 
-	/**
+    /**
      * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
      *
-     * @param msgCode   消息码，ablcloud也称为操作码opCode
-     * @param payload   设备消息序列化后的字节数组
-     * @return          设备消息
+     * @param msgCode 消息码，ablecloud也称为操作码opCode
+     * @param payload 设备消息序列化后的字节数组
+     * @return 设备消息
      * @throws Exception
      */
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        if (payload == null || payload.length == 0) {
-            logger.warn("input payload is empty.");
-            throw new IllegalArgumentException("empty payload");
-        }
-
         ByteBuffer bb;
         switch (msgCode) {
-            case LightMsg.CODE:
+            case LightMsg.RESP_CODE:
+                bb = ByteBuffer.wrap(payload);
+                byte result = bb.get();
+                return new ACDeviceMsg(msgCode, result);
             case LightMsg.REPORT_CODE:
                 bb = ByteBuffer.wrap(payload);
                 byte ledOnOff = bb.get();
-                byte[] pad = new byte[3];
+                byte ledType = bb.get();
+                byte[] pad = new byte[2];
                 bb.get(pad);
-                return new ACDeviceMsg(msgCode, new LightMsg(ledOnOff));
+                return new ACDeviceMsg(msgCode, new LightMsg(ledOnOff, ledType));
             default:
                 logger.warn("got an unknown msgCode[" + msgCode + "]");
-                throw new IllegalArgumentException("got an unknown msgCode[" + msgCode + "]");
+                return null;
         }
     }
 }
@@ -768,7 +761,7 @@ public class DemoCronJob extends ACCronJob {
 ```java
 package com.ablecloud.demo;
 
-import com.ablecloud.service.ACDeviceMsg;
+import com.ablecloud.common.ACDeviceMsg;
 
 import org.junit.After;
 import org.junit.Before;
@@ -781,30 +774,30 @@ public class LightMsgMarshallerTest {
     }
 
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
     }
 
     @Test
     public void testLightMsg() {
-        byte ledOnOff = 1;
-        LightMsg msg = new LightMsg(ledOnOff);
+        LightMsg msg = new LightMsg(LightMsg.ON, LightMsg.FROM_APP);
         LightMsgMarshaller marshaller = new LightMsgMarshaller();
-        ACDeviceMsg deviceMsg = new ACDeviceMsg(68, msg);
-        byte[] result = null;
+        ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.CODE, msg);
+        byte[] req = null;
         try {
-            result = marshaller.marshal(deviceMsg);
-            assertNotNull(result);
-            assertEquals(4, result.length);
+            req = marshaller.marshal(deviceMsg);
+            assertNotNull(req);
+            assertEquals(4, req.length);
         } catch (Exception e) {
             System.out.println("marshal light msg error: " + e.toString());
             fail("test marshal light msg fail");
         }
 
         try {
-            ACDeviceMsg newDeviceMsg = marshaller.unmarshal(68, result);
-            assertEquals(68, newDeviceMsg.getCode());
-            LightMsg newMsg = (LightMsg)(newDeviceMsg.getContent());
-            assertEquals(1, newMsg.getLedOnOff());
+            byte[] resp = new byte[]{LightMsg.ON, 0, 0, 0};
+            ACDeviceMsg respDeviceMsg = marshaller.unmarshal(LightMsg.RESP_CODE, resp);
+            assertEquals(LightMsg.RESP_CODE, respDeviceMsg.getCode());
+            byte result = (Byte) (respDeviceMsg.getContent());
+            assertEquals(1, result);
         } catch (Exception e) {
             System.out.println("unmarshal light msg error: " + e.toString());
             fail("test unmarshal light msg fail");
@@ -839,6 +832,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * Created by chenpeng on 15-1-18.
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DemoServiceTest {
     // 我们会在多个测试case中用到以下的成员，并且只需要初始化一次，
@@ -864,18 +860,7 @@ public class DemoServiceTest {
             // 使用开发者权限创建一个测试账号
             account = ac.accountMgrForTest(ac.newContext()).register("test@ablecloud.cn", "13100000000", "pswd");
             // 使用注册的测试账号绑定一个虚拟的测试设备
-            light = ac.bindMgrForTest(ac.newContext(account.getUid())).bindDevice("1234567812345678", "light1");
-            // 创建数据集表（若已在平台上填写过数据集，则此处无需创建）
-            ac.storeForTest(ac.newContext()).createClass("light_action_data")
-                    .addColumn("deviceId", ACStore.INT_TYPE, 20)
-                    .addColumn("time", ACStore.INT_TYPE, 20)
-                    .addColumn("action", ACStore.INT_TYPE, 20)
-                    .addColumn("type", ACStore.INT_TYPE, 20)
-                    .setEntityGroupKeys("deviceId")
-                    .setPrimaryKeys("deviceId", "time")
-                    .execute();
-            // 创建数据分类是一个异步操作，在真正开始测试前，睡眠一段时间（这里是3秒）
-            Thread.sleep(3000);     
+            light = ac.bindMgrForTest(ac.newContext(account.getUid())).bindDevice("11111111", "light1");
         } catch (Exception e) {
             e.printStackTrace();
             fail("set up fail");
@@ -887,9 +872,10 @@ public class DemoServiceTest {
     public static void tearDown() throws Exception {
         // 执行完test后，需要解绑setUp绑定的测试设备，同时注销测试账号，确保下次单测能顺利通过
         ac.bindMgrForTest(ac.newContext(account.getUid())).unbindDevice(light.getId());
-        ac.accountMgrForTest(ac.newContext()).deleteAccount("13100000000");  
-        // 若setUp没有创建数据集，则此处无需删除表
-        ac.storeForTest(ac.newContext()).deleteClass("light_action_data")
+        // 注意，这里需要传入开发者context
+        ac.accountMgrForTest(ac.newContext()).deleteAccount("13100000000");
+        // 清除store开关记录的所有数据
+        ac.storeForTest(ac.newContext()).clearClass("light_action_data")
                 .execute();
     }
 
@@ -898,8 +884,8 @@ public class DemoServiceTest {
         try {
             // 创建一个用户的context
             ACContext context = ac.newContext(account.getUid());
-            // 添加一个灯的桩，子域为"light"
-            demoService.addDeviceStub(config.getSubDomain(), new LightStub());    
+            // 添加一个灯的桩
+            demoService.addDeviceStub(config.getSubDomain(), new LightStub());
 
             // 下面构造client发送的请求参数
             ACMsg req = new ACMsg();
@@ -913,8 +899,18 @@ public class DemoServiceTest {
             // 这里直接调用服务的处理handler，驱动测试
             demoService.handleMsg(req, resp);
             // 服务发送消息给设备后，设备会将处理结果代码返回
-            // 在我们实现的LightStub中，返回的code为102，比较结果是否正确
-            assertEquals(102, resp.get("code"));
+            // 在我们实现的LightStub中，比较结果是否正确
+            assertEquals("success", resp.get("result"));
+            // 成功打开灯之后，模拟设备进行数据上报
+            try {
+                ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new LightMsg(LightMsg.ON, LightMsg.FROM_APP));
+                // 这里直接调用服务的设备消息处理handler，驱动测试
+                // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
+                demoService.handleDeviceMsg(ac.newContext(), light.getId(), light.getPhysicalId(), deviceMsg);
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail("test light report fail");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             fail("test control light fail");
@@ -925,9 +921,8 @@ public class DemoServiceTest {
     public void test2LightReportAndQuery() throws Exception {
         // 先测试智能灯上报消息，将上报数据写入云端存储中
         try {
-            int opCode = LightMsg.REPORT_CODE;           // 灯上报时的命令号
-            LightMsg lightMsg = new LightMsg((byte) 1);  // 1--on
-            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(opCode, lightMsg);
+            LightMsg lightMsg = new LightMsg(LightMsg.ON, LightMsg.FROM_SWITCH);  // 1--on
+            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, lightMsg);
             // 这里直接调用服务的设备消息处理handler，驱动测试
             // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
             demoService.handleDeviceMsg(ac.newContext(1), light.getId(), light.getPhysicalId(), acDeviceMsg);
@@ -960,6 +955,7 @@ public class DemoServiceTest {
         }
     }
 }
+
 ```
 
 ><font color="red">**注意：**可以看到，所有的单元测试用例均是直接调用`handleMsg`或`handleDeviceMsg`驱动测试，无需编写或使用client工具。
@@ -980,9 +976,6 @@ import org.slf4j.LoggerFactory;
 public class LightStub extends ACDeviceStub {
     private static final Logger logger = LoggerFactory.getLogger(LightStub.class);
 
-	/**
-     * 收到控制灯的命令，并做出相应。这里响应的code为102
-     */
     public void handleControlMsg(String majorDomain, String subDomain,
                                  ACDeviceMsg req, ACDeviceMsg resp) throws Exception {
         int code = req.getCode();
@@ -990,10 +983,9 @@ public class LightStub extends ACDeviceStub {
             logger.warn("got an incorrect opcode[" + code + "]");
             return;
         }
-        resp.setCode(102);		// return code from light is 102
-        LightMsg reqMsg = (LightMsg)req.getContent();
-        LightMsg respMsg = new LightMsg(reqMsg.getLedOnOff());
-        resp.setContent(respMsg);
+        resp.setCode(LightMsg.RESP_CODE);
+        LightMsg reqMsg = (LightMsg) req.getContent();
+        resp.setContent((byte) 1);
     }
 }
 ```
