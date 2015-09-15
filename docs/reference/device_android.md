@@ -78,15 +78,21 @@ public class ACDeviceMsg {
     //若使用通讯协议为KLV格式，则通过getKLVObject获取消息req
     public ACKLVObject getKLVObject() {}
     
-    //若使用通讯协议为KLV格式，则通过setKLVObject设置resp
+    //若使用通讯协议为KLV格式，则通过setKLVObject设置resp（注意resp不需设置msgCode）
     public void setKLVObject(ACKLVObject object) {} 
 	       
-	//若使用通讯协议为二进制或json格式，则通过getPayload获取消息req
+	//若使用通讯协议为二进制格式，则通过getPayload获取消息req
     public byte[] getPayload() {}
     
-    //若使用通讯协议为二进制或json格式，则通过setPayload设置resp
+    //若使用通讯协议为二进制格式，则通过setPayload设置resp
     public void setPayload(byte[] payload) {}
-    
+
+    //若使用通讯协议为json格式，则通过getJsonPayload获取消息req
+    public String getJsonPayload() {}
+
+    //若使用通讯协议为json格式，则通过getJsonPayload设置resp（注意resp不需设置msgCode）
+    public void setJsonPayload(String payload) {}
+
     /**
      * 判断消息下发控制对象
      *
@@ -195,11 +201,11 @@ public class AC {
     public static void init(Context context, long MajorDomainId, long SubDomainId, String secretKey, String version, int mode) {}
 
     /**
-     * 获取本机Mac地址，即AbleCloud物理Id，可用于生成二维码进行绑定
+     * 获取AbleCloud物理Id，即4个0加上本机Mac地址,可用于生成二维码进行绑定
      *
      * @return 物理Id
      */
-    public static String getMacAddress() {}
+    public static String getPhysicalDeviceId() {}
     
     /**
      * 设置安卓设备连接状态的监听器
