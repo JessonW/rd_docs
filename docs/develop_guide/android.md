@@ -7,7 +7,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 
 ><font color="red">注意:</font>
 
->1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下
+>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下;若使用庆科MX模块，则需要添加MX文件夹下的jar包到libs目录下；其他模块由sdk内部集成
 
 >2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下
 
@@ -162,10 +162,13 @@ AC.init(this, MajorDomain, MajorDomainId);
         }
 	});
 ```
+><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用
 
 ##三、添加帐号扩展属性
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
+
+**步骤**：登录AbleCloud平台-->用户管理-->附加属性-->新建
 
 ####1、获取账号管理器
 ```java
@@ -175,9 +178,9 @@ accountMgr=AC.accountMgr();
 ####2、设置用户自定义扩展属性
 ```java
 ACObject userProfile = new ACObject();
-//注意此处put进去的key与value类型需要跟平台添加的附加属性一致
-userProfile.put("c1", "北京");
-userProfile.put("c2", "生日");
+//注意此处put进去的key与value类型对应新建扩展属性时填写的属性标识与属性类型
+userProfile.put("city"， "北京")
+userProfile.put("birthday", "1989-10-13")
 accountMgr.setUserProfile(userProfile, new VoidCallback() {
     @Override
     public void success() {
@@ -197,6 +200,8 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
      @Override
      public void success(ACObject object) {
          //可通过object.toString()查看扩展属性信息
+         String city = object.get("city");
+         String birthday= object.get("birthday");
      }
 
      @Override
@@ -214,7 +219,7 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
 
-**用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。**
+用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
 
 ![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
@@ -227,8 +232,8 @@ Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
-><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的开发板，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有`AC.DEVICE_MTK`、`AC.DEVICE_MX`、`AC.DEVICE_MARVELL`、`AC.DEVICE_MURATA`、`AC.DEVICE_WM`、`AC.DEVICE_RAK`。
+><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
+目前支持的wifi模块有`AC.DEVICE_MTK`、`AC.DEVICE_MX`、`AC.DEVICE_MARVELL`、`AC.DEVICE_MURATA`、`AC.DEVICE_WM`、`AC.DEVICE_RAK`。
 
 ####2.获取WiFi SSID
 ```java
@@ -236,7 +241,7 @@ deviceActivator. getSSID()
 ```
 
 ####3.激活设备
-APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。只支持配置手机当前连接的WiFi。
 
 ```java
 deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback<List<ACDeviceBind>>() {
@@ -289,7 +294,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 + **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；**
 + **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
 
-####1、管理员直接分享设备给普通用户
+####1、管理员直接分享设备给已注册的普通用户
 ```java
 bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
     @Override
@@ -335,7 +340,6 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
 ###三．设备解绑
 
 ####1、管理员或普通用户解绑设备
-<font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
 ```java
 bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     @Override
@@ -349,6 +353,7 @@ bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     }
 });
 ```
+><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
 
 ####2、管理员取消其他普通成员对该设备的控制权
 ```java
@@ -386,8 +391,8 @@ AbleCloud提供了ACDeviceActivitor激活器供你使用。
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
-<font color="red">注</font>：AC.DEVICE_HF表示汉枫的开发板，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。
+<font color="red">注</font>：AC.DEVICE_HF表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要修改。
+目前支持的wifi模块有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。
 
 ####2.得到WiFi SSID
 ```java
@@ -395,7 +400,7 @@ deviceActivator. getSSID()
 ```
 
 ####3.激活网关
-APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。只支持配置手机当前连接的WiFi。
 ```java
 deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback<List<ACDeviceBind>>() {
     @Override
@@ -449,7 +454,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 AC.bindMgr().openGatewayMatch(subDomain, gatewayDeviceId, AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new VoidCallback(){
     @Override
     public void success() {
-        //由于子设备接入网关是一个异步的过程，所以建议在这里new一个timer去定时获取新加入的子设备列表
+        //由于子设备接入网关是一个异步的过程，所以建议在这里new一个Timer去定时获取新加入的子设备列表，在activity退出时停止Timer
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -561,9 +566,9 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 
 ><font color="red">特别注意</font>：
 
->1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
+>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。
 
->2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。
+>2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
 
 ####添加设备到Home里
 创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
@@ -608,10 +613,8 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 ```java
 ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
-deviceProfile.put("String", "北京");
-deviceProfile.put("Integer", 10);
-deviceProfile.put("Float", 10.1f);
-deviceProfile.put("Bool", true);
+deviceProfile.put("city", "北京");
+deviceProfile.put("isBound", true);
 bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() {
     @Override
     public void success() {
@@ -632,6 +635,9 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
     public void success(ACObject object) {
          //成功获取并查看设备扩展属性信息
          LogUtil.i("TAG",object.toString());
+         String city = object.get("city");
+         Boolean isBound = object.get("isBound");
+         ...
     }
 
     @Override
@@ -654,7 +660,7 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 **例如**：以开关设备为例,协议如下:
 ```
 //请求数据包
-{ 68 ：[
+{ 69 ：[
      //数据点[key：value(int8)]
      //关灯
      { 1 : 0 },
@@ -665,27 +671,27 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 { 60 ：[
      //数据点[key：value(int8)]
      //失败
-     { 1 : 0 },
+     { 1 : false },
      //成功      
-     { 1 : 1 }
+     { 1 : true }
 ]}
 ```
 截取开灯代码，如下:
 ```java
 ACKLVObject req = new ACKLVObject();
-//只需要告诉设备指令，而不需要payload时，传null
+//对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(1, 1);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
     @Override
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
         //发送成功并接收设备的响应消息
-        int value = resp.get(1);
-        if(value==0){
-            //开灯失败
-        }else if(value==1){
+        boolean result = resp.get(1);
+        if(result) {
             //开灯成功
+        } else {
+            //开灯失败
         }
     }
 
@@ -751,18 +757,18 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte
 **例如**：以开关设备为例,协议如下:
 ```
 //请求数据包
-{ 68 ：[
+{ 70 ：[
      //关灯
-     {"switch","close"}
+     {"switch", 0}
      //开灯
-     {"switch","open"}
+     {"switch", 1}
 ]}
 //响应数据包  
 { 102 ：[
      //失败
-     {"result",0},
+     {"result", false},
      //成功   
-     {"result",1}
+     {"result", true}
 ]}
 ```
 ####1、设置序列化器
@@ -784,13 +790,13 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ####2、发送到设备
 ```java
 ACObject req = new ACObject();
-req.put("switch", "open");
+req.put("switch", 1);
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
-        long result = resp.get("result");
-        if (result == 1) {
+        boolean result = resp.get("result");
+        if (result) {
             //开灯成功
         } else {
             //开灯失败
@@ -830,6 +836,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。
 
+><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。
 ![cloud_syn](../pic/develop_guide/cloud_syn.png)
 
 ####1、获取实时消息管理器
@@ -859,7 +866,7 @@ ACPushTable table = new ACPushTable();
 table.setClassName("test_class");
 //设置订阅的columns行
 table.setColumes(new String[]{"status", "pm25"});
-//设置监听主键，此处对应添加数据集时的监控主键
+//设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
 ACObject primaryKey = new ACObject();
 primaryKey.put("deviceId", "10000");
 table.setPrimaryKey(primaryKey);
@@ -953,12 +960,12 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
     }
 });
 ```
-此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
+此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
 ```java
 //当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
 AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
     @Override
-    public void success(List<ACDeviceFind> acDeviceFinds) {
+    public void success(List<ACDeviceFind> acDeviceFin****ds) {
         //发现局域网设备，根据ACDeviceFind更新局域网在线状态或者重新获取设备列表
         getDeviceList();
     }
@@ -1014,7 +1021,7 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
 
 ```java
-//设置序列化器，若有klv格式类型，则无需此步骤
+//设置序列化器，若为klv格式类型，则无需此步骤
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
@@ -1030,7 +1037,7 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```
 
 ```java
-//若为二进制或klv格式，则msg需要先经过序列化器进行序列化
+//若为二进制或json格式，则msg需要先经过序列化器进行序列化
 timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new VoidCallback() {
      @Override
      public void success() {
@@ -1373,7 +1380,7 @@ notificationMgr.init();
 
 ####3、在登录成功之后添加推送别名
 ```java
-notificationMgr.addAlias(info.getUserId(), new VoidCallback() {
+notificationMgr.addAlias(userId, new VoidCallback() {
     @Override
     public void success() {
         //别名添加成功
@@ -1479,7 +1486,8 @@ ACFileMgr fileMgr = AC.fileMgr();
 ###1、获取下载url
 ```java
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
-fileMgr.getDownloadUrl(fileInfo, new PayloadCallback<String>() {
+//0代表url链接有效时间为长期有效
+fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
     @Override
     public void success(String url) {
          //成功获取文件url
@@ -1553,7 +1561,7 @@ acl.setUserDeny(ACACL.OpType.READ, 1);
 //设置白名单，userId为1的用户有写的权限
 acl.setUserAccess(ACACL.OpType.WRITE, 1);
 ```
-<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
  
 ###2、上传文件
 ####1)、上传sdcard文件

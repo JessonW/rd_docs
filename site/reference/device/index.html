@@ -116,19 +116,7 @@
                         
                             
 <li >
-    <a href="../../develop_guide/device_linux/">设备-linux系统</a>
-</li>
-
-                        
-                            
-<li >
     <a href="../../develop_guide/cloud/">云端服务</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../../develop_guide/third_proxy/">第三方云对接</a>
 </li>
 
                         
@@ -168,12 +156,6 @@
                             
 <li >
     <a href="../device_android/">设备-安卓系统</a>
-</li>
-
-                        
-                            
-<li >
-    <a href="../device_linux/">设备-linux系统</a>
 </li>
 
                         
@@ -511,6 +493,21 @@
 <td>从网络中移除子设备</td>
 </tr>
 <tr>
+<td>60</td>
+<td>AC_CODE_KLV_RSP</td>
+<td>KLV响应消息</td>
+</tr>
+<tr>
+<td>61</td>
+<td>AC_CODE_JSON_RSP</td>
+<td>JSON响应消息</td>
+</tr>
+<tr>
+<td>63</td>
+<td>AC_CODE_EXT</td>
+<td>扩展消息</td>
+</tr>
+<tr>
 <td>64</td>
 <td>AC_EVENT_BASE</td>
 <td>设备自定义控制消息基址</td>
@@ -799,8 +796,37 @@ AC_MessagePayload
 <p><strong><em>Message code 26:  AC_CODE_ZOTA_END</em></strong></p>
 <p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。</p>
 <p><strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
-<p>该消息用以设备解除自己绑定。相当于管理员删除设备。</p>
-<p><strong><em>Message code 45:  AC_CODE_GATEWAY_CTRL</em></strong></p>
+<p>该消息用以设备解除自己绑定。相当于管理员删除设备。
+消息格式定义如下：</p>
+<pre><code>typedef struct
+{   
+    u8 UnbindFlag;//0:解绑，1：重置wifi密码并解绑
+    u8 Pad[3]; 
+}AC_GateWay_Ctrl;
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UnbindFlag</td>
+<td>解绑功能标志位，0:解绑，1：重置wifi密码并解绑</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><em>Message code 45:  AC_CODE_GATEWAY_CTRL</em></strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
 <p>消息格式定义如下：</p>
 <pre><code>typedef struct
@@ -855,6 +881,22 @@ typedef struct
 }ZC_SubDeviceInfo;
 </code></pre>
 
+<p><strong><em>Message code 63:  AC_CODE_EXT </em></strong></p>
+<p>设备下发给联网模块，消息定义如下：</p>
+<pre><code>typedef struct
+{
+    u8  ExtMsgCode;//扩展消息号
+    u8  Pad[3];            
+}AC_ExtMessageHead;
+</code></pre>
+
+<p>扩展消息类型表（ExtMsgCode）如下：
+|ExtMsgCode|    消息类型                |消息类型说明         |
+|-------|-----------------------|-------------------|
+|0      |AC_CODE_EXT_REGSITER       |使用mac地址注册接入请求          |
+|1      |AC_CODE_EXT_REBOOT     |WIFI设备重启   |
+|        |              |               |</p>
+<p>AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体</p>
 <p><strong><em>Message code 64:  AC_EVENT_BASE </em></strong></p>
 <p>除了上述公共控制消息外，设备可以自行定义消息内容，所有消息类型的基址为AC_EVENT_BASE，根据需要进行累加，最多支持到255。</p>
 <p><font color="red">说明</font>：

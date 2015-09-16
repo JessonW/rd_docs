@@ -1893,7 +1893,7 @@ public class ACACL {
     public void unsetUserDeny(OpType opType, long userId);
 }
 ```
-><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
 
 ##桩模块

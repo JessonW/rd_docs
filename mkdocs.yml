@@ -14,16 +14,15 @@ pages:
     - 客户端-微信: develop_guide/wechat.md
     - 设备-嵌入式系统: develop_guide/device.md
     - 设备-安卓系统: develop_guide/device_android.md
-    - 设备-linux系统: develop_guide/device_linux.md
+#   - 设备-linux系统: develop_guide/device_linux.md
     - 云端服务: develop_guide/cloud.md
-    - 第三方云对接: develop_guide/third_proxy.md
 - Reference:
     - 客户端-安卓: reference/android.md
     - 客户端-iOS: reference/iOS.md
     - 客户端-微信: reference/wechat.md
     - 设备-嵌入式系统: reference/device.md
     - 设备-安卓系统: reference/device_android.md
-    - 设备-linux系统: reference/device_linux.md
+#    - 设备-linux系统: reference/device_linux.md
     - 云端服务: reference/cloud.md
     - Error Code: reference/error_code.md
 - Q&A: QandA.md

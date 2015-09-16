@@ -1,12 +1,60 @@
 #微信客户端开发指导
+
 #开发准备#
 
-开发者首先需要申请开通带设备功能的微信公众服务号。请参考[开发指导-第三方云对接-微信](third_proxy.md#微信)。
+### (1) 申请微信公众号 ###
+开发者首先需要申请开通带设备功能的微信公众服务号。微信公众号是属于各个厂商的，因此，申请公众号这个步骤由厂商完成。申请好后，会得到微信公众平台分配的appID和appsecret。如下图所示：
+![](../pic/develop_guide/weixin.png)
+微信公众号需要为**服务号**，并开启**设备功能**，如下图：
+![](../pic/develop_guide/weixin_device_api.png)
+
+微信公众号申请地址：[https://mp.weixin.qq.com/](https://mp.weixin.qq.com/)
+
+开发、测试阶段，厂商也可申请微信公众平台接口测试帐号：[http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login](http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)。
+测试号需要开发者手工开启设备功能。
+
+### (2) 准备服务器 ###
+
+当前，AbleCloud不提供主机代理服务，因此需要厂商准备机器，配置外网ip，并且申请一个域名。微信公众号正式上线时需要设置域名，并且使用服务器的80端口提供服务。
+
+此外，还需按照微信公众号的要求配置好js接口安全域名，网页授权获取用户基本信息的授权回调页域名等配置项。
+
+### (3) 设备授权及二维码 ###
+
+在销售或使用设备之前需要在微信硬件平台完成设备授权（请参考[微信硬件平台-设备授权](http://iot.weixin.qq.com/document-2_6.html)），也需要在AbleCloud平台完成设备入库。
+
+![](../pic/develop_guide/weixin_author_device.png)
+
+上述参数中，需要注意的几项包括：
+
++ id
+
+    设备的物理ID。AbleCloud要求非蓝牙设备的物理ID为16个字符，而蓝牙设备的物理ID为10个字符。
+    
++ auth_key, crypt_method, auth_ver
+
+    用于指定设备与微信客户端或微信平台通信时采用的认证及数据加密方法。
+    对于通过AbleCloud平台与微信对接的设备（蓝牙设备除外），其身份认证与数据通信过程均由AbleCloud平台负责实施，采用AbleCloud平台的通信保密协议（已经集成在AbleCloud平台的WIFI固件中）。
+    因此，如无特殊需求，上述三个参数可分别取值为""，"0"及"0"，表示不加密。
+
+其它参数请根据实际情况配置。
+
+为方便用户绑定、使用设备，厂商需要为设备创建二维码。微信硬件平台提供了两种创建设备二维码的方法。
+为了满足设备物理ID的长度为16个字符（蓝牙设备为10个字符）的要求，开发者应使用[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)提供的接口创建二维码。
+
+### (4) 配置微信公众号菜单 ###
+
+创建微信公众号菜单可参考[微信官方文档](http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html)。
+
+### (5) 开发微信公众号功能 ###
+
 
 在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户、用户与设备的绑定关系，及设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
 本文档中的代码示例均以PHP语言为例。PHP SDK的API详细说明请参见SDK下载包中附带的文档。
 
 开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置项。
+
+
 
 #帐号管理#
 

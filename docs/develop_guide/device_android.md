@@ -62,45 +62,45 @@ AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自�
 { 60 ：[
      //数据点[key：value(int8)]
      //失败
-     { 1 : 0 },
+     { 1 : false },
      //成功      
-     { 1 : 1 }
+     { 1 : true }
 ]}
 ```
 ```java
+private static final int OFF = 0;
+private static final int ON = 1;
+
 AC.handleMsg(new ACMsgHandler() {
     @Override
     public void handleMsg(ACDeviceMsg reqMsg, ACDeviceMsg respMsg) {
+         //KLV格式的resp不需要设置msgCode
          switch (reqMsg.getMsgCode()) {
-             case 68:
-                 //请求消息体
-                 ACKLVObject req = reqMsg.getKLVObject();
-                 //请求操作类型，关灯或开灯
-                 int type = req.get(1);
-                 //响应消息体
-                 ACKLVObject resp = new ACKLVObject();
-                 if (type == 0) {
-                     //关灯成功
-                     if (Light.turnLightOff()) {
-                         resp.put(1, 1);
-                     //关灯失败
-                     } else {
-                         resp.put(1, 0);
-                     }
-                 } else if (type == 1) {
-                     //开灯成功
-                     if (Light.turnLightOn()) {
-                         resp.put(1, 1);
-                     //开灯失败
-                     } else {
-                         resp.put(1, 0);
-                     }
-                 }
-                 //设置响应code
-                 respMsg.setMsgCode(102);
-                 //设置响应消息体
-                 respMsg.setKLVObject(resp);
-                 break;
+            case Config.CODE_KLV:
+                //请求消息体
+                ACKLVObject req = reqMsg.getKLVObject();
+                //请求操作类型，关灯或开灯
+                int value = req.get(Config.KEY_SWITCH);
+                //响应消息体
+                ACKLVObject resp = new ACKLVObject();
+                if (value == ON) {
+                    if (Light.turnLightOn()) {
+                        resp.put(Config.KEY_SWITCH, true);    //开灯成功
+                        respMsg.setKLVObject(resp);
+                    } else {
+                        resp.put(Config.KEY_SWITCH, false);   //开灯失败
+                        respMsg.setKLVObject(resp);
+                    }
+                } else if (value == OFF) {
+                    if (Light.turnLightOff()) {
+                        resp.put(Config.KEY_SWITCH, true);    //关灯成功
+                        respMsg.setKLVObject(resp);
+                    } else {
+                        resp.put(Config.KEY_SWITCH, false);   //关灯失败
+                        respMsg.setKLVObject(resp);
+                    }
+                }
+                break;
         }
     }
 });
@@ -125,27 +125,87 @@ AC.handleMsg(new ACMsgHandler() {
 ]}
 ```
 ```java
+private static final int OFF = 0;
+private static final int ON = 1;
+
 AC.handleMsg(new ACMsgHandler() {
     @Override
     public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
-        switch (req.getMsgCode()) {
-            case 68:
-                if (req.getPayload()[0] == 1) {
-                    if (Light.turnLightOn())
-                        resp.setPayload(new byte[]{1, 0, 0, 0});
-                    else
-                        resp.setPayload(new byte[]{0, 0, 0, 0});
+        switch (reqMsg.getMsgCode()) {
+            case Config.CODE_SWITCH_REQ:
+                //请求消息体
+                byte[] payload = reqMsg.getPayload();
+                if (payload[0] == ON) {
+                    if (Light.turnLightOn()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //开灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //开灯失败
                 } else {
-                    if (Light.turnLightOff())
-                        resp.setPayload(new byte[]{1, 0, 0, 0});
-                    else
-                        resp.setPayload(new byte[]{0, 0, 0, 0});
+                    if (Light.turnLightOff()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //关灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //关灯失败
                 }
-                resp.setMsgCode(102);
+                respMsg.setMsgCode(Config.CODE_SWITCH_RESP);
                 break;
         }
     }
 });
 ```
 
+####3、使用JSON消息格式进行通讯
+以开关灯为例，协议如下：
+```
+//请求数据包
+{ 70 ：[
+     //关灯
+     {"switch", 0}
+     //开灯
+     {"switch", 1}
+]}
+//响应数据包  
+{ 102 ：[
+     //失败
+     {"result", false},
+     //成功   
+     {"result", true}
+]}
+```
+```java
+private static final int OFF = 0;
+private static final int ON = 1;
 
+AC.handleMsg(new ACMsgHandler() {
+    @Override
+    public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
+        //JSON格式的resp不需要设置msgCode
+        switch (reqMsg.getMsgCode()) {
+            case Config.CODE_JSON:
+                //请求消息体
+                JSONObject req = new JSONObject(reqMsg.getJsonPayload());
+                //请求操作类型，关灯或开灯
+                int value = req.getInt("switch");
+                //响应消息体
+                JSONObject resp = new JSONObject();
+                if (value == ON) {
+                    if (Light.turnLightOn()) {
+                        resp.put("result", true);
+                        respMsg.setJsonPayload(resp.toString());    //开灯成功
+                    } else {
+                        resp.put("result", false);
+                        respMsg.setJsonPayload(resp.toString());    //开灯失败
+                    }
+                } else if (value == OFF) {
+                    if (Light.turnLightOff()) {
+                        resp.put("result", true);
+                        respMsg.setJsonPayload(resp.toString());    //关灯成功
+                    } else {
+                        resp.put("result", false);
+                        respMsg.setJsonPayload(resp.toString());    //关灯失败
+                    }
+                }
+                break;
+        }
+    }
+});
+```
