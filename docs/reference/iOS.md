@@ -251,7 +251,7 @@ ACDeviceMsg定义如下：
 @property(nonatomic,assign) NSInteger openIdType;
 ```
 
-####ACHome
+####ACHome(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 说明：分组模型下，Home模型定义如下：
 ```java
 public class ACHome {
@@ -308,7 +308,7 @@ public ACRoom(long homeId, long roomId, long owner, String name) {}
 @property (assign, nonatomic) NSInteger status;
 ```
 
-####ACPushTable
+####ACPushTable(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 说明：用来表示订阅的数据集实时消息内容，定义如下：
 ```java
 public class ACPushTable {
@@ -353,17 +353,24 @@ public ACPushTable(String className, String[] columes, ACObject primaryKey, int 
 
 ```
 
-####ACDeviceFind
+####ACFindDevicesManager
 说明：用来获取局域网本地设备，定义如下：
-```java
-public class ACDeviceFind {
-private String ip;
-private String physicalDeviceId;
+```
+@protocol ACFindDevicesDelegate <NSObject>
 
-public ACDeviceFind(String ip, String physicalDeviceId) {}
+@optional
+- (void)findDevice:(ACLocalDevice *)device;
 
-//getter
-}
+@end
+
+@interface ACFindDevicesManager : NSObject
+//局域网通信,本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
+@property (nonatomic, weak) id<ACFindDevicesDelegate> delegate;
+@property (nonatomic, strong, readonly) NSArray *devices;
+
+- (void)findDevicesWithSubDomainId:(NSInteger)subDomainId
+timeout:(NSTimeInterval)timeout;
+
 ```
 >注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断
 
@@ -381,32 +388,7 @@ public ACDeviceFind(String ip, String physicalDeviceId) {}
 
 ```
 
-####ACException
-说明：用来表示所有错误信息，定义如下：
-```java
-public class ACException extends Exception {
-private int errorCode;
 
-//sdk内部错误码（不包括云端返回）
-public static int NO_WIFI_CONNECTED = 1986;
-public static int NO_NETWORK_AVAILABLE = 1987;
-public static int LOCAL_DEVICE_OFFLINE = 1988;
-public static int INVALID_PAYLOAD = 1989;
-public static int ENTRY_EMPTY = 1990;
-public static int INVALID_PARAMETERS = 1991;
-public static int NO_LOGIN = 1992;
-public static int TIMEOUT = 1993;
-public static int MARSHALLER_EMPTY = 1994;
-public static int MARSHAL_ERROR = 1995;
-public static int UNMARSHAL_ERROR = 1996;
-public static int WRONG_PAYLOAD_FORMAT = 1997;
-public static int INTERNET_ERROR = 1998;
-public static int INTERNAL_ERROR = 1999;
-public int getErrorCode() {
-return errorCode;
-}
-}
-```
 
 
 ##ACloudLib
@@ -473,13 +455,7 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
 */
 类方法调用
 
-/**
-* 获取实时消息管理器
-* 可以调用前面介绍的实时消息管理ACPushMgr提供的各个通用接口
-*
-* @return 实时消息管理器
-*/
-public static ACPushMgr pushMgr() {}
+
 
 /**
 * 获取定时管理器
@@ -1020,7 +996,7 @@ callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
 ```
 
 
-##Home模型
+##Home模型(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 除了绑定控制设备之外，你可能需要对设备进行合理的分组管理，AbleCloud提供的Home模型可以满足大部分复杂的模型场景。
 ```java
 public interface ACGroupMgr {
@@ -1449,7 +1425,7 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 + (void)removeAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
 ```
 
-##实时消息同步
+##实时消息同步(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
 ```java
 public interface ACPushMgr {

@@ -26,7 +26,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 3. **本地运行**
 Xcode下直接**Command + R**运行。
 ><font color="brown">**注：**如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</font>
-```
+
 
 #帐号管理
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
@@ -34,24 +34,27 @@ Xcode下直接**Command + R**运行。
 ####接口说明
 
 ####引入头文件
-#import "ACAccountManager.h"
+```ios
+import "ACAccountManager.h"
+```
 
 ###账号管理类
+```
 @interface ACAccountManager : NSObject
+```
 
 ###普通帐号注册流程###
 
 ####1、检查手机号是否已注册
-
-方法：+ (void)checkExist:(NSString *)account
+```
++ (void)checkExist:(NSString *)account
 callback:(void(^)(BOOL exist,NSError *error))callback;
-返回参数：
-exist返回注册信息
-error返回错误信息
+```
 
 
 
 ####2、发送验证码
+```
 /**
 * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
 * @param account 手机号码或者邮箱地址，目前只支持手机号码
@@ -59,9 +62,11 @@ error返回错误信息
 + (void)sendVerifyCodeWithAccount:(NSString *)account
 template:(NSInteger)template
 callback:(void (^)(NSError *error))callback;
+```
 
 
 ####3、检测验证码正确性
+```
 /**
 * 校验手机验证码
 * @param account 手机号码
@@ -70,8 +75,9 @@ callback:(void (^)(NSError *error))callback;
 + (void)checkVerifyCodeWithAccount:(NSString *)account
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(BOOL valid,NSError *error))callback;
-
+```
 ####4、注册
+```
 /**
 * 注册帐号
 * @param phone 手机号码（与邮箱地址二选一或者都填）
@@ -84,21 +90,23 @@ email:(NSString *)email
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(NSString *uid, NSError *error))callback;
+```
 
 ##二、第三方登录
 
 ![account_Oauth](../pic/develop_guide/account_Oauth.png)
 
 ####1、直接使用第三方登录
-
-
+```
 //APP端在完成OAuth认证登陆之后获取openId和accessToken
 + (void)loginWithOpenId:(NSString *)openId
 provider:(NSString *)provider
 accessToken:(NSString *)accessToken
 callback:(void (^)(ACUserInfo *user, NSError *error))callback;
+```
 
 ####2、在已有普通账号登录时绑定第三方账号
+```
 /**
 * @param account 手机号码
 * @param password 密码
@@ -107,15 +115,19 @@ callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 + (void)loginWithAccount:(NSString *)account
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
+```
 
 ##三、添加帐号扩展属性
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
 
 ####1、使用类
-ACAccountManager
+```
+@interface ACAccountManager : NSObject
+```
 
 ####2、设置用户自定义扩展属性
+```
 /**
 * 修改帐号扩展属性
 *注意此处put进去的key与value类型需要跟平台添加的附加属  性一致
@@ -126,11 +138,12 @@ ACAccountManager
 
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
-
+```
 
 ####3、获取用户自定义扩展属性
+```
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
-
+```
 
 #设备管理
 
@@ -147,29 +160,37 @@ callback:(void (^) (NSError *error))callback;
 ###WiFi设备
 
 ####1.ACWifiLinkManager类
+
 Ablecloud提供了ACWifiLinkManager类激活器供你使用
+```
 
 @interface ACWifiLinkManager : NSObject
 
 - (id)initWithLinkerName:(NSString *)linkerName;
+```
 
 ><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
 目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`。
 
 ####2.获取WiFi SSID
+```
 + (NSString *)getCurrentSSID;
+```
 
 ####3.激活设备
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+```
 
 - (void)sendWifiInfo:(NSString *)ssid
 password:(NSString *)password
 timeout:(NSTimeInterval)timeout
 callback:(void (^)(NSArray *localDevices, NSError *error))callback;
+```
 
 
 ####4.绑定设备
 在成功激活设备后的回调方法中，通过物理Id绑定设备。
+```
 /**
 *  绑定设备
 *  @param physicalDeviceId 设备物理ID
@@ -180,9 +201,11 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+```
 
 ###GPRS设备
 **<font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。**建议通过扫二维码的形式获取物理Id进行绑定。
+```
 /**
 *  绑定设备
 *  @param physicalDeviceId 设备物理ID
@@ -193,6 +216,7 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+```
 
 ><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
@@ -201,6 +225,7 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 + **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给普通用户
+```
 /**
 *  根据账户绑定设备
 *
@@ -212,9 +237,11 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 deviceId:(NSInteger)deviceId
 account:(NSString *)account
 callback:(void(^)(NSError *error))callback;
+```
 
 
 ####2、管理员通过分享设备二维码的形式分享设备
+```
 /**
 *  获取分享码  （管理员接口）
 *
@@ -227,8 +254,10 @@ callback:(void(^)(NSError *error))callback;
 deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
 callback:(void(^)(NSString *shareCode,NSError *error))callback;
+```
 
 //普通用户通过分享码绑定设备
+```
 /**
 *  根据分享码 绑定设备
 *
@@ -241,11 +270,13 @@ callback:(void(^)(NSString *shareCode,NSError *error))callback;
 subDomain:(NSString *)subDomain
 deviceId:(NSInteger )deviceId
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+```
 
 ###三．设备解绑
 
 ####1、管理员或普通用户解绑设备
 <font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
+```
 /**
 *  解绑设备
 *
@@ -255,8 +286,10 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
+```
 
 ####2、管理员取消其他普通成员对该设备的控制权
+```
 /**
 *  管理员取消 某个用户的绑定  （管理员接口）
 *
@@ -269,6 +302,7 @@ callback:(void(^)(NSError *error))callback;
 userId:(NSInteger)userId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
+```
 
 
 
@@ -290,27 +324,33 @@ callback:(void(^)(NSError *error))callback;
 
 ####1.获取ACWifiLinkManager激活器
 AbleCloud提供了ACWifiLinkManager激活器供你使用。
+```
 
 @interface ACWifiLinkManager : NSObject
 - (id)initWithLinkerName:(NSString *)linkerName;
+```
 
 <font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
 目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`。
 
 ####2.得到WiFi SSID
-
+```
 + (NSString *)getCurrentSSID;
+```
 
 
 ####3.激活网关
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+```
 - (void)sendWifiInfo:(NSString *)ssid
 password:(NSString *)password
 timeout:(NSTimeInterval)timeout
 callback:(void (^)(NSArray *localDevices, NSError *error))callback;
+```
 
 ####4.绑定网关
 在成功激活设备后的回调方法中，通过物理Id绑定网关。
+```
 /**
 * 绑定网关
 *
@@ -323,9 +363,13 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+```
 
 ###以太网网关
-**<font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。**建议通过扫码的形式获取网关物理Id进行绑定。
+
+<font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。建议通过扫码的形式获取网关物理Id进行绑定。
+
+```
 /**
 * 绑定网关
 *
@@ -338,10 +382,12 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+```
 
 ###二．绑定子设备
 
 ####1．开启网关接入配对
+```
 /**
 * 添加子设备
 *
@@ -356,8 +402,10 @@ gatewayDeviceId:(NSInteger)gatewayDeviceId
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+```
 
 ####2．列举所有新加入的子设备列表
+```
 /**
 * 获取用户子设备列表
 *
@@ -368,10 +416,12 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 + (void)listSubDevicesWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 callback:(void (^)(NSArray *devices, NSError *error))callback;
+```
 
 ####3．绑定子设备
 通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。
+```
 /**
 * 添加子设备
 *
@@ -386,11 +436,12 @@ gatewayDeviceId:(NSInteger)gatewayDeviceId
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+```
 
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
 
-##Home模型
+##Home模型(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 
 功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
 
@@ -412,52 +463,7 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 ![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
 
 
-###一、创建Home
-####1、获取home模型管理器－－ACDeviceManager类
-@interface ACDeviceManager : NSObject
 
-####2、创建Home
-+ (void)createGroupWithName:(NSString *)name
-callback:(void (^)(ACMsg *msg, NSError *error))callback;
-
-####3、创建Room
-+ (void)addMemberWithGroupId:(NSInteger)groupId
-account:(NSString *)account
-name:(NSString *)name
-callback:(void (^)(NSError *error))callback;
-
-###二、添加或移动设备到分组里
-
-><font color="red">特别注意</font>：
-
->1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后绑定设备把bindDevice换成addDeviceToHome；GPRS设备或以太网网关则直接调addDeviceToHome。
-
->2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room。
-
-####添加设备到Home里
-创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
-+ (void)bindDeviceWithSubDomain:(NSString *)subDomain
-groupId:(NSInteger)groupId
-physicalDeviceId:(NSString *)physicalDeviceId
-masterDeviceId:(NSInteger)masterDeviceId
-name:(NSString *)name
-bindCode:(NSString *)bindCode
-callback:(void (^)(ACMsg *msg, NSError *error))callback;
-
-####移动设备到Room里
-```java
-groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
-@Override
-public void success() {
-//成功绑定设备并添加到分组Home里
-}
-
-@Override
-public void error(ACException e) {
-//网络错误或其他，根据e.getErrorCode()做不同的提示或处理
-}
-});
-```
 
 
 
@@ -468,6 +474,7 @@ public void error(ACException e) {
 **<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
 
 ####一、设置或者更新设备附加属性
+```
 /**
 * 修改帐号扩展属性
 *注意此处put进去的key与value类型需要跟平台添加的附加属  性一致
@@ -479,16 +486,18 @@ public void error(ACException e) {
 deviceId:(NSInteger)deviceId
 profile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
+```
 
 
 ####二、获取设备附加属性
+```
 /**
 * 获取设备扩展属性
 */
 + (void) getDeviceProfileWithSubDomain:(NSString*)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void (^) (ACObject*profile, NSError *error))callback;
-
+```
 
 
 #和云端通信
@@ -500,7 +509,7 @@ callback:(void (^) (ACObject*profile, NSError *error))callback;
 **在新建产品的时候选择klv通讯协议，并填写数据点与数据包。**
 KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
 
-**例如**：以开关设备为例,协议如下:
+**例如**：以开关设备为例,协议如下:(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 ```
 //请求数据包
 { 68 ：[
@@ -655,7 +664,7 @@ public void error(ACException e) {
 
 ##二、发送消息到服务
 <font color="red">注意</font>：serviceName对应服务管理里UDS服务里的**服务名称**，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为**主版本号**，比如1-0-0，则version为1。
-
+```
 ACMsg * msg = [[ACMsg alloc] init];
 msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]];
 [msg setName:@"createDeviceInitState"];
@@ -663,8 +672,9 @@ msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]]
 [msg putLong:@"subDomainId" value:userDevice.subDomainId];
 ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInfo getHost] service:[CommonInfo getServiceName] version:1];
 [serviceClient sendToService:msg callback:^(ACMsg *responseObject, NSError *error)
+```
 
-##三、实时消息
+##三、实时消息(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。
 
@@ -758,60 +768,7 @@ public void error(ACException e) {
 功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
-/**
-*  获取设备列表,包含设备在线状态信息
-*
-*  @param callback     数组：devices保存的对象是ACUserDevice的对象
-*/
-+ (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
-```java
-bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
-@Override
-public void success(List<ACUserDevice> deviceList) {
-for(ACUserDevice device:deviceList){
-/**
-* 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
-* 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
-* 若只选择直连的通讯方式，则只有在2和3的状态下才能往设备发送成功
-*/
-device.getStatus();
-}
-}
 
-@Override
-public void error(ACException e) {
-//网络错误且之前从来没有获取过设备列表时返回
-}
-});
-```
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
-```java
-//监听网络变化
-ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
-@Override
-public void onNetChange() {
-//当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
-getDeviceList();
-}
-});
-```
-此外，由于网络环境较差，使得在获取直连设备时有可能会出现丢包情况，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
-```java
-//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
-AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
-@Override
-public void success(List<ACDeviceFind> acDeviceFinds) {
-//发现局域网设备，根据ACDeviceFind更新局域网在线状态或者重新获取设备列表
-getDeviceList();
-}
-
-@Override
-public void error(ACException e) {
-//没有局域网设备，更新局域网在线状态或者重新获取设备列表
-getDeviceList();
-}
-});
-```
 最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
 
 
@@ -824,10 +781,13 @@ getDeviceList();
 
 ####获取定时管理器－－ACTimerManager类
 **使用默认时区**
+```
 
 ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
+```
 
 **使用自定义时区**
+```
 - (id)initWithTimeZone:(NSTimeZone *)timeZone {
 self = [super init];
 if (self) {
@@ -835,6 +795,8 @@ self.timeZone = timeZone;
 }
 return self;
 }
+```
+
 ####添加定时任务
 >**<font color="red">注意</font>：**
 
@@ -859,24 +821,8 @@ return self;
 
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
 
-```java
-//设置序列化器，若有klv格式类型，则无需此步骤
-AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-@Override
-public byte[] marshal(ACDeviceMsg msg) throws Exception {
-return (byte[]) msg.getContent();
-}
-
-@Override
-public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-//跟定时任务无关
-return null;
-}
-});
+####添加定时任务
 ```
-
-
-//若为二进制或klv格式，则msg需要先经过序列化器进行序列化
 - (void)addTaskWithDeviceId:(NSInteger)deviceId
 name:(NSString *)name
 timePoint:(NSString *)timePoint
@@ -884,11 +830,13 @@ timeCycle:(NSString *)timeCycle
 description:(NSString *)description
 deviceMsg:(ACDeviceMsg *)deviceMsg
 callback:(void (^)(NSError *error))callback;
+```
 
 ####修改定时任务
 接口为modifyTask，其他参数与定义与创建定时任务相同。
 
 ####开启定时任务
+```
 /**
 * 开启定时任务
 * @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
@@ -898,8 +846,10 @@ callback:(void (^)(NSError *error))callback;
 - (void)openTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
+```
 
 ####关闭定时任务
+```
 /**
 * 关闭定时任务
 *
@@ -910,9 +860,11 @@ callback:(void (^)(NSError *error))callback;
 - (void)closeTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
+```
 
 
 ####删除定时任务
+```
 /**
 * 删除定时任务
 *
@@ -923,9 +875,11 @@ callback:(void (^)(NSError *error))callback;
 - (void)deleteTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
+```
 
 
 ####获取定时任务列表
+```
 /**
 * 获取定时任务列表
 *
@@ -934,6 +888,7 @@ callback:(void (^)(NSError *error))callback;
 */
 - (void)listTasksWithDeviceId:(NSInteger)deviceId
 callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
+```
 
 
 
@@ -953,21 +908,25 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 
 ####一.获取OTA管理器对象--ACOTAManager类
-
+```
 @interface ACOTAManager : NSObject
-
+```
 ####二. 检查升级
 
 检查设备是否有新的OTA版本，同时获取升级日志。
+```
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
+```
 
 ####三．确认升级
+```
 + (void)confirmUpdateWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 newVersion:(NSString *)newVersion
 callback:(void (^)(NSError *error))callback;
+```
 
 
 
@@ -1013,21 +972,27 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：
 
 ####1、获取推送管理器－－ACNotificationManager类
+```
 @interface ACNotificationManager : NSObject
+```
 
 ####2、在应用的启动函数中开启推送服务
+```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
 [ACNotificationManager       startWithAppkey:@"您的appKey" launchOptions:launchOptions];
 }
+```
 
 ####3、在登录成功之后添加推送别名
+```
 + (void)addAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
-
-
+```
 
 ####4、在退出登录之后移除掉旧的别名
+```
 + (void)removeAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
+```
 
 
 #文件存储
@@ -1045,9 +1010,12 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 
 ##一、获取文件管理器
+```
 ACFileManager * fileManager =[[ACFileManager alloc] init];
+```
 ##二、下载文件
 ###1、获取下载url
+```
 /**
 * //获取下载URL
 * @param file      文件信息对象
@@ -1055,7 +1023,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 * @param payloadCallback    返回结果的监听回调
 */
 +(void)getDownloadUrlWithfile:(ACFileInfo *)fileInfo  ExpireTime:(long)expireTime payloadCallback:( void (^)(NSString * urlString,NSError * error))callback ;
+```
 ###2、根据url下载文件
+```
 /**
 * //session下载
 * @param urlString   获得的downURLString
@@ -1063,16 +1033,18 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 * @param CompleteCallback   返回完成的信息的回调
 */
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
-
+```
 ##三、上传文件
 
 ###1、设置上传文件的权限管理类－－ACACL
+```
 @interface ACACL : NSObject
-
+```
 <font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
 
 ###2、上传文件
 ####1)、设置上传文件信息－－ACFileInfo类
+```
 @interface ACFileInfo : NSObject
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
@@ -1088,8 +1060,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
-
+```
 ####2)、设置文件权限
+```
 /**
 * 设置全局可读访问权限，不设置则默认为所有人可读
 * @param allow 是否全局可读
@@ -1115,7 +1088,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 * @param userId 被设置用户Id
 */
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
+```
 ####3)、上传文件
+```
 /**
 * 上传文件
 * @param fileInfo      文件信息
@@ -1131,6 +1106,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 * @param fileInfo      文件信息
 */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
+```
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
