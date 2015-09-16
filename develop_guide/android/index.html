@@ -1641,13 +1641,12 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
         &lt;action android:name=&quot;com.umeng.message.autoupdate.handler.action&quot;/&gt;
     &lt;/intent-filter&gt;
 &lt;/service&gt;
+&lt;!-- V1.3.0添加的service，负责下载通知的资源 --&gt;
+&lt;service android:name=&quot;com.umeng.message.UmengDownloadResourceService&quot; /&gt;
 </code></pre>
 
 <h4 id="3-appkey-umeng-message-secret">3、添加 AppKey 和 Umeng Message Secret</h4>
-<pre><code class="java">&lt;!-- V1.3.0添加的service，负责下载通知的资源 --&gt;
-&lt;service android:name=&quot;com.umeng.message.UmengDownloadResourceService&quot; /&gt;
-
-&lt;!-- 添加 AppKey 和 Umeng Message Secret --&gt;
+<pre><code class="java">&lt;!-- 添加 AppKey 和 Umeng Message Secret --&gt;
 &lt;meta-data
     android:name=&quot;UMENG_APPKEY&quot;
     android:value=&quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot; &gt;
