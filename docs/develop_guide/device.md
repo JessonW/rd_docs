@@ -115,11 +115,13 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
     {
         case AC_CODE_EQ_DONE://wifi模块启动通知
         AC_StoreStatus(WIFIPOWERSTATUS , WIFIPOWERON);
-        AC_ConfigWifi();
+        AC_ConfigWifi();//配置测试服务器进行调试
         AC_Printf("Wifi Power On!\n");
         break;
         case AC_CODE_WIFI_CONNECTED://wifi连接成功通知
-        AC_SendDeviceRegsiter(NULL, g_u8EqVersion,g_u8ModuleKey,g_u64Domain,g_u8DeviceId);
+        //使用用户自定义的设备id进行注册,AC_SendDeviceRegsiterWithMac接口是使用wifi模块MAC地址作为设备id进行注册。
+        AC_SendDeviceRegsiter(g_u8EqVersion,g_u8ModuleKey,g_u64Domain,g_u8DeviceId);
+        //AC_SendDeviceRegsiterWithMac(g_u8EqVersion,g_u8ModuleKey,g_u64Domain);
         AC_Printf("Wifi Connect!\n");
         break;
         case AC_CODE_CLOUD_CONNECTED://云端连接通知
@@ -145,7 +147,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 #设备绑定管理
 
-对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成和用户的绑定。
+对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成设备和用户的绑定。
 
 对于通过蜂窝网络连接到云端的设备，无法通过局域网将设备的信息广播给客户端（APP），所以，需要在设备上印刷二维码进行绑定。
 
