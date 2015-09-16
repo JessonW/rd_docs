@@ -1341,13 +1341,12 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
         <action android:name="com.umeng.message.autoupdate.handler.action"/>
     </intent-filter>
 </service>
+<!-- V1.3.0添加的service，负责下载通知的资源 -->
+<service android:name="com.umeng.message.UmengDownloadResourceService" />
 ```
 
 ####3、添加 AppKey 和 Umeng Message Secret
 ```java
-<!-- V1.3.0添加的service，负责下载通知的资源 -->
-<service android:name="com.umeng.message.UmengDownloadResourceService" />
-
 <!-- 添加 AppKey 和 Umeng Message Secret -->
 <meta-data
     android:name="UMENG_APPKEY"
