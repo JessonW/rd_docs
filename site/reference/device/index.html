@@ -890,12 +890,33 @@ typedef struct
 }AC_ExtMessageHead;
 </code></pre>
 
-<p>扩展消息类型表（ExtMsgCode）如下：
-|ExtMsgCode|    消息类型                |消息类型说明         |
-|-------|-----------------------|-------------------|
-|0      |AC_CODE_EXT_REGSITER       |使用mac地址注册接入请求          |
-|1      |AC_CODE_EXT_REBOOT     |WIFI设备重启   |
-|        |              |               |</p>
+<p>扩展消息类型表（ExtMsgCode）如下：</p>
+<table>
+<thead>
+<tr>
+<th>ExtMsgCode</th>
+<th>消息类型</th>
+<th>消息类型说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>AC_CODE_EXT_REGSITER</td>
+<td>使用mac地址注册接入请求</td>
+</tr>
+<tr>
+<td>1</td>
+<td>AC_CODE_EXT_REBOOT</td>
+<td>WIFI设备重启</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <p>AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体</p>
 <p><strong><em>Message code 64:  AC_EVENT_BASE </em></strong></p>
 <p>除了上述公共控制消息外，设备可以自行定义消息内容，所有消息类型的基址为AC_EVENT_BASE，根据需要进行累加，最多支持到255。</p>
