@@ -15,7 +15,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
 ####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
-```
+```c
 @interface ACObject : NSObject
 
 /**
@@ -87,7 +87,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 
 ####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
-```
+```c
 @interface ACMsg : ACObject
 
 @property (nonatomic, strong) NSString *name;
@@ -131,7 +131,7 @@ extern NSString *const ACMsgErrMSG;
 ```
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
-```
+```c
 ~~~
 @interface ACContext : NSObject
 
@@ -154,7 +154,7 @@ extern NSString *const ACMsgErrMSG;
 + (ACContext *)generateContextWithSubDomain:(NSString *)subDomain;
 
 @end
-~~~
+
 ```
 
 ##ACDeviceMsg
@@ -166,7 +166,7 @@ extern NSString *const ACMsgErrMSG;
 >KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
 
 ACDeviceMsg定义如下：
-```
+```c
 @property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
 @property (nonatomic, strong) NSData *payload;
@@ -196,7 +196,7 @@ ACDeviceMsg定义如下：
 
 ####ACUserInfo
 用来表示AbleCloud的一个注册帐号信息，定义如下：
-```
+```c
 // 用户ID
 @property(nonatomic,assign) NSInteger userId;
 // 用户昵称
@@ -210,7 +210,7 @@ ACDeviceMsg定义如下：
 
 ####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
-```
+```c
 //设备逻辑ID
 @property(nonatomic,assign) NSInteger deviceId;
 //设备管理员ID
@@ -232,7 +232,7 @@ ACDeviceMsg定义如下：
 ```
 ####ACBindUser
 设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：
-```
+```c
 //用户ID
 @property(nonatomic,assign) NSInteger userId;
 //设备的逻辑ID
@@ -255,7 +255,7 @@ ACDeviceMsg定义如下：
 
 ####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
-```
+```c
 @property (assign, nonatomic) NSInteger taskId;
 //任务的类型（onceTask）
 @property (strong, nonatomic) NSString *taskType;
@@ -285,7 +285,7 @@ ACDeviceMsg定义如下：
 
 ####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
-```
+```c
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
 
@@ -306,7 +306,7 @@ ACDeviceMsg定义如下：
 
 ####ACFindDevicesManager
 说明：用来获取局域网本地设备，定义如下：
-```
+```c
 @protocol ACFindDevicesDelegate <NSObject>
 
 @optional
@@ -329,7 +329,7 @@ timeout:(NSTimeInterval)timeout;
 
 ####ACOTAUpgradeInfo
 说明：用来获取OTA升级状态信息，定义如下：
-```
+```c
 // 原版本
 @property(nonatomic,copy) NSString *oldVersion;
 // 新版本
@@ -345,7 +345,7 @@ timeout:(NSTimeInterval)timeout;
 ##ACloudLib
 
 ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。
-```
+```c
 @interface ACloudLib : NSObject
 
 /**
@@ -439,15 +439,15 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：
 
-```
+```c
 ####引入头文件
 ```
 #import "ACAccountManager.h"
-```
+```c
 ####接口说明
 ```
 @interface ACAccountManager : NSObject
-```
+```c
 /**
  *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
  * @param account 手机号码或者邮箱地址，目前只支持手机号码
@@ -579,7 +579,7 @@ callback:(void (^) (NSError *error))callback;
 >3. 设备连接成功后，调用设备管理器中的绑定接口完成设备的绑定。至此，一台新设备就联网、连云完成，可由相关的成员控制了。
 
 ablecloud提供了激活器供你使用，定义如下：
-```
+```c
 @interface ACWifiLinkManager : NSObject
 
 - (id)initWithLinkerName:(NSString *)linkerName;
@@ -607,7 +607,7 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
-```
+```c
 /**
  *  获取设备列表,不包含设备状态信息
  *  
@@ -948,7 +948,7 @@ callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
 除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：
 
 
-```
+```c
 //检查设备是否有新的OTA版本，同时获取升级日志。
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
@@ -1000,7 +1000,7 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周日，周五重复，则表示为"week[0,5]")
 
 接口定义如下：
-```
+```c
 - (id)initWithTimeZone:(NSTimeZone *)timeZone;
 
 /**
@@ -1150,7 +1150,7 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 ##消息推送
 
 如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
-```
+```c
 /** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
  *@param appKey      主站生成appKey
  *@param launchOptions 启动参数
@@ -1175,7 +1175,7 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 
 ##实时消息同步(IOS端尚未开放此功能，提供安卓相关代码仅参考)
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
-```java
+```c
 public interface ACPushMgr {
 
 /**
@@ -1205,7 +1205,7 @@ public void onReceive(PayloadCallback<ACPushReceive> callback);
 
 ##局域网通信
 
-```
+```c
 /**
  *ACFindDevicesManager
  * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
@@ -1217,7 +1217,7 @@ timeout:(NSTimeInterval)timeout;
 
 ###文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
-```
+```c
 /**
  * //获取下载URL
  * @param file      文件信息对象
@@ -1259,7 +1259,7 @@ timeout:(NSTimeInterval)timeout;
 为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。
 ####设备桩
 设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：
-```
+```c
 @protocol ACDeviceStubDelegate <NSObject>
 
 - (void)handleDeviceMsg:(ACDeviceMsg *)req callback:(void (^)(ACDeviceMsg *responseObject, NSError *error))callback;
@@ -1279,7 +1279,7 @@ timeout:(NSTimeInterval)timeout;
 
 ####服务桩
 服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：
-```
+```c
 @protocol ACServiceStubDelegate <NSObject>
 
 - (void)handleServiceMsg:(ACMsg *)req callback:(void (^)(ACMsg *responseObject, NSError *error))callback;
@@ -1313,15 +1313,15 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 用户帐号管理
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：
 
-```
+
 ####引入头文件
-```
+```c
 #import "ACAccountManager.h"
 ```
 ####接口说明
-```
+```c
 @interface ACAccountManager : NSObject
-```
+
 
 /**
  * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
@@ -1441,7 +1441,7 @@ callback:(void (^) (NSError *error))callback;
 
 ##2、设备管理
 
-```
+```c
 /**
  *  获取设备列表,不包含设备状态信息
  *  
@@ -1598,7 +1598,7 @@ callback:(void (^) (ACObject*profile, NSError *error))callback;
 ##3、OTA
 
 
-```
+```c
 //检查设备是否有新的OTA版本，同时获取升级日志。
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
@@ -1628,8 +1628,9 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 参考[开发指导-IOS-推送](../develop_guide/android/#_34)
 
 ##5、和云端通信
+ACServiceClient通信器
 
-```ACServiceClient通信器
+```c
 /*
  * @param host        访问子域
  * @param service      服务名
@@ -1651,7 +1652,7 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：
 
-```java
+```c
 ##一、获取文件管理器
 ACFileManager * fileManager =[[ACFileManager alloc] init];
 ##二、下载文件
