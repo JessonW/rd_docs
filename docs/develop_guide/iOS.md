@@ -34,7 +34,7 @@ Xcode下直接**Command + R**运行。
 ####接口说明
 
 ####引入头文件
-```ios
+```
 import "ACAccountManager.h"
 ```
 
