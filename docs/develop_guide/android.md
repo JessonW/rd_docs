@@ -521,7 +521,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
 ![DM_home_gateway_wifi](../pic/develop_guide/DM_home_gateway_wifi.png)
 
-创建家庭，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：
+创建Home，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：
 
 ![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
 
@@ -562,7 +562,7 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 });
 ```
 
-###二、添加或移动设备到分组里
+###二、添加或移动设备到Home里
 
 ><font color="red">特别注意</font>：
 
@@ -571,7 +571,7 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 >2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
 
 ####添加设备到Home里
-创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
+创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
 ```java
 groupMgr.addDeviceToHome(subDomain, physicalDeviceId, homeId, deviceName, new PayloadCallback<ACUserDevice>() {
     @Override
@@ -607,7 +607,7 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
 
-**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
+**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->选择产品点管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
 
 ####一、设置或者更新设备附加属性
 ```java
@@ -837,6 +837,8 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。
 
 ><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。
+
+
 ![cloud_syn](../pic/develop_guide/cloud_syn.png)
 
 ####1、获取实时消息管理器
