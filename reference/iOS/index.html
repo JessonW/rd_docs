@@ -294,10 +294,6 @@
                 
             
         
-            
-                
-            
-        
         
         <li class="main">
             <a href="#import-acaccountmanagerh">import "ACAccountManager.h"<span class="main-set parent_import-acaccountmanagerh">+</span></a>
@@ -321,10 +317,6 @@
         
             
             <li class="sub parent_import-acaccountmanagerh" style="display: none;"><a href="#_8">消息推送</a></li>
-            
-        
-            
-            <li class="sub parent_import-acaccountmanagerh" style="display: none;"><a href="#ios_1">实时消息同步(IOS端尚未开放此功能，提供安卓相关代码仅参考)</a></li>
             
         
             
@@ -1554,34 +1546,6 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 + (void)removeAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
 </code></pre>
 
-<h2 id="ios_1">实时消息同步(IOS端尚未开放此功能，提供安卓相关代码仅参考)</h2>
-<p>AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：</p>
-<pre><code class="c">public interface ACPushMgr {
-
-/**
- * 创建与服务器的连接
- */
-public void connect(VoidCallback callback);
-
-/**
- * 订阅实时数据
- * @param table 订阅的数据集信息
- */
-public void watch(ACPushTable table, VoidCallback callback);
-
-/**
- * 取消订阅
- * @param table 取消订阅的数据集信息
- */
-public void unwatch(ACPushTable table, VoidCallback callback);
-
-/**
- * 接收已订阅的实时数据
- */
-public void onReceive(PayloadCallback&lt;ACPushReceive&gt; callback);
-}
-</code></pre>
-
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong></p>
 <h2 id="_9">局域网通信</h2>
 <pre><code class="c">/**
@@ -1681,7 +1645,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <p>用户帐号管理
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
 <h4 id="_15">引入头文件</h4>
-<pre><code class="c">#import &quot;ACAccountManager.h&quot;
+<pre><code class="c">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
 <h4 id="_16">接口说明</h4>
