@@ -1,7 +1,7 @@
 #IOS客户端开发参考
 #简介
 
-SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
+SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍IOS平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
 ><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。
 
 #交互协议
@@ -11,7 +11,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 + **ACMsg：**APP与service之间的交互消息。
 + **ACDeviceMsg：**APP与device之间的交互消息，使用二进制或json通讯协议。
 
-##基础数据结构ACMsg 
+##ACMsg 
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
 ####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
@@ -132,7 +132,7 @@ extern NSString *const ACMsgErrMSG;
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
 ```c
-~~~
+
 @interface ACContext : NSObject
 
 @property (nonatomic, strong) NSString *os; // 操作系统
@@ -380,6 +380,7 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
  * @return	设备激活器
  */
 实例方法调用
+
 /**
  * 获取简单无组的设备管理器
  * 可以调用前面介绍的设备管理ACBindManager提供的各个通用接口
@@ -404,8 +405,6 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
  */
 类方法调用
 
-
-
 /**
  * 获取定时管理器
  * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
@@ -417,8 +416,10 @@ ACTimerManager * timerManager = [[ACTimerManager alloc] initWithTimeZone：@"自
 /**
  * 获取OTA管理器
  * 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口 
- *类方法调用
+ *
  */
+类方法调用
+
 /**
  * 获取文件上传下载管理器
  * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
@@ -439,15 +440,14 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：
 
-```c
 ####引入头文件
-```
+```c
 import "ACAccountManager.h"
-```c
-####接口说明
 ```
-@interface ACAccountManager : NSObject
+####接口说明
 ```c
+@interface ACAccountManager : NSObject
+
 /**
  *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
  * @param account 手机号码或者邮箱地址，目前只支持手机号码
@@ -484,7 +484,6 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
-
 /**
  *  判断用户是否已经存在
  */
@@ -499,7 +498,6 @@ password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void(^)(NSError *error)) callback;
 
-
 /**
  * 修改昵称
  */
@@ -512,7 +510,6 @@ callback:(void (^) (NSError *error))callback;
 + (void)changePasswordWithOld:(NSString *)old
 new:(NSString *)newPassword
 callback:(void (^)(NSString *uid, NSError *error))callback;
-
 
 /**
  *  重置密码
@@ -527,12 +524,10 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
  */
 + (BOOL)isLogin;
 
-
 /**
  *  注销当前用户
  */
 + (void)logout;
-
 
 /**
  *  三方注册
@@ -550,13 +545,11 @@ provider:(NSString *)provider
 accessToken:(NSString *)accessToken
 callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
-
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
-
 
 /**
  * 获取帐号扩展属性
@@ -615,7 +608,6 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
  */
 + (void)listDevicesWithCallback:(void(^)(NSArray *devices,NSError *error))callback;
 
-
 /**
  *  获取设备列表,包含设备在线状态信息
  *
@@ -632,7 +624,6 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 deviceId:(NSInteger)deviceId
 calllback:(void(^)(NSArray *users,NSError *error))callback;
 
-
 /**
  *  绑定设备
  *
@@ -644,7 +635,6 @@ calllback:(void(^)(NSArray *users,NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
-
 
 /**
  *  根据分享码 绑定设备
@@ -658,7 +648,6 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 subDomain:(NSString *)subDomain
 deviceId:(NSInteger )deviceId
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
-
 
 /**
  * 分享设备
@@ -679,7 +668,6 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
-
 
 /**
  *  管理员取消 某个用户的绑定  （管理员接口）
@@ -716,7 +704,6 @@ deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
 callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
-
 /**
  *  设备管理员权限转让 （管理员接口）
  *
@@ -728,7 +715,6 @@ callback:(void(^)(NSString *shareCode,NSError *error))callback;
 deviceId:(NSInteger)deviceId
 userId:(NSInteger)userId
 callback:(void(^)(NSError *error))callback;
-
 
 /**
  *  更换物理设备 （管理员接口）
@@ -743,7 +729,6 @@ physicalDeviceId:(NSString *)physicalDeviceId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
 
-
 /**
  *  修改设备名称 （管理员接口）
  *
@@ -755,6 +740,7 @@ callback:(void(^)(NSError *error))callback;
 deviceId:(NSInteger)deviceId
 name:(NSString *)name
 callback:(void(^)(NSError *error))callback;
+
 /**
  *  查询设备在线状态
  *
@@ -767,9 +753,6 @@ callback:(void(^)(NSError *error))callback;
 deviceId:(NSInteger)deviceId
 physicalDeviceId:(NSString *)physicalDeviceId
 callback:(void(^)(Boolean online,NSError *error))callback;
-
-
-
 
 /**
  * 绑定网关
@@ -889,14 +872,11 @@ gatewayDeviceId:(NSInteger)gatewayDeviceId
 physicalDeviceId:(NSString *)physicalDeviceId
 callback:(void (^)(NSError *error))callback;
 
-
-
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
-
 
 /**
  * 获取帐号扩展属性
@@ -911,7 +891,6 @@ callback:(void (^) (NSError *error))callback;
 //序列化withAES Key
 - (NSData *)marshalWithAESKey:(NSData *)AESKey;
 
-
 /**
  * 为便于测试，开发者可实现一个设备的桩
  *
@@ -925,8 +904,6 @@ callback:(void (^) (NSError *error))callback;
 + (id<ACDeviceStubDelegate>)getDeviceStubDelegate:(NSString *)subDomain;
 + (void)removeDeviceStub:(NSString *)subDomain;
 + (BOOL)isDeviceStub:(NSString *)subDomain;
-
-
 
 /**
  *  向设备发送消息
@@ -1176,18 +1153,6 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 
 **<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 
-##局域网通信
-
-```c
-/**
- *ACFindDevicesManager
- * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
- */
-- (void)findDevicesWithSubDomainId:(NSInteger)subDomainId
-timeout:(NSTimeInterval)timeout;
-```
-**<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
-
 ###文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 ```c
@@ -1209,7 +1174,6 @@ timeout:(NSTimeInterval)timeout;
 //取消下载
 -(void)cancel;
 
-
 /**
  * 上传文件
  * @param fileInfo      文件信息
@@ -1225,7 +1189,7 @@ timeout:(NSTimeInterval)timeout;
  */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
-><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
 
 ##桩模块
@@ -1295,13 +1259,13 @@ import "ACAccountManager.h"
 ```c
 @interface ACAccountManager : NSObject
 
-
 /**
  * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
  * @param account 手机号码或者邮箱地址，目前只支持手机号码
  */
 + (void)sendVerifyCodeWithAccount:(NSString *)account
 callback:(void (^)(NSError *error))callback;
+
 /**
  * 校验手机验证码
  * @param account 手机号码
@@ -1323,6 +1287,7 @@ email:(NSString *)email
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(NSString *uid, NSError *error))callback;
+
 /**
  * 登陆帐号
  * @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
@@ -1331,7 +1296,6 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
 + (void)loginWithAccount:(NSString *)account
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
-
 
 /**
  *  判断用户是否已经存在
@@ -1347,7 +1311,6 @@ password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void(^)(NSError *error)) callback;
 
-
 /**
  * 修改昵称
  */
@@ -1360,7 +1323,6 @@ callback:(void (^) (NSError *error))callback;
 + (void)changePasswordWithOld:(NSString *)old
 new:(NSString *)newPassword
 callback:(void (^)(NSString *uid, NSError *error))callback;
-
 
 /**
  *  重置密码
@@ -1375,12 +1337,10 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
  */
 + (BOOL)isLogin;
 
-
 /**
  *  注销当前用户
  */
 + (void)logout;
-
 
 /**
  *  三方注册
@@ -1398,13 +1358,11 @@ provider:(NSString *)provider
 accessToken:(NSString *)accessToken
 callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
-
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
-
 
 /**
  * 获取帐号扩展属性
@@ -1451,7 +1409,6 @@ physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
-
 /**
  *  根据分享码 绑定设备
  *
@@ -1476,6 +1433,7 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 deviceId:(NSInteger)deviceId
 account:(NSString *)account
 callback:(void(^)(NSError *error))callback;
+
 /**
  *  解绑设备
  *
@@ -1498,7 +1456,6 @@ callback:(void(^)(NSError *error))callback;
 userId:(NSInteger)userId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
-
 
 /**
  *  获取分享码  （管理员接口）
@@ -1525,7 +1482,6 @@ deviceId:(NSInteger)deviceId
 userId:(NSInteger)userId
 callback:(void(^)(NSError *error))callback;
 
-
 /**
  *  更换物理设备 （管理员接口）
  *
@@ -1538,7 +1494,6 @@ callback:(void(^)(NSError *error))callback;
 physicalDeviceId:(NSString *)physicalDeviceId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
-
 
 /** 
  *  修改设备名称 （管理员接口）
@@ -1598,7 +1553,7 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 
 ##4、消息推送
 
-参考[开发指导-IOS-推送](../develop_guide/android/#_34)
+参考[开发指导-IOS-推送](../develop_guide/ios/#_34)
 
 ##5、和云端通信
 ACServiceClient通信器
@@ -1625,11 +1580,14 @@ ACServiceClient通信器
 文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：
 
-```c
+
 ##一、获取文件管理器
+``` c
 ACFileManager * fileManager =[[ACFileManager alloc] init];
+```
 ##二、下载文件
 ###1、获取下载url
+```
 /**
  * //获取下载URL
  * @param file      文件信息对象
@@ -1637,8 +1595,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
  * @param payloadCallback    返回结果的监听回调
  */
 +(void)getDownloadUrlWithfile:(ACFileInfo *)fileInfo  ExpireTime:(long)expireTime payloadCallback:( void (^)(NSString * urlString,NSError * error))callback ;
-
+```
 ###2、根据url下载文件
+```c
 /**
  * //session下载
  * @param urlString   获得的downURLString
@@ -1646,16 +1605,19 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
  * @param CompleteCallback   返回完成的信息的回调
  */
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
+```
 
 ##三、上传文件
 
 ###1、设置上传文件的权限管理类－－ACACL
+```c
 @interface ACACL : NSObject
-
-<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+```
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
 ###2、上传文件
 ####1)、设置上传文件信息－－ACFileInfo类
+```c
 @interface ACFileInfo : NSObject
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
@@ -1671,8 +1633,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
-
+```
 ####2)、设置文件权限
+```c
 /**
  * 设置全局可读访问权限，不设置则默认为所有人可读
  * @param allow 是否全局可读
@@ -1698,7 +1661,9 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
  * @param userId 被设置用户Id
  */
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
+```
 ####3)、上传文件
+```c
 /**
  * 上传文件
  * @param fileInfo      文件信息
