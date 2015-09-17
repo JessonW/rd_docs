@@ -635,7 +635,8 @@
 <h3 id="_10">网关网络打开</h3>
 <p>云端首先调用AC_CODE_GATEWAY_CTRL消息请求网关打开对应的网络供子设备接入，该消息执行成功需要回应AC_CODE_ACK消息，失败则回应AC_CODE_ERR消息。</p>
 <p>消息格式定义如下：</p>
-<pre><code class="c">    typedef struct
+<pre><code class="c">
+     typedef struct
     {   
 
         u32 timeWindows;//打开网络，时间窗的单位和含义开发者自己定义
@@ -687,7 +688,8 @@
 <p>参考代码如下：</p>
 <pre><code class="c">    void AC_ListSubDevices(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        u8 *pu8Msg = osal_mem_alloc(sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList) + g_struDeviceStatus.num*    (sizeof(ZC_SubDeviceInfo)));
+        u8 *pu8Msg = osal_mem_alloc(sizeof(AC_MessageHead) 
+                     + sizeof(ZC_SubDeviceList) + g_struDeviceStatus.num*(sizeof(ZC_SubDeviceInfo)));
         ZC_SubDeviceList *pu8DeviceListInfo = (ZC_SubDeviceList *)(pu8Msg + sizeof(AC_MessageHead));
         ZC_SubDeviceInfo *pu8SubDeviceInfo = (ZC_SubDeviceInfo *)(pu8Msg + sizeof(AC_MessageHead) + sizeof(ZC_SubDeviceList));
         u16 u16DataLen;
@@ -746,7 +748,8 @@
         /*查询子设备是否在线*/
         for(i=0;i&lt;g_struDeviceStatus.num;i++)
         {
-            if(osal_revmemcmp(((ZC_SubDeviceInfo*) pu8Playload)-&gt;DeviceId+8,g_struDeviceStatus.struSubDeviceInfo[i].ExtAddr,Z_EXTADDR_LEN))
+            if(osal_revmemcmp(((ZC_SubDeviceInfo*) pu8Playload)-&gt;DeviceId+8,
+                            g_struDeviceStatus.struSubDeviceInfo[i].ExtAddr,Z_EXTADDR_LEN))
             {
                 if(g_struDeviceStatus.struSubDeviceInfo[i].u8IsOnline)
                 {
@@ -969,7 +972,7 @@
 <p>下面的例子是上报demo灯状态到云端。</p>
 <h3 id="_17">二进制</h3>
 <p>参考代码如下：</p>
-<p>上报数据包=code:201 + req:{1,0,0,0} </p>
+<p>上报数据包=code:203 + req:{1,0,0,0} </p>
 <pre><code class="c">
     typedef struct tag_STRU_LED_ONOFF
     {       
@@ -999,7 +1002,7 @@
 
 <h3 id="klv">KLV格式</h3>
 <p>参考代码如下：</p>
-<p>上报数据包=code:201+key:KEY_LED_ON_OFF value:int8(0为关闭，1为开启) + key:KEY_LED_CONTROL_STATUS value:int8(0为APP控制开关，1为按键控制开关) </p>
+<p>上报数据包=code:203+key:KEY_LED_ON_OFF value:int8(0为关闭，1为开启) + key:KEY_LED_CONTROL_STATUS value:int8(0为APP控制开关，1为按键控制开关) </p>
 <pre><code class="c">    void AC_SendStatus2Server(u8 u8control)
     {
          /*上报demo灯的状态*/
@@ -1022,10 +1025,10 @@
 <h3 id="json">JSON格式</h3>
 <p>参考代码如下：</p>
 <p>用户可调用第三方源码构造JSON格式的消息体。
-控制数据包= code:201 + req:{"switch",0为关闭，1为开启} + req:{"switch",0为关闭，1为开启} +(0为APP控制开关，1为按键控制开关) </p>
-<pre><code class="c">    void AC_SendLedStatus2Server(u8 u8control)
+控制数据包= code:203 + req:{"switch",0为关闭，1为开启} + req:{"switch",0为关闭，1为开启} +(0为APP控制开关，1为按键控制开关) </p>
+<pre><code class="c">    void AC_SendLedStatus2Server(u8 controltype)
     {
-         /*上报demo灯的状态*/
+        /*上报demo灯的状态*/
         cJSON *root;
         char *out;
         u8 u8LedOnOff;
@@ -1035,8 +1038,8 @@
         u8LedOnOff = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_2);
         u8LedOnOff = u8LedOnOff&gt;&gt;2;
          /*构造JSON消息体*/
-        cJSON_AddNumberToObject(root,&quot;switch&quot;,u8LedOnOff);
-        cJSON_AddNumberToObject(root,&quot;controlstatus&quot;,u8control);
+        cJSON_AddNumberToObject(root,&quot;action&quot;,      u8LedOnOff);
+        cJSON_AddNumberToObject(root,&quot;controltype&quot;,     controltype);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*构造消息*/
@@ -1130,23 +1133,30 @@
 <pre><code class="c">    void AC_DealJsonMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {   
         /*处理设备自定义控制消息*/
-        u16 u16DataLen;
-        u32 u32LedOnOff;
-        char *out;
+         u16 u16DataLen;
+         u32 u32LedOnOff;
+         bool result = false;
+         char *out;
+         cJSON *root;
         /*解析收到的JSON数据*/
-        cJSON *root = cJSON_Parse(pu8Playload);
-        /*JSON协议内存分配*/
-        root=cJSON_CreateObject();
-        u32LedOnOff = cJSON_GetObjectItem(root,&quot;switch&quot;)-&gt;valueint;
-        switch (u32LedOnOff)
+        cJSON *format = cJSON_Parse(pu8Playload);
+
+        if(format)
         {
-            case 0://处理开关消息
-            case 1:        
-                AC_BlinkLed(u32LedOnOff);
+            u32LedOnOff = cJSON_GetObjectItem(format,&quot;switch&quot;)-&gt;valueint;
+            switch (u32LedOnOff)
+            {
+                case 0://处理开关消息
+                case 1:        
+                result = AC_BlinkLed(u32LedOnOff);
                 break;
+            }
+            cJSON_Delete(format);
         }
+        JSON内存申请
+        root=cJSON_CreateObject();
         /*构造JSON消息*/
-        cJSON_AddNumberToObject(root,&quot;result&quot;,      1);
+        cJSON_AddBoolToObject(root,&quot;result&quot;,result);
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*发送JSON消息,接口含义详见下节接口定义*/
