@@ -19,10 +19,10 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 @interface ACObject : NSObject
 
 /**
-* Get各种类型的参数值，务必保证Get和Put参数名和类型是一致的
-* @param name  参数名
-* @return      参数值
-*/
+ * Get各种类型的参数值，务必保证Get和Put参数名和类型是一致的
+ * @param name  参数名
+ * @return      参数值
+ */
 - (id)get:(NSString *)name;
 - (NSArray *)getArray:(NSString *)name;
 - (BOOL)getBool:(NSString *)name;
@@ -34,11 +34,11 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (ACObject *)getACObject:(NSString *)name;
 
 /**
-* Put各种类型的参数值，务必保证Put与Get的参数名和类型是一致的
-* @param name  参数名
-* @param value 参数值
-* @return
-*/
+ * Put各种类型的参数值，务必保证Put与Get的参数名和类型是一致的
+ * @param name  参数名
+ * @param value 参数值
+ * @return
+ */
 - (void)put:(NSString *)name value:(id)value;
 - (void)putBool:(NSString *)name value:(BOOL)value;
 - (void)putLong:(NSString *)name value:(long)value;
@@ -49,10 +49,10 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)putACObject:(NSString *)name value:(ACObject *)value;
 
 /**
-* 添加一个参数到Array类型中
-* @param name  参数名
-* @param value 参数值
-*/
+ * 添加一个参数到Array类型中
+ * @param name  参数名
+ * @param value 参数值
+ */
 - (void)add:(NSString *)name value:(id)value;
 - (void)addBool:(NSString *)name value:(BOOL)value;
 - (void)addLong:(NSString *)name value:(long)value;
@@ -63,20 +63,20 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)addACObject:(NSString *)name value:(ACObject *)value;
 
 /**
-* 判断是否存在此参数
-* @param name  参数名
-*/
+ * 判断是否存在此参数
+ * @param name  参数名
+ */
 - (BOOL)contains:(NSString *)name;
 
 /**
-* 获取所有参数名列表
-* @param name  参数名
-*/
+ * 获取所有参数名列表
+ * @param name  参数名
+ */
 - (NSArray *)getKeys;
 
 /**
-* ACObject对象的序列化和反序列化
-*/
+ * ACObject对象的序列化和反序列化
+ */
 - (NSData *)marshal;
 + (NSData *)marshal:(ACObject *)object;
 + (instancetype)unmarshal:(NSData *)data;
@@ -98,23 +98,23 @@ ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法�
 @property (nonatomic, strong, readonly) NSData *streamPayload;
 
 /**
-* 设置流式负载，主要用于较大二进制数据传输，如上传文件等。
-* @param payload   负载内容
-* @param size      负载大小
-*/
+ * 设置流式负载，主要用于较大二进制数据传输，如上传文件等。
+ * @param payload   负载内容
+ * @param size      负载大小
+ */
 - (void)setStreamPayload:(NSData *)streamPayload size:(NSInteger)size;
 
 /**
-* 设置错误信息。在服务端处理错误时，需要显示的调用该结果设置错误信息
-* @param errCode   错误码
-* @param errMsg    错误信息
-*/
+ * 设置错误信息。在服务端处理错误时，需要显示的调用该结果设置错误信息
+ * @param errCode   错误码
+ * @param errMsg    错误信息
+ */
 - (void)setErr:(NSInteger)errCode errMsg:(NSString *)errMsg;
 
 /**
-* 判断服务端响应的处理结果是否有错
-* @return  YES-处理有错，NO-处理成功
-*/
+ * 判断服务端响应的处理结果是否有错
+ * @return  YES-处理有错，NO-处理成功
+ */
 - (BOOL)isErr;
 - (NSInteger)getErrCode;
 - (NSString *)getErrMsg;
@@ -148,9 +148,9 @@ extern NSString *const ACMsgErrMSG;
 @property (nonatomic, strong) NSString *signature; // 请求的合法性签名
 
 /**
-* 生成context主要用于包含重要的上下文信息
-* @param subDomain   服务所属子域名
-*/
+ * 生成context主要用于包含重要的上下文信息
+ * @param subDomain   服务所属子域名
+ */
 + (ACContext *)generateContextWithSubDomain:(NSString *)subDomain;
 
 @end
@@ -251,34 +251,7 @@ ACDeviceMsg定义如下：
 @property(nonatomic,assign) NSInteger openIdType;
 ```
 
-####ACHome(IOS端尚未开放此功能，提供安卓相关代码仅参考)
-说明：分组模型下，Home模型定义如下：
-```java
-public class ACHome {
-private long homeId;
-//home管理员的userId
-private long owner;
-//home名字
-private String name;
 
-public ACHome(long homeId, long owner, String name) {}
-}
-```
-
-####ACRoom
-说明：分组模型下，Room模型定义如下：
-```java
-public class ACRoom {
-private long homeId;
-private long roomId;
-//room管理员的userId
-private long owner;
-//room名字
-private String name;
-
-public ACRoom(long homeId, long roomId, long owner, String name) {}
-}
-```
 
 ####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
@@ -308,29 +281,7 @@ public ACRoom(long homeId, long roomId, long owner, String name) {}
 @property (assign, nonatomic) NSInteger status;
 ```
 
-####ACPushTable(IOS端尚未开放此功能，提供安卓相关代码仅参考)
-说明：用来表示订阅的数据集实时消息内容，定义如下：
-```java
-public class ACPushTable {
-public static final int OPTYPE_CREATE = 1;
-public static final int OPTYPE_REPLACE = 2;
-public static final int OPTYPE_UPDATE = 3;
-public static final int OPTYPE_DELETE = 4;
 
-//订阅的表名
-private String className;
-//订阅的项
-private String[] columes;
-//订阅的监控主键
-private ACObject primaryKey;
-//订阅的类型
-private int opType;
-
-public ACPushTable(String className, ACObject primaryKey) {}
-
-public ACPushTable(String className, String[] columes, ACObject primaryKey, int opType) {}
-}
-```
 
 ####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
@@ -398,92 +349,88 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
 @interface ACloudLib : NSObject
 
 /**
-* 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
-*/
+ * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
+ */
 + (void)setHost:(NSString *)host;
 + (NSString *)getHost;
 
 /**
-* 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
-*/
+ * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
+ */
 + (void)setHttpRequestTimeout:(NSString *)timeout;
 + (NSString *)getHttpRequestTimeout;
 
 /**
-* 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
-*/
+ * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
+ */
 + (void)setMajorDomain:(NSString *)majorDomain;
 + (NSString *)getMajorDomain;
 
 
 /**
-* 获取帐号管理器。
-* 可以调用前面介绍的帐号管理ACAccountManager提供的各个通用接口
-*
-* @return	帐号管理器
-*/
+ * 获取帐号管理器。
+ * 可以调用前面介绍的帐号管理ACAccountManager提供的各个通用接口
+ * @return	帐号管理器
+ */
 类方法调用
 
 /**
-* 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
-* @param deviceType 设备wifi模块类型
-*
-* @return	设备激活器
-*/
+ * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
+ * @param deviceType 设备wifi模块类型
+ * @return	设备激活器
+ */
 实例方法调用
 /**
-* 获取简单无组的设备管理器
-* 可以调用前面介绍的设备管理ACBindManager提供的各个通用接口
-*
-* @return  绑定管理器
-*/
+ * 获取简单无组的设备管理器
+ * 可以调用前面介绍的设备管理ACBindManager提供的各个通用接口
+ *
+ * @return  绑定管理器
+ */
 类方法调用
 
 /**
-* 获取分组管理器
-* 可以调用前面介绍的分组管理ACDeviceManager提供的各个通用接口
-*
-* @return 分组管理器
-*/
+ * 获取分组管理器
+ * 可以调用前面介绍的分组管理ACDeviceManager提供的各个通用接口
+ *
+ * @return 分组管理器
+ */
 类方法调用
 
 /**
-* 获取消息推送管理器（集成了友盟推送的一部分接口）
-* 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
-*
-* @return 推送通知管理器
-*/
+ * 获取消息推送管理器（集成了友盟推送的一部分接口）
+ * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
+ *
+ * @return 推送通知管理器
+ */
 类方法调用
 
 
 
 /**
-* 获取定时管理器
-* 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
-* 获取定时管理器
-* @param timeZone 自定义时区
-
-*/
+ * 获取定时管理器
+ * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
+ * 获取定时管理器
+ * @param timeZone 自定义时区
+ */
 ACTimerManager * timerManager = [[ACTimerManager alloc] initWithTimeZone：@"自定义时区"];
 
 /**
-* 获取OTA管理器
-* 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口
-
-类方法调用
-
+ * 获取OTA管理器
+ * 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口 
+ *类方法调用
+ */
 /**
-* 获取文件上传下载管理器
-* 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
-
+ * 获取文件上传下载管理器
+ * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
+ */
 ACFileManager * filemanager = [[ACFileManager alloc] init];
 
 /**
-* 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
-* 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
-*
-* @param serviceName	服务名
-*/
+ * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
+ * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
+ *
+ * @param serviceName	服务名
+ */
 + (void)setServiceStub:(NSString *)serviceName delegate:(id<ACServiceStubDelegate>)delegate;
 ```
 
@@ -494,59 +441,59 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 
 ```
 ####引入头文件
-~~~
+```
 #import "ACAccountManager.h"
-~~~
+```
 ####接口说明
-~~~
+```
 @interface ACAccountManager : NSObject
-
+```
 /**
-* 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
-* @param account 手机号码或者邮箱地址，目前只支持手机号码
-*/
+ *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * @param account 手机号码或者邮箱地址，目前只支持手机号码
+ */
 + (void)sendVerifyCodeWithAccount:(NSString *)account
 callback:(void (^)(NSError *error))callback;
 /**
-* 校验手机验证码
-* @param account 手机号码
-* @param verifyCode 验证码
-*/
+ * 校验手机验证码
+ * @param account 手机号码
+ * @param verifyCode 验证码
+ */
 + (void)checkVerifyCodeWithAccount:(NSString *)account
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(BOOL valid,NSError *error))callback;
 
 /**
-* 注册帐号
-* @param phone 手机号码（与邮箱地址二选一或者都填）
-* @param email 邮箱地址（与手机号码二选一或者都填）
-* @param password 帐号密码
-* @param verifyCode 验证码
-*/
+ * 注册帐号
+ * @param phone 手机号码（与邮箱地址二选一或者都填）
+ * @param email 邮箱地址（与手机号码二选一或者都填）
+ * @param password 帐号密码
+ * @param verifyCode 验证码
+ */
 + (void)registerWithPhone:(NSString *)phone
 email:(NSString *)email
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(NSString *uid, NSError *error))callback;
 /**
-* 登陆帐号
-* @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
-* @param password 帐号密码
-*/
+ * 登陆帐号
+ * @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
+ * @param password 帐号密码
+ */
 + (void)loginWithAccount:(NSString *)account
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 
 /**
-*  判断用户是否已经存在
-*/
+ *  判断用户是否已经存在
+ */
 + (void)checkExist:(NSString *)account
 callback:(void(^)(BOOL exist,NSError *error))callback;
 
 /**
-*  更换手机号
-*/
+ *  更换手机号
+ */
 + (void)changePhone:(NSString *)phone
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
@@ -554,50 +501,50 @@ callback:(void(^)(NSError *error)) callback;
 
 
 /**
-* 修改昵称
-*/
+ * 修改昵称
+ */
 + (void) changeNickName:(NSString *)nickName
 callback:(void (^) (NSError *error))callback;
 
 /**
-*  修改密码
-*/
+ *  修改密码
+ */
 + (void)changePasswordWithOld:(NSString *)old
 new:(NSString *)newPassword
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 
 /**
-*  重置密码
-*/
+ *  重置密码
+ */
 + (void)resetPasswordWithAccount:(NSString *)account
 verifyCode:(NSString *)verifyCode
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
-*  判断用户是否已经在本机上过登陆
-*/
+ *  判断用户是否已经在本机上过登陆
+ */
 + (BOOL)isLogin;
 
 
 /**
-*  注销当前用户
-*/
+ *  注销当前用户
+ */
 + (void)logout;
 
 
 /**
-*  三方注册
-*/
+ *  三方注册
+ */
 + (void)registerWithOpenId:(NSString *)openId
 provider:(NSString *)provider
 accessToken:(NSString *)accessToken
 callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
-*  三方登陆
-*/
+ *  三方登陆
+ */
 + (void)loginWithOpenId:(NSString *)openId
 provider:(NSString *)provider
 accessToken:(NSString *)accessToken
@@ -605,15 +552,15 @@ callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 
 /**
-* 修改帐号扩展属性
-*/
+ * 修改帐号扩展属性
+ */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
 
 
 /**
-* 获取帐号扩展属性
-*/
+ * 获取帐号扩展属性
+ */
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
 ```
 
@@ -662,37 +609,37 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 
 ```
 /**
-*  获取设备列表,不包含设备状态信息
-*  
-*  @param callback     数组：devices保存的对象是ACUserDevice的对象
-*/
+ *  获取设备列表,不包含设备状态信息
+ *  
+ *  @param callback     数组：devices保存的对象是ACUserDevice的对象
+ */
 + (void)listDevicesWithCallback:(void(^)(NSArray *devices,NSError *error))callback;
 
 
 /**
-*  获取设备列表,包含设备在线状态信息
-*
-*  @param callback     数组：devices保存的对象是ACUserDevice的对象
-*/
+ *  获取设备列表,包含设备在线状态信息
+ *
+ *  @param callback     数组：devices保存的对象是ACUserDevice的对象
+ */
 + (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
 /**
-*  获取用户列表
-*
-*  @param deviceId 设备唯一标识
-*  @param callback 数组：users保存的对象是ACBindUser的对象
-*/
+ *  获取用户列表
+ *
+ *  @param deviceId 设备唯一标识
+ *  @param callback 数组：users保存的对象是ACBindUser的对象
+ */
 + (void)listUsersWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 calllback:(void(^)(NSArray *users,NSError *error))callback;
 
 
 /**
-*  绑定设备
-*
-*  @param physicalDeviceId 设备物理ID
-*  @param name             设备名称
-*  @param callback         回调 deviceId 设备的逻辑Id
-*/
+ *  绑定设备
+ *
+ *  @param physicalDeviceId 设备物理ID
+ *  @param name             设备名称
+ *  @param callback         回调 deviceId 设备的逻辑Id
+ */
 + (void)bindDeviceWithSubDomain:(NSString *)subDomain
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
@@ -700,13 +647,13 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 
 /**
-*  根据分享码 绑定设备
-*
-*  @param shareCode        分享码
-*  @param subDomain        主域名
-*  @param deviceId         逻辑  ID
-*  @param callback         回调 ACUserDevice 设备的对象
-*/
+ *  根据分享码 绑定设备
+ *
+ *  @param shareCode        分享码
+ *  @param subDomain        主域名
+ *  @param deviceId         逻辑  ID
+ *  @param callback         回调 ACUserDevice 设备的对象
+ */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
 subDomain:(NSString *)subDomain
 deviceId:(NSInteger )deviceId
@@ -714,56 +661,56 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 
 /**
-* 分享设备
-*
-* @param subDomain 子域名，如djj（豆浆机）
-* @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param account   手机号
-* @param callback  返回结果的监听回调
-*/
+ * 分享设备
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param account   手机号
+ * @param callback  返回结果的监听回调
+ */
 public void bindDeviceWithUser(String subDomain, long deviceId, String account, VoidCallback callback);
 
 /**
-*  解绑设备
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备唯一标识
-*/
+ *  解绑设备
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备唯一标识
+ */
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
 
 
 /**
-*  管理员取消 某个用户的绑定  （管理员接口）
-*
-*  @param subDomain 子域
-*  @param userId    用户ID
-*  @param deviceId  设备逻辑ID
-*  @param callback  回调
-*/
+ *  管理员取消 某个用户的绑定  （管理员接口）
+ *
+ *  @param subDomain 子域
+ *  @param userId    用户ID
+ *  @param deviceId  设备逻辑ID
+ *  @param callback  回调
+ */
 + (void)unbindDeviceWithUserSubDomain:(NSString *)subDomain
 userId:(NSInteger)userId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
 
 /**
-* 获取分享码（只有管理员可以获取 ，默认一小时内生效）
-*
-* @param subDomain 子域名，如djj（豆浆机）
-* @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param callback  返回结果的监听回调
-*/
+ * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback  返回结果的监听回调
+ */
 public void getShareCode(String subDomain, long deviceId, PayloadCallback<String> callback);
 
 /**
-*  获取分享码  （管理员接口）
-*
-*  @param subDomain 子域名称
-*  @param deviceId  设备唯一标识
-*  @param timeout   超时时间（秒）
-*  @callback        shareCode 分享码
-*/
+ *  获取分享码  （管理员接口）
+ *
+ *  @param subDomain 子域名称
+ *  @param deviceId  设备唯一标识
+ *  @param timeout   超时时间（秒）
+ *  @callback        shareCode 分享码
+ */
 + (void)getShareCodeWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
@@ -771,12 +718,12 @@ callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
 
 /**
-*  设备管理员权限转让 （管理员接口）
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备逻辑ID
-*  @param userId       新的管理员ID
-*/
+ *  设备管理员权限转让 （管理员接口）
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param userId       新的管理员ID
+ */
 + (void)changeOwnerWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 userId:(NSInteger)userId
@@ -784,13 +731,13 @@ callback:(void(^)(NSError *error))callback;
 
 
 /**
-*  更换物理设备 （管理员接口）
-*
-*  @param subDomain        子域名称
-*  @param physicalDeviceId 设备物理ID
-*  @param deviceId         设备逻辑ID
-*  @param bindCode         绑定码(可选)
-*/
+ *  更换物理设备 （管理员接口）
+ *
+ *  @param subDomain        子域名称
+ *  @param physicalDeviceId 设备物理ID
+ *  @param deviceId         设备逻辑ID
+ *  @param bindCode         绑定码(可选)
+ */
 + (void)changeDeviceWithSubDomain:(NSString *)subDomain
 physicalDeviceId:(NSString *)physicalDeviceId
 deviceId:(NSInteger)deviceId
@@ -798,24 +745,24 @@ callback:(void(^)(NSError *error))callback;
 
 
 /**
-*  修改设备名称 （管理员接口）
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备逻辑ID
-*  @param name         设备的新名称
-*/
+ *  修改设备名称 （管理员接口）
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param name         设备的新名称
+ */
 + (void)changNameWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 name:(NSString *)name
 callback:(void(^)(NSError *error))callback;
 /**
-*  查询设备在线状态
-*
-*  @param subDomain        子域名称
-*  @param deviceId         设备逻辑ID
-*  @param subDomain        子域名称
-*  @param callback         online  是否在线
-*/
+ *  查询设备在线状态
+ *
+ *  @param subDomain        子域名称
+ *  @param deviceId         设备逻辑ID
+ *  @param subDomain        子域名称
+ *  @param callback         online  是否在线
+ */
 + (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 physicalDeviceId:(NSString *)physicalDeviceId
@@ -825,38 +772,38 @@ callback:(void(^)(Boolean online,NSError *error))callback;
 
 
 /**
-* 绑定网关
-*
-* @param subDomain        子域名，如djj（豆浆机）
-* @param physicalDeviceId 设备id（制造商提供的）
-* @param name             设备名字
-* @param callback         返回结果的监听回调
-*/
+ * 绑定网关
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备id（制造商提供的）
+ * @param name             设备名字
+ * @param callback         返回结果的监听回调
+ */
 + (void)bindGatewayWithSubDomain:(NSString *)subDomain
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 
 /**
-* 解绑网关
-*
-* @param subDomain 子域名，如djj（豆浆机）
-* @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param callback  返回结果的监听回调
-*/
+ * 解绑网关
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback  返回结果的监听回调
+ */
 + (void)unbindGatewayWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 添加子设备
-*
-* @param subDomain        子域名，如djj（豆浆机）
-* @param gatewayDeviceId  网关逻辑id
-* @param physicalDeviceId 设备id（制造商提供的）
-* @param name             子设备名称
-* @param callback         返回结果的监听回调
-*/
+ * 添加子设备
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param gatewayDeviceId  网关逻辑id
+ * @param physicalDeviceId 设备id（制造商提供的）
+ * @param name             子设备名称
+ * @param callback         返回结果的监听回调
+ */
 + (void)addSubDeviceWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 physicalDeviceId:(NSString *)physicalDeviceId
@@ -864,79 +811,79 @@ name:(NSString *)name
 callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 
 /**
-* 删除子设备
-*
-* @param subDomain 子域名，如djj（豆浆机）
-* @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param callback  返回结果的监听回调
-*/
+ * 删除子设备
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback  返回结果的监听回调
+ */
 + (void)deleteSubDeviceWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 获取用户网关列表
-*
-* @param subDomain 子域名，如djj（豆浆机）
-* @param callback  返回结果的监听回调
-*/
+ * 获取用户网关列表
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param callback  返回结果的监听回调
+ */
 + (void)listGatewaysWithSubDomain:(NSString *)subDomain
 callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
-* 获取用户子设备列表
-*
-* @param subDomain       子域名，如djj（豆浆机）
-* @param gatewayDeviceId 网关逻辑id
-* @param callback        返回结果的监听回调
-*/
+ * 获取用户子设备列表
+ *
+ * @param subDomain       子域名，如djj（豆浆机）
+ * @param gatewayDeviceId 网关逻辑id
+ * @param callback        返回结果的监听回调
+ */
 + (void)listSubDevicesWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
-* 获取网关新设备列表
-*
-* @param subDomain       子域名，如djj（豆浆机）
-* @param gatewayDeviceId 网关逻辑id
-* @param callback        返回结果的监听回调
-*/
+ * 获取网关新设备列表
+ *
+ * @param subDomain       子域名，如djj（豆浆机）
+ * @param gatewayDeviceId 网关逻辑id
+ * @param callback        返回结果的监听回调
+ */
 + (void)listNewDevicesWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
-* 开启网关接入
-*
-* @param subDomain       子域名，如djj（豆浆机）
-* @param gatewayDeviceId 网关逻辑id
-* @param time            开启时间
-* @param callback        返回结果的监听回调
-*/
+ * 开启网关接入
+ *
+ * @param subDomain       子域名，如djj（豆浆机）
+ * @param gatewayDeviceId 网关逻辑id
+ * @param time            开启时间
+ * @param callback        返回结果的监听回调
+ */
 + (void)openGatewayMatchWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 time:(NSInteger)time
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 关闭网关接入
-*
-* @param subDomain       子域名，如djj（豆浆机）
-* @param gatewayDeviceId 网关逻辑id
-* @param callback        返回结果的监听回调
-*/
+ * 关闭网关接入
+ *
+ * @param subDomain       子域名，如djj（豆浆机）
+ * @param gatewayDeviceId 网关逻辑id
+ * @param callback        返回结果的监听回调
+ */
 + (void)closeGatewayMathWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 剔除子设备
-*
-* @param subDomain       子域名，如djj（豆浆机）
-* @param gatewayDeviceId 网关逻辑id
-* @param physicalDeviceId 设备id（制造商提供的）
-* @param callback        返回结果的监听回调
-*/
+ * 剔除子设备
+ *
+ * @param subDomain       子域名，如djj（豆浆机）
+ * @param gatewayDeviceId 网关逻辑id
+ * @param physicalDeviceId 设备id（制造商提供的）
+ * @param callback        返回结果的监听回调
+ */
 + (void)evictSubDeviceWithSubDomain:(NSString *)subDomain
 gatewayDeviceId:(NSInteger)gatewayDeviceId
 physicalDeviceId:(NSString *)physicalDeviceId
@@ -945,15 +892,15 @@ callback:(void (^)(NSError *error))callback;
 
 
 /**
-* 修改帐号扩展属性
-*/
+ * 修改帐号扩展属性
+ */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
 
 
 /**
-* 获取帐号扩展属性
-*/
+ * 获取帐号扩展属性
+ */
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
 
 //反序列化
@@ -966,10 +913,10 @@ callback:(void (^) (NSError *error))callback;
 
 
 /**
-* 为便于测试，开发者可实现一个设备的桩
-*
-* @param stub
-*/
+ * 为便于测试，开发者可实现一个设备的桩
+ *
+ * @param stub
+ */
 @interface ACDeviceStub : NSObject
 
 + (instancetype)sharedInstance;
@@ -982,12 +929,12 @@ callback:(void (^) (NSError *error))callback;
 
 
 /**
-*  向设备发送消息
-*
-*  @param subDomain 子域名
-*  @param deviceId  设备逻辑ID
-*  @param msg       发送的消息
-*/
+ *  向设备发送消息
+ *
+ *  @param subDomain 子域名
+ *  @param deviceId  设备逻辑ID
+ *  @param msg       发送的消息
+ */
 + (void)sendToDevice:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 msg:(ACDeviceMsg *)msg
@@ -995,205 +942,6 @@ callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
 
 ```
 
-
-##Home模型(IOS端尚未开放此功能，提供安卓相关代码仅参考)
-除了绑定控制设备之外，你可能需要对设备进行合理的分组管理，AbleCloud提供的Home模型可以满足大部分复杂的模型场景。
-```java
-public interface ACGroupMgr {
-
-/**
-* 创建家庭，任何人可创建
-*
-* @param name     家庭名字
-* @param callback 返回结果的监听回调
-*/
-public void createHome(String name, PayloadCallback<ACHome> callback);
-
-/**
-* 删除家庭，只有组的管理员可删除。删除家庭，家庭内所有的设备和设备的绑定关系删除。普通用户调用该接口相当于退出家庭
-*
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void deleteHome(long homeId, VoidCallback callback);
-
-/**
-* 创建房间，只有home的管理员可以创建。room从属于home。
-*
-* @param homeId   家庭id
-* @param name     房间名字
-* @param callback 返回结果的监听回调
-*/
-public void createRoom(long homeId, String name, PayloadCallback<ACRoom> callback);
-
-/**
-* 只有home的管理员可以删除。Room删除后，原来在room下面的设备自动划转到home下
-*
-* @param homeId   家庭id
-* @param roomId   房间id
-* @param callback 返回结果的监听回调
-*/
-public void deleteRoom(long homeId, long roomId, VoidCallback callback);
-
-/**
-* 设备是新设备
-* 将设备添加到家庭。返回设备对象。所有对家庭有控制权的用户都对该设备有使用权
-* 当添加的设备为网关时，网关下面的子设备全部添加到家庭
-* 给网关添加子设备仍然调用addSubDevice接口，添加到网关的子设备需要再次调用此接口添加到home
-*
-* @param subDomain        子域名，如djj（豆浆机）
-* @param physicalDeviceId 设备id（制造商提供的）
-* @param homeId           家庭id
-* @param name             设备名字
-* @param callback         返回结果的监听回调
-*/
-public void addDeviceToHome(String subDomain, String physicalDeviceId, long homeId, String name, PayloadCallback<ACUserDevice> callback);
-
-/**
-* 设备不是新设备
-* 将设备添加到家庭。返回设备对象。所有对家庭有控制权的用户都对该设备有使用权
-* 当添加的设备为网关时，网关下面的子设备全部添加到家庭。
-* 给网关添加子设备仍然调用addSubDevice接口，添加到网关的子设备需要再次调用此接口添加到home。
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param homeId   家庭id
-* @param name     设备名字
-* @param callback 返回结果的监听回调
-*/
-public void addDeviceToHome(long deviceId, long homeId, String name, PayloadCallback<ACUserDevice> callback);
-
-/**
-* 从家庭里删除设备，设备变为新的设备，所有绑定权限失效。删除网关时，网关和下面所有子设备一起删除。删除子设备时，子设备和网关的绑定关系同时解除
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void deleteDeviceFromHome(long deviceId, long homeId, VoidCallback callback);
-
-/**
-* 将设备移动到房间中，要求设备和room在同一个home下才可以。当设备为网关时，网关下面的子设备原位置不变
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param homeId   家庭id
-* @param roomId   房间id
-* @param callback 返回结果的监听回调
-*/
-public void moveDeviceToRoom(long deviceId, long homeId, long roomId, VoidCallback callback);
-
-/**
-* 将设备从房间中移除。从房间中移除的设备移动到家庭下
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param homeId   家庭id
-* @param roomId   房间id
-* @param callback 返回结果的监听回调
-*/
-public void removeDeviceFromRoom(long deviceId, long homeId, long roomId, VoidCallback callback);
-
-/**
-* 获取家庭的分享码（只有管理员可以获取 ）
-*
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void getHomeShareCode(long homeId, PayloadCallback<String> callback);
-
-/**
-* 获取家庭的分享码（只有管理员可以获取 ,默认超时时间为1小时）
-*
-* @param homeId   家庭id
-* @param timeout  二维码超时时间(以秒为单位)
-* @param callback 返回结果的监听回调
-*/
-public void getHomeShareCode(long homeId, int timeout, PayloadCallback<String> callback);
-
-/**
-* 普通用户通过管理员分享的二维码加入家庭
-*
-* @param shareCode 分享码
-* @param callback 返回结果的监听回调
-*/
-public void joinHomeWithShareCode(String shareCode, PayloadCallback<ACHome> callback);
-
-/**
-* 普通用户通过管理员分享的二维码加入家庭
-*
-* @param homeId   家庭id
-* @param account  手机号或者email
-* @param callback 返回结果的监听回调
-*/
-public void addUserToHome(long homeId, String account, VoidCallback callback);
-
-/**
-* 管理员直接将某人从家中移除
-*
-* @param homeId   家庭id
-* @param userId   被移除用户的userId
-* @param callback 返回结果的监听回调
-*/
-public void removeUserFromHome(long homeId, long userId, VoidCallback callback);
-
-/**
-* 列出某个用户有使用权的所有家庭
-*
-* @param callback 返回结果的监听回调
-*/
-public void listHomes(PayloadCallback<List<ACHome>> callback);
-
-/**
-* 获取某个home下面的所有room
-*
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void listRooms(long homeId, PayloadCallback<List<ACRoom>> callback);
-
-/**
-* 列出家庭下的所有设备
-*
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void listHomeDevices(long homeId, PayloadCallback<List<ACUserDevice>> callback);
-
-/**
-* 列出房间里的所有设备
-*
-* @param homeId   家庭id
-* @param roomId   房间id
-* @param callback 返回结果的监听回调
-*/
-public void listRoomDevices(long homeId, long roomId, PayloadCallback<List<ACUserDevice>> callback);
-
-/**
-* 列出家庭成员
-*
-* @param homeId   家庭id
-* @param callback 返回结果的监听回调
-*/
-public void listHomeUsers(long homeId, PayloadCallback<List<ACHomeUser>> callback);
-
-/**
-* 更改家庭名称，普通用户和管理员均有权限更改。App端可以自己设定普通用户是否有权限更改。
-*
-* @param homeId   家庭id
-* @param name     家庭名字
-* @param callback 返回结果的监听回调
-*/
-public void changeHomeName(long homeId, String name, VoidCallback callback);
-
-/**
-* 更改组名称，普通用户和管理员均有权限更改。App端可以自己设定普通用户是否有权限更改。
-*
-* @param homeId   家庭id
-* @param roomId   房间id
-* @param name     房间名字
-* @param callback 返回结果的监听回调
-*/
-public void changeRoomName(long homeId, long roomId, String name, VoidCallback callback);
-}
-```
 
 
 ##OTA
@@ -1256,21 +1004,21 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 - (id)initWithTimeZone:(NSTimeZone *)timeZone;
 
 /**
-* 创建定时任务(使用二进制模型)
-*
-* @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-* @param timeCycle   单次定时任务：once
-*                    循环定时任务：按分重复：min
-*                    按小时重复：hour
-*                    按天重复：day
-*                    按月重复：month
-*                    按年复复：year
-*                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-* @param description 自定义的任务描述
-* @param msg         具体的消息内容
-* @param callback    返回结果的监听回调
-*/
+ * 创建定时任务(使用二进制模型)
+ * 
+ * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
+ * @param timeCycle   单次定时任务：once
+ *                    循环定时任务：按分重复：min
+ *                    按小时重复：hour
+ *                    按天重复：day
+ *                    按月重复：month
+ *                    按年复复：year
+ *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
+ * @param description 自定义的任务描述
+ * @param msg         具体的消息内容
+ * @param callback    返回结果的监听回调
+ */
 - (void)addTaskWithDeviceId:(NSInteger)deviceId
 name:(NSString *)name
 timePoint:(NSString *)timePoint
@@ -1280,21 +1028,21 @@ deviceMsg:(ACDeviceMsg *)deviceMsg
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 创建定时任务(使用KLV模型)
-*
-* @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-* @param timeCycle   单次定时任务：once
-*                    循环定时任务：按分重复：min
-*                    按小时重复：hour
-*                    按天重复：day
-*                    按月重复：month
-*                    按年复复：year
-*                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-* @param description 自定义的任务描述
-* @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-* @param callback    返回结果的监听回调
-*/
+ * 创建定时任务(使用KLV模型)
+ *
+ * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
+ * @param timeCycle   单次定时任务：once
+ *                    循环定时任务：按分重复：min
+ *                    按小时重复：hour
+ *                    按天重复：day
+ *                    按月重复：month
+ *                    按年复复：year
+ *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
+ * @param description 自定义的任务描述
+ * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
+ * @param callback    返回结果的监听回调
+ */
 - (void)addTaskWithDeviceId:(NSInteger)deviceId
 name:(NSString *)name
 timePoint:(NSString *)timePoint
@@ -1304,22 +1052,22 @@ KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 修改定时任务(使用二进制模型)
-*
-* @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param taskId      任务id
-* @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-* @param timeCycle   单次定时任务：once
-*                    循环定时任务：按分重复：min
-*                    按小时重复：hour
-*                    按天重复：day
-*                    按月重复：month
-*                    按年复复：year
-*                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-* @param description 自定义的任务描述
-* @param msg         具体的消息内容
-* @param callback    返回结果的监听回调
-*/
+ * 修改定时任务(使用二进制模型)
+ *
+ * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param taskId      任务id
+ * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
+ * @param timeCycle   单次定时任务：once
+ *                    循环定时任务：按分重复：min
+ *                    按小时重复：hour
+ *                    按天重复：day
+ *                    按月重复：month
+ *                    按年复复：year
+ *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
+ * @param description 自定义的任务描述
+ * @param msg         具体的消息内容
+ * @param callback    返回结果的监听回调
+ */
 - (void)modifyTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 name:(NSString *)name
@@ -1330,22 +1078,22 @@ deviceMsg:(ACDeviceMsg *)deviceMsg
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 修改定时任务(使用KLV模型)
-*
-* @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param taskId      任务id
-* @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
-* @param timeCycle   单次定时任务：once
-*                    循环定时任务：按分重复：min
-*                    按小时重复：hour
-*                    按天重复：day
-*                    按月重复：month
-*                    按年复复：year
-*                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
-* @param description 自定义的任务描述
-* @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
-* @param callback    返回结果的监听回调
-*/
+ * 修改定时任务(使用KLV模型)
+ *
+ * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param taskId      任务id
+ * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
+ * @param timeCycle   单次定时任务：once
+ *                    循环定时任务：按分重复：min
+ *                    按小时重复：hour
+ *                    按天重复：day
+ *                    按月重复：month
+ *                    按年复复：year
+ *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
+ * @param description 自定义的任务描述
+ * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
+ * @param callback    返回结果的监听回调
+ */
 - (void)modifyTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 name:(NSString *)name
@@ -1356,44 +1104,44 @@ KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 开启定时任务
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param taskId   任务id
-* @param callback 返回结果的监听回调
-*/
+ * 开启定时任务
+ *
+ * @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param taskId   任务id
+ * @param callback 返回结果的监听回调
+ */
 - (void)openTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 关闭定时任务
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param taskId   任务id
-* @param callback 返回结果的监听回调
-*/
+ * 关闭定时任务
+ *
+ * @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param taskId   任务id
+ * @param callback 返回结果的监听回调
+ */
 - (void)closeTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 删除定时任务
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param taskId   任务id
-* @param callback 返回结果的监听回调
-*/
+ * 删除定时任务
+ *
+ * @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param taskId   任务id
+ * @param callback 返回结果的监听回调
+ */
 - (void)deleteTaskWithDeviceId:(NSInteger)deviceId
 taskId:(NSInteger)taskId
 callback:(void (^)(NSError *error))callback;
 
 /**
-* 获取定时任务列表
-*
-* @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
-* @param callback 返回结果的监听回调
-*/
+ * 获取定时任务列表
+ *
+ * @param deviceId 设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback 返回结果的监听回调
+ */
 - (void)listTasksWithDeviceId:(NSInteger)deviceId
 callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 ```
@@ -1404,24 +1152,24 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
 ```
 /** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
-@param appKey      主站生成appKey
-@param launchOptions 启动参数
-*/
+ *@param appKey      主站生成appKey
+ *@param launchOptions 启动参数
+ */
 + (void)startWithAppkey:(NSString *)appKey launchOptions:(NSDictionary *)launchOptions;
 /**
-* 添加推送别名
-*
-* @param userId   用户ID
-* @param callback 返回结果的监听回调
-*/
+ * 添加推送别名
+ *
+ * @param userId   用户ID
+ * @param callback 返回结果的监听回调
+ */
 + (void)addAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
 
 /**
-* 若要使用新的别名，请先调用removeAlias接口移除掉旧的别名
-*
-* @param userId   用户ID
-* @param callback 返回结果的监听回调
-*/
+ * 若要使用新的别名，请先调用removeAlias接口移除掉旧的别名
+ *
+ * @param userId   用户ID
+ * @param callback 返回结果的监听回调
+ */
 + (void)removeAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
 ```
 
@@ -1431,25 +1179,25 @@ AbleCloud提供了实时消息能够让你实时接收并且查看设备上的�
 public interface ACPushMgr {
 
 /**
-* 创建与服务器的连接
-*/
+ * 创建与服务器的连接
+ */
 public void connect(VoidCallback callback);
 
 /**
-* 订阅实时数据
-* @param table 订阅的数据集信息
-*/
+ * 订阅实时数据
+ * @param table 订阅的数据集信息
+ */
 public void watch(ACPushTable table, VoidCallback callback);
 
 /**
-* 取消订阅
-* @param table 取消订阅的数据集信息
-*/
+ * 取消订阅
+ * @param table 取消订阅的数据集信息
+ */
 public void unwatch(ACPushTable table, VoidCallback callback);
 
 /**
-* 接收已订阅的实时数据
-*/
+ * 接收已订阅的实时数据
+ */
 public void onReceive(PayloadCallback<ACPushReceive> callback);
 }
 ```
@@ -1458,10 +1206,10 @@ public void onReceive(PayloadCallback<ACPushReceive> callback);
 ##局域网通信
 
 ```
-/*
-*ACFindDevicesManager
-* 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
-*/
+/**
+ *ACFindDevicesManager
+ * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
+ */
 - (void)findDevicesWithSubDomainId:(NSInteger)subDomainId
 timeout:(NSTimeInterval)timeout;
 ```
@@ -1471,37 +1219,37 @@ timeout:(NSTimeInterval)timeout;
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 ```
 /**
-* //获取下载URL
-* @param file      文件信息对象
-* @param expireTime URL有效期，单位秒，若小于等于0则默认为int32的最大值≈80年
-* @param payloadCallback    返回结果的监听回调
-*/
+ * //获取下载URL
+ * @param file      文件信息对象
+ * @param expireTime URL有效期，单位秒，若小于等于0则默认为int32的最大值≈80年
+ * @param payloadCallback    返回结果的监听回调
+ */
 +(void)getDownloadUrlWithfile:(ACFileInfo *)fileInfo  ExpireTime:(long)expireTime payloadCallback:( void (^)(NSString * urlString,NSError * error))callback ;
 
 /**
-* //session下载
-* @param urlString   获得的downURLString
-* @param callback    返回error信息的回调
-* @param CompleteCallback   返回完成的信息的回调
-*/
+ * //session下载
+ * @param urlString   获得的downURLString
+ * @param callback    返回error信息的回调
+ * @param CompleteCallback   返回完成的信息的回调
+ */
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 //取消下载
 -(void)cancel;
 
 
 /**
-* 上传文件
-* @param fileInfo      文件信息
-* @param payloadCallback    返回进度的监听回调
-* @param voidCallback    返回结果的监听回调
-*/
+ * 上传文件
+ * @param fileInfo      文件信息
+ * @param payloadCallback    返回进度的监听回调
+ * @param voidCallback    返回结果的监听回调
+ */
 -(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(NSString * key,float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
 
 /**
-* //取消上传
-* @param subDomain     用户subDmomain
-* @param fileInfo      文件信息
-*/
+ * //取消上传
+ * @param subDomain     用户subDmomain
+ * @param fileInfo      文件信息
+ */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 ><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
@@ -1567,59 +1315,60 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 
 ```
 ####引入头文件
-~~~
+```
 #import "ACAccountManager.h"
-~~~
+```
 ####接口说明
-~~~
+```
 @interface ACAccountManager : NSObject
+```
 
 /**
-* 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
-* @param account 手机号码或者邮箱地址，目前只支持手机号码
-*/
+ * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * @param account 手机号码或者邮箱地址，目前只支持手机号码
+ */
 + (void)sendVerifyCodeWithAccount:(NSString *)account
 callback:(void (^)(NSError *error))callback;
 /**
-* 校验手机验证码
-* @param account 手机号码
-* @param verifyCode 验证码
-*/
+ * 校验手机验证码
+ * @param account 手机号码
+ * @param verifyCode 验证码
+ */
 + (void)checkVerifyCodeWithAccount:(NSString *)account
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(BOOL valid,NSError *error))callback;
 
 /**
-* 注册帐号
-* @param phone 手机号码（与邮箱地址二选一或者都填）
-* @param email 邮箱地址（与手机号码二选一或者都填）
-* @param password 帐号密码
-* @param verifyCode 验证码
-*/
+ * 注册帐号
+ * @param phone 手机号码（与邮箱地址二选一或者都填）
+ * @param email 邮箱地址（与手机号码二选一或者都填）
+ * @param password 帐号密码
+ * @param verifyCode 验证码
+ */
 + (void)registerWithPhone:(NSString *)phone
 email:(NSString *)email
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
 callback:(void (^)(NSString *uid, NSError *error))callback;
 /**
-* 登陆帐号
-* @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
-* @param password 帐号密码
-*/
+ * 登陆帐号
+ * @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
+ * @param password 帐号密码
+ */
 + (void)loginWithAccount:(NSString *)account
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 
 /**
-*  判断用户是否已经存在
-*/
+ *  判断用户是否已经存在
+ */
 + (void)checkExist:(NSString *)account
 callback:(void(^)(BOOL exist,NSError *error))callback;
 
 /**
-*  更换手机号
-*/
+ *  更换手机号
+ */
 + (void)changePhone:(NSString *)phone
 password:(NSString *)password
 verifyCode:(NSString *)verifyCode
@@ -1627,50 +1376,50 @@ callback:(void(^)(NSError *error)) callback;
 
 
 /**
-* 修改昵称
-*/
+ * 修改昵称
+ */
 + (void) changeNickName:(NSString *)nickName
 callback:(void (^) (NSError *error))callback;
 
 /**
-*  修改密码
-*/
+ *  修改密码
+ */
 + (void)changePasswordWithOld:(NSString *)old
 new:(NSString *)newPassword
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 
 /**
-*  重置密码
-*/
+ *  重置密码
+ */
 + (void)resetPasswordWithAccount:(NSString *)account
 verifyCode:(NSString *)verifyCode
 password:(NSString *)password
 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
-*  判断用户是否已经在本机上过登陆
-*/
+ *  判断用户是否已经在本机上过登陆
+ */
 + (BOOL)isLogin;
 
 
 /**
-*  注销当前用户
-*/
+ *  注销当前用户
+ */
 + (void)logout;
 
 
 /**
-*  三方注册
-*/
+ *  三方注册
+ */
 + (void)registerWithOpenId:(NSString *)openId
 provider:(NSString *)provider
 accessToken:(NSString *)accessToken
 callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
-*  三方登陆
-*/
+ *  三方登陆
+ */
 + (void)loginWithOpenId:(NSString *)openId
 provider:(NSString *)provider
 accessToken:(NSString *)accessToken
@@ -1678,15 +1427,15 @@ callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 
 /**
-* 修改帐号扩展属性
-*/
+ * 修改帐号扩展属性
+ */
 + (void) setUserProfile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
 
 
 /**
-* 获取帐号扩展属性
-*/
+ * 获取帐号扩展属性
+ */
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
 ```
 
@@ -1694,36 +1443,36 @@ callback:(void (^) (NSError *error))callback;
 
 ```
 /**
-*  获取设备列表,不包含设备状态信息
-*  
-*  @param callback     数组：devices保存的对象是ACUserDevice的对象
-*/
+ *  获取设备列表,不包含设备状态信息
+ *  
+ *  @param callback     数组：devices保存的对象是ACUserDevice的对象
+ */
 + (void)listDevicesWithCallback:(void(^)(NSArray *devices,NSError *error))callback;
 
 /**
-*  获取设备列表,包含设备在线状态信息
-*
-*  @param callback     数组：devices保存的对象是ACUserDevice的对象
-*/
-+ (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
+ *  获取设备列表,包含设备在线状态信息
+ *
+ *  @param callback     数组：devices保存的对象是ACUserDevice的对象
+ */
+ + (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
 
 /**
-*  获取用户列表
-*
-*  @param deviceId 设备唯一标识
-*  @param callback 数组：users保存的对象是ACBindUser的对象
-*/
+ *  获取用户列表
+ *
+ *  @param deviceId 设备唯一标识
+ *  @param callback 数组：users保存的对象是ACBindUser的对象
+ */
 + (void)listUsersWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 calllback:(void(^)(NSArray *users,NSError *error))callback;
 
 /**
-*  绑定设备
-*
-*  @param physicalDeviceId 设备物理ID
-*  @param name             设备名称
-*  @param callback         回调 deviceId 设备的逻辑Id
-*/
+ *  绑定设备
+ *
+ *  @param physicalDeviceId 设备物理ID
+ *  @param name             设备名称
+ *  @param callback         回调 deviceId 设备的逻辑Id
+ */
 + (void)bindDeviceWithSubDomain:(NSString *)subDomain
 physicalDeviceId:(NSString *)physicalDeviceId
 name:(NSString *)name
@@ -1731,47 +1480,47 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 
 /**
-*  根据分享码 绑定设备
-*
-*  @param shareCode        分享码
-*  @param subDomain        主域名
-*  @param deviceId         逻辑  ID
-*  @param callback         回调 ACUserDevice 设备的对象
-*/
+ *  根据分享码 绑定设备
+ *
+ *  @param shareCode        分享码
+ *  @param subDomain        主域名
+ *  @param deviceId         逻辑  ID
+ *  @param callback         回调 ACUserDevice 设备的对象
+ */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
 subDomain:(NSString *)subDomain
 deviceId:(NSInteger )deviceId
 callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
-*  根据账户绑定设备
-*
-*  @param subDomain 子域
-*  @param deviceId  设备ID
-*  @param phone     电话号码
-*/
+ *  根据账户绑定设备
+ *
+ *  @param subDomain 子域
+ *  @param deviceId  设备ID
+ *  @param phone     电话号码
+ */
 + (void)bindDeviceWithUserSubdomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 account:(NSString *)account
 callback:(void(^)(NSError *error))callback;
 /**
-*  解绑设备
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备唯一标识
-*/
+ *  解绑设备
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备唯一标识
+ */
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
 
 /**
-*  管理员取消 某个用户的绑定  （管理员接口）
-*
-*  @param subDomain 子域
-*  @param userId    用户ID
-*  @param deviceId  设备逻辑ID
-*  @param callback  回调
-*/
+ *  管理员取消 某个用户的绑定  （管理员接口）
+ *
+ *  @param subDomain 子域
+ *  @param userId    用户ID
+ *  @param deviceId  设备逻辑ID
+ *  @param callback  回调
+ */
 + (void)unbindDeviceWithUserSubDomain:(NSString *)subDomain
 userId:(NSInteger)userId
 deviceId:(NSInteger)deviceId
@@ -1779,25 +1528,25 @@ callback:(void(^)(NSError *error))callback;
 
 
 /**
-*  获取分享码  （管理员接口）
-*
-*  @param subDomain 子域名称
-*  @param deviceId  设备唯一标识
-*  @param timeout   超时时间（秒）
-*  @callback        shareCode 分享码
-*/
+ *  获取分享码  （管理员接口）
+ *
+ *  @param subDomain 子域名称
+ *  @param deviceId  设备唯一标识
+ *  @param timeout   超时时间（秒）
+ *  @callback        shareCode 分享码
+ */
 + (void)getShareCodeWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
 callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
 /**
-*  设备管理员权限转让 （管理员接口）
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备逻辑ID
-*  @param userId       新的管理员ID
-*/
+ *  设备管理员权限转让 （管理员接口）
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param userId       新的管理员ID
+ */
 + (void)changeOwnerWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 userId:(NSInteger)userId
@@ -1805,42 +1554,42 @@ callback:(void(^)(NSError *error))callback;
 
 
 /**
-*  更换物理设备 （管理员接口）
-*
-*  @param subDomain        子域名称
-*  @param physicalDeviceId 设备物理ID
-*  @param deviceId         设备逻辑ID
-*  @param bindCode         绑定码(可选)
-*/
+ *  更换物理设备 （管理员接口）
+ *
+ *  @param subDomain        子域名称
+ *  @param physicalDeviceId 设备物理ID
+ *  @param deviceId         设备逻辑ID
+ *  @param bindCode         绑定码(可选)
+ */
 + (void)changeDeviceWithSubDomain:(NSString *)subDomain
 physicalDeviceId:(NSString *)physicalDeviceId
 deviceId:(NSInteger)deviceId
 callback:(void(^)(NSError *error))callback;
 
 
-/**
-*  修改设备名称 （管理员接口）
-*
-*  @param subDomain    子域名称
-*  @param deviceId     设备逻辑ID
-*  @param name         设备的新名称
-*/
+/** 
+ *  修改设备名称 （管理员接口）
+ *
+ *   @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param name         设备的新名称
+ */
 + (void)changNameWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 name:(NSString *)name
 callback:(void(^)(NSError *error))callback;
 
 /**
-* 修改设备扩展属性
-*/
+ * 修改设备扩展属性
+ */
 + (void) setDeviceProfileWithSubDomain:(NSString *)subDomain
 deviceId:(NSInteger)deviceId
 profile:(ACObject *)profile
 callback:(void (^) (NSError *error))callback;
 
 /**
-* 获取设备扩展属性
-*/
+ * 获取设备扩展属性
+ */
 + (void) getDeviceProfileWithSubDomain:(NSString*)subDomain
 deviceId:(NSInteger)deviceId
 callback:(void (^) (ACObject*profile, NSError *error))callback;
@@ -1882,19 +1631,19 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
 
 ```ACServiceClient通信器
 /*
-* @param host        访问子域
-* @param service      服务名
-* @param version   服务版本
-*/
+ * @param host        访问子域
+ * @param service      服务名
+ * @param version   服务版本
+ */
 - (id)initWithHost:(NSString *)host service:(NSString *)service version:(NSInteger)version;
 
 + (instancetype)serviceClientWithHost:(NSString *)host service:(NSString *)service version:(NSInteger)version;
 /**
-* 往某一服务发送命令/消息
-* @param req       具体的消息内容
-* @param callback  返回结果的监听回调，返回服务端的响应消息
-* @throws Exception
-*/
+ * 往某一服务发送命令/消息
+ * @param req       具体的消息内容
+ * @param callback  返回结果的监听回调，返回服务端的响应消息
+ * @throws Exception
+ */
 - (void)sendToService:(ACMsg *)req callback:(void (^)(ACMsg *responseObject, NSError *error))callback;
 ```
 
@@ -1908,20 +1657,20 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ##二、下载文件
 ###1、获取下载url
 /**
-* //获取下载URL
-* @param file      文件信息对象
-* @param expireTime URL有效期，单位秒，若小于等于0则默认为int32的最大值≈80年
-* @param payloadCallback    返回结果的监听回调
-*/
+ * //获取下载URL
+ * @param file      文件信息对象
+ * @param expireTime URL有效期，单位秒，若小于等于0则默认为int32的最大值≈80年
+ * @param payloadCallback    返回结果的监听回调
+ */
 +(void)getDownloadUrlWithfile:(ACFileInfo *)fileInfo  ExpireTime:(long)expireTime payloadCallback:( void (^)(NSString * urlString,NSError * error))callback ;
 
 ###2、根据url下载文件
 /**
-* //session下载
-* @param urlString   获得的downURLString
-* @param callback    返回error信息的回调
-* @param CompleteCallback   返回完成的信息的回调
-*/
+ * //session下载
+ * @param urlString   获得的downURLString
+ * @param callback    返回error信息的回调
+ * @param CompleteCallback   返回完成的信息的回调
+ */
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 
 ##三、上传文件
@@ -1951,45 +1700,45 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 
 ####2)、设置文件权限
 /**
-* 设置全局可读访问权限，不设置则默认为所有人可读
-* @param allow 是否全局可读
-/
+ * 设置全局可读访问权限，不设置则默认为所有人可读
+ * @param allow 是否全局可读
+ */
 -(void)setPublicReadAccess:(BOOL)allow;
 
 /**
-* 设置全局可写访问权限，不设置则默认为除自己外的所有人不可写
-* @param allow 是否全局可写
-*/
+ * 设置全局可写访问权限，不设置则默认为除自己外的所有人不可写
+ * @param allow 是否全局可写
+ */
 -(void)setPublicWriteAccess:(BOOL)allow;
 
 /**
-* 设置用户可访问权限（白名单）
-* @param opType 权限类型，OpType.READ为可读权限，OpType.WRITE为可写权限
-* @param userId 被设置用户Id
-*/
+ * 设置用户可访问权限（白名单）
+ * @param opType 权限类型，OpType.READ为可读权限，OpType.WRITE为可写权限
+ * @param userId 被设置用户Id
+ */
 -(void)setUserAccess:(OpType)optype userId:(long)userId;
 
 /**
-* 设置用户访问权限（黑名单）
-* @param opType 权限类型，OpType.READ为可读权限，OpType.WRITE为可写权限
-* @param userId 被设置用户Id
-*/
+ * 设置用户访问权限（黑名单）
+ * @param opType 权限类型，OpType.READ为可读权限，OpType.WRITE为可写权限
+ * @param userId 被设置用户Id
+ */
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
 ####3)、上传文件
 /**
-* 上传文件
-* @param fileInfo      文件信息
-* @param payloadCallback    返回进度的监听回调
-* @param voidCallback    返回结果的监听回调
-*/
+ * 上传文件
+ * @param fileInfo      文件信息
+ * @param payloadCallback    返回进度的监听回调
+ * @param voidCallback    返回结果的监听回调
+ */
 -(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(NSString * key,float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
 
 
 /**
-* //取消上传
-* @param subDomain     用户subDmomain
-* @param fileInfo      文件信息
-*/
+ * //取消上传
+ * @param subDomain     用户subDmomain
+ * @param fileInfo      文件信息
+ */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 
