@@ -888,13 +888,13 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
 <p>功能介绍参见 <a href="../../features/functions/#home">功能说明-功能介绍-Home模型</a></p>
-<p>创建家庭绑定WiFi设备的建议流程如下图：</p>
+<p>创建Home，然后绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
-<p>创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：</p>
+<p>创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：</p>
 <p><img alt="DM_home_gprs" src="../../pic/develop_guide/DM_home_gprs.png" /></p>
-<p>创建家庭然后绑定WiFi网关和Zigbee子设备的建议流程如下图：</p>
+<p>创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
 <p><img alt="DM_home_gateway_wifi" src="../../pic/develop_guide/DM_home_gateway_wifi.png" /></p>
-<p>创建家庭，然后绑定以太网网关和Zigbee子设备的建议流程如下图：</p>
+<p>创建家庭，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
 <p><img alt="DM_home_gateway_wired" src="../../pic/develop_guide/DM_home_gateway_wired.png" /></p>
 <h3 id="home_1">一、创建Home</h3>
 <h4 id="1home">1、获取home模型管理器</h4>
