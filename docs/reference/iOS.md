@@ -1173,34 +1173,7 @@ callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 + (void)removeAliasWithUserId:(NSInteger)userId callback:(void (^)(NSError *error))callback;
 ```
 
-##实时消息同步(IOS端尚未开放此功能，提供安卓相关代码仅参考)
-AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
-```c
-public interface ACPushMgr {
 
-/**
- * 创建与服务器的连接
- */
-public void connect(VoidCallback callback);
-
-/**
- * 订阅实时数据
- * @param table 订阅的数据集信息
- */
-public void watch(ACPushTable table, VoidCallback callback);
-
-/**
- * 取消订阅
- * @param table 取消订阅的数据集信息
- */
-public void unwatch(ACPushTable table, VoidCallback callback);
-
-/**
- * 接收已订阅的实时数据
- */
-public void onReceive(PayloadCallback<ACPushReceive> callback);
-}
-```
 **<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 
 ##局域网通信
@@ -1316,7 +1289,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 
 ####引入头文件
 ```c
-#import "ACAccountManager.h"
+import "ACAccountManager.h"
 ```
 ####接口说明
 ```c

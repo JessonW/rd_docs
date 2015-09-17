@@ -442,32 +442,6 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
 
-##Home模型(IOS端尚未开放此功能，提供安卓相关代码仅参考)
-
-功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
-
-
-创建家庭绑定WiFi设备的建议流程如下图：
-
-![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
-
-创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：
-
-![DM_home_gprs](../pic/develop_guide/DM_home_gprs.png)
-
-创建家庭然后绑定WiFi网关和Zigbee子设备的建议流程如下图：
-
-![DM_home_gateway_wifi](../pic/develop_guide/DM_home_gateway_wifi.png)
-
-创建家庭，然后绑定以太网网关和Zigbee子设备的建议流程如下图：
-
-![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
-
-
-
-
-
-
 ##设备附加属性
 
 功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
