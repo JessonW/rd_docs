@@ -509,19 +509,19 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
 
 
-创建家庭绑定WiFi设备的建议流程如下图：
+创建Home，然后绑定WiFi设备的建议流程如下图：
 
 ![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
 
-创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：
+创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：
 
 ![DM_home_gprs](../pic/develop_guide/DM_home_gprs.png)
 
-创建家庭然后绑定WiFi网关和Zigbee子设备的建议流程如下图：
+创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：
 
 ![DM_home_gateway_wifi](../pic/develop_guide/DM_home_gateway_wifi.png)
 
-创建家庭，然后绑定以太网网关和Zigbee子设备的建议流程如下图：
+创建家庭，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：
 
 ![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
 

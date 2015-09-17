@@ -455,7 +455,7 @@
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。</li>
 <li><strong>本地运行</strong>
 Xcode下直接<strong>Command + R</strong>运行。<blockquote>
-<p><font color="brown"><strong>注：</strong>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</font></p>
+<p><font color="brown"><strong>注：</strong></font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
 </blockquote>
 </li>
 </ol>
@@ -660,10 +660,9 @@ callback:(void(^)(NSError *error))callback;
 deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
 callback:(void(^)(NSString *shareCode,NSError *error))callback;
-</code></pre>
 
-<p>//普通用户通过分享码绑定设备</p>
-<pre><code class="c">/**
+//普通用户通过分享码绑定设备
+/**
  *  根据分享码 绑定设备
  *  @param shareCode        分享码
  *  @param subDomain        主域名
@@ -930,9 +929,6 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 + (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
 //序列化
 - (NSData *)marshal;
-//序列化withAES Key
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
-
 </code></pre>
 
 <h4 id="2_6">2、发送到设备</h4>
