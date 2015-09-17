@@ -28,7 +28,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
      * @param mContext      获取Context实例
      * @param MajorDomainId AbleCloud domainId，可到AbleCloud平台工程管理查看
      * @param SubDomainId   AbleCloud subDomainId，可到AbleCloud平台工程管理查看
-     * @param secretKey     AbleCloud设备私钥，在设备管理中-->设备入库-->按工程批量注册-->入库模式-->统一入库对应这里私钥，同时把设备对应的公钥入库,如选择批量入库，则需要把每个设备对应的公钥和私钥文件上传
+     * @param secretKey     AbleCloud设备密钥，在产品管理中-->管理-->设备密钥，若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并把上传文件
      * @param version       AbleCloud设备版本，格式为"1-0-0";在初始化一个OTA版本后，若需要进行OTA升级，需要在设备管理中-->OTA-->新建OTA版本把新的apk文件上传
      * @param mode          AC.TEST_MODE,当迁移到正式环境后使用AC.PRODUCTION_MODE
      */
@@ -208,4 +208,42 @@ AC.handleMsg(new ACMsgHandler() {
         }
     }
 });
+```
+
+####数据上报
+```java
+/**
+ * 上报数据到AbleCloud云端（以控制灯为例，实际开发中协议由开发者自己定义）
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    //注意：实际开发中请只选择以下其中一种消息格式
+    switch (protocol) {
+        case BINARY:
+            req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
+            break;
+        case KLV:
+            ACKLVObject object = new ACKLVObject();
+            object.put(Config.KEY_SWITCH, (byte) status);
+            object.put(Config.KEY_TYPE, (byte) type);
+            req.setKLVObject(object);
+            break;
+        case JSON:
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("status", status);
+                jsonObject.put("controltype", type);
+                req.setJsonPayload(jsonObject.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            break;
+    }
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
 ```

@@ -400,14 +400,17 @@ typedef struct
     u8  Pad[3];            
 }AC_ExtMessageHead;
 ```
+
 扩展消息类型表（ExtMsgCode）如下：
-|ExtMsgCode|	消息类型				|消息类型说明			|
+
+|ExtMsgCode|	消息类型		    |消息类型说明			|
 |-------|-----------------------|-------------------|
-|0		|AC_CODE_EXT_REGSITER		|使用mac地址注册接入请求			|
-|1		|AC_CODE_EXT_REBOOT		|WIFI设备重启	|
-|	     |				|				|
+|0		|AC_CODE_EXT_REGSITER	|使用mac地址注册接入请求|
+|1		|AC_CODE_EXT_REBOOT		|WIFI设备重启	     |
+|	    |				         |				     |
 
 AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体
+
 
 ***Message code 64:  AC_EVENT_BASE ***
 
