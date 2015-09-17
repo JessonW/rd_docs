@@ -471,21 +471,21 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 <p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
 <h4 id="_5">接口说明</h4>
 <h4 id="_6">引入头文件</h4>
-<pre><code class="ios">import &quot;ACAccountManager.h&quot;
+<pre><code class="C">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
 <h3 id="_7">账号管理类</h3>
-<pre><code>@interface ACAccountManager : NSObject
+<pre><code class="C">@interface ACAccountManager : NSObject
 </code></pre>
 
 <h3 id="_8">普通帐号注册流程</h3>
 <h4 id="1">1、检查手机号是否已注册</h4>
-<pre><code>+ (void)checkExist:(NSString *)account
+<pre><code class="C">+ (void)checkExist:(NSString *)account
 callback:(void(^)(BOOL exist,NSError *error))callback;
 </code></pre>
 
 <h4 id="2">2、发送验证码</h4>
-<pre><code>/**
+<pre><code class="C">/**
  * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
  * @param account 手机号码或者邮箱地址，目前只支持手机号码
  */
