@@ -25,7 +25,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
 3. **本地运行**
 Xcode下直接**Command + R**运行。
-><font color="brown">**注：**如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</font>
+><font color="brown">**注：**</font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
 
 
 #帐号管理
@@ -263,10 +263,8 @@ callback:(void(^)(NSError *error))callback;
 deviceId:(NSInteger)deviceId
 timeout:(NSTimeInterval)timeout
 callback:(void(^)(NSString *shareCode,NSError *error))callback;
-```
 
 //普通用户通过分享码绑定设备
-```c
 /**
  *  根据分享码 绑定设备
  *  @param shareCode        分享码
@@ -574,9 +572,6 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 + (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
 //序列化
 - (NSData *)marshal;
-//序列化withAES Key
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
-
 ```
 ####2、发送到设备
 ```c
