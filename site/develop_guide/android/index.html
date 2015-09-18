@@ -300,7 +300,7 @@
             
         
             
-            <li class="sub parent__11" style="display: none;"><a href="#_21">设备附加属性</a></li>
+            <li class="sub parent__11" style="display: none;"><a href="#_20">设备附加属性</a></li>
             
         
     
@@ -320,19 +320,19 @@
         
         
         <li class="main">
-            <a href="#_24">和云端通信<span class="main-set parent__24">+</span></a>
+            <a href="#_23">和云端通信<span class="main-set parent__23">+</span></a>
         </li>
         
             
-            <li class="sub parent__24" style="display: none;"><a href="#_25">一、发送消息到设备</a></li>
+            <li class="sub parent__23" style="display: none;"><a href="#_24">一、发送消息到设备</a></li>
             
         
             
-            <li class="sub parent__24" style="display: none;"><a href="#_27">二、发送消息到服务</a></li>
+            <li class="sub parent__23" style="display: none;"><a href="#_26">二、发送消息到服务</a></li>
             
         
             
-            <li class="sub parent__24" style="display: none;"><a href="#_28">三、实时消息</a></li>
+            <li class="sub parent__23" style="display: none;"><a href="#_27">三、实时消息</a></li>
             
         
     
@@ -340,7 +340,7 @@
         
         
         <li class="main">
-            <a href="#_29">局域网通信</a>
+            <a href="#_28">局域网通信</a>
         </li>
         
     
@@ -350,7 +350,7 @@
         
         
         <li class="main">
-            <a href="#_30">定时任务</a>
+            <a href="#_29">定时任务</a>
         </li>
         
             
@@ -384,19 +384,19 @@
         
         
         <li class="main">
-            <a href="#_40">推送<span class="main-set parent__40">+</span></a>
+            <a href="#_39">推送<span class="main-set parent__39">+</span></a>
         </li>
         
             
-            <li class="sub parent__40" style="display: none;"><a href="#_41">推送开发准备</a></li>
+            <li class="sub parent__39" style="display: none;"><a href="#_40">推送开发准备</a></li>
             
         
             
-            <li class="sub parent__40" style="display: none;"><a href="#_42">一、推送开发环境配置</a></li>
+            <li class="sub parent__39" style="display: none;"><a href="#_41">一、推送开发环境配置</a></li>
             
         
             
-            <li class="sub parent__40" style="display: none;"><a href="#_43">二、开启推送服务</a></li>
+            <li class="sub parent__39" style="display: none;"><a href="#_42">二、开启推送服务</a></li>
             
         
     
@@ -416,19 +416,19 @@
         
         
         <li class="main">
-            <a href="#_44">文件存储<span class="main-set parent__44">+</span></a>
+            <a href="#_43">文件存储<span class="main-set parent__43">+</span></a>
         </li>
         
             
-            <li class="sub parent__44" style="display: none;"><a href="#_45">一、获取文件管理器</a></li>
+            <li class="sub parent__43" style="display: none;"><a href="#_44">一、获取文件管理器</a></li>
             
         
             
-            <li class="sub parent__44" style="display: none;"><a href="#_46">二、下载文件</a></li>
+            <li class="sub parent__43" style="display: none;"><a href="#_45">二、下载文件</a></li>
             
         
             
-            <li class="sub parent__44" style="display: none;"><a href="#_47">三、上传文件</a></li>
+            <li class="sub parent__43" style="display: none;"><a href="#_46">三、上传文件</a></li>
             
         
     
@@ -888,13 +888,13 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
 <h2 id="home">Home模型</h2>
 <p>功能介绍参见 <a href="../../features/functions/#home">功能说明-功能介绍-Home模型</a></p>
-<p>创建家庭绑定WiFi设备的建议流程如下图：</p>
+<p>创建Home，然后绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
-<p>创建家庭然后绑定以太网或者GPRS设备的建议流程如下图：</p>
+<p>创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：</p>
 <p><img alt="DM_home_gprs" src="../../pic/develop_guide/DM_home_gprs.png" /></p>
-<p>创建家庭然后绑定WiFi网关和Zigbee子设备的建议流程如下图：</p>
+<p>创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
 <p><img alt="DM_home_gateway_wifi" src="../../pic/develop_guide/DM_home_gateway_wifi.png" /></p>
-<p>创建家庭，然后绑定以太网网关和Zigbee子设备的建议流程如下图：</p>
+<p>创建Home，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
 <p><img alt="DM_home_gateway_wired" src="../../pic/develop_guide/DM_home_gateway_wired.png" /></p>
 <h3 id="home_1">一、创建Home</h3>
 <h4 id="1home">1、获取home模型管理器</h4>
@@ -929,14 +929,14 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h3 id="_20">二、添加或移动设备到分组里</h3>
+<h3 id="home_2">二、添加或移动设备到Home里</h3>
 <blockquote>
 <p><font color="red">特别注意</font>：</p>
 <p>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。</p>
 <p>2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。</p>
 </blockquote>
-<h4 id="home_2">添加设备到Home里</h4>
-<p>创建完分组之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
+<h4 id="home_3">添加设备到Home里</h4>
+<p>创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
 <pre><code class="java">groupMgr.addDeviceToHome(subDomain, physicalDeviceId, homeId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -964,10 +964,10 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h2 id="_21">设备附加属性</h2>
+<h2 id="_20">设备附加属性</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备附加属性</a></p>
-<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口。</strong></p>
-<h4 id="_22">一、设置或者更新设备附加属性</h4>
+<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;选择产品点管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口。</strong></p>
+<h4 id="_21">一、设置或者更新设备附加属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
 deviceProfile.put(&quot;city&quot;, &quot;北京&quot;);
@@ -985,7 +985,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="_23">二、获取设备附加属性</h4>
+<h4 id="_22">二、获取设备附加属性</h4>
 <pre><code class="java">bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback&lt;ACObject&gt;() {
     @Override
     public void success(ACObject object) {
@@ -1003,9 +1003,9 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h1 id="_24">和云端通信</h1>
+<h1 id="_23">和云端通信</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
-<h2 id="_25">一、发送消息到设备</h2>
+<h2 id="_24">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包。</strong>
 KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
@@ -1053,7 +1053,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 });
 </code></pre>
 
-<h3 id="_26">二进制格式</h3>
+<h3 id="_25">二进制格式</h3>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
 { 68 ：[
@@ -1161,7 +1161,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC
 });
 </code></pre>
 
-<h2 id="_27">二、发送消息到服务</h2>
+<h2 id="_26">二、发送消息到服务</h2>
 <p><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的<strong>服务名称</strong>，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为<strong>主版本号</strong>，比如1-0-0，则version为1。</p>
 <pre><code class="java">ACMsg req = new ACMsg();
 req.setName(&quot;queryData&quot;);
@@ -1181,12 +1181,12 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 });
 </code></pre>
 
-<h2 id="_28">三、实时消息</h2>
+<h2 id="_27">三、实时消息</h2>
 <p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。</p>
 <blockquote>
-<p><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。
-<img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
+<p><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。</p>
 </blockquote>
+<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <h4 id="1_8">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
 </code></pre>
@@ -1267,7 +1267,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 });
 </code></pre>
 
-<h1 id="_29">局域网通信</h1>
+<h1 id="_28">局域网通信</h1>
 <p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="java">bindMgr.listDevicesWithStatus(new PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt;() {
@@ -1319,10 +1319,10 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 </code></pre>
 
 <p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
-<h1 id="_30">定时任务</h1>
+<h1 id="_29">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
-<h4 id="_31">获取定时管理器</h4>
+<h4 id="_30">获取定时管理器</h4>
 <p><strong>使用默认时区</strong></p>
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr();
 </code></pre>
@@ -1331,7 +1331,7 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 <pre><code class="java">ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 </code></pre>
 
-<h4 id="_32">添加定时任务</h4>
+<h4 id="_31">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
@@ -1390,9 +1390,9 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_33">修改定时任务</h4>
+<h4 id="_32">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
-<h4 id="_34">开启定时任务</h4>
+<h4 id="_33">开启定时任务</h4>
 <pre><code class="java">timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1406,7 +1406,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_35">关闭定时任务</h4>
+<h4 id="_34">关闭定时任务</h4>
 <pre><code class="java">timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1420,7 +1420,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_36">删除定时任务</h4>
+<h4 id="_35">删除定时任务</h4>
 <pre><code class="java">timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
@@ -1434,7 +1434,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_37">获取定时任务列表</h4>
+<h4 id="_36">获取定时任务列表</h4>
 <pre><code class="java">timerMgr.listTasks(deviceId, new PayloadCallback&lt;List&lt;ACTimerTask&gt;&gt;(){
      @Override
      public void success(List&lt;ACTimerTask&gt; timerTasks) {
@@ -1461,7 +1461,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
-<h4 id="_38">二. 检查升级</h4>
+<h4 id="_37">二. 检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
 <pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
@@ -1479,7 +1479,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="_39">三．确认升级</h4>
+<h4 id="_38">三．确认升级</h4>
 <pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     @Override
     public void success() {
@@ -1492,10 +1492,10 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_40">推送</h1>
+<h1 id="_39">推送</h1>
 <p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
-<h2 id="_41">推送开发准备</h2>
+<h2 id="_40">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
 <p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。</p>
 <p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
@@ -1508,7 +1508,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。</p>
 <p>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。</p>
 </blockquote>
-<h2 id="_42">一、推送开发环境配置</h2>
+<h2 id="_41">一、推送开发环境配置</h2>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
 <pre><code class="java">&lt;!-- 必选 --&gt;
@@ -1662,7 +1662,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 &lt;/meta-data&gt;
 </code></pre>
 
-<h2 id="_43">二、开启推送服务</h2>
+<h2 id="_42">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1_9">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr=AC.notificationMgr();
@@ -1752,7 +1752,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h1 id="_44">文件存储</h1>
+<h1 id="_43">文件存储</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_21">功能说明-功能介绍-文件存储</a></p>
 <blockquote>
 <p><font color="red">注意</font>：</p>
@@ -1761,11 +1761,11 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
 <p>3、上传下载支持断点续传功能</p>
 </blockquote>
-<h2 id="_45">一、获取文件管理器</h2>
+<h2 id="_44">一、获取文件管理器</h2>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
 </code></pre>
 
-<h2 id="_46">二、下载文件</h2>
+<h2 id="_45">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //0代表url链接有效时间为长期有效
@@ -1827,7 +1827,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 });
 </code></pre>
 
-<h2 id="_47">三、上传文件</h2>
+<h2 id="_46">三、上传文件</h2>
 <h3 id="1_10">1、设置上传文件的权限管理</h3>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
