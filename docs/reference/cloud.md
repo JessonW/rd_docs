@@ -90,8 +90,8 @@ public class ACContext {
 + **userId：**设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台程序用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。
 + **developerId：**开发者id。当某一服务开发好上线后，一方面接收APP或设备发来的消息，另一方面可能自主的执行例行巡检任务。当在巡检过程中自主的对后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。
 
-><font color="brown">**注：**上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
-开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。</font>
+><font color="brown">**注：**</font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
+开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。
 
 ###ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
@@ -656,7 +656,7 @@ public abstract class AC {
 ```java
 ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处传开发者或用户上下文都可以
+><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
 
 ###接口说明
 ```java
@@ -747,7 +747,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该传用户上下文(listDevices和listUsers除外)，即`ac.newContext(userId)`或`req.getContext()`
+><font color="red">注意</font>：此处应该传用户上下文,即`ac.newContext(userId)`或`req.getContext()`(listUsers除外，使用`ac.newContext()`)
 
 ###接口说明
 ```java
@@ -965,6 +965,7 @@ public class ACDeviceUser {
 ```java
 ACStore store = ac.store(String className, ACContext contexte);
 ```
+><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
 ###存储模型
 ablecloud目前提供基于mysql的分布式存储服务，开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。因此如何定位数据所在分区，需要提供分区key，ablecloud称其为entity group key（分区键）。当我们要查找一条存储在ablecloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，ablecloud称其为primary key（主键）。
 >+ <font color="red">entity group key必须属于primary key的一部分，可以相同。</font>
@@ -1321,6 +1322,8 @@ public interface ACStoreForTest {
 ```java
 ACNotificationMgr notificationMgr = ac.notificationMgr(ACContext context);
 ```
+><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
+
 ###接口说明
 ```java
 public interface ACNotificationMgr {
