@@ -38,7 +38,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 ```java
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
 ```
-><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认使用为`4个0加上mac地址`
+><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认取`4个0加上wifi mac地址`；若安卓设备没有wifi模块时，默认取`1个0加上手机IMEI号`；若取不到wifi mac地址和IMEI号的情况下，AbleCloud会根据你手机的型号等硬件信息帮你拼出一个唯一的ID；具体可通过AbleCloud后台查看。
 
 #交互消息
 首先，我们从基础的数据结构开始。我们知道，安卓设备APP会与后端服务和普通app进行交互，因此AbleCloud定义了与云端的消息格式：
