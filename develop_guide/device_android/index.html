@@ -316,7 +316,7 @@ AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 </code></pre>
 
 <blockquote>
-<p><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个<code>物理ID</code>，为保证物理ID的唯一性，默认使用为<code>4个0加上mac地址</code>。</p>
+<p><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个<code>物理ID</code>，为保证物理ID的唯一性，默认取<code>4个0加上wifi mac地址</code>；若安卓设备没有wifi模块时，默认取<code>1个0加上手机IMEI号</code>；若取不到wifi mac地址和IMEI号的情况下，AbleCloud会根据你手机的型号等硬件信息帮你拼出一个唯一的ID；具体可通过AbleCloud后台查看。</p>
 </blockquote>
 <h1 id="demo">Demo</h1>
 <p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里的配置项。</p>
