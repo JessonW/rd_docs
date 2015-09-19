@@ -465,8 +465,8 @@ start.cmd
 <li><strong>developerId：</strong>开发者id。当某一服务开发好上线后，一方面接收APP或设备发来的消息，另一方面可能自主的执行例行巡检任务。当在巡检过程中自主的对后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。</li>
 </ul>
 <blockquote>
-<p><font color="brown"><strong>注：</strong>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
-开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。</font></p>
+<p><font color="brown"><strong>注：</strong></font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
+开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。</p>
 </blockquote>
 <h3 id="acobject">ACObject</h3>
 <p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
@@ -1031,7 +1031,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p><font color="red">注意</font>：此处传开发者或用户上下文都可以</p>
+<p><font color="red">注意</font>：此处传开发者上下文,即<code>ac.newContext()</code></p>
 </blockquote>
 <h3 id="_12">接口说明</h3>
 <pre><code class="java">public interface ACAccountMgr {
@@ -1122,7 +1122,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p><font color="red">注意</font>：此处应该传用户上下文(listDevices和listUsers除外)，即<code>ac.newContext(userId)</code>或<code>req.getContext()</code></p>
+<p><font color="red">注意</font>：此处应该传用户上下文,即<code>ac.newContext(userId)</code>或<code>req.getContext()</code>(listUsers除外，使用<code>ac.newContext()</code>)</p>
 </blockquote>
 <h3 id="_16">接口说明</h3>
 <pre><code class="java">public interface ACBindMgr {
@@ -1339,6 +1339,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <pre><code class="java">ACStore store = ac.store(String className, ACContext contexte);
 </code></pre>
 
+<blockquote>
+<p><font color="red">注意</font>：此处传开发者上下文,即<code>ac.newContext()</code></p>
+</blockquote>
 <h3 id="_21">存储模型</h3>
 <p>ablecloud目前提供基于mysql的分布式存储服务，开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。因此如何定位数据所在分区，需要提供分区key，ablecloud称其为entity group key（分区键）。当我们要查找一条存储在ablecloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，ablecloud称其为primary key（主键）。</p>
 <blockquote>
@@ -1697,6 +1700,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <pre><code class="java">ACNotificationMgr notificationMgr = ac.notificationMgr(ACContext context);
 </code></pre>
 
+<blockquote>
+<p><font color="red">注意</font>：此处传开发者上下文,即<code>ac.newContext()</code></p>
+</blockquote>
 <h3 id="_26">接口说明</h3>
 <pre><code class="java">public interface ACNotificationMgr {
     //通知绑定该设备的所有用户

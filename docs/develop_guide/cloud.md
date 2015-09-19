@@ -2,10 +2,10 @@
 
 #开发准备
 
-本章我们先了解一下UDS开发最终需要发布什么东西到AbleCloud平台上。然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发一个属于自己的UDS服务。
+本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。
 
-##服务框架发布库
-AbleCloud发布的java版本服务开发框架，其发布目录、文件如下所示。
+##UDS发布说明
+开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的java版本服务开发框架一致，如下所示。
 ```java
 /config
 	/cloudservice-conf.xml
@@ -23,27 +23,29 @@ start.cmd
 
 ><font color=red>注意事项：</font>
 
->1. 所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为AbleCloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。各jar包版本根据AbleCloud发行的大版本不同可能不同。
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。根据AbleCloud的发行状态，各jar包的版本号可能不同。
 
->1. 在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到AbleCloud发布库的lib文件夹下，并在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
+>1. 开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
 
->1. 注意服务框架发布库结构不允许修改，否则发布失败。
+>1. 按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。
 
-##本机启动DemoService
+>1. 在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。
 
-**本机启动要求本机上已装jre虚拟机。**
+##本机运行UDS
+
+**本机运行UDS要求已安装Java的运行时环境JRE（推荐1.7或更新版本）。**
 
 1、首先，从AbleCloud官网下载栏目下载DemoService.zip，解压后进入package目录，修改config文件夹下的cloudservice-conf.xml文件。
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<developer>
-		<!-- 对应 个人信息-->个人信息-->开发者ID -->
+		<!-- 对应“个人信息->个人信息->开发者ID” -->
 		<id>4</id>
 	</developer>
 
 	<authentication>
-		<!-- 对应 密钥对管理-->全部密钥对，选择已启用的随便一对 -->
+		<!-- 对应“密钥对管理->全部密钥对”，选择已启用的任意一对。 -->
 		<access-key>33df24a54054067e80af49d939b429c2</access-key>
 		<secret-key>5e2fec3440e23c5e807910b13b672015</secret-key>
 	</authentication>
@@ -51,32 +53,32 @@ start.cmd
 	<service>
 		<!-- 此处为本机启动的端口号 -->
 		<port>8080</port>
-		<!-- 对应 产品管理-->产品列表-->主域名 -->
+		<!-- 对应“产品管理->产品列表->主域名” -->
 		<major-domain>ablecloud</major-domain>
-		<!-- 对应 产品管理-->产品列表-->子域 -->
+		<!-- 对应“产品管理->产品列表->子域” -->
 		<sub-domain>demo</sub-domain>
 	</service>
 </configuration>
 ```
 	
-><font color="brown">**注：**开发者id，access-key，secret-key等信息，均能通过登录AbleCloud网站（开发者管理控制台）获取。其他不需要修改。</font>
+><font color="brown">**注：**开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。其它项不需要修改。</font>
 
-2、接着我们还需要在**数据存储-->概况**中新建数据集light-action-data，如下所示：
+2、随后，通过开发者管理控制台提供的界面新建数据集“light-action-data”。数据集的结构如下所示：
 
 ![demoservice_class](../pic/develop_guide/DemoService_Class.png)
 
-3、最后我们就可以在本机启动服务并进行测试了。
+3、接下来就可以在本地启动服务并进行测试。
 
-<b>*linux*</b>下在终端运行如下命令启动服务进行测试：
+<b>*linux*</b>下在终端运行如下命令启动服务：
 ```sh
 sh start.sh
 ```
-<b>*windows*</b>下在cmd中运行如下命令启动服务进行测试：
+<b>*windows*</b>下在cmd中运行如下命令启动服务：
 ```cmd
 start.cmd 
 ```
 
-本地启动成功后，我们使用curl命令进行开灯测试。
+本地启动成功后，可使用curl命令进行开灯测试。
 
 <b>*linux*</b>下使用curl命令：
 ```curl
@@ -86,14 +88,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object"  -H "X-Zc-Major-Domain
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" --data-ascii "{\"deviceId\":1,\"action\":\"on\"}" "http://localHost:8080/controlLight"
 ```
-><font color="red">**注：**</font>请自行修改`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`和`deviceId`的值。
+><font color="red">**注：**</font>请按实际情况修改`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`和`deviceId`的值。
 
 ##开发工具设置
 
-熟悉上述流程之后，我们就可以开始写自己的UDS程序了。以下从新建maven工程开始讲解，带你一步步建立起自己的工程。
+熟悉上述流程之后，可以开始开发自己的UDS程序。以下从新建maven工程开始逐步介绍开发步骤。
 
 ####系统准备
-在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如jdk、maven等。
+在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如JDK、maven等。
 
 + **JDK** 
 
@@ -103,9 +105,9 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 
 	安装maven，建议采用3.2以上版本。
     
-+ **ablecloud**
++ **AbleCloud SDK**
 
-	下载ablecloud-framework-1.1.0.zip
+	下载ablecloud-framework-1.1.0.zip。
 
 ####Intellij
 1. **新建工程**
@@ -118,7 +120,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     ![info](../pic/reference/intellij/new_project_1_2.png)
     
-    注意jdk版本选择安装的1.7+。点击**next**即可。
+    注意JDK版本选择安装的1.7。点击**next**即可。
     
     ![next](../pic/reference/intellij/next.png)
     
@@ -135,9 +137,10 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     ![finish](../pic/reference/intellij/new_project_1_5.png)
     
     至此，新建工程完成。
+    
 1. **布署AbleCloud框架便于本机测试以及提交版本**
     
-    新建package目录，将ablecloud-framework-1.1.0.zip解压到package目录下，参照DemoService（或者拷贝DemoService中整个package目录，除了lib目录下的DemoService-1.1.0.jar文件）。
+    新建package目录，将ablecloud-framework-1.1.0.zip解压到package目录下。
    
 1. **设置工程**
 
@@ -146,12 +149,11 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     ![setting](../pic/reference/intellij/set_project_1_1.png)
     
-    首先设置工程所使用的JDK版本1.7+和语言级别7.0。
+    首先设置工程所使用的JDK版本1.7和语言级别7.0。
     
     ![lib](../pic/reference/intellij/set_project_1_2.png)
     
-    设置开发服务所要依赖的AbleCloud框架包，点击**+**号，选择下载并解压后的AbleCloud开发框架的**lib目录**即可。
-    同上，打开**Project Structure...**,然后选择**Libraries**，点击右边的**+**号，选择**Java**，如下图所示。
+    设置开发服务所要依赖的AbleCloud框架包：同上，打开**Project Structure...**,然后选择**Libraries**，点击右边的**+**号，选择**Java**，如下图所示。
     
     ![lib](../pic/reference/intellij/set_project_2_1.png)
     
@@ -171,11 +173,11 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     ![lib](../pic/reference/intellij/set_project_2_5.png))
     
-    至此，开发者开发服务所依赖的AbleCloud开发框架库添加成功。
+    至此，UDS开发所依赖的AbleCloud开发框架库添加成功。
     
 1. **修改pom.xml文件**
 
-	下面是一个demo的完整pom.xml文件：
+	下面是一个示例服务的完整pom.xml文件：
     
 		<?xml version="1.0" encoding="UTF-8"?>
 		<project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -276,12 +278,12 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 		<?xml version="1.0" encoding="UTF-8"?>
 		<configuration>
 	    	<developer>
-                <!-- 对应 个人信息-->个人信息-->开发者ID -->
+                <!-- 对应“个人信息->个人信息->开发者ID” -->
         		<id>4</id>
     		</developer>
 
     		<authentication>
-                <!-- 对应 密钥对管理-->全部密钥对，选择已启用的随便一对 -->
+                <!-- 对应“密钥对管理->全部密钥对”，选择已启用的任意一对即可。 -->
         		<access-key>33df24a54054067e80af49d939b429c2</access-key>
         		<secret-key>5e2fec3440e23c5e807910b13b672015</secret-key>
         		<timeout>5000</timeout>
@@ -297,9 +299,9 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
         		<class>com.ablecloud.demo.DemoService</class>
                 <!-- 此处为本机启动的端口号 -->
         		<port>8080</port>
-                <!-- 对应 产品管理-->产品列表-->主域名 -->
+                <!-- 对应“产品管理->产品列表->主域名” -->
         		<major-domain>ablecloud</major-domain>
-                <!-- 对应 产品管理-->产品列表-->子域 -->
+                <!-- 对应“产品管理->产品列表->子域” -->
         		<sub-domain>demo</sub-domain>
 
                 <!-- 以下为主版本号，副版本号，修订版本号 -->
@@ -310,11 +312,11 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 		</configuration>
 	
     
-    ><font color="brown">**注:**</font>开发者id，access-key，secret-key等信息，均能通过登录AbleCloud网站（开发者管理控制台）获取。除了**service.class**配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。
+    ><font color="brown">**注:**</font>开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。除了**service.class**配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。
+    
+	至此，即完成了新建一个工程所需的所有准备工作以及环境配置，接下来可以开始UDS的业务逻辑开发。
     
 1. **新建Class并继承ACService**
- 
-    至此，即完成新建一个工程所需的所有准备以及环境配置，接下来就可以进行真正的程序编写了
 
     参照DemoService或者reference里ACSevice介绍
     
