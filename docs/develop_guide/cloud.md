@@ -318,7 +318,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
 1. **新建Class并继承ACService**
 
-    参照DemoService或者reference里ACSevice介绍
+    参照DemoService或者[云端服务开发参考](../reference/cloud.md)里关于ACSevice的介绍。
     
 1. **编译单测**
 
@@ -326,13 +326,13 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
 1. **本地运行**
 
-	如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下，在AbleCloud的框架主目录执行AbleCloud提供的脚本`sh start.sh`或`start.cmd`，即可在您的开发机上启动您编写好的服务程序。
+	如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下。之后，在AbleCloud的框架主目录执行AbleCloud提供的脚本`sh start.sh`或`start.cmd`，即可在您的开发机上启动您编写好的服务程序。
     
 	><font color="brown">**注：**</font>服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。
     
 1. **提交到平台**
 
-	将AbleCloud框架放在pac的lib目录下，然后将AbleCloud的config目录、lib目录、start.sh打成zip包，通过AbleCloud的web平台提交。
+	将AbleCloud的config目录、lib目录（含编译好的UDS服务jar包），以及start.sh文件等压缩、打包为一个zip文件，通过AbleCloud的Web管理控制台提交。
 
 ####Eclipse
 1. **新建工程**
@@ -378,11 +378,11 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     ![setting](../pic/reference/eclipse/set_project_1_6.png)
     
-    回到**User Libraries**页面，点击右方的**Add External JARs...**按钮，选择下载并解压的AbleCloud发行库中的**lib**目录，将该目录中所有的jars添加到新建的user library中。
+    回到**User Libraries**页面，点击右方的**Add External JARs...**按钮，选择下载并解压的AbleCloud发行库中的**lib**目录，将该目录中所有的jar文件添加到新建的user library中。
     
     ![setting](../pic/reference/eclipse/set_project_1_7.png)
     
-    勾选上新建的user library，并点击**Finish**将AbleCloud的jars添加到新建的工程中。
+    勾选上新建的user library，并点击**Finish**将AbleCloud的jar文件添加到新建的工程中。
     
     ![setting](../pic/reference/eclipse/set_project_1_8.png)
     
@@ -699,7 +699,7 @@ public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
 }
 ```
 
-前文的代码实现了本示例的全部功能。在终端运行`mvn package`即可编译成jar包。你可以开发更多好玩的逻辑，比如多设备联动：当某些设备上报的数据达到你设置的规则时，触发另外的设备做出响应。
+前文的代码实现了本示例的全部功能。在终端运行`mvn package`即可编译成jar包。你可以开发更多好玩的逻辑，比如多设备联动：当某些设备上报的数据达到设置的规则时，触发另外的设备做出响应。
 对该服务的测试见后文的相关章节。
 
 # 云端定时任务Demo
@@ -711,7 +711,7 @@ public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
 
 1. **定时任务可执行程序**
 
-其中，定时规则是开发者在AbleCloud控制台中创建定时任务时设置。本小结介绍的示例是开发定时任务的可执行程序。
+其中，定时规则是由开发者在AbleCloud控制台中创建定时任务时设置。本小结介绍的示例是开发定时任务的可执行程序。
 
 ### 场景介绍
 本示例的可执行程序完成的任务仅是打印一条日志：任务执行的实际时间。
@@ -746,7 +746,7 @@ public class DemoCronJob extends ACCronJob {
 ~~~
 
 #测试简介
-上一章节，我们一步步开发了一个完整的服务程序`DemoService`。代码是写完了，如何验证我们写的代码是否正常工作呢，比如自定义的`LightMsgMarshaller`逻辑是否正确，`DemoService`能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，ablecloud提供了多种测试方案，下面会一一介绍。
+上一章节，我们一步步开发了一个完整的服务程序`DemoService`。代码是写完了，如何验证我们写的代码是否正常工作呢，比如自定义的`LightMsgMarshaller`逻辑是否正确，`DemoService`能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。
 
 ##单元测试
 准备工作做好后，就可以开始我们的测试了，我们的单元测试采用org.apache.maven.surefire插件结合junit来完成。
@@ -803,10 +803,10 @@ public class LightMsgMarshallerTest {
 ><font color="red">**注：**测试用例的执行，也是通过`mvn package`来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</font>
 
 ###测试DemoService
-具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，这里详细介绍下。
+具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，详细介绍如下。
 
 ####测试demo
-通过前面的介绍，UDS的大部分功能是由`handleMsg`或`handleDeviceMsg`的各个handler提供的，因此测试工作也集中与对各个handler的测试。在单元测试的过程，无须通过任何client工具驱动，即可完成自动化的单元测试。
+通过前面的介绍，UDS的大部分功能是由`handleMsg`或`handleDeviceMsg`的各个handler提供的，因此测试工作也集中于对各个handler的测试。在单元测试过程中，无须通过任何client工具驱动，即可完成自动化的单元测试。
 
 这里通过一个完整的测试代码演示如何对DemoService进行测试。测试代码中有详细的注释。
 ```java
@@ -954,7 +954,7 @@ public class DemoServiceTest {
 
 ><font color="red">**注意：**可以看到，所有的单元测试用例均是直接调用`handleMsg`或`handleDeviceMsg`驱动测试，无需编写或使用client工具。
 
->此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签**@FixMethodOrder(MethodSorters.NAME_ASCENDING)**固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系的，需要考虑按ASCII字典序的命名规则。</font>
+>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签**@FixMethodOrder(MethodSorters.NAME_ASCENDING)**固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</font>
 
 ####测试桩
 从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中提供了设备桩`ACDeviceStub`功能，开发者只需要依照此接口实现具体的设备桩即可。
@@ -989,11 +989,11 @@ public class LightStub extends ACDeviceStub {
 由于大部分逻辑在单元测试阶段均做了，因此集成测试相对简单，大致步骤如下：
 
 ###在本地机器或任意开发机上启动服务
-按照[本机启动DemoService](#demoservice)小结的说明，通过运行`start.cmd`或`start.sh`启动服务。
+按照[本机启动DemoService](#uds_1)小结的说明，通过运行`start.cmd`或`start.sh`启动服务。
 
 <font color="red">**注意**</font>
 
-1、运行`start.cmd`或`start.sh`的条件，需满足启动的根目录的结构如下：
+1、运行`start.cmd`或`start.sh`的条件。执行启动命令的目录的子目录的结构要求如下所示：
 ```
 /config
 	/cloudservice-conf.xml
@@ -1008,7 +1008,7 @@ public class LightStub extends ACDeviceStub {
 start.sh
 start.cmd
 ```
-2、服务启动成功后，会在根目录下生成`log`的文件夹，进入该文件夹查看`service.log`文件，若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。
+2、服务启动成功后，会在根目录下生成`log`的文件夹，进入该文件夹查看`service.log`文件。若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。
 ```
 2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...
 2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]
@@ -1036,14 +1036,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 ```
 
 其中`-H`指定头域ACContext的信息；`-d`指定的内容，是构造的ACMsg中的请求参数；`http://localHost:8080/controlLight`中的`ip:port`是你启动DemoService的主机和端口号；`controlLight`即为具体的方法，对应ACMsg设置的名字。
-><font color="red">**注：**若在handleMsg接口的处理中使用`req.getContext()`获取请求的用户信息，则在构造http请求的时候，需要使用`-H`增加如下三个头域：`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`</font>
+><font color="red">**注：**若在handleMsg接口的处理中使用`req.getContext()`获取请求的用户信息，则在构造http请求的时候，需要使用`-H`增加如下三个头域：`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`</font>。
 
 
-#STORE存储接口示例
+#Store存储接口示例
 以数据集`test_data`为例，假定其分区键为`deviceId`（字符串型）；主键为`deviceId`（字符串型）和`timestamp`（整型）；其他字段包括`status`（字符串型）、`mode`（字符串型）、`speed`（整型）和`pm25`（浮点型）等。
 
 ##Create
-###方式一：显示的传入primary keys的k-v对
+###方式一：显示地传入primary keys的k-v对
 ```java
 ac.store("test_data", context).create("deviceId", "12345", "timestamp", 1L)	// 这里是k-v对
                     .put("status", "run")
@@ -1084,6 +1084,7 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .limit(10)
                     .execute();
 ```
+
 ###示例二：设定start和end，由start开始正向扫描到end，返回start和end之间的结果集，其中各数据记录按主键自然正序排列
 ```java
 ac.store("test_data", context).scan("deviceId", "12345")
@@ -1091,6 +1092,7 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .end("timestamp", 10L)
                     .execute();
 ```
+
 ###示例三：设定end和limit，由end开始逆向扫描，返回limit数量的数据集，注意其中各数据记录按主键倒序排列。
 ><font color="brown">**注：**我们经常遇到的获取设备最新的n条数据的需求就可以用这个接口组合来实现。</font>
 ```java
@@ -1099,7 +1101,8 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .limit(10)
                     .execute();
 ```
-###示例四：指定查询过滤器进行查询
+
+###示例四：指定查询过滤器进行查询。
 ```java
 // 查询条件1：状态是正在运行并且转速大于等于300
 ACFilter f1 = ac.filter().whereEqualTo("status", "running")
@@ -1117,7 +1120,8 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .or(f2)
                     .execute();
 ```
-###示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高
+
+###示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高。
 ```java
 // 查询条件：状态是正在运行
 ACFilter f = ac.filter().whereEqualTo("status", "running");
@@ -1132,7 +1136,8 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .orderByDesc("pm25", "timestamp")
                     .execute();
 ```
-###示例六：分组并进行简单的数值统计
+
+###示例六：分组并进行简单的数值统计。
 ```java
 /*
  将设备ID为"12345"的设备在一段时间内的数据记录按照运行状态和控制模式分组，假设有四种情况：
@@ -1159,7 +1164,8 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .max("speed", "pm25")
                     .execute();
 ```
-###示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求
+
+###示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求。
 ```java
 // 将设备ID为"12345"的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
 ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
@@ -1181,7 +1187,7 @@ ac.store("test_data", context).scan("deviceId", "12345")
 ```
 ##FullScan
 分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
-同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法返回为空
+同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。
 ```java
 // 延续Scan示例七中的查询条件进行全表所有分区的扫描
 ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
@@ -1210,8 +1216,9 @@ while((zos = it.next()) != null) {
         ...
 }
 ```
+
 ##BatchDelete
-分区或者非分区的数据集都可以使用BatchDelete接口来支持批量删除。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。
+分区或者非分区的数据集都可以使用BatchDelete接口来批量删除数据记录。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。
 ```java
 ACFilter f1 = ac.filter().whereGreaterThan("speed", 0L)
                     .whereLessThan("speed", 50L);
@@ -1284,7 +1291,7 @@ while ((zos = it.next(limit)) != null) {
 `delete/update/replace`的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。
 
 #UDS访问外网示例
-由于UDS本身无法访问正常的外网服务，所以AbleCloud内部实现了正向代理，并提供ACHttpClient以访问外网服务。
+UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的正向代理服务（由类ACHttpClient提供访问接口）访问外部网络。
 ##GET
 ```java
 @Test
@@ -1342,4 +1349,4 @@ public void testPost() {
 
 
 #Error Code
-参考[reference-Error Code](../reference/error_code.md)
+参考[Reference - Error Code](../reference/error_code.md)。
