@@ -1318,7 +1318,7 @@ public class DemoServiceTest {
 <p>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签<strong>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</strong>固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</font></p>
 </blockquote>
 <h4 id="_13">测试桩</h4>
-<p>从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中提供了设备桩<code>ACDeviceStub</code>功能，开发者只需要依照此接口实现具体的设备桩即可。
+<p>从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中定义了设备桩<code>ACDeviceStub</code>的接口，开发者只需要依照此接口实现具体的设备桩即可。
 示例的桩处理很简单，实际上你可以任意扩展，比如在桩中模拟灯的各种状态。示例代码如下：</p>
 <pre><code class="java">package com.ablecloud.demo;
 
