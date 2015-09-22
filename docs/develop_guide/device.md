@@ -119,8 +119,9 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         AC_Printf("Wifi Power On!\n");
         break;
         case AC_CODE_WIFI_CONNECTED://wifi连接成功通知
-        //使用用户自定义的设备id进行注册,AC_SendDeviceRegsiterWithMac接口是使用wifi模块MAC地址作为设备id进行注册。
+        /*使用用户自定义的设备id进行注册*/
         AC_SendDeviceRegsiter(g_u8EqVersion,g_u8ModuleKey,g_u64Domain,g_u8DeviceId);
+        /*AC_SendDeviceRegsiterWithMac接口是使用wifi模块MAC地址作为设备id进行注册。*/
         //AC_SendDeviceRegsiterWithMac(g_u8EqVersion,g_u8ModuleKey,g_u64Domain);
         AC_Printf("Wifi Connect!\n");
         break;
@@ -318,8 +319,8 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 ```c
     typedef struct
     {    
-        u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息    
-        u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
+        u8 DomainId[AC_DOMAIN_LEN]; //定长AC_DOMAIN_LEN（8字节），子设备域名信息    
+        u8 DeviceId[AC_HS_DEVICE_ID_LEN];//定长AC_HS_DEVICE_ID_LEN（16字节），子设备物理id
     }ZC_SubDeviceInfo;
 ```
 
@@ -337,7 +338,7 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
         osal_revmemcpy(req.extAddr,((ZC_SubDeviceInfo *)pu8Playload)->DeviceId+8,Z_EXTADDR_LEN);
         /*网关移除子设备*/
         ret = NLME_LeaveReq(&req );
-        /*发送执行结果/  
+        /*发送执行结果*/  
         if(ZSuccess==ret)
         {
             AC_SendAckMsg(pstruOptList,pstruMsg->MsgId);
@@ -756,7 +757,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
         out=cJSON_Print(root);	
         cJSON_Delete(root);
         /*发送JSON消息,接口含义详见下节接口定义*/
-        AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
+        AC_BuildMessage(102,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
@@ -795,7 +796,7 @@ void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId,
 |字段	|类型	|说明|
 |----|----|----|
 |u8MsgCode|	u8	|消息类型|
-|u8MsgId|	u8	|消息ID|
+|u8MsgId|	u8	|消息ID，上报写0，响应填写云端指令填写的msgid|
 |pu8Payload|	u8	|消息实际内容|
 |u16PayloadLen|	u16|	消息实际长度|
 |pstruOptList	|AC_OptList *|	Option项列表|
@@ -813,10 +814,10 @@ s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 
 | ----|----|----|
 |pu8Playload|u8 *|待解析的消息|
 | u16PayloadLen|u16|待解析的消息长度|
-| u8Key|u8|传入的关键字|
-| pValue|void *|该关键字对应的数据|
-|pu16Length|u16 *|该关键字对应的数据长度|
-|  pu8Type|u8 *|该关键字对应的数据类型|
+| u8Key|u8|传入的键值|
+| pValue|void *|该键值对应的数据|
+|pu16Length|u16 *|该键值对应的数据长度|
+|  pu8Type|u8 *|该键值对应的数据类型|
 
 ###KLV协议内存分配接口
 函数定义
@@ -846,10 +847,10 @@ s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
 | 字段|类型|说明|
 | ----|----|----|
 | pOut|AC_KLV *|待组包数据的消息|
-| u8Key|u8|传入的关键字|
-| pu16Length|u16 *|该关键字对应的数据长度|
-| pu8Type|u8 *|该关键字对应的数据类型|
-| pValue|void *|该关键字对应的数据|
+| u8Key|u8|传入的键值|
+| pu16Length|u16 *|该键值对应的数据长度|
+| pu8Type|u8 *|该键值对应的数据类型|
+| pValue|void *|该键值对应的数据|
 
 #局域网通信
 WiFi设备及以太网设备可以和客户端（APP）进行局域网通信。
