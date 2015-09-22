@@ -571,7 +571,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
         struReport.u8LedOnOff = struRsp.u8LedOnOff>>2;
         struReport.u8ControlStatus = u8control;
         /*构造消息*/
-        AC_BuildMessage(201,0,
+        AC_BuildMessage(203,0,
                         (u8*)&struReport, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
@@ -598,7 +598,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
          AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&u8LedOnOff);
          AC_SetKeyValue(pOut,KEY_LED_CONTROL_STATUS,sizeof(u8value),INT8_TYPE,&u8control);
          /*上报KLV消息*/
-         AC_ReportKLVMessage(201, NULL, pOut);
+         AC_ReportKLVMessage(203, NULL, pOut);
          /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
@@ -627,7 +627,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
         out=cJSON_Print(root);	
         cJSON_Delete(root);
         /*构造消息*/
-        AC_BuildMessage(201,0,
+        AC_BuildMessage(203,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &u16DataLen);
