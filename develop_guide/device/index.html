@@ -346,10 +346,6 @@
                 
             
         
-            
-                
-            
-        
         
         <li class="main">
             <a href="#_15">和云端通信<span class="main-set parent__15">+</span></a>
@@ -363,16 +359,12 @@
             <li class="sub parent__15" style="display: none;"><a href="#_18">设备接收云端指令</a></li>
             
         
-            
-            <li class="sub parent__15" style="display: none;"><a href="#_20">接口定义</a></li>
-            
-        
     
         
         
         
         <li class="main">
-            <a href="#_23">局域网通信</a>
+            <a href="#_20">局域网通信</a>
         </li>
         
     
@@ -605,8 +597,9 @@
         AC_Printf(&quot;Wifi Power On!\n&quot;);
         break;
         case AC_CODE_WIFI_CONNECTED://wifi连接成功通知
-        //使用用户自定义的设备id进行注册,AC_SendDeviceRegsiterWithMac接口是使用wifi模块MAC地址作为设备id进行注册。
+        /*使用用户自定义的设备id进行注册*/
         AC_SendDeviceRegsiter(g_u8EqVersion,g_u8ModuleKey,g_u64Domain,g_u8DeviceId);
+        /*AC_SendDeviceRegsiterWithMac接口是使用wifi模块MAC地址作为设备id进行注册。*/
         //AC_SendDeviceRegsiterWithMac(g_u8EqVersion,g_u8ModuleKey,g_u64Domain);
         AC_Printf(&quot;Wifi Connect!\n&quot;);
         break;
@@ -775,8 +768,8 @@
 <p>消息格式定义如下：</p>
 <pre><code class="c">    typedef struct
     {    
-        u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息    
-        u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
+        u8 DomainId[AC_DOMAIN_LEN]; //定长AC_DOMAIN_LEN（8字节），子设备域名信息    
+        u8 DeviceId[AC_HS_DEVICE_ID_LEN];//定长AC_HS_DEVICE_ID_LEN（16字节），子设备物理id
     }ZC_SubDeviceInfo;
 </code></pre>
 
@@ -792,7 +785,7 @@
         osal_revmemcpy(req.extAddr,((ZC_SubDeviceInfo *)pu8Playload)-&gt;DeviceId+8,Z_EXTADDR_LEN);
         /*网关移除子设备*/
         ret = NLME_LeaveReq(&amp;req );
-        /*发送执行结果/  
+        /*发送执行结果*/  
         if(ZSuccess==ret)
         {
             AC_SendAckMsg(pstruOptList,pstruMsg-&gt;MsgId);
@@ -993,7 +986,7 @@
         struReport.u8LedOnOff = struRsp.u8LedOnOff&gt;&gt;2;
         struReport.u8ControlStatus = u8control;
         /*构造消息*/
-        AC_BuildMessage(201,0,
+        AC_BuildMessage(203,0,
                         (u8*)&amp;struReport, sizeof(STRU_LED_ONOFF),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
@@ -1018,7 +1011,7 @@
          AC_SetKeyValue(pOut,KEY_LED_ON_OFF,sizeof(u8LedOnOff),INT8_TYPE,&amp;u8LedOnOff);
          AC_SetKeyValue(pOut,KEY_LED_CONTROL_STATUS,sizeof(u8value),INT8_TYPE,&amp;u8control);
          /*上报KLV消息*/
-         AC_ReportKLVMessage(201, NULL, pOut);
+         AC_ReportKLVMessage(203, NULL, pOut);
          /*KLV协议内存释放*/
          AC_FreeObj(pOut);
     }
@@ -1045,7 +1038,7 @@
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*构造消息*/
-        AC_BuildMessage(201,0,
+        AC_BuildMessage(203,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
@@ -1162,7 +1155,7 @@
         out=cJSON_Print(root);  
         cJSON_Delete(root);
         /*发送JSON消息,接口含义详见下节接口定义*/
-        AC_BuildMessage(MSG_SERVER_CLIENT_GET_LED_STATUS_RSP,0,
+        AC_BuildMessage(102,0,
                         (u8*)out, strlen(out),
                         NULL, 
                         g_u8MsgBuildBuffer, &amp;u16DataLen);
@@ -1172,207 +1165,7 @@
      }
 </code></pre>
 
-<h2 id="_20">接口定义</h2>
-<h3 id="_21">数据发送接口</h3>
-<p>函数定义</p>
-<pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
-</code></pre>
-
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pu8Msg</td>
-<td>u8 *</td>
-<td>待发送的数据缓存</td>
-</tr>
-<tr>
-<td>u16DataLen</td>
-<td>u16</td>
-<td>待发送的数据长度</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_22">协议消息组包接口</h3>
-<p>函数定义</p>
-<pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
-    u8 *pu8Payload, u16 u16PayloadLen,
-    AC_OptList *pstruOptList,
-    u8 *pu8Msg, u16 *pu16Len);
-</code></pre>
-
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u8MsgCode</td>
-<td>u8</td>
-<td>消息类型</td>
-</tr>
-<tr>
-<td>u8MsgId</td>
-<td>u8</td>
-<td>消息ID</td>
-</tr>
-<tr>
-<td>pu8Payload</td>
-<td>u8</td>
-<td>消息实际内容</td>
-</tr>
-<tr>
-<td>u16PayloadLen</td>
-<td>u16</td>
-<td>消息实际长度</td>
-</tr>
-<tr>
-<td>pstruOptList</td>
-<td>AC_OptList *</td>
-<td>Option项列表</td>
-</tr>
-<tr>
-<td>pu8Msg</td>
-<td>u8 *</td>
-<td>组好的消息数据的存储buffer</td>
-</tr>
-<tr>
-<td>pu16Len</td>
-<td>u8 *</td>
-<td>组好的数据长度</td>
-</tr>
-</tbody>
-</table>
-<h3 id="klv_2">KLV协议解析包接口</h3>
-<p>函数定义</p>
-<pre><code class="c">s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
-</code></pre>
-
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pu8Playload</td>
-<td>u8 *</td>
-<td>待解析的消息</td>
-</tr>
-<tr>
-<td>u16PayloadLen</td>
-<td>u16</td>
-<td>待解析的消息长度</td>
-</tr>
-<tr>
-<td>u8Key</td>
-<td>u8</td>
-<td>传入的关键字</td>
-</tr>
-<tr>
-<td>pValue</td>
-<td>void *</td>
-<td>该关键字对应的数据</td>
-</tr>
-<tr>
-<td>pu16Length</td>
-<td>u16 *</td>
-<td>该关键字对应的数据长度</td>
-</tr>
-<tr>
-<td>pu8Type</td>
-<td>u8 *</td>
-<td>该关键字对应的数据类型</td>
-</tr>
-</tbody>
-</table>
-<h3 id="klv_3">KLV协议内存分配接口</h3>
-<p>函数定义</p>
-<pre><code class="c">AC_KLV * AC_CreateObj()
-</code></pre>
-
-<p>返回值： 申请出来的内存指针。</p>
-<h3 id="klv_4">KLV协议内存释放接口</h3>
-<p>函数定义</p>
-<pre><code class="c">void AC_FreeObj(AC_KLV * pOut);
-</code></pre>
-
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pOut</td>
-<td>AC_KLV *</td>
-<td>需要释放的内存指针</td>
-</tr>
-</tbody>
-</table>
-<h3 id="klv_5">KLV协议组包接口</h3>
-<p>函数定义</p>
-<pre><code class="c">s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
-</code></pre>
-
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pOut</td>
-<td>AC_KLV *</td>
-<td>待组包数据的消息</td>
-</tr>
-<tr>
-<td>u8Key</td>
-<td>u8</td>
-<td>传入的关键字</td>
-</tr>
-<tr>
-<td>pu16Length</td>
-<td>u16 *</td>
-<td>该关键字对应的数据长度</td>
-</tr>
-<tr>
-<td>pu8Type</td>
-<td>u8 *</td>
-<td>该关键字对应的数据类型</td>
-</tr>
-<tr>
-<td>pValue</td>
-<td>void *</td>
-<td>该关键字对应的数据</td>
-</tr>
-</tbody>
-</table>
-<h1 id="_23">局域网通信</h1>
+<h1 id="_20">局域网通信</h1>
 <p>WiFi设备及以太网设备可以和客户端（APP）进行局域网通信。
 AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网内通信。</p>
 <h1 id="error-code">Error Code</h1>
