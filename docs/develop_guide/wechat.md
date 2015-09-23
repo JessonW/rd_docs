@@ -15,13 +15,24 @@
 
 ### (2) 准备服务器 ###
 
-当前，AbleCloud不提供主机代理服务，因此需要厂商准备机器，配置外网ip，并且申请一个域名。微信公众号正式上线时需要设置域名，并且使用服务器的80端口提供服务。
+当前，AbleCloud不提供主机代理服务，因此需要厂商准备机器，配置外网ip，并且申请域名。微信公众号正式上线时需要设置域名（JS接口安全域名及用户网页授权等配置项要求使用域名），并且使用服务器的80端口提供服务。
+![](../pic/develop_guide/wechat_server_option.png)
 
-此外，还需按照微信公众号的要求配置好js接口安全域名，网页授权获取用户基本信息的授权回调页域名等配置项。
+此外，还需按照微信公众号的要求配置好JS接口安全域名，网页授权获取用户基本信息的授权回调页域名等配置项。如下两图是JS接口安全域名的配置入口及界面。
+![](../pic/develop_guide/wechat_js_security_option_link.png)
+![](../pic/develop_guide/wechat_js_security_option.png)
+
+如下两图是网页授权获取用户基本信息的授权回调页域名的配置入口接界面。
+![](../pic/develop_guide/wechat_web_oauth_link.png)
+![](../pic/develop_guide/wechat_web_oauth_option.png)
+
+关于准备使用微信公众号的详细说明请参考[微信公众平台开发者文档-接入指南](http://mp.weixin.qq.com/wiki/17/2d4265491f12608cd170a95559800f2d.html)。
 
 ### (3) 设备授权及二维码 ###
 
-在销售或使用设备之前需要在微信硬件平台完成设备授权（请参考[微信硬件平台-设备授权](http://iot.weixin.qq.com/document-2_6.html)），也需要在AbleCloud平台完成设备入库。
+**设备授权**
+
+在销售或使用设备之前需要在微信硬件平台完成设备授权（请参考[微信硬件平台-设备授权](http://iot.weixin.qq.com/document-2_6.html)），也需要在AbleCloud平台完成设备入库。下图是在微信硬件平台设备授权接口的使用说明。
 
 ![](../pic/develop_guide/weixin_author_device.png)
 
@@ -39,40 +50,45 @@
 
 其它参数请根据实际情况配置。
 
-为方便用户绑定、使用设备，厂商需要为设备创建二维码。微信硬件平台提供了两种创建设备二维码的方法。
-为了满足设备物理ID的长度为16个字符（蓝牙设备为10个字符）的要求，开发者应使用[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)提供的接口创建二维码。
+在AbleCloud平台执行设备入库（目前仅要求WIFI设备）的目的是注册设备的公钥，用于设备接入的安全认证。开发者可以登录AbleCloud的管理控制平台执行设备入库操作。
+
+**设备的二维码**
+
+为了方便用户绑定、使用WIFI设备，厂商需要使用“[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)”提供的接口，创建AbleCloud要求的具有长度为16个字节的物理ID的设备二维码。
 
 ### (4) 配置微信公众号菜单 ###
 
-创建微信公众号菜单可参考[微信官方文档](http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html)。
+创建微信公众号菜单可参考[微信公众平台开发者文档-自定义菜单创建接口](http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html)。
 
 ### (5) 开发微信公众号功能 ###
-
 
 在AbleCloud提供的PHP语言的微信公众号SDK中，类ACBridgeWeChat封装了AbleCloud与微信同步用户、用户与设备的绑定关系，及设备工作状态的方法；类ACClient及其关联类则封装了AbleCloud云端服务的API。
 本文档中的代码示例均以PHP语言为例。PHP SDK的API详细说明请参见SDK下载包中附带的文档。
 
-开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置项。
-
+开发微信公众号功能时，开发者应按照其在AbleCloud平台注册的开发者帐号信息，修改PHP SDK提供的配置文件ACConfig.php中的配置项。这些配置项包括：
+```php
+/**
+ * AbleCloud服务配置信息。
+ */
+class ACConfig {
+    public static $RuntimeMode = 'test';    // 运行模式：test（测试模式）；production（生产模式）。
+    public static $DeveloperId = 0;         // AbleCloud开发者帐号ID。整数。
+    public static $AccessKey   = '';        // 开发者的AK/SK密钥对中的AK。字符串。
+    public static $SecretKey   = '';        // 开发者的AK/SK密钥对中的SK。字符串。
+    public static $MajorDomain = '';        // 本地服务对应的主域的名字。
+    public static $SubDomain   = '';        // 本地服务对应的子域的名字。
+    public static $RouterUrl   = 'http://test.ablecloud.cn:5000';   // AbleCloud远程服务的访问入口地址，如：http://test.ablecloud.cn:5000。
+}
+```
 
 
 #帐号管理#
 
-##帐号注册##
-
-对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID在AbleCloud平台中注册用户。
-该操作一般在用户关注公众号时执行。此时，微信平台会向开发者的微信公众号后台推送用户关注公众号的事件，开发者可以在收到该事件时完成用户的注册。
-```php
-// 实例化ACAccountService对象
-$accountServcie = ACClient::getAccountService();
-// 参数$openId是微信用户的OpenID；'weixin'用于标记第三方用户来自微信平台。
-$user = $accountServcie->registerByOpenId($openId, 'weixin');
-```
-
 ##用户登录##
 
-对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台。
+对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台，从而成为开发者所提供服务的使用者。
 该“登录”操作的目的一般是获取用户在AbleCloud平台对应的帐号信息，以方便通过AbleCloud平台提供的接口访问云端或设备提供的服务。
+使用用户的OpenID第一次登录AbleCloud平台时，平台会自动为该用户分配ID。后续再使用这个OpenID时，平台将返回相同的帐号信息。
 
 通过ACBridgeWeChat类直接登录，获取ACUser对象。
 ```php
@@ -93,7 +109,7 @@ $user = $accountService->getUserByOpenId($openId, 'weixin');
 
 ##绑定手机号##
 
-缺省情况下，AbleCloud平台只能获取用户的微信OpenID信息。关于用户的其它信息需要开发者或用户额外提供。
+AbleCloud平台只能获取用户的微信OpenID信息。关于用户的其它信息需要开发者或用户额外提供。
 如为安全起见，可以验证并绑定用户的手机。
 
 1.向用户的手机发送验证码
@@ -105,6 +121,8 @@ $accountServcie = ACClient::getAccountService();
 // 参数$phone为字符串，是用户的手机号。
 $accountServcie->sendVerifyCode($phone);
 ```
+
+**注：**向用户发送手机验证码时，要求开发者在AbleCloud平台已经配置了手机短信息模板等参数。同时也有向同一用户发送手机短信息的频次限制。
 
 2.根据验证码绑定用户的手机
 
@@ -197,7 +215,7 @@ $wxBridge = new ACBridgeWeChat($accessToken);
 $user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 ```
-方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，将该用户注册为AbleCloud用户，实现与微信的用户信息同步。
+方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，在AbleCloud平台上将该用户登记为开发者所提供服务的使用者。
 
 处理事件"device_event"-"bind"：
 ```php
@@ -216,7 +234,7 @@ AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。�
 此处，“设备激活”是指为WIFI设备配置WIFI网络，使设备连网，连接云端，从而提供在线服务能力。
 
 对于接入微信硬件平台的设备，可以调用微信的AirKiss页面配置设备的WIFI网络。
-在手机连上WIFI的情况下，在AiKiss页面输入WIFI密码，等待设备连接网络。AirKiss的具体信息请参考[微信硬件平台文档](http://iot.weixin.qq.com/document-0_1.html)。
+在手机连上WIFI的情况下，在AirKiss页面输入WIFI密码，等待设备连接网络。AirKiss的具体信息请参考[微信硬件平台文档](http://iot.weixin.qq.com/document-0_1.html)。
 
 ###设备分享###
 
@@ -277,7 +295,7 @@ $wxBridge = new ACBridgeWeChat($accessToken);
 $user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 ```
-方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，将该用户注册为AbleCloud用户，实现与微信的用户信息同步。
+方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，，在AbleCloud平台上将该用户登记为开发者的用户。
 
 处理事件"device_event"-"bind"：
 ```php
@@ -416,8 +434,7 @@ $deviceService->setDeviceProfile($user, $deviceId, $profile);
 #和云端通信#
 
 ##访问云端服务##
-PHP SDK中的类ACClient定义了方法sendToService用于访问运行在AbleCloud云端的任意服务（包括开发者的UDS）的通用方法。但访问AbleCloud官方提供的云端服务时，可直接调用SDK中封装的API。
-下文的代码示例是访问云端任意服务的通用方法。
+PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。
 ```php
 // 实例化ACRequest对象
 $request = new ACRequest($serviceName, $methodName, $serviceVersion);
@@ -430,6 +447,8 @@ $request->通过setPayloadAsJSON($jsonText);
 $response = ACClient::sendToService($request);
 // 其它处理逻辑
 ```
+
+上例中，参数$serviceName是要访问的UDS服务的名字，$methodName是要访问的方法名，$serviceVersion用于指定服务的主版本。这三个参数组合起来描述了此次请求的目标。
 
 ##向设备发送消息##
 
@@ -444,7 +463,11 @@ $response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $messag
 // 其它处理逻辑
 ```
 
+**注：**该接口暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
+
 #定时任务#
+
+AbleCloud支持设备的定时任务，比如每天的固定时间向设备发送指令，控制设备运行特定的功能。这里的定时任务主要由三部分组成：执行任务的时间规则、任务执行时要发给设备的指令，以及权限及认证信息——定义任务的用户及执行任务的设备。
 
 ##添加定时任务##
 
@@ -458,6 +481,8 @@ $task = new ACTimerTask();
 // 向云端添加任务
 $timerTaskService->addTask($task, $user);
 ```
+
+上述例子中，ACTimerTask对象就用与设置任务的相关属性：执行任务的时间规则、任务执行时要发给设备的指令，定义任务的用户以及执行任务的设备。ACTimerTask的详细说明请参考[Reference-微信客户端开发参考](../reference/wechat.md)中的“AbleCloud定时任务”。
 
 ##查询定时任务列表##
 
@@ -512,7 +537,14 @@ $timerTaskService->deleteTask($user, $deviceId, $taskId);
 
 #OTA#
 
+本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
+此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。
+
+AbleCloud支持灵活的设备固件升级策略，开发者可以登录管理控制台制定相关信息。
+
 ##检查更新##
+
+检查针对某个设备（WiFi设备）是否存在可升级的固件版本。
 
 ```php
 // 实例化ACOtaService
