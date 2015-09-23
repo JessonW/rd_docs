@@ -69,8 +69,10 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 ablecloud中定义了数据接口ACContext用来包含重要的上下文信息，其内容如下：
 ```java
 public class ACContext {
-    private String majorDomain;			// 服务所属主域名
-    private String subDomain;			// 服务所属子域名
+    private String majorDomain;			// 服务所属主域ID
+    private String subDomain;			// 服务所属子域ID
+    private String majorDomainName;     // 服务所属主域名
+    private String subDomainName;       // 服务所属子域名
     private Long userId;				// 用户id
     private Long developerId;			// 开发者id
     private String traceId;				// 唯一事件id，可用于追查问题
@@ -80,21 +82,18 @@ public class ACContext {
     private String timeout;				// 为防止签名被截获，设置签名的有效超时时间
     private String nonce;				// 用于签名的随机字符串
     private String accessKey;			// 开发者的accesskey，用于签名之用
-
-    // setter
-    // getter
 }
 ```
 通过ACContext的定义我们可以看出，其中包含两种用户信息：
 
-+ **userId：**设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台程序用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。
-+ **developerId：**开发者id。当某一服务开发好上线后，一方面接收APP或设备发来的消息，另一方面可能自主的执行例行巡检任务。当在巡检过程中自主的对后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。
++ **userId：**设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。使用示例：`ac.newContext(userId)`
++ **developerId：**开发者id。UDS服务一方面接收APP或设备发来的消息，另一方面可能需要自主的访问云端通用服务或执行例行巡检任务，当对AbleCloud后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。使用示例：`ac.newContext()`
 
 ><font color="brown">**注：**</font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
 开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。
 
 ###ACObject
-ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
+ACObject用于承载交互的具体数据，我们称之为payload（负载）。ACObject数据内部结构以HashMap来存放，通过put存入ACObject的数据内部以json方式处理，因此ACObject中的value也可以是嵌套的ACObject，能满足大部分需求场景。
 ```java
 public class ACObject {
     private HashMap<String, Object> data = new HashMap<String, Object>();
@@ -227,8 +226,8 @@ public class ACMsg extends ACObject {
     public void setErr(Integer errCode, String errMsg) {}
     
     /**
-     * 判断服务端响应的处理结果是否有错
-     * @return  true-处理有错，false-处理成功
+     * 判断服务端响应的处理结果
+     * @return  true-处理出错，false-处理成功
      */
     public boolean isErr() {}
     
@@ -250,8 +249,7 @@ public class ACMsg extends ACObject {
     public void setAck() {}
 }
 ```
-><font color="brown">**注：**开发者在本地测试或联调时，需要在配置文件中设置context的相关信息（见配置示例），线上环境context的内容由服务框架获取，开发者可不用关注。
-客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。</font>
+><font color="red">**注：**</font>开发者在本地测试或联调时，需要设置context的相关信息。客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。
 
 ###使用示例
 client端发起请求（伪代码，完整代码请参看各部分demo）：
@@ -274,7 +272,7 @@ private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
 ```
 
 ##ACDeviceMsg
-该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值做出不同的处理响应。
 >+ **二进制/json**
 >在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写>设备消息序列化/反序列化器。
 >+ **KLV**
@@ -304,7 +302,7 @@ public class ACDeviceMsg {
 ```java
 public interface ACDeviceMsgMarshaller {
 	/**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络传输给设备
+     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络下发****给设备
      *
      * @param msg       设备消息
      * @return          序列化后的字节数组
@@ -315,7 +313,7 @@ public interface ACDeviceMsgMarshaller {
     /**
      * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
      *
-     * @param msgCode   消息码，ablcloud也称为操作码opCode
+     * @param msgCode   消息码
      * @param payload   设备消息序列化后的字节数组
      * @return          设备消息
      * @throws Exception
@@ -573,7 +571,7 @@ public abstract class AC {
     public abstract ACBindMgrForTest bindMgrForTest(ACContext context);
     
     /**
-     * 获取通知管理器，可以给用户发送通知消息
+     * 获取推送通知管理器，可以给用户发送通知消息
      *
      * @param context   开发者的context
      * @return
@@ -581,7 +579,7 @@ public abstract class AC {
     public abstract ACNotificationMgr notificationMgr(ACContext context);
     
     /**
-     * 获取用于单元测试的推送管理器
+     * 获取用于单元测试的推送通知管理器
      *
      * @param context 开发者的context
      * @return
@@ -606,7 +604,7 @@ public abstract class AC {
     
     /**
      * 为便于测试，开发者可实现一个服务的桩
-     * 在框架中添加一个服务桩
+     * 在框架中添加一个服务桩，即mock
      *
      * @param name  服务名
      * @param stub  服务桩的实现，实际上也是一个ACService
@@ -644,8 +642,7 @@ public abstract class AC {
     public static final AC getTestAc(ACConfiguration config) throws Exception {}
 }
 ```
-><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，其中每个管理器提供的**`cleanAll()`**接口会清除所有其相应功能的数据，所以请慎重使用。
-> 例如：`ac.accountMgrForTest(ac.newContext()).cleanAll()`会注销所有的用户并清除所有与设备的绑定关系。
+><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如`ac.accountMgrForTest(ac.newContext())`
 
 #内嵌云端服务
 顾名思义，内嵌云端服务，是指ablecloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象通过上节介绍的服务框架AC的相关接口获取。
@@ -734,7 +731,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 
     /**
      * 清除开发者主域下的所有帐号数据
-     * 注意：测试环境有效，请慎重使用
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -742,7 +739,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```
 
 ##绑定相关接口
-该服务接口主要用于用户和设备绑定关系管理，可以获取设备的Owner等详细信息，云端给设备发送消息等，定制化自己开发的服务。
+该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。
 ###获取方式
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
@@ -919,6 +916,7 @@ public interface ACBindMgrForTest extends ACBindMgr {
 
     /**
      * 清除开发者所属主域下的所有分组/设备/成员相关数据
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -937,8 +935,6 @@ public class ACUserDevice {
     private long rootId;              // 分组设备管理模型
 
     public ACUserDevice(long id, long owner, String name, String physicalId, long subDomainId, long gatewayDeviceId, long rootId) {}
-
-    //getter
 }
 ```
 绑定设备的用户的基础信息
@@ -954,8 +950,6 @@ public class ACDeviceUser {
     private String email;      // 用户的Email
 
     public ACDeviceUser(long id, long deviceId, long userType, String phone, String email) {}
-
-    //getter
 }
 ```
 
@@ -1105,6 +1099,8 @@ public abstract class ACStore {
         // 设置扫描的结束点，需传入除entity group key之外的primary keys
         // （end需要和start一起使用，不能单独出现）
         public Scan end(Object... primaryKeys) throws Exception;
+        // 设置扫描的offset,默认为0
+        public Scan offset(int number);
         // 设置扫描数据最大值
         public Scan limit(int number);
         // 设置第一个查询过滤器，不允许重复调用
@@ -1369,6 +1365,7 @@ public interface ACNotificationMgrForTest extends ACNotificationMgr {
 
     /**
      * 清除所有推送帐号数据
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -1510,6 +1507,7 @@ public interface ACTimerTaskMgrForTest {
 
     /**
      * 清除所有定时任务
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;

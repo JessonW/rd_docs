@@ -266,7 +266,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
        		<version>your service version</version>
     	</project>
         
-    注意以下配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。
+    注意其他配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。
         
 1. **修改配置文件**
 
@@ -633,8 +633,8 @@ class LightMsg {
 ```java
 package com.ablecloud.demo;
 
-import com.ablecloud.service.ACDeviceMsg;
-import com.ablecloud.service.ACDeviceMsgMarshaller;
+import com.ablecloud.common.ACDeviceMsg;
+import com.ablecloud.common.ACDeviceMsgMarshaller;
 
 import java.nio.ByteBuffer;
 import org.slf4j.Logger;
