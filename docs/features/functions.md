@@ -441,17 +441,17 @@ AbleCloud提供了非常简单的接口实现设备的局域网发现和状态�
 
 **安全机制**
 
-局域网本身并不是可信网络，并不能依赖于局域网的安全机制，所以不能够认为接到同一个局域网的设备和用户就互相有权限。AbleCloud在局域网中采用基于localKey的认证机制。只有设备之间、应用和设备之间有相同的localKey的时候才能够进行局域网通信。localKey由云端发放，在特定场景下进行更新。
+局域网本身并不是可信网络，并不能依赖于局域网的安全机制，所以不能够认为接到同一个局域网的设备和用户就互相有权限。AbleCloud在局域网中采用基于localAccessKey的认证机制。只有设备之间、应用和设备之间有相同的localAccessKey的时候才能够进行局域网通信。localAccessKey由云端发放，在特定场景下进行更新。
 
-设备绑定、用户分享时，localKey的获取流程如下：
+设备绑定、用户分享时，localAccessKey的获取流程如下：
 
-1. 设备连接云端自激活。
-1. 第一个用户绑定设备成为管理员，云端向设备和管理员发送相同的localKey。
-1. 管理员将设备删除时,云端会重置设备的localkey。所有用户启动APP的时候，SDK会自动到云端更新localkey,若设备已删除，则localkey自动失效。
-2. 给其他用户，其他用户绑定设备，从云端获得localKey。
-1. 管理员将某用户解绑，该用户启动APP的时候，sdk自动到云端更新localKey，原localKey失效。
+1. 设备连接云端激活。
+1. 第一个用户绑定设备成为管理员，云端向设备和管理员发送相同的localAccessKey。
+1. 管理员将设备删除时,云端会重置设备的locaAccesslkey。所有用户启动APP获取设备列表的时候，SDK会自动更新localAccesskey,若设备已删除，则localAccesskey自动失效。
+2. 其他用户绑定设备后从云端获取设备列表时SDK会自动从云端获得localAccessKey。
+1. 管理员将某用户解绑，该用户启动APP到云端获取设备列表时，设备列表中不再存在已经被解绑的设备，同时localAccessKey失效。
 
-localKey对开发者不可见，由SDK自动维护。
+localAccessKey对开发者不可见，由SDK自动维护。
 
 #定时任务
 
