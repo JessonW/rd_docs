@@ -48,14 +48,14 @@ import "ACAccountManager.h"
 ####1、检查手机号是否已注册
 ```c
 [ACAccountManager checkExist:phoneNum callback:^(BOOL exist, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理}else{
-if (exist) {
-//提示手机号已经存在
-}else{
-//发送验证码
-}
-}
+     if(error){
+      //返回失败信息，根据error做不同的提示或者处理}else{
+         if (exist) {
+         //提示手机号已经存在
+         }else{
+         //发送验证码
+         }
+      }
 }];
 ```
 
@@ -64,14 +64,13 @@ if (exist) {
 ####2、发送验证码
 ```c
 [ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
-dispatch_async(dispatch_get_main_queue(), ^{
-if (error == nil) {
-//校验验证码
-}else
-{
-//获取失败，根据error做不同的提示或者处理
-}
-});
+
+         if (error == nil) {
+             //校验验证码
+         }else{
+            //获取失败，根据error做不同的提示或者处理
+         }
+
 }];
 ```
 
@@ -79,32 +78,27 @@ if (error == nil) {
 ####3、检测验证码正确性
 ```c
 [ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
-dispatch_async(dispatch_get_main_queue(), ^{
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-if (valid) {
-//注册
-}else{
-//提示验证码错误
-}
-}
-}
-
-);}];
+           if(error){
+            //返回失败信息，根据error做不同的提示或者处理
+           }else{
+                if (valid) {
+                    //注册
+                }else{
+                //提示验证码错误
+                }
+            }
+}];
 
 ```
 ####4、注册
 ```c
 [ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error) {
-dispatch_async(dispatch_get_main_queue(), ^{
-if (error == nil) {
-//获得用户user.userId和user.nickName，进入主页或设备管理
-}else
-{
-//用户不合法
-}
-});
+
+          if (error == nil) {
+           //获得用户user.userId和user.nickName，进入主页或设备管理
+          }else {
+          //用户不合法
+          }
 }];
 
 ```
@@ -116,21 +110,21 @@ if (error == nil) {
 ####1、直接使用第三方登录
 ```c
 [ACAccountManager registerWithNickName:userName phone:phone email:nil password:pwd verifyCode:verify callback:^(ACUserInfo *user, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//获得用户user.userId和user.nickName，进入主页或设备管理
-}
+             if(error){
+             //返回失败信息，根据error做不同的提示或者处理
+             }else{
+             //获得用户user.userId和user.nickName，进入主页或设备管理
+             }
 }];
 
 [ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
 {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//根据获得的user，得到基本信息
-}
-}
+             if(error){
+             //返回失败信息，根据error做不同的提示或者处理
+             }else{
+             //根据获得的user，得到基本信息
+             }
+}];
 
 ```
 
@@ -138,12 +132,12 @@ if(error){
 ```c
 [ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
 {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//绑定成功
-}
-}
+           if(error){
+           //返回失败信息，根据error做不同的提示或者处理
+            }else{
+            //绑定成功
+            }
+}];
 ```
 
 ##三、添加帐号扩展属性
@@ -166,11 +160,11 @@ if(error){
 */
 
 [ACAccountManager setUserProfile:acObj callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//修改成功
-}   
+            if(error){
+             //返回失败信息，根据error做不同的提示或者处理
+             }else{
+            //修改成功
+             }   
 }];
 ```
 
@@ -178,11 +172,11 @@ if(error){
 ```c
 [ACAccountManager getUserProfile:^(ACObject *profile, NSError *error)
 { 
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//获取成功
-} 
+             if(error){
+            //返回失败信息，根据error做不同的提示或者处理
+             }else{
+            //获取成功
+              } 
 }
 ```
 
@@ -215,18 +209,18 @@ Ablecloud提供了ACWifiLinkManager类激活器供你使用
 
 ####2.获取WiFi SSID
 ```c
-+ (NSString *)getCurrentSSID;
+NSString * ssid = [ACWifilinkManager getCurrentSSID];
 ```
 
 ####3.激活设备
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
 ```c
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
-}else{
-//成功后得到已激活设备的列表，从列表中得到物理id后进行绑定
-}  
+        if(error){
+        //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
+        }else{
+        //成功后得到已激活设备的列表，从列表中得到物理id后进行绑定
+        }  
 }];
 ```
 
@@ -237,12 +231,12 @@ if(error){
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//绑定成功后返回设备信息
-}  
-}
+        if(error){
+        //返回失败信息，根据error做不同的提示或者处理
+        }else{
+        //绑定成功后返回设备信息
+        }  
+}];
 ```
 
 ###GPRS设备
@@ -251,12 +245,12 @@ if(error){
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//绑定成功后返回设备信息
-}  
-}
+        if(error){
+        //返回失败信息，根据error做不同的提示或者处理
+        }else{
+        //绑定成功后返回设备信息
+        }  
+}];
 ```
 
 ><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
@@ -268,11 +262,11 @@ if(error){
 ####1、管理员直接分享设备给普通用户
 ```c
 [ACBindManager bindDeviceWithUserSubdomain:subdomain deviceId:deviceId account:acount callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//成功分享设备给account用户
-}
+          if(error){
+          //返回失败信息，根据error做不同的提示或者处理
+          }else{
+          //成功分享设备给account用户
+          }
 }];
 ```
 
@@ -280,20 +274,20 @@ if(error){
 ####2、管理员通过分享设备二维码的形式分享设备
 ```c
 [ACBindManager getShareCodeWithSubDomain:subDmoain deviceId:deviceId timeout:timeout callback:^(NSString *shareCode, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//成功获取分享吗
-}
+          if(error){
+          //返回失败信息，根据error做不同的提示或者处理
+          }else{
+          //成功获取分享吗
+          }
 }];
 
 //普通用户通过分享码绑定设备
 [ACBindManager bindDeviceWithShareCode:shareCode subDomain:subDomain deviceId:deviceId callback:^(ACUserDevice *userDevice, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//成功绑定管理员分享的设备
-}
+          if(error){
+         //返回失败信息，根据error做不同的提示或者处理
+         }else{
+         //成功绑定管理员分享的设备
+         }
 }];
 ```
 
@@ -303,22 +297,22 @@ if(error){
 <font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
 ```c
 [ACBindManager unbindDeviceWithSubDomain:subDomian deviceId:deviceId callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//解绑成功
-}
+         if(error){
+         //返回失败信息，根据error做不同的提示或者处理
+         }else{
+         //解绑成功
+        }
 }];
 ```
 
 ####2、管理员取消其他普通成员对该设备的控制权
 ```c
 [ACBindManager unbindDeviceWithUserSubDomain:subDomain userId:userId deviceId:deviceId callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//解绑成功
-}
+         if(error){
+         //返回失败信息，根据error做不同的提示或者处理
+         }else{
+         //解绑成功
+         }
 }];
 ```
 
@@ -353,7 +347,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 ####2.得到WiFi SSID
 ```c
-+ (NSString *)getCurrentSSID;
+NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
 ```
 
 
@@ -361,11 +355,11 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
 ```c
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
-}else{
-//成功后得到已激活设备的列表，从列表中得到物理id后进行绑定
-}  
+          if(error){
+          //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
+          }else{
+          //成功后得到已激活设备的列表，从列表中得到物理id后进行绑定
+         }  
 }];
 ```
 
@@ -373,11 +367,11 @@ if(error){
 在成功激活设备后的回调方法中，通过物理Id绑定网关。
 ```c
 [ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//绑定成功后返回设备信息
-}  
+          if(error){
+           //返回失败信息，根据error做不同的提示或者处理
+          }else{
+          //绑定成功后返回设备信息
+         }  
 }];
 ```
 
@@ -387,11 +381,11 @@ if(error){
 
 ```c
 [ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//绑定成功后返回设备信息
-}  
+        if(error){
+        //返回失败信息，根据error做不同的提示或者处理
+        }else{
+        //绑定成功后返回设备信息
+        }  
 }];
 ```
 
@@ -401,22 +395,22 @@ if(error){
 ```c
 //由于子设备接入网关是一个异步的过程，所以建议在这里new一个Timer去定时获取新加入的子设备列表，在activity退出时停止Timer
 [ACBindManager openGatewayMatchWithSubDomain:subDomain gatewayDeviceId:gatewayDeviceId time:time callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//列举所有新加入的子设备列表 
-}   
+           if(error){
+           //返回失败信息，根据error做不同的提示或者处理
+           }else{
+           //列举所有新加入的子设备列表 
+           }   
 }];
 ```
 
 ####2．列举所有新加入的子设备列表
 ```c
 [ACBindManager listSubDevicesWithSubDomain:subDomain gatewayDeviceId:deviceId callback:^(NSArray *devices, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//获取新加入的子设备列表成功
-} 
+           if(error){
+           //返回失败信息，根据error做不同的提示或者处理
+           }else{
+           //获取新加入的子设备列表成功
+            } 
 }];
 ```
 
@@ -425,11 +419,11 @@ if(error){
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。
 ```c
 [ACBindManager addSubDeviceWithSubDomain:subDomain gatewayDeviceId:deviceId physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//添加子设备成功
-}  
+           if(error){
+           //返回失败信息，根据error做不同的提示或者处理
+           }else{
+           //添加子设备成功
+          }  
 }];
 ```
 
@@ -445,11 +439,11 @@ if(error){
 ####一、设置或者更新设备附加属性
 ```c
 [ACBindManager setDeviceProfileWithSubDomain:subDomain deviceId:deviceId profile:acobj  callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//修改设备附加属性成功
-}  
+            if(error){
+            //返回失败信息，根据error做不同的提示或者处理
+            }else{
+            //修改设备附加属性成功
+            }  
 }];
 ```
 
@@ -457,11 +451,11 @@ if(error){
 ####二、获取设备附加属性
 ```c
 [ACBindManager getDeviceProfileWithSubDomain:subDomain deviceId:deviceId callback:^(ACObject *profile, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//获得设备附加属性成功
-}  
+            if(error){
+            //返回失败信息，根据error做不同的提示或者处理
+            }else{
+            //获得设备附加属性成功
+            }  
 }];
 ```
 
@@ -562,7 +556,7 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 ```c
 //反序列化
 + (instancetype)unmarshalWithData:(NSData *)data;
-+ (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
+
 //序列化
 - (NSData *)marshal;
 ```
@@ -573,22 +567,22 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 */
 - (void)operationLight:(LightOperationType)type
 {
-DeviceMsg  *deMsg = self.device[0];
-NSString *subDomain = [[NSUserDefaults standardUserDefaults] stringForKey:@"subDomain"];;
-NSInteger deviceId = deMsg.deviceId;
-ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
-msg.msgId = 0;
-msg.msgCode =68;
-Byte content[] ={type,0,0,0};
-msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
-[ACBindManager sendToDevice:subDomain deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-if (error) {
-NSLog(@"sendToDevice-error:%@",error);
-}else
-{
-NSLog(@"sendToDevice - 成功");
-}
-}];
+     DeviceMsg  *deMsg = self.device[0];
+     NSString *subDomain = [[NSUserDefaults standardUserDefaults] stringForKey:@"subDomain"];;
+     NSInteger deviceId = deMsg.deviceId;
+     ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
+     msg.msgId = 0;
+     msg.msgCode =68;
+     Byte content[] ={type,0,0,0};
+     msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
+     [ACBindManager sendToDevice:subDomain deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+                 if (error) {
+                  NSLog(@"sendToDevice-error:%@",error);
+                 }else
+                   {
+                   NSLog(@"sendToDevice - 成功");
+                   }
+                   }];
 }
 
 ```
@@ -605,7 +599,7 @@ msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]]
 ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInfo getHost] service:[CommonInfo getServiceName] version:1];
 [serviceClient sendToService:msg callback:^(ACMsg *responseObject, NSError *error)
 {
-callback(responseObject,error);
+         callback(responseObject,error);
 }];
 ```
 
@@ -637,11 +631,11 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 **使用自定义时区**
 ```c
 - (id)initWithTimeZone:(NSTimeZone *)timeZone {
-self = [super init];
-if (self) {
-self.timeZone = timeZone;
-}
-return self;
+       self = [super init];
+       if (self) {
+       self.timeZone = timeZone;
+        }
+        return self;
 }
 ```
 
@@ -676,14 +670,14 @@ dmsg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
 dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 [DeviceMsg addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
-if (error)
-{
-NSLog(@"添加定时失败");
-}
-else
-{
-NSLog(@"添加定时成功");
-}
+        if (error)
+        {
+        NSLog(@"添加定时失败");
+        }
+        else
+        {
+        NSLog(@"添加定时成功");
+        }
 }];
 ```
 
@@ -693,21 +687,22 @@ NSLog(@"添加定时成功");
 ####开启定时任务
 ```c
 [DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-if (error) { 
-NSLog(@"预约开失败－－%@",error);}else{
-NSLog(@"预约开成功");
-}
+        if (error) { 
+        NSLog(@"预约开失败－－%@",error);
+        }else{
+        NSLog(@"预约开成功");
+        }
 }];
 ```
 
 ####关闭定时任务
 ```c
 [DeviceMsg closeTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-if (error){
-NSLog(@"预约关失败－－%@",error);
-}else{
-NSLog(@"预约关成功");
-}
+         if (error){
+         NSLog(@"预约关失败－－%@",error);
+         }else{
+         NSLog(@"预约关成功");
+         }
 }];
 
 ```
@@ -716,11 +711,11 @@ NSLog(@"预约关成功");
 ####删除定时任务
 ```c
 [DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
-if (error){
-//删除定时失败，处理error
-}else{
-//删除定时成功
-}
+          if (error){
+          //删除定时失败，处理error
+          }else{
+          //删除定时成功
+          }
 }];
 ```
 
@@ -728,14 +723,14 @@ if (error){
 ####获取定时任务列表
 ```c
 [DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
-if (error)
-{
-NSLog(@"获取定时信息失败%@",error);
-}
-else
-{
-//获取定时任务成功
-}
+         if (error)
+          {
+          NSLog(@"获取定时信息失败%@",error);
+           }
+          else
+          {
+          //获取定时任务成功
+           }
 }];
 ```
 
@@ -765,26 +760,26 @@ else
 检查设备是否有新的OTA版本，同时获取升级日志。
 ```c
 [ACOTAManager checkUpdateWithSubDomain:subDomain deviceId:deviceId callback:^(ACOTAUpgradeInfo *upgradeInfo, NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-/*
-*ACOTAUpgradeInfo *upgradeInfo = [[ACOTAUpgradeInfo alloc] init];
-* 通过判断upgradeInfo.oldVersion和upgradeInfo.upgradeVersion是否相等判断是否有新版本更新
-* upgradeInfo.oldVersion为老版本，upgradeInfo.upgradeVersion upgradeInfo.upgradeLog为升级日志
-*/
-}
+         if(error){
+          //返回失败信息，根据error做不同的提示或者处理
+          }else{
+           /*
+            *ACOTAUpgradeInfo *upgradeInfo = [[ACOTAUpgradeInfo alloc] init];
+            * 通过判断upgradeInfo.oldVersion和upgradeInfo.upgradeVersion是否相等判断是否有新版本更新
+            * upgradeInfo.oldVersion为老版本，upgradeInfo.upgradeVersion upgradeInfo.upgradeLog为升级日志
+            */
+           }
 }];
 ```
 
 ####三．确认升级
 ```c
 [ACOTAManager confirmUpdateWithSubDomain:subDomain deviceId:deviceId newVersion:newVersion callback:^(NSError *error) {
-if(error){
-//返回失败信息，根据error做不同的提示或者处理
-}else{
-//确认升级
-}
+          if(error){
+          //返回失败信息，根据error做不同的提示或者处理
+          }else{
+          //确认升级
+         }
 }];
 ```
 
@@ -837,29 +832,29 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 ```c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-[ACNotificationManager       startWithAppkey:@"您的appKey" launchOptions:launchOptions];
+        [ACNotificationManager       startWithAppkey:@"您的appKey" launchOptions:launchOptions];
 }
 ```
 
 ####3、在登录成功之后添加推送别名
 ```c
 [ACNotificationManager addAliasWithUserId:user.userId callback:^(NSError *error) {
-if(error){
-NSLog(@"推送添加别名失败");
-}else{
-//成功
-}
+         if(error){
+         NSLog(@"推送添加别名失败");
+         }else{
+         //成功
+         }
 }];
 ```
 
 ####4、在退出登录之后移除掉旧的别名
 ```c
 [ACNotificationManager removeAliasWithUserId:uid callback:^(NSError *error){
-if(error){
-//移除失败，处理错误信息
-}else{
-//移除成功
-}
+           if(error){
+             //移除失败，处理错误信息
+            }else{
+            //移除成功
+            }
 }
 ```
 
@@ -887,22 +882,22 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ```c
 [ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
-if(error ){
-//获取URL失败，根据error作出不同的处理
-}else{
-//下载文件
-}
+          if(error ){
+           //获取URL失败，根据error作出不同的处理
+           }else{
+           //下载文件
+            }
 }
 ```
 ###2、根据url下载文件
 ```c
 [downManager downFileWithsession:urlString callBack:^(float progress, NSError *error)
 {
-if(error ){
-//下载失败，处理error
-}else{
-//下载成功，处理下载的文件
-}
+          if(error ){
+           //下载失败，处理error
+           }else{
+           //下载成功，处理下载的文件
+           }
 }
 ```
 ##三、上传文件
@@ -968,11 +963,11 @@ fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];
 [upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)
 { 
-if(error){
-//上传失败，处理error
-}else{
-//上传成功
-}
+     if(error){
+      //上传失败，处理error
+     }else{
+     //上传成功
+     }
 }
 
 
