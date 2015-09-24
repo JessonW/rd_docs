@@ -233,7 +233,7 @@ Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
 ><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有`AC.DEVICE_MTK`、`AC.DEVICE_MX`、`AC.DEVICE_MARVELL`、`AC.DEVICE_MURATA`、`AC.DEVICE_WM`、`AC.DEVICE_RAK`。
+目前支持的wifi模块有`AC.DEVICE_MTK(MTK模块)`、`AC.DEVICE_MX（庆科模块）`、`AC.DEVICE_MARVELL（MARVELL模块）`、`AC.DEVICE_MURATA（村田模块）`、`AC.DEVICE_WM（联盛德模块）`、`AC.DEVICE_RAK（RAK模块）`。
 
 ####2.获取WiFi SSID
 ```java
@@ -723,11 +723,25 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 ####1、设置序列化器
 ```java
 bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
+    /**
+     * 因为与设备的通讯以二进制流的形式进行，所以需要全局设置一个序列化与反序列化器
+     * 序列化器
+     *
+     * @param deviceMsg 对应sendToDeviceWithOption里的deviceMsg参数，
+     * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
+     */
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
         return (byte[]) msg.getContent();
     }
 
+    /**
+     * 反序列化器
+     *
+     * @param msgCode 开发商基于AbleCloud框架自定义的协议，此处为与设备通讯的msgCode
+     * @param payload 此处为接收到设备响应的原始byte数组，设备返回数据后先经过这里进行反序列化
+     * @return 反序列化后返回ACDeviceMsg对象，此处对应sendToDeviceWithOption里callback的success回调
+     */
     @Override
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
         return new ACDeviceMsg(msgCode, payload);

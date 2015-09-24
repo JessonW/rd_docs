@@ -280,6 +280,62 @@
             
         
     
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_7">设备接口定义<span class="main-set parent__7">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#_8">数据发送接口</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#_9">协议消息组包接口</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#klv_1">KLV协议解析包接口</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#klv_2">KLV协议内存分配接口</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#klv_3">KLV协议内存释放接口</a></li>
+            
+        
+            
+            <li class="sub parent__7" style="display: none;"><a href="#klv_4">KLV协议组包接口</a></li>
+            
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -348,7 +404,7 @@
 </tr>
 <tr>
 <td>MsgId</td>
-<td>消息序号，上报时填0；相应云端指令时填写云端指令的MsgId</td>
+<td>消息序号，上报时填0；响应云端指令时必须填写云端指令携带的MsgId</td>
 </tr>
 <tr>
 <td>MsgCode</td>
@@ -596,10 +652,10 @@
 <p><img alt="device_AC_MessageOption" src="../../pic/reference/device_AC_MessageOption.png" /> </p>
 <p>AC_MessageOption是由AC_MessageOptHead定义的Option的内容。</p>
 <p><strong>AC_OPT_TRANSPORT消息</strong></p>
-<p>该消息用于将设备ID和消息一并上传，用来进行针对指定设备的控制管理。 消息定义如下：</p>
+<p>该消息用于将设备消息和消息一并上传，用来进行针对指定设备的控制管理。网关设备或子设备收到云端下发的子设备控制消息后，发送对应的回应消息时，也要包含该可选字段，消息定义如下：</p>
 <pre><code>typedef struct{
-    u8 DomainId[8]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
-    u8 DeviceId[16];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
+    u8 DomainId[8]; //子设备域名信息
+    u8 DeviceId[16];//子设备物理id
 } AC_TransportInfo;
 </code></pre>
 
@@ -910,11 +966,6 @@ typedef struct
 <td>AC_CODE_EXT_REBOOT</td>
 <td>WIFI设备重启</td>
 </tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
 <p>AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体</p>
@@ -933,16 +984,16 @@ typedef struct
 <li>0x00：无效，只有key，没有value，适用于不需要参数的控制，比如上报当前温度。</li>
 <li>0x01：布尔型（占用8bit数值表示，只使用第一个bit）</li>
 <li>0x02：8位整型</li>
-<li>0x03：16位整型（网络字节序）</li>
-<li>0x04：32整型（网络字节序）</li>
-<li>0x05：64整型（网络字节序）</li>
-<li>0x06：浮点型（32位，网络字节序）</li>
-<li>0x07：双精度型（64位，网络字节序）</li>
+<li>0x03：16位整型（网络字节序，用户无须转换）</li>
+<li>0x04：32整型（网络字节序，用户无须转换）</li>
+<li>0x05：64整型（网络字节序，用户无须转换）</li>
+<li>0x06：浮点型（32位，网络字节序，用户无须转换）</li>
+<li>0x07：双精度型（64位，网络字节序，用户无须转换）</li>
 <li>0x08：字符串</li>
 <li>0x09：二进制</li>
 <li>0x0A：KLV类型[保留]</li>
 </ul>
-<p>数据长度：占用两个字节（网络字节序），数据长度是可选参数，当数据类型是无效，布尔，整形，浮点型时，不需要数据长度，根据数据类型就可以知道数据长度，约定：
+<p>数据长度：占用两个字节（网络字节序，用户无须转换），数据长度是可选参数，当数据类型是无效，布尔，整形，浮点型时，不需要数据长度，根据数据类型就可以知道数据长度，约定：
 无效数据类型数据长度为0，即第三个字节是下一个KLV结构。</p>
 <ul>
 <li>布尔型数据长度为1，占用其后一个字节。</li>
@@ -1024,7 +1075,207 @@ typedef struct
 <p>客户端使用说明请参考：</p>
 <p><a href="../../develop_guide/android/#和云端通信">开发指导-安卓-和云端通信</a></p>
 <p><a href="../../develop_guide/iOS/#和云端通信">开发指导-iOS-和云端通信</a></p>
-<p><a href="../../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p></div>
+<p><a href="../../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p>
+<h1 id="_7">设备接口定义</h1>
+<h2 id="_8">数据发送接口</h2>
+<p>函数定义</p>
+<pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pu8Msg</td>
+<td>u8 *</td>
+<td>待发送的数据缓存</td>
+</tr>
+<tr>
+<td>u16DataLen</td>
+<td>u16</td>
+<td>待发送的数据长度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_9">协议消息组包接口</h2>
+<p>函数定义</p>
+<pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
+    u8 *pu8Payload, u16 u16PayloadLen,
+    AC_OptList *pstruOptList,
+    u8 *pu8Msg, u16 *pu16Len);
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u8MsgCode</td>
+<td>u8</td>
+<td>消息类型</td>
+</tr>
+<tr>
+<td>u8MsgId</td>
+<td>u8</td>
+<td>消息ID，上报写0，响应填写云端指令填写的msgid</td>
+</tr>
+<tr>
+<td>pu8Payload</td>
+<td>u8</td>
+<td>消息实际内容</td>
+</tr>
+<tr>
+<td>u16PayloadLen</td>
+<td>u16</td>
+<td>消息实际长度</td>
+</tr>
+<tr>
+<td>pstruOptList</td>
+<td>AC_OptList *</td>
+<td>Option项列表</td>
+</tr>
+<tr>
+<td>pu8Msg</td>
+<td>u8 *</td>
+<td>组好的消息数据的存储buffer</td>
+</tr>
+<tr>
+<td>pu16Len</td>
+<td>u8 *</td>
+<td>组好的数据长度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="klv_1">KLV协议解析包接口</h2>
+<p>函数定义</p>
+<pre><code class="c">s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pu8Playload</td>
+<td>u8 *</td>
+<td>待解析的消息</td>
+</tr>
+<tr>
+<td>u16PayloadLen</td>
+<td>u16</td>
+<td>待解析的消息长度</td>
+</tr>
+<tr>
+<td>u8Key</td>
+<td>u8</td>
+<td>传入的键值</td>
+</tr>
+<tr>
+<td>pValue</td>
+<td>void *</td>
+<td>该键值对应的数据</td>
+</tr>
+<tr>
+<td>pu16Length</td>
+<td>u16 *</td>
+<td>该键值对应的数据长度</td>
+</tr>
+<tr>
+<td>pu8Type</td>
+<td>u8 *</td>
+<td>该键值对应的数据类型</td>
+</tr>
+</tbody>
+</table>
+<h2 id="klv_2">KLV协议内存分配接口</h2>
+<p>函数定义</p>
+<pre><code class="c">AC_KLV * AC_CreateObj()
+</code></pre>
+
+<p>返回值： 申请出来的内存指针。</p>
+<h2 id="klv_3">KLV协议内存释放接口</h2>
+<p>函数定义</p>
+<pre><code class="c">void AC_FreeObj(AC_KLV * pOut);
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pOut</td>
+<td>AC_KLV *</td>
+<td>需要释放的内存指针</td>
+</tr>
+</tbody>
+</table>
+<h2 id="klv_4">KLV协议组包接口</h2>
+<p>函数定义</p>
+<pre><code class="c">s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
+</code></pre>
+
+<p>参数</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pOut</td>
+<td>AC_KLV *</td>
+<td>待组包数据的消息</td>
+</tr>
+<tr>
+<td>u8Key</td>
+<td>u8</td>
+<td>传入的键值</td>
+</tr>
+<tr>
+<td>pu16Length</td>
+<td>u16 *</td>
+<td>该键值对应的数据长度</td>
+</tr>
+<tr>
+<td>pu8Type</td>
+<td>u8 *</td>
+<td>该键值对应的数据类型</td>
+</tr>
+<tr>
+<td>pValue</td>
+<td>void *</td>
+<td>该键值对应的数据</td>
+</tr>
+</tbody>
+</table></div>
             
         </div>
 

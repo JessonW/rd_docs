@@ -1,12 +1,10 @@
 #云端服务开发参考
 
 #简介
-为了快速开发和业务逻辑相关的服务端程序，提高开发者效率，提高企业产品研发/上线的效率，ablecloud提供了统一的服务开发框架，并内嵌了一系列由ablecloud提供的云端服务。该服务开发框架支持开发者开发可运行于AbleCloud云端的自定义后端服务（UDS：User Defined Service）以及定时任务。ablecloud的服务框架提供了高度封装的RPC服务，client与server通信时，client只需要知道service的名字，并提供相应的访问参数即可。当前ablecloud提供JAVA版本的服务编程框架。
-
-《平台简介》一篇向大家介绍了ablecloud平台的概况，相信你已经了解了ablecloud是什么，这一篇咱们讨论我们怎么做。从《平台简介》一文中我们知道要开发完整的智能硬件，涉及到多个模块的开发，本文将聚焦在<b>*云服务框架*</b>上，详细为开发者讲解如何快速开发云端自定义后端服务（UDS）及云端定时任务。
+为了快速开发和业务逻辑相关的服务端程序，提高开发者效率，提高企业产品研发/上线的效率，AbleCloud提供了统一的服务开发框架，并内嵌了一系列由AbleCloud提供的云端服务。该框架支持开发者开发可运行于AbleCloud云端的自定义后端服务（UDS：User Defined Service）以及定时任务。AbleCloud的服务框架提供了高度封装的RPC服务，client与server通信时，client只需要知道service的名字，并提供相应的访问参数即可。当前AbleCloud提供Java版本的服务编程框架。本章介绍该框架提供的API。
 
 #服务框架发布库
-ablecloud一期发布java版本服务开发框架，其发布目录、文件如下所示
+AbleCloud一期发布Java版本服务开发框架，其发布目录、文件如下所示
 ```java
 /config
 	/cloudservice-conf.xml
@@ -23,54 +21,25 @@ start.cmd
 ```
 ><font color=red>注意事项：</font>
 
->1. 所有依赖的第三方jar包，均放在lib文件夹下。其核心jar包为ablecloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。各jar包版本根据ablecloud发行的大版本不同可能不同。
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。根据AbleCloud的发行状态，各jar包的版本号可能不同。
 
->1. 在开发者开发完自定义服务后，需要将自定义服务编译好的jar包也放到ablecloud发布库的lib文件夹下,并在pom.xml里`<additionalClasspathElement>`标签下添加测试依赖
+>1. 开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
 
->1. 注意服务框架发布库结构不允许修改，否则发布失败
+>1. 按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。
 
-##本地启动命令
-开发者写好服务后，可在本机启动服务进行测试集成或功能测试。
+>1. 在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。
 
-<b>*linux*</b>下在终端运行如下命令启动服务进行测试：
-```sh
-sh start.sh -m test
-```
-<b>*windows*</b>下在cmd中运行如下命令启动服务进行测试：
-```cmd
-start.cmd -m test
-```
+#基础数据结构
 
-本地启动成功后，通过任意客户端发送http请求，例如使用curl命令测试，请自行修改参数部分。
-
-**linux**下使用curl命令
-```curl
-curl -v -X POST -H "Content-Type:application/x-zc-object"  -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" -d '{"deviceId":1,"action":"on"}' 'http://localHost:8080/controlLight'
-```
-**windows**下使用curl命令请求
-```curl
-curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" --data-ascii "{\"deviceId\":1,\"action\":\"on\"}" "http://localHost:8080/controlLight"
-```
-其中`-H`指定头域ACContext的信息，`-d`指定的内容，是构造的ACMsg中的请求参数，`http://localHost:8080/controlLight`中的`port：8080`是你启动DemoService的端口号，从cloudservice-conf.xml里读取,`controlLight`即为具体的方法，对应ACMsg设置的名字。
-><font color="red">**注：**启动时所依赖的配置项如域名/版本等信息从config目录下的cloudservice-conf.xml配置文件中读取，开发者可以修改配置文件中的内容以适应测试环境。正式线上环境，开发者不用关心配置文件以及配置项，域名/版本等所有的信息均由框架自动获取并填充。</font>
-
-#交互消息
-多个模块、服务之间都通过*消息*`message`来通信。ablecloud定义了两种格式的消息：
-
-+ **ACMsg：**APP与service，service与service之间的交互消息。
-+ **ACDeviceMsg：**APP与device，service与device之间的交互消息。
-
-##基础数据结构
-在具体讲解ACMsg和ACDeviceMsg之前，先介绍两个重要的基础数据结构：
-+ **ACContext：**即上下文。有了交互消息，咱们就可以在多个模块之间进行通信。为了标记每一次交互（比如发起者、发起时间、签名等），也为了追踪通信事件，所有交互消息中均需要带有上下文信息。
-+ **ACObject：**ACMsg的格式本质上是json，服务开发框架以及APP端的SDK在传输过程均会对其进行序列化/反序列化，也就是开发者能直接从ACMsg中put进/get出具体的某个值。无论什么格式的数据，终归是需要由某种数据结构来表示，ablecloud采用ACObject来承载ACMsg中json格式的具体数据。
-
-###ACContext
-ablecloud中定义了数据接口ACContext用来包含重要的上下文信息，其内容如下：
+##ACContext
+ACContext即上下文，用于标记每一次交互（比如发起者、发起时间、签名等）、追踪通信事件。AbleCloud服务之间的交互消息中均需要带有上下文信息。
+ACContext定义的内容如下：
 ```java
 public class ACContext {
-    private String majorDomain;			// 服务所属主域名
-    private String subDomain;			// 服务所属子域名
+    private String majorDomain;			// 服务所属主域ID
+    private String subDomain;			// 服务所属子域ID
+    private String majorDomainName;     // 服务所属主域名
+    private String subDomainName;       // 服务所属子域名
     private Long userId;				// 用户id
     private Long developerId;			// 开发者id
     private String traceId;				// 唯一事件id，可用于追查问题
@@ -80,21 +49,18 @@ public class ACContext {
     private String timeout;				// 为防止签名被截获，设置签名的有效超时时间
     private String nonce;				// 用于签名的随机字符串
     private String accessKey;			// 开发者的accesskey，用于签名之用
-
-    // setter
-    // getter
 }
 ```
 通过ACContext的定义我们可以看出，其中包含两种用户信息：
 
-+ **userId：**设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台程序用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。
-+ **developerId：**开发者id。当某一服务开发好上线后，一方面接收APP或设备发来的消息，另一方面可能自主的执行例行巡检任务。当在巡检过程中自主的对后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。
++ **userId：**设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。使用示例：`ac.newContext(userId)`
++ **developerId：**开发者id。UDS服务一方面接收APP或设备发来的消息，另一方面可能需要自主的访问云端通用服务或执行例行巡检任务，当对AbleCloud后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。使用示例：`ac.newContext()`
 
 ><font color="brown">**注：**</font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
-开发者不应该直接用ACContext的构造函数构造上下文，而是使用AC框架的相关接口创建上下文对象，后面会有详细描述。
+开发者不应该直接用ACContext的构造函数构造上下文对象，而应使用AC框架的相关接口创建上下文对象，后面会有详细描述。
 
 ###ACObject
-ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
+ACObject用于承载交互的具体数据，我们称之为payload（负载）。ACObject数据内部结构以HashMap来存放，通过put存入ACObject的数据内部以json方式处理，因此ACObject中的value也可以是嵌套的ACObject，能满足大部分需求场景。
 ```java
 public class ACObject {
     private HashMap<String, Object> data = new HashMap<String, Object>();
@@ -111,6 +77,7 @@ public class ACObject {
      * 添加一个参数，该参数添加到一个List中
      * @param key	参数所在List的名字
      * @param value	参数值
+     */
     public ACObject add(String key, Object value) {}
     
     /**
@@ -128,10 +95,16 @@ public class ACObject {
     public boolean contains(String key) {}
 }
 ```
-><font color="brown">**注：**最常用的三个接口是put/add/get，通过**add**接口保存在ACObject中的数据实际为List，相应的，get出来也是一个List。</font>
+><font color="brown">**注：**最常用的三个接口是put/add/get。通过**add**接口保存在ACObject中的数据实际为List；相应的，get出来也是一个List。</font>
+
+#交互消息
+多个模块、服务之间都通过*消息*`message`来通信。AbleCloud定义了两种格式的消息：
+
++ **ACMsg：**APP与service，service与service之间的交互消息。
++ **ACDeviceMsg：**APP与device，service与device之间的交互消息。
 
 ##ACMsg
-ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name、交互的上下文context以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进解析。
+ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name、交互的上下文context以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**ACMsg.OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进解析。
 ```java
 public class ACMsg extends ACObject {
 	public static final String OBJECT_PAYLOAD = "application/x-zc-object";
@@ -227,8 +200,8 @@ public class ACMsg extends ACObject {
     public void setErr(Integer errCode, String errMsg) {}
     
     /**
-     * 判断服务端响应的处理结果是否有错
-     * @return  true-处理有错，false-处理成功
+     * 判断服务端响应的处理结果
+     * @return  true-处理出错，false-处理成功
      */
     public boolean isErr() {}
     
@@ -250,8 +223,7 @@ public class ACMsg extends ACObject {
     public void setAck() {}
 }
 ```
-><font color="brown">**注：**开发者在本地测试或联调时，需要在配置文件中设置context的相关信息（见配置示例），线上环境context的内容由服务框架获取，开发者可不用关注。
-客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。</font>
+><font color="red">**注：**</font>开发者在本地测试或联调时，需要设置context的相关信息。客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。
 
 ###使用示例
 client端发起请求（伪代码，完整代码请参看各部分demo）：
@@ -263,9 +235,10 @@ req.setName("controlLight");							// 设置请求消息名
 req.put("deviceId", light.getId());						// 设置一个请求属性“设备id”
 req.put("action", "on");								// 设置另一属性"动作“，开灯
 ACMsg resp = client.send(req);							// 发送请求并返回服务端响应
-~~~
+```
+
 服务端处理请求（伪代码，完整代码请参看各部分demo）：
-~~~
+```
 private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
     Long lightId = req.get("deviceId");		// 从请求中获取“设备id”
     String action = req.get("action");		// 从请求中获取“动作”
@@ -274,11 +247,11 @@ private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
 ```
 
 ##ACDeviceMsg
-该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值做出不同的处理响应。
 >+ **二进制/json**
->在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写>设备消息序列化/反序列化器。
+>在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
 >+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
+>KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊格式。具体应用时，需要到AbleCloud平台定义设备的数据点和数据包。此时开发者不需要自己编写消息序列化/反序列化器，AbleCloud可依据定义的数据点和数据包自动解析消息的内容。。
 
 ACDeviceMsg定义如下：
 ```java
@@ -297,14 +270,14 @@ public class ACDeviceMsg {
 }
 ```
 
-<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
+<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型。若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容。在作具体的序列化/反序列化时，可根据code的不同值执行不同的序列化/反序列化操作。
 
-###ACDeviceMsgMarshaller
-设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：
+##ACDeviceMsgMarshaller
+设备消息的序列化/反序列化器，用于解释ACDeviceMsg的具体内容。其定义如下：
 ```java
 public interface ACDeviceMsgMarshaller {
 	/**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络传输给设备
+     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络下发****给设备
      *
      * @param msg       设备消息
      * @return          序列化后的字节数组
@@ -315,7 +288,7 @@ public interface ACDeviceMsgMarshaller {
     /**
      * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
      *
-     * @param msgCode   消息码，ablcloud也称为操作码opCode
+     * @param msgCode   消息码
      * @param payload   设备消息序列化后的字节数组
      * @return          设备消息
      * @throws Exception
@@ -324,14 +297,17 @@ public interface ACDeviceMsgMarshaller {
 }
 ```
 
+开发者应该在其重载的ACService.init()方法中初始化设备消息的序列化/反序列化器，并将其配置给服务开发框架。
+当UDS向设备发送消息时，开发框架会自动调用该序列化/反序列化器的marshal方法将数据序列化为设备可理解的数据，之后再通过AbleCloud云端服务传输给设备。
+当UDS接收到设备上报的消息时，开发框架会自动调用该序列化/反序列化器的unmarshal方法依据设备上报的消息创建ACDeviceMsg对象，并以该ACDeviceMsg对象为参数调用开发者重载的ACService.handleDeviceMsg()方法。
 
 #服务开发框架
-有了前面一些基本概念、基础数据结构作铺垫，咱们就可以开始真正熟悉ablecloud的服务开发框架了。实际上大多数开发者在使用ablecloud框架开发服务时，仅需简单的使用那些基础数据，将精力集中在实际的业务逻辑，快速的完成服务程序的开发/测试/发布。
+开发者在使用AbleCloud框架开发服务时，仅需简单的使用前文介绍的基础数据结构，将精力集中在实现应用的业务逻辑上，快速完成服务程序的开发/测试/发布。
 ##ACService：自定义后端服务
-ablecloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:
+AbleCloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:
 ```java
 public abstract class ACService {
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
+    // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
     protected AC ac;
     
     // 以下信息可用于服务内部追踪问题等用，比如打印到日志中
@@ -410,15 +386,15 @@ public abstract class ACService {
     public final AC getAc() {}
 }
 ```
-在上述抽象类中，对开发者来说，总共有三个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。通常情况下，init只需要设置设备消息处理的序列化器即可。因此，开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。
+在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。通常情况下，init只需要设置设备消息处理的序列化器即可。因此，开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。
 
-><font color="red">**注：**</font>通常情况下，开发者只需要重点实现**handleMsg**即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现**ACDeviceMsgMarshaller**并根据不同code做不同处理 。
+><font color="red">**注：**</font>通常情况下，开发者只需要重点实现**handleMsg**即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现**handleDeviceMsg**并根据不同code做不同处理 。
 
 ##ACCronJob：云端定时任务
-ablecloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：
+AbleCloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：
 ```java
 public abstract class ACCronJob {
-    // 开发者可以调用ac的相关接口直接调用ablecloud提供的云服务。
+    // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
     protected AC ac;
     
     // 以下信息可用于任务内部追踪问题等用，比如打印到日志中等。
@@ -464,7 +440,7 @@ public abstract class ACCronJob {
 上述抽象类共定义了三个公共方法：ACCronJob::setEnv，ACCronJob::getAC，以及ACCronJob::run。其中，ACCronJob::run是定时任务的执行函数，要求开发者提供具体实现。
 
 ##AC
-在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是ablecloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：
+在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是AbleCloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：
 ```java
 public abstract class AC {
     protected ACConfiguration config;
@@ -573,7 +549,7 @@ public abstract class AC {
     public abstract ACBindMgrForTest bindMgrForTest(ACContext context);
     
     /**
-     * 获取通知管理器，可以给用户发送通知消息
+     * 获取推送通知管理器，可以给用户发送通知消息
      *
      * @param context   开发者的context
      * @return
@@ -581,7 +557,7 @@ public abstract class AC {
     public abstract ACNotificationMgr notificationMgr(ACContext context);
     
     /**
-     * 获取用于单元测试的推送管理器
+     * 获取用于单元测试的推送通知管理器
      *
      * @param context 开发者的context
      * @return
@@ -606,7 +582,7 @@ public abstract class AC {
     
     /**
      * 为便于测试，开发者可实现一个服务的桩
-     * 在框架中添加一个服务桩
+     * 在框架中添加一个服务桩，即mock
      *
      * @param name  服务名
      * @param stub  服务桩的实现，实际上也是一个ACService
@@ -644,19 +620,18 @@ public abstract class AC {
     public static final AC getTestAc(ACConfiguration config) throws Exception {}
 }
 ```
-><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，其中每个管理器提供的**`cleanAll()`**接口会清除所有其相应功能的数据，所以请慎重使用。
-> 例如：`ac.accountMgrForTest(ac.newContext()).cleanAll()`会注销所有的用户并清除所有与设备的绑定关系。
+><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如`ac.accountMgrForTest(ac.newContext())`
 
 #内嵌云端服务
-顾名思义，内嵌云端服务，是指ablecloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象通过上节介绍的服务框架AC的相关接口获取。
+顾名思义，内嵌云端服务，是指AbleCloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象可通过上节介绍的服务框架AC的相关接口获取。
 
 ##账号相关接口
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 ###获取方式
 ```java
-ACAccountMgr accountMgr = ac.accountMgr(ACContext context);
+ACAccountMgr accountMgr = ac.accountMgr(ac.newContext());
 ```
-><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
+><font color="red">注意</font>：此处传开发者上下文，即`ac.newContext()`。
 
 ###接口说明
 ```java
@@ -709,8 +684,9 @@ public interface ACAccountMgr {
     public ACAccount loginWithOpenId(ACThirdPlatform thirdPlatform, String openId) throws Exception;
 }
 ```
+
 ###单元测试接口说明
-服务框架接收的命令大部分来自于APP端，因此需要创建一些*测试用户*，以便模拟客户发起的请求，该类便是用于此类作用。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：
+服务框架接收的命令大部分来自于APP端，因此需要创建一些*测试用户*，以便模拟客户发起的请求。该单元测试类即用于此类场景。需要注意的是，该测试接口只在测试环境中正常工作，具体定义如下：
 ```java
 public interface ACAccountMgrForTest extends ACAccountMgr {
 
@@ -734,7 +710,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 
     /**
      * 清除开发者主域下的所有帐号数据
-     * 注意：测试环境有效，请慎重使用
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -742,12 +718,12 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```
 
 ##绑定相关接口
-该服务接口主要用于用户和设备绑定关系管理，可以获取设备的Owner等详细信息，云端给设备发送消息等，定制化自己开发的服务。
+该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。
 ###获取方式
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该传用户上下文,即`ac.newContext(userId)`或`req.getContext()`(listUsers除外，使用`ac.newContext()`)
+><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`(仅调用listUsers方法时除外，使用`ac.newContext()`)。
 
 ###接口说明
 ```java
@@ -871,8 +847,9 @@ public interface ACBindMgr {
     public ACDeviceMsg sendToDevice(String subDomain, long deviceId, ACDeviceMsg reqMsg) throws Exception;
 }
 ```
+
 ###单元测试接口说明
-为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外提供了cleanAll和unbindUser接口，清理单元测试中产生的数据，用于单元测试的可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：
+为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外该类还提供了cleanAll和unbindUser接口，用于清理单元测试中产生的数据，在单元测试中可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：
 ```java
 public interface ACBindMgrForTest extends ACBindMgr {
 
@@ -919,13 +896,15 @@ public interface ACBindMgrForTest extends ACBindMgr {
 
     /**
      * 清除开发者所属主域下的所有分组/设备/成员相关数据
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
 }
 ```
+
 ###数据结构说明
-被绑定的设备的基础信息
+被绑定的设备的基础信息。
 ```java
 public class ACUserDevice {
     private long id;                  // 设备的逻辑ID
@@ -937,11 +916,10 @@ public class ACUserDevice {
     private long rootId;              // 分组设备管理模型
 
     public ACUserDevice(long id, long owner, String name, String physicalId, long subDomainId, long gatewayDeviceId, long rootId) {}
-
-    //getter
 }
 ```
-绑定设备的用户的基础信息
+
+绑定设备的用户的基础信息。
 ```java
 public class ACDeviceUser {
     public static final long NORMAL = 0;
@@ -954,20 +932,19 @@ public class ACDeviceUser {
     private String email;      // 用户的Email
 
     public ACDeviceUser(long id, long deviceId, long userType, String phone, String email) {}
-
-    //getter
 }
 ```
 
 ##存储相关接口
-该服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。
+AbleCloud存储服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。
 ###获取方式
 ```java
 ACStore store = ac.store(String className, ACContext contexte);
 ```
-><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
+><font color="red">注意</font>：此处传开发者上下文，即`ac.newContext()`。
+
 ###存储模型
-ablecloud目前提供基于mysql的分布式存储服务，开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。因此如何定位数据所在分区，需要提供分区key，ablecloud称其为entity group key（分区键）。当我们要查找一条存储在ablecloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，ablecloud称其为primary key（主键）。
+AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。为定位数据所在分区，需要定义数据分区key，AbleCloud称其为entity group key（分区键）。当我们要查找一条存储在AbleCloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，AbleCloud称其为primary key（主键）。
 >+ <font color="red">entity group key必须属于primary key的一部分，可以相同。</font>
 >+ <font color="red">一次查询命令只能选择一个分区</font>
 
@@ -980,17 +957,17 @@ ablecloud目前提供基于mysql的分布式存储服务，开发者需要预先
 + **primary keys：**deviceId，类型为字符串；timestamp，类型为整型`Long`。
 + **attributes**：mode，类型为字符串；speed，类型为整型`Long`。
 
-><font color="brown">**注：**目前所有的整型，都统一支持Long，浮点型统一为Double，字符串型可以设定字符串长度</font>
+><font color="brown">**注：**目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font>
 
 ###接口说明
 ####ACFilter：
-数据查询过滤器,独立于数据集之外，同一个过滤器可用于在不同的数据集中进行数据查询过滤。
+数据查询过滤器，独立于数据集之外，同一个过滤器可用于在不同的数据集中进行数据查询过滤。
 
 获取方式：
 ```java
 ACFilter filter = ac.filter();
 ```
-><font color="red">注意</font>：此处使用开发者或用户上下文都可以
+><font color="red">注意</font>：此处使用开发者或用户上下文都可以。
 
 接口定义如下：
 ```java
@@ -1046,7 +1023,7 @@ public abstract class ACStore {
     public interface Create {
         // 将key, value写入client端内存，可以连续调用put
         public Create put(String key, Object value) throws Exception;
-        // 该接口最终将client端的key-value(s)写入ablecloud的存储服务
+        // 该接口最终将client端的key-value(s)写入AbleCloud的存储服务
         public void execute() throws Exception;
     }
 
@@ -1055,13 +1032,13 @@ public abstract class ACStore {
         // 设置查找的keys，可以不调用。如果不掉用select，则
         // 返回primary key所对应的所有attributes
         public Find select(String... keys);
-        // 该接口最终从ablecloud的存储服务进行查找并返回数据
+        // 该接口最终从AbleCloud的存储服务进行查找并返回数据
         public ACObject execute() throws Exception;
     }
 
     // 删除数据
     public interface Delete {
-        // 该接口最终从ablecloud的存储服务中删除数据
+        // 该接口最终从AbleCloud的存储服务中删除数据
         public void execute() throws Exception;
     }
 
@@ -1074,7 +1051,7 @@ public abstract class ACStore {
         public BatchDelete and(ACFilter filter);
         // 追加设置一个条件过滤器，与之前过滤器的关系是“或”，必须在where之后调用
         public BatchDelete or(ACFilter filter);
-        // 该接口最终从ablecloud的存储服务中删除数据
+        // 该接口最终从AbleCloud的存储服务中删除数据
         public void execute() throws Exception;
     }
 
@@ -1082,7 +1059,7 @@ public abstract class ACStore {
     public interface Update {
         // 将已存在的key设置新的value值，可以连续调用put
         public Update put(String key, Object value);
-        // 该接口最终将client端的key-value(s)写入ablecloud的存储服务
+        // 该接口最终将client端的key-value(s)写入AbleCloud的存储服务
         public void execute() throws Exception;
     }
 
@@ -1105,6 +1082,8 @@ public abstract class ACStore {
         // 设置扫描的结束点，需传入除entity group key之外的primary keys
         // （end需要和start一起使用，不能单独出现）
         public Scan end(Object... primaryKeys) throws Exception;
+        // 设置扫描的offset,默认为0
+        public Scan offset(int number);
         // 设置扫描数据最大值
         public Scan limit(int number);
         // 设置第一个查询过滤器，不允许重复调用
@@ -1130,7 +1109,7 @@ public abstract class ACStore {
         public Scan max(String... keys);
         // 按照参数列表中的顺序，对各字段在结果集或者各分组中的值分别统计求最小值
         public Scan min(String... keys);
-        // 该接口最终从ablecloud的存储服务中扫描数据，返回数据列表。
+        // 该接口最终从AbleCloud的存储服务中扫描数据，返回数据列表。
         public List<ACObject> execute() throws Exception;
     }
 
@@ -1169,7 +1148,7 @@ public abstract class ACStore {
         public FullScan max(String... keys);
         // 对各字段在结果集或者各分组中的值分别统计求最小值，参数顺序不敏感
         public FullScan min(String... keys);
-        // 该接口最终从ablecloud的存储服务中扫描数据，返回各分区的数据游标供调用者使用
+        // 该接口最终从AbleCloud的存储服务中扫描数据，返回各分区的数据游标供调用者使用
         public ACIterator execute() throws Exception;
     }
 
@@ -1184,7 +1163,7 @@ public abstract class ACStore {
         public SimpleFullScan and(ACFilter filter);
         // 追加设置一个查询过滤器，与之前过滤器的关系是“或”，必须在where之后调用
         public SimpleFullScan or(ACFilter filter);
-        // 该接口最终从ablecloud的存储服务中扫描数据，返回数据游标供调用者使用，调用者需要每次给定一个数据条数limit
+        // 该接口最终从AbleCloud的存储服务中扫描数据，返回数据游标供调用者使用，调用者需要每次给定一个数据条数limit
         public ACRowIterator execute() throws Exception;
     }
 
@@ -1265,10 +1244,10 @@ public abstract class ACStore {
 }
 ```
 
-><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用，为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，数据扫描接口无法不能保证全局内所有数据的有序性。
+><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序。
 
 ####ACIterator：
-FullScan操作的游标
+FullScan操作的游标。
 ```java
 public class ACIterator {
     // 从游标中取出下一份数据结果集，每一份结果集对应一个分区键
@@ -1278,10 +1257,10 @@ public class ACIterator {
     public ACObject currentEntityGroup();
 }
 ```
-><font color=red>注意</font>:ACIterator仅用于进行了分区数据集，对于未分区的数据集，请直接使用Scan接口。
+><font color=red>注意</font>：ACIterator仅用于分区数据集。对于未分区的数据集，请直接使用Scan接口。
 
 ###单元测试接口说明
-我们知道，测试过程会产生数据，如果服务用到了ablecloud云端存储，也会在云端存储中存储一些测试用的数据。考虑到我们的单元测试会很频繁的运行，因此，在每次测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），需要对测试数据进行清理。该类便提供了创建/删除数据分类（类似于table）功能，定义如下：
+测试过程如果用到了AbleCloud云端存储，也会在云端存储中存储一些测试用的数据。在每次单元测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），可对测试数据进行清理。该类便提供了创建/删除数据集（类似于table）的功能。接口定义如下：
 ```java
 public interface ACStoreForTest {
     /**
@@ -1317,12 +1296,12 @@ public interface ACStoreForTest {
 ```
 
 ##推送服务接口
-该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）
+该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）。
 ###获取方式
 ```java
-ACNotificationMgr notificationMgr = ac.notificationMgr(ACContext context);
+ACNotificationMgr notificationMgr = ac.notificationMgr(ac.newContext());
 ```
-><font color="red">注意</font>：此处传开发者上下文,即`ac.newContext()`
+><font color="red">注意</font>：此处使用开发者上下文，即`ac.newContext()`。
 
 ###接口说明
 ```java
@@ -1369,6 +1348,7 @@ public interface ACNotificationMgrForTest extends ACNotificationMgr {
 
     /**
      * 清除所有推送帐号数据
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -1430,15 +1410,17 @@ public class ACNotification {
         this.userData = new HashMap();
     }
 ```
-><font color=red>注意：</font>`title`跟`content`为必填项，其他为可选项
+><font color=red>注意：</font>`title`跟`content`为必填项，其它为可选项。
 
 ##定时服务接口
-该服务用于定时向设备下发消息
+该服务用于定时向设备下发消息。
+
 ###获取方式
 ```java
 ACTimerTaskMgr timerMgr = ac.timerTaskMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`
+><font color="red">注意</font>：此处应该使用用户上下文，即`ac.newContext(userId)`或`req.getContext()`。
+
 ###接口说明
 ```java
 public interface ACTimerTaskMgr {
@@ -1510,6 +1492,7 @@ public interface ACTimerTaskMgrForTest {
 
     /**
      * 清除所有定时任务
+     * 注意：测试环境有效，正式环境不允许，请慎重使用
      * @throws Exception
      */
     public void cleanAll() throws Exception;
@@ -1747,23 +1730,23 @@ public class ACTimerTask {
 ```
 
 ##测试桩
-有过开发经验的同学应该都知道，在开发较大项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游还在开发之中，此时咱们不能等着下游完全ready后才开始测试，上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
-开发者基于ablecloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此ablecloud的服务开发框架支持两类桩：
+在开发较大型项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游服务还在开发之中。此时不能等着下游完全就绪后才开始测试。上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
+开发者基于AbleCloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此AbleCloud的服务开发框架支持两类桩：
 
-+ **设备桩：**模拟一个智能设备，对服务发过来的命令/消息做出响应
-+ **服务桩：**模拟一个服务，对当前服务发过来的消息做出响应
++ **设备桩：**模拟一个智能设备，对服务发过来的命令/消息做出响应。
++ **服务桩：**模拟一个服务，对当前服务发过来的消息做出响应。
 
 ###设备桩
-设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出相应，因此只有一个处理请求并做出响应的接口，如下：
+设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：
 ```java
 public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
                                           ACDeviceMsg req, ACDeviceMsg resp) throws Exception;
 }
 ```
-有了测试桩，我们在实现的DemoService中增加一个辅助接口，用于把设备桩设置到ac框架中，如下：
+
 ###服务桩
-服务桩的定义和真正的服务开发类似，实现其中的`handleMsg(ACMsg req, ACMsg resp)`接口，模拟另外依赖服务的行为即可。
+服务桩的定义和真正的服务开发类似，开发者需要实现其中的`handleMsg(ACMsg req, ACMsg resp)`接口以模拟服务提供的功能。
 ```java
 public abstract class ACServiceSub {
 
@@ -1778,7 +1761,7 @@ public abstract class ACServiceSub {
 }
 ```
 
-><font color="red">**注：**无论是设备桩，还是服务桩，仅在测试**test**模式生效，正式生产**production**环境无效。</font>
+><font color="red">**注：**无论是设备桩，还是服务桩，仅在测试（**test**）模式生效，正式生产（**production**）环境无效。</font>
 
 #附录
 ##签名算法
@@ -1841,7 +1824,8 @@ public class ACSigner {
     }
 }
 ```
-一般情况下，timestamp与nonce（随机16位字符串）的定义如下：
+
+其中，timestamp精确到秒；nonce是一个随机字符串（一般选则长度为16个字符）。如：
 ```java
 long timestamp = System.currentTimeMillis() / 1000;
 String nonce = genNonce(timestamp, 16);
@@ -1856,12 +1840,12 @@ public static String genNonce(long seed, int length) {
     return sb.toString();
 }
 ```
-><font color=red>注意</font>：使用如上方法算出签名后，需要把值设置到请求Header之后即可以访问AbleCloud提供的接口服务。
+><font color=red>注意</font>：使用如上方法算出签名后，通过HTTP请求的Header将签名的结果发送给云端服务，用于验证请求的消息是否被篡改。
 
-例如：以下为windows发送curl命令请求，具体值请自行修改
+示例：以下为windows通过curl命令发送HTTP请求。其中Header项“X-Zc-Developer-Signature”即用来发送签名值。
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-Developer-Id:developerId" -H "X-Zc-Timestamp:timestamp" -H "X-Zc-Timeout:timeout" -H "X-Zc-Nonce:exzabc9xy10a2cb3" -H "X-Zc-Developer-Signature:signature" --data-ascii "{\"deviceId\":\"1\"}"
 ```
 
 #Error Code
-参考[reference-Error Code](../reference/error_code.md)
+参考[Reference-Error Code](../reference/error_code.md)。

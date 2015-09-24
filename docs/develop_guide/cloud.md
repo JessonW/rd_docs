@@ -268,7 +268,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
        		<version>your service version</version>
     	</project>
         
-    注意以下配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。
+    注意其他配置项**一定不能修改**，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。
         
 1. **修改配置文件**
 
@@ -635,8 +635,8 @@ class LightMsg {
 ```java
 package com.ablecloud.demo;
 
-import com.ablecloud.service.ACDeviceMsg;
-import com.ablecloud.service.ACDeviceMsgMarshaller;
+import com.ablecloud.common.ACDeviceMsg;
+import com.ablecloud.common.ACDeviceMsgMarshaller;
 
 import java.nio.ByteBuffer;
 import org.slf4j.Logger;
@@ -957,7 +957,7 @@ public class DemoServiceTest {
 >此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签**@FixMethodOrder(MethodSorters.NAME_ASCENDING)**固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</font>
 
 ####测试桩
-从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中提供了设备桩`ACDeviceStub`功能，开发者只需要依照此接口实现具体的设备桩即可。
+从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中定义了设备桩`ACDeviceStub`的接口，开发者只需要依照此接口实现具体的设备桩即可。
 示例的桩处理很简单，实际上你可以任意扩展，比如在桩中模拟灯的各种状态。示例代码如下：
 ```java
 package com.ablecloud.demo;
