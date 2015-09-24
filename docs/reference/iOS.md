@@ -450,9 +450,10 @@ import "ACAccountManager.h"
 
 /**
  *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
- * @param account 手机号码或者邮箱地址，目前只支持手机号码
+ * @param template 短信内容模板
+ * @param callback 返回结果的监听回调
  */
-+ (void)sendVerifyCodeWithAccount:(NSString *)account
++ (void)sendVerifyCodeWithAccount:(NSString *)account  template:(NSString *)template
 callback:(void (^)(NSError *error))callback;
 /**
  * 校验手机验证码
