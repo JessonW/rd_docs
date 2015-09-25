@@ -1516,6 +1516,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。</p>
 <p><img alt="push2" src="../../pic/develop_guide/push2.png" /> </p>
 <p>友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。</p>
+<p><img alt="push3" src="../../pic/develop_guide/push3.png" /></p>
 <blockquote>
 <p><font color="red">注意</font></p>
 <p>1、调试的时候若开发环境配置有变化的话尽量手动卸载APP之后再重新安装。</p>
@@ -1753,7 +1754,46 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="5_1">5、在退出登录之后移除掉旧的别名</h4>
+<h4 id="5_1">5、设置收到通知后的点击处理时间</h4>
+<pre><code class="java">AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
+    //对应 打开应用
+    @Override
+    public void launchApp(Context context, UMessage uMessage) {
+         super.launchApp(context, uMessage);
+    }
+    //对应 打开指定的activity
+    @Override
+    public void openActivity(Context context, UMessage uMessage) {
+         super.openActivity(context, uMessage);
+    }
+    //对应 打开指定网页
+    @Override
+    public void openUrl(Context context, UMessage uMessage) {
+         super.openUrl(context, uMessage);
+    }
+    //对应 自定义行为
+    @Override
+    public void dealWithCustomAction(Context context, UMessage uMessage) {
+         super.dealWithCustomAction(context, uMessage);
+    }
+});
+</code></pre>
+
+<blockquote>
+<p><strong>注意</strong></p>
+<ul>
+<li>
+<p>以上代码需在Application的onCreate()中调用使用以下接口，而不是在Activity 中调用。如果在Activity中调用此接口，若应用进程关闭，则设置的接口会无效。请参考： <a href="http://bbs.umeng.com/thread-9694-1-1.html">demo 应用代码</a></p>
+</li>
+<li>
+<p>该Handler是在BroadcastReceiver中被调用。因此若需启动Activity，需为Intent添加Flag：<code>Intent.FLAG_ACTIVITY_NEW_TASK</code>，否则无法启动Activity。</p>
+</li>
+<li>
+<p>若开发者想自己处理打开网页、打开APP、打开Activity，可重写相应的函数来实现。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="6">6、在退出登录之后移除掉旧的别名</h4>
 <pre><code class="java">notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override
     public void success() {
