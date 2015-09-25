@@ -1211,6 +1211,8 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 
 友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
 
+![push3](../pic/develop_guide/push3.png)
+
 
 ><font color="red">注意</font>
 
@@ -1462,7 +1464,40 @@ notificationMgr.setMessageHandler(new UmengMessageHandler() {
 });
 ```
 
-####5、在退出登录之后移除掉旧的别名
+####5、设置收到通知后的点击处理时间
+```java
+AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
+    //对应 打开应用
+    @Override
+    public void launchApp(Context context, UMessage uMessage) {
+         super.launchApp(context, uMessage);
+    }
+    //对应 打开指定的activity
+    @Override
+    public void openActivity(Context context, UMessage uMessage) {
+         super.openActivity(context, uMessage);
+    }
+    //对应 打开指定网页
+    @Override
+    public void openUrl(Context context, UMessage uMessage) {
+         super.openUrl(context, uMessage);
+    }
+    //对应 自定义行为
+    @Override
+    public void dealWithCustomAction(Context context, UMessage uMessage) {
+         super.dealWithCustomAction(context, uMessage);
+    }
+});
+```
+> **注意**
+
+> + 以上代码需在Application的onCreate()中调用使用以下接口，而不是在Activity 中调用。如果在Activity中调用此接口，若应用进程关闭，则设置的接口会无效。请参考： [demo 应用代码](http://bbs.umeng.com/thread-9694-1-1.html)
+
+> + 该Handler是在BroadcastReceiver中被调用。因此若需启动Activity，需为Intent添加Flag：`Intent.FLAG_ACTIVITY_NEW_TASK`，否则无法启动Activity。
+
+> + 若开发者想自己处理打开网页、打开APP、打开Activity，可重写相应的函数来实现。
+
+####6、在退出登录之后移除掉旧的别名
 ```java
 notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override
