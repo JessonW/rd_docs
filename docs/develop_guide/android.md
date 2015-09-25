@@ -1213,6 +1213,7 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 
 ![push3](../pic/develop_guide/push3.png)
 
+在AbleCloud平台中添加应用，并填写App Key和App Master Secret
 
 ><font color="red">注意</font>
 
