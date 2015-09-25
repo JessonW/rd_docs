@@ -116,7 +116,7 @@ AC.handleMsg(new ACMsgHandler() {
 数据上报：
 ```java
 /**
- * 上报数据到AbleCloud云端（以控制灯为例，实际开发中协议由开发者自己定义）
+ * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
  * @param type   开关类型，0代表app控制，1代表本机控制
@@ -181,7 +181,7 @@ AC.handleMsg(new ACMsgHandler() {
 数据上报：
 ```java
 /**
- * 上报数据到AbleCloud云端（以控制灯为例，实际开发中协议由开发者自己定义）
+ * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
  * @param type   开关类型，0代表app控制，1代表本机控制
@@ -253,7 +253,7 @@ AC.handleMsg(new ACMsgHandler() {
 ```
 ```java
 /**
- * 上报数据到AbleCloud云端（以控制灯为例，实际开发中协议由开发者自己定义）
+ * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
  * @param type   开关类型，0代表app控制，1代表本机控制
