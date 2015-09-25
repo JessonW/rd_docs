@@ -1465,7 +1465,7 @@ notificationMgr.setMessageHandler(new UmengMessageHandler() {
 });
 ```
 
-####5、设置收到通知后的点击处理时间
+####5、设置收到通知后的点击处理事件
 ```java
 AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
     //对应 打开应用
