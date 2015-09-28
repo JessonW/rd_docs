@@ -931,10 +931,10 @@ pushMgr.onReceive(new PayloadCallback<ACPushReceive>() {
 //实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName("test_class");
+table.setClassName("light_action_data");
 //设置监听主键
 ACObject primaryKey = new ACObject();
-primaryKey.put("deviceId", "10000");
+primaryKey.put("deviceId", 1);
 table.setPrimaryKey(primaryKey);
 pushMgr.unwatch(table, new VoidCallback() {
     @Override

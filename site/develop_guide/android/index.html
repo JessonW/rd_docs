@@ -1219,15 +1219,18 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 </code></pre>
 
 <h4 id="3_5">3、订阅实时数据</h4>
+<p>以如下数据集为例：
+<img alt="cloud_syn_1" src="../../pic/develop_guide/cloud_syn_1.png" /></p>
 <pre><code class="java">//实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName(&quot;test_class&quot;);
+table.setClassName(&quot;light_action_data&quot;);
 //设置订阅的columns行
-table.setColumes(new String[]{&quot;status&quot;, &quot;pm25&quot;});
+table.setColumes(new String[]{&quot;time&quot;, &quot;type&quot;, &quot;action&quot;});
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
 ACObject primaryKey = new ACObject();
-primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
+//订阅deviceId为1的数据变化
+primaryKey.put(&quot;deviceId&quot;, 1);
 table.setPrimaryKey(primaryKey);
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
@@ -1250,6 +1253,11 @@ pushMgr.watch(table, new VoidCallback() {
         //pushReceive.getClassName() 表名
         //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
         //pushReceive.getPayload() 接收数据ACObject格式
+        ACObject object = pushReceive.getPayload();
+        Long action = object.get(&quot;action&quot;);
+        Long time = object.get(&quot;time&quot;);
+        Long type = object.get(&quot;type&quot;);
+        ...
     }
 
     @Override
