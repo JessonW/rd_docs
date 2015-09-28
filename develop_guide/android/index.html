@@ -1272,10 +1272,10 @@ pushMgr.watch(table, new VoidCallback() {
 <pre><code class="java">//实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName(&quot;test_class&quot;);
+table.setClassName(&quot;light_action_data&quot;);
 //设置监听主键
 ACObject primaryKey = new ACObject();
-primaryKey.put(&quot;deviceId&quot;, &quot;10000&quot;);
+primaryKey.put(&quot;deviceId&quot;, 1);
 table.setPrimaryKey(primaryKey);
 pushMgr.unwatch(table, new VoidCallback() {
     @Override
