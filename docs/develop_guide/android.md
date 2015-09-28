@@ -875,16 +875,19 @@ pushMgr.connect(new VoidCallback() {
 ```
 
 ####3、订阅实时数据
+以如下数据集为例：
+![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
 ```java
 //实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName("test_class");
+table.setClassName("light_action_data");
 //设置订阅的columns行
-table.setColumes(new String[]{"status", "pm25"});
+table.setColumes(new String[]{"time", "type", "action"});
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
 ACObject primaryKey = new ACObject();
-primaryKey.put("deviceId", "10000");
+//订阅deviceId为1的数据变化
+primaryKey.put("deviceId", 1);
 table.setPrimaryKey(primaryKey);
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
@@ -908,6 +911,11 @@ pushMgr.onReceive(new PayloadCallback<ACPushReceive>() {
         //pushReceive.getClassName() 表名
         //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
         //pushReceive.getPayload() 接收数据ACObject格式
+        ACObject object = pushReceive.getPayload();
+        Long action = object.get("action");
+        Long time = object.get("time");
+        Long type = object.get("type");
+        ...
     }
 
     @Override
