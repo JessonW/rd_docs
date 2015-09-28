@@ -24,6 +24,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
+**国内环境**
 开发阶段，请初始化**测试环境**
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
@@ -32,6 +33,14 @@ AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
+**国外环境**
+开发阶段，请初始化**测试环境**
+```java
+AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+```
+在完成测试阶段之后，需要迁移到**正式环境**下
+```java
+AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
 
 #帐号管理
 
@@ -891,6 +900,7 @@ primaryKey.put("deviceId", 1);
 table.setPrimaryKey(primaryKey);
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
+//可以多次调用以下此方法watch多个table
 pushMgr.watch(table, new VoidCallback() {
     @Override
     public void success() {
