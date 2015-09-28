@@ -300,7 +300,7 @@
             
         
             
-            <li class="sub parent__11" style="display: none;"><a href="#_20">设备附加属性</a></li>
+            <li class="sub parent__11" style="display: none;"><a href="#_20">设备扩展属性</a></li>
             
         
     
@@ -586,8 +586,8 @@
 <p><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用</p>
 </blockquote>
 <h2 id="_10">三、添加帐号扩展属性</h2>
-<p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性</p>
-<p><strong>步骤</strong>：登录AbleCloud平台--&gt;用户管理--&gt;附加属性--&gt;新建</p>
+<p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性</p>
+<p><strong>步骤</strong>：登录AbleCloud平台--&gt;用户管理--&gt;扩展属性--&gt;新建</p>
 <h4 id="1_2">1、获取账号管理器</h4>
 <pre><code class="java">accountMgr=AC.accountMgr();
 </code></pre>
@@ -600,7 +600,7 @@ userProfile.put(&quot;birthday&quot;, &quot;1989-10-13&quot;)
 accountMgr.setUserProfile(userProfile, new VoidCallback() {
     @Override
     public void success() {
-         //附加属性设置成功
+         //扩展属性设置成功
     }
 
     @Override
@@ -640,7 +640,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK</code>、<code>AC.DEVICE_MX</code>、<code>AC.DEVICE_MARVELL</code>、<code>AC.DEVICE_MURATA</code>、<code>AC.DEVICE_WM</code>、<code>AC.DEVICE_RAK</code>。</p>
+目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -964,10 +964,10 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
-<h2 id="_20">设备附加属性</h2>
-<p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备附加属性</a></p>
-<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;选择产品点管理--&gt;产品属性--&gt;附加属性--&gt;新建属性，建立完附加属性列表后才能使用如下接口。</strong></p>
-<h4 id="_21">一、设置或者更新设备附加属性</h4>
+<h2 id="_20">设备扩展属性</h2>
+<p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备扩展属性</a></p>
+<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;选择产品点管理--&gt;产品属性--&gt;扩展属性--&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
+<h4 id="_21">一、设置或者更新设备扩展属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
 deviceProfile.put(&quot;city&quot;, &quot;北京&quot;);
@@ -985,7 +985,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h4 id="_22">二、获取设备附加属性</h4>
+<h4 id="_22">二、获取设备扩展属性</h4>
 <pre><code class="java">bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback&lt;ACObject&gt;() {
     @Override
     public void success(ACObject object) {
@@ -1074,11 +1074,25 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 <p>截取开灯代码，如下:</p>
 <h4 id="1_6">1、设置序列化器</h4>
 <pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
+    /**
+     * 因为与设备的通讯以二进制流的形式进行，所以需要全局设置一个序列化与反序列化器
+     * 序列化器
+     *
+     * @param deviceMsg 对应sendToDeviceWithOption里的deviceMsg参数，
+     * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
+     */
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
         return (byte[]) msg.getContent();
     }
 
+    /**
+     * 反序列化器
+     *
+     * @param msgCode 开发商基于AbleCloud框架自定义的协议，此处为与设备通讯的msgCode
+     * @param payload 此处为接收到设备响应的原始byte数组，设备返回数据后先经过这里进行反序列化
+     * @return 反序列化后返回ACDeviceMsg对象，此处对应sendToDeviceWithOption里callback的success回调
+     */
     @Override
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
         return new ACDeviceMsg(msgCode, payload);
@@ -1502,6 +1516,8 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>记录“应用信息”中的AppKey和App Master Secret，将其填写到test.ablecloud.cn中。AbleCloud和友盟已经达成合作协议，服务器IP地址一项不需要填写。</p>
 <p><img alt="push2" src="../../pic/develop_guide/push2.png" /> </p>
 <p>友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。</p>
+<p><img alt="push3" src="../../pic/develop_guide/push3.png" /></p>
+<p>在AbleCloud平台中添加应用，并填写App Key和App Master Secret</p>
 <blockquote>
 <p><font color="red">注意</font></p>
 <p>1、调试的时候若开发环境配置有变化的话尽量手动卸载APP之后再重新安装。</p>
@@ -1739,7 +1755,46 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 });
 </code></pre>
 
-<h4 id="5_1">5、在退出登录之后移除掉旧的别名</h4>
+<h4 id="5_1">5、设置收到通知后的点击处理事件</h4>
+<pre><code class="java">AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
+    //对应 打开应用
+    @Override
+    public void launchApp(Context context, UMessage uMessage) {
+         super.launchApp(context, uMessage);
+    }
+    //对应 打开指定的activity
+    @Override
+    public void openActivity(Context context, UMessage uMessage) {
+         super.openActivity(context, uMessage);
+    }
+    //对应 打开指定网页
+    @Override
+    public void openUrl(Context context, UMessage uMessage) {
+         super.openUrl(context, uMessage);
+    }
+    //对应 自定义行为
+    @Override
+    public void dealWithCustomAction(Context context, UMessage uMessage) {
+         super.dealWithCustomAction(context, uMessage);
+    }
+});
+</code></pre>
+
+<blockquote>
+<p><strong>注意</strong></p>
+<ul>
+<li>
+<p>以上代码需在Application的onCreate()中调用使用以下接口，而不是在Activity 中调用。如果在Activity中调用此接口，若应用进程关闭，则设置的接口会无效。请参考： <a href="http://bbs.umeng.com/thread-9694-1-1.html">demo 应用代码</a></p>
+</li>
+<li>
+<p>该Handler是在BroadcastReceiver中被调用。因此若需启动Activity，需为Intent添加Flag：<code>Intent.FLAG_ACTIVITY_NEW_TASK</code>，否则无法启动Activity。</p>
+</li>
+<li>
+<p>若开发者想自己处理打开网页、打开APP、打开Activity，可重写相应的函数来实现。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="6">6、在退出登录之后移除掉旧的别名</h4>
 <pre><code class="java">notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override
     public void success() {

@@ -1,6 +1,5 @@
 #IOS客户端开发指导
-##简介
-SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍iOS平台的SDK。ablecloud为开发者提供了一些通用的云端服务，最终开发出来的APP会和云端服务交互，因此SDK中涉及到和云端交互的接口，均采用异步回调方式，避免阻塞主线程的执行。 在《SDK简介》篇，我们知道SDK大体上提供了6大功能，本文将逐一进行介绍。
+
 ###开发环境设置
 ####系统准备
 在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。
@@ -142,7 +141,7 @@ import "ACAccountManager.h"
 
 ##三、添加帐号扩展属性
 
-使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
+使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性
 
 ####1、使用类
 ```c
@@ -430,31 +429,31 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
 
-##设备附加属性
+##设备扩展属性
 
-功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
+功能介绍参见 [功能说明-功能介绍-设备扩展属性](../features/functions.md#_11)
 
-**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
+**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->产品列表-->管理-->产品属性-->扩展属性-->新建属性，建立完扩展属性列表后才能使用如下接口。**
 
-####一、设置或者更新设备附加属性
+####一、设置或者更新设备扩展属性
 ```c
 [ACBindManager setDeviceProfileWithSubDomain:subDomain deviceId:deviceId profile:acobj  callback:^(NSError *error) {
             if(error){
             //返回失败信息，根据error做不同的提示或者处理
             }else{
-            //修改设备附加属性成功
+            //修改设备扩展属性成功
             }  
 }];
 ```
 
 
-####二、获取设备附加属性
+####二、获取设备扩展属性
 ```c
 [ACBindManager getDeviceProfileWithSubDomain:subDomain deviceId:deviceId callback:^(ACObject *profile, NSError *error) {
             if(error){
             //返回失败信息，根据error做不同的提示或者处理
             }else{
-            //获得设备附加属性成功
+            //获得设备扩展属性成功
             }  
 }];
 ```

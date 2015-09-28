@@ -25,23 +25,31 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 /**
      * 请在主Activity的onCreate()中初始化安卓设备信息并开始连云操作
      *
-     * @param mContext      获取Context实例
-     * @param MajorDomainId AbleCloud domainId，可到AbleCloud平台工程管理查看
-     * @param SubDomainId   AbleCloud subDomainId，可到AbleCloud平台工程管理查看
-     * @param secretKey     AbleCloud设备密钥，在产品管理中-->管理-->设备密钥，若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并把上传文件
-     * @param version       AbleCloud设备版本，格式为"1-0-0";在初始化一个OTA版本后，若需要进行OTA升级，需要在设备管理中-->OTA-->新建OTA版本把新的apk文件上传
-     * @param mode          AC.TEST_MODE,当迁移到正式环境后使用AC.PRODUCTION_MODE
+     * @param mContext         获取Context实例
+     * @param MajorDomainId    AbleCloud domainId，可到AbleCloud平台工程管理查看
+     * @param SubDomainId      AbleCloud subDomainId，可到AbleCloud平台工程管理查看
+     * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+     * @param secretKey        AbleCloud设备密钥，在产品管理中-->管理-->设备密钥，若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并把上传文件
+     * @param version          AbleCloud设备版本，格式为"1-0-0";在初始化一个OTA版本后，若需要进行OTA升级，需要在设备管理中--         >OTA-->新建OTA版本把新的apk文件上传
+     * @param mode             AC.TEST_MODE,当迁移到正式环境后使用AC.PRODUCTION_MODE或不填
      */
 AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
 ```
 在完成测试阶段之后，需要迁移到正式环境下。
 ```java
-AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE);
+AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version);
 ```
-><font color=red>注</font>：初始化操作时AbleCloud会默认为每个设备生成一个`物理ID`，为保证物理ID的唯一性，默认取`4个0加上wifi mac地址`；若安卓设备没有wifi模块时，默认取`1个0加上手机IMEI号`；若取不到wifi mac地址和IMEI号的情况下，AbleCloud会根据你手机的型号等硬件信息帮你拼出一个唯一的ID；具体可通过AbleCloud后台查看。
+><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个**16字节长度的物理ID**，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用**WIFI MAC地址**或者**手机IMEI号**并补0或其他将长度拼至16字节；可通过AbleCloud后台查看**在线设备**查看设备物理ID。
 
 #Demo
-AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里`com.accloud.ac_device_android_demo.config.Config.java`文件里的配置项。
+AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里`com.accloud.ac_device_android_demo.config.Config.java`文件里以下的配置项。
+
+```java
+public static final long DOMAINID;
+public static final long SUBDOMAINID;
+public static final String VERSION;
+public static final String SECRETKEY;
+```
 
 下面以开关灯为例，简要介绍与安卓设备通讯的例子：
 
@@ -105,7 +113,25 @@ AC.handleMsg(new ACMsgHandler() {
     }
 });
 ```
-
+数据上报：
+```java
+/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    ACKLVObject object = new ACKLVObject();
+    object.put(Config.KEY_SWITCH, (byte) status);
+    object.put(Config.KEY_TYPE, (byte) type);
+    req.setKLVObject(object);
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
+```
 ####2、使用二进制消息格式进行通讯
 以开关灯为例，协议如下：
 ```
@@ -151,6 +177,22 @@ AC.handleMsg(new ACMsgHandler() {
         }
     }
 });
+```
+数据上报：
+```java
+/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
 ```
 
 ####3、使用JSON消息格式进行通讯
@@ -209,11 +251,9 @@ AC.handleMsg(new ACMsgHandler() {
     }
 });
 ```
-
-####数据上报
 ```java
 /**
- * 上报数据到AbleCloud云端（以控制灯为例，实际开发中协议由开发者自己定义）
+ * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
  * @param type   开关类型，0代表app控制，1代表本机控制
@@ -221,27 +261,13 @@ AC.handleMsg(new ACMsgHandler() {
 public void reportLight(int status, int type) {
     ACDeviceMsg req = new ACDeviceMsg();
     req.setMsgCode(Config.CODE_REPORT);
-    //注意：实际开发中请只选择以下其中一种消息格式
-    switch (protocol) {
-        case BINARY:
-            req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
-            break;
-        case KLV:
-            ACKLVObject object = new ACKLVObject();
-            object.put(Config.KEY_SWITCH, (byte) status);
-            object.put(Config.KEY_TYPE, (byte) type);
-            req.setKLVObject(object);
-            break;
-        case JSON:
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("status", status);
-                jsonObject.put("controltype", type);
-                req.setJsonPayload(jsonObject.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            break;
+    JSONObject jsonObject = new JSONObject();
+    try {
+        jsonObject.put("status", status);
+        jsonObject.put("controltype", type);
+        req.setJsonPayload(jsonObject.toString());
+    } catch (JSONException e) {
+        e.printStackTrace();
     }
     //把数据真正上报给云端
     AC.reportDeviceMsg(req);

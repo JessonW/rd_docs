@@ -166,9 +166,9 @@ AC.init(this, MajorDomain, MajorDomainId);
 
 ##三、添加帐号扩展属性
 
-使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加附加属性
+使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性
 
-**步骤**：登录AbleCloud平台-->用户管理-->附加属性-->新建
+**步骤**：登录AbleCloud平台-->用户管理-->扩展属性-->新建
 
 ####1、获取账号管理器
 ```java
@@ -184,7 +184,7 @@ userProfile.put("birthday", "1989-10-13")
 accountMgr.setUserProfile(userProfile, new VoidCallback() {
     @Override
     public void success() {
-         //附加属性设置成功
+         //扩展属性设置成功
     }
 
     @Override
@@ -603,13 +603,13 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 
 
-##设备附加属性
+##设备扩展属性
 
-功能介绍参见 [功能说明-功能介绍-设备附加属性](../features/functions.md#_11)
+功能介绍参见 [功能说明-功能介绍-设备扩展属性](../features/functions.md#_11)
 
-**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->选择产品点管理-->产品属性-->附加属性-->新建属性，建立完附加属性列表后才能使用如下接口。**
+**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->选择产品点管理-->产品属性-->扩展属性-->新建属性，建立完扩展属性列表后才能使用如下接口。**
 
-####一、设置或者更新设备附加属性
+####一、设置或者更新设备扩展属性
 ```java
 ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
@@ -628,7 +628,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 ```
 
-####二、获取设备附加属性
+####二、获取设备扩展属性
 ```java
 bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
     @Override
@@ -1211,6 +1211,9 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 
 友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
 
+![push3](../pic/develop_guide/push3.png)
+
+在AbleCloud平台中添加应用，并填写App Key和App Master Secret
 
 ><font color="red">注意</font>
 
@@ -1462,7 +1465,40 @@ notificationMgr.setMessageHandler(new UmengMessageHandler() {
 });
 ```
 
-####5、在退出登录之后移除掉旧的别名
+####5、设置收到通知后的点击处理事件
+```java
+AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
+    //对应 打开应用
+    @Override
+    public void launchApp(Context context, UMessage uMessage) {
+         super.launchApp(context, uMessage);
+    }
+    //对应 打开指定的activity
+    @Override
+    public void openActivity(Context context, UMessage uMessage) {
+         super.openActivity(context, uMessage);
+    }
+    //对应 打开指定网页
+    @Override
+    public void openUrl(Context context, UMessage uMessage) {
+         super.openUrl(context, uMessage);
+    }
+    //对应 自定义行为
+    @Override
+    public void dealWithCustomAction(Context context, UMessage uMessage) {
+         super.dealWithCustomAction(context, uMessage);
+    }
+});
+```
+> **注意**
+
+> + 以上代码需在Application的onCreate()中调用使用以下接口，而不是在Activity 中调用。如果在Activity中调用此接口，若应用进程关闭，则设置的接口会无效。请参考： [demo 应用代码](http://bbs.umeng.com/thread-9694-1-1.html)
+
+> + 该Handler是在BroadcastReceiver中被调用。因此若需启动Activity，需为Intent添加Flag：`Intent.FLAG_ACTIVITY_NEW_TASK`，否则无法启动Activity。
+
+> + 若开发者想自己处理打开网页、打开APP、打开Activity，可重写相应的函数来实现。
+
+####6、在退出登录之后移除掉旧的别名
 ```java
 notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override

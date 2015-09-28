@@ -486,13 +486,14 @@ public abstract class AC {
     /**
      * 往某一服务发送命令/消息
      *
-     * @param name    服务名
-     * @param version 服务版本
-     * @param req     具体的消息内容
+     * @param subDomain 该服务所在产品名
+     * @param name      服务名
+     * @param version   服务版本
+     * @param req       具体的消息内容，此处req无需构造ACContext
      * @return 服务端相应的消息
      * @throws Exception
      */
-    public abstract ACMsg sendToService(String name, int version, ACMsg req) throws Exception;
+    public abstract ACMsg sendToService(String subDomain, String name, int version, ACMsg req) throws Exception;
     
     /**
      * 往JD service发送命令/消息,上报设备上的所有Stream点到JINGDONG Service
