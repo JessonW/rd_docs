@@ -24,6 +24,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
+**国内环境**
 开发阶段，请初始化**测试环境**
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
@@ -32,6 +33,14 @@ AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
+**国外环境**
+开发阶段，请初始化**测试环境**
+```java
+AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+```
+在完成测试阶段之后，需要迁移到**正式环境**下
+```java
+AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
 
 #帐号管理
 
@@ -875,19 +884,23 @@ pushMgr.connect(new VoidCallback() {
 ```
 
 ####3、订阅实时数据
+以如下数据集为例：
+![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
 ```java
 //实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName("test_class");
+table.setClassName("light_action_data");
 //设置订阅的columns行
-table.setColumes(new String[]{"status", "pm25"});
+table.setColumes(new String[]{"time", "type", "action"});
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
 ACObject primaryKey = new ACObject();
-primaryKey.put("deviceId", "10000");
+//订阅deviceId为1的数据变化
+primaryKey.put("deviceId", 1);
 table.setPrimaryKey(primaryKey);
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
+//可以多次调用以下此方法watch多个table
 pushMgr.watch(table, new VoidCallback() {
     @Override
     public void success() {
@@ -908,6 +921,11 @@ pushMgr.onReceive(new PayloadCallback<ACPushReceive>() {
         //pushReceive.getClassName() 表名
         //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
         //pushReceive.getPayload() 接收数据ACObject格式
+        ACObject object = pushReceive.getPayload();
+        Long action = object.get("action");
+        Long time = object.get("time");
+        Long type = object.get("type");
+        ...
     }
 
     @Override
@@ -923,10 +941,10 @@ pushMgr.onReceive(new PayloadCallback<ACPushReceive>() {
 //实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名
-table.setClassName("test_class");
+table.setClassName("light_action_data");
 //设置监听主键
 ACObject primaryKey = new ACObject();
-primaryKey.put("deviceId", "10000");
+primaryKey.put("deviceId", 1);
 table.setPrimaryKey(primaryKey);
 pushMgr.unwatch(table, new VoidCallback() {
     @Override
@@ -1211,6 +1229,9 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 
 友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
 
+![push3](../pic/develop_guide/push3.png)
+
+在AbleCloud平台中添加应用，并填写App Key和App Master Secret
 
 ><font color="red">注意</font>
 
@@ -1462,7 +1483,40 @@ notificationMgr.setMessageHandler(new UmengMessageHandler() {
 });
 ```
 
-####5、在退出登录之后移除掉旧的别名
+####5、设置收到通知后的点击处理事件
+```java
+AC.notificationMgr().setNotificationClickHandler(new UmengNotificationClickHandler(){
+    //对应 打开应用
+    @Override
+    public void launchApp(Context context, UMessage uMessage) {
+         super.launchApp(context, uMessage);
+    }
+    //对应 打开指定的activity
+    @Override
+    public void openActivity(Context context, UMessage uMessage) {
+         super.openActivity(context, uMessage);
+    }
+    //对应 打开指定网页
+    @Override
+    public void openUrl(Context context, UMessage uMessage) {
+         super.openUrl(context, uMessage);
+    }
+    //对应 自定义行为
+    @Override
+    public void dealWithCustomAction(Context context, UMessage uMessage) {
+         super.dealWithCustomAction(context, uMessage);
+    }
+});
+```
+> **注意**
+
+> + 以上代码需在Application的onCreate()中调用使用以下接口，而不是在Activity 中调用。如果在Activity中调用此接口，若应用进程关闭，则设置的接口会无效。请参考： [demo 应用代码](http://bbs.umeng.com/thread-9694-1-1.html)
+
+> + 该Handler是在BroadcastReceiver中被调用。因此若需启动Activity，需为Intent添加Flag：`Intent.FLAG_ACTIVITY_NEW_TASK`，否则无法启动Activity。
+
+> + 若开发者想自己处理打开网页、打开APP、打开Activity，可重写相应的函数来实现。
+
+####6、在退出登录之后移除掉旧的别名
 ```java
 notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override

@@ -374,8 +374,29 @@ typedef struct
     ZC_SubDeviceInfo StruSubDeviceInfo[0];
 }ZC_SubDeviceList;
 ```
+***Message code 48:  AC_CODE_IS_DEVICEONLINE_REQ***
 
-***Message code 48:   AC_CODE_LEAVE_DEVICE信息***
+云端下发到网关，查询子设备是否在线。
+
+```
+typedef struct
+{
+    u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
+    u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
+}ZC_SubDeviceInfo;
+```
+***Message code 49:  AC_CODE_IS_DEVICEONLINE_RSP***
+
+网关响应到云端子设备在线信息。
+
+```
+typedef struct
+{
+    u8 u8DeviceOnline;	//Online ?
+    u8 u8Pad[3];
+}ZC_DeviceOnline;
+```
+***Message code 50:   AC_CODE_LEAVE_DEVICE信息***
 
 云端下发给网关，将指定的子设备移除对应的网络。
 
