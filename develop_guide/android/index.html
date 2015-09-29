@@ -671,6 +671,10 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
+<p>设备无法激活时，请检查以下问题：
+- 1.确认WIFI密码是否输入正确。
+- 2.确认路由器的广播功能有没有被禁用。
+- 3.设备的秘钥可能存在问题。</p>
 <h4 id="4_1">4.绑定设备</h4>
 <p>在成功激活设备后的回调方法中，通过物理Id绑定设备。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
@@ -686,6 +690,20 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 });
 </code></pre>
 
+<p>设备无法绑定时，请检查以下问题：</p>
+<ul>
+<li>1.设备已经被其他人绑定过了。</li>
+<li>2.设备的domain和subdomain信息有误。</li>
+<li>3.电源供电是否正常，建议更换电源。</li>
+<li>4.确保设备的天线正常。</li>
+<li>5.确保网络环境不是公共环境。</li>
+</ul>
+<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：</p>
+<ul>
+<li>1.设备电源供电不足造成断网。</li>
+<li>2.WIFI信号不好造成断网。</li>
+<li>3.路由器断网。</li>
+</ul>
 <h3 id="gprs">GPRS设备</h3>
 <p><strong><font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
