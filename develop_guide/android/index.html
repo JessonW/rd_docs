@@ -465,12 +465,22 @@
 <h2 id="_4">应用程序初始化</h2>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承<code>Application</code>类，并且在<code>onCreate()</code>方法中调用此方法来进行初始化</p>
-<p>开发阶段，请初始化<strong>测试环境</strong></p>
+<p><strong>国内环境</strong>
+开发阶段，请初始化<strong>测试环境</strong></p>
 <pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 </code></pre>
 
 <p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
 <pre><code class="java">AC.init(this, MajorDomain, MajorDomainId);
+</code></pre>
+
+<p><strong>国外环境</strong>
+开发阶段，请初始化<strong>测试环境</strong></p>
+<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+</code></pre>
+
+<p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
+<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
 </code></pre>
 
 <h1 id="_5">帐号管理</h1>
@@ -630,9 +640,9 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <h2 id="_12">独立设备</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_3">功能说明-功能介绍-独立设备管理</a></p>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
-<p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <h3 id="_13">一．绑定设备</h3>
 <h3 id="wifi">WiFi设备</h3>
+<p><img alt="DM_wifi" src="../../pic/develop_guide/DM_WiFi.png" /></p>
 <h4 id="1acdeviceactivator">1.获取ACDeviceActivator激活器</h4>
 <p>Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如下：</p>
 <pre><code class="java">ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
@@ -1234,6 +1244,7 @@ primaryKey.put(&quot;deviceId&quot;, 1);
 table.setPrimaryKey(primaryKey);
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.setOpType(ACPushTable.OPTYPE_CREATE | ACPushTable.OPTYPE_DELETE | ACPushTable.OPTYPE_REPLACE | ACPushTable.OPTYPE_UPDATE);
+//可以多次调用以下此方法watch多个table
 pushMgr.watch(table, new VoidCallback() {
     @Override
     public void success() {
