@@ -43,7 +43,7 @@ AbleCloud云平台的接入流程如下图所示
 
 #开发流程
  
-我们制作了一个demo，该demo基于汉枫的开发板实现了一个可以远程控制的LED灯。开发者可以通过该demo快速熟悉AbleCloud的开发流程。[点击下载]
+我们制作了一个demo，该demo基于汉枫的开发板实现了一个可以远程控制的LED灯。开发者可以通过该demo快速熟悉AbleCloud的开发流程。[点击下载](http://www.ablecloud.cn/download/AbleCloud-Demo-Step-By-Step.zip)
 
 ##一、定义产品
 
