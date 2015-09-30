@@ -678,7 +678,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <li>3.设备的秘钥可能存在问题。</li>
 </ul>
 <h4 id="4_1">4.绑定设备</h4>
-<p>在成功激活设备后的回调方法中，通过物理Id绑定设备。</p>
+<p>通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -707,7 +707,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <li>3.路由器断网。</li>
 </ul>
 <h3 id="gprs">GPRS设备</h3>
-<p><strong><font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
+<p><strong><font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
@@ -726,8 +726,8 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 </blockquote>
 <h3 id="_14">二．分享设备</h3>
 <ul>
-<li><strong>第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；</strong></li>
-<li><strong>第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。</strong></li>
+<li><strong>第一种分享方式是管理员输入用户的帐号（手机号）直接把设备分享给用户</strong></li>
+<li><strong>第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备获得设备的使用权。推荐使用第二种分享机制。</strong></li>
 </ul>
 <h4 id="1_3">1、管理员直接分享设备给已注册的普通用户</h4>
 <pre><code class="java">bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
@@ -770,6 +770,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
+<p><font color ="red"> 注：</font>管理员分享的二维码有有效期。默认为一个小时。调用getShareCode接口时开发者可以自定义有效时间。具体使用方法请参考<a href="../../reference/android/#_7">Reference-&gt;客户端-安卓-&gt;SDK接口列表-&gt;设备管理</a></p>
 <h3 id="_15">三．设备解绑</h3>
 <h4 id="1_4">1、管理员或普通用户解绑设备</h4>
 <pre><code class="java">bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
@@ -899,9 +900,10 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
+<p><font color-"red">注:</font>该接口可以在APP端列出所有当前被网关扫描出来的但之前尚未被添加到该网关的子设备。也就是，列表中的设备都可以直接调用addSubDevice接口添加到网关。</p>
 <h4 id="3_4">3．绑定子设备</h4>
-<p>通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
-如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。</p>
+<p>通过上一步获取的子设备列表获取子设备的subdomain和physicalDeviceId进行绑定。</p>
+<p>如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备（即该接口每次只能绑定一个子设备。</p>
 <pre><code class="java">AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice acUserDevice) {
@@ -916,6 +918,11 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
+<p>若无法添加子设备时，请检查是否有以下问题：
+1. 网关掉线
+1. 子设备已经被其他人绑定
+1. 子设备subdomain填写错误
+2. 子设备和网关的连接断开了</p>
 <h2 id="home">Home模型</h2>
 <p>功能介绍参见 <a href="../../features/functions/#home">功能说明-功能介绍-Home模型</a></p>
 <p>创建Home，然后绑定WiFi设备的建议流程如下图：</p>
@@ -962,8 +969,8 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <h3 id="home_2">二、添加或移动设备到Home里</h3>
 <blockquote>
 <p><font color="red">特别注意</font>：</p>
-<p>1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。</p>
-<p>2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。</p>
+<p>1、添加设备到Home的流程与独立设备和网关型设备的绑定流程相同，均要求设备是已经激活（在线）的状态。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。</p>
+<p>2、不能跨home移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。</p>
 </blockquote>
 <h4 id="home_3">添加设备到Home里</h4>
 <p>创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
@@ -994,9 +1001,10 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 });
 </code></pre>
 
+<p><font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。</p>
 <h2 id="_20">设备扩展属性</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备扩展属性</a></p>
-<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;选择产品点管理--&gt;产品属性--&gt;扩展属性--&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
+<p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台：产品管理-&gt;选择产品点管理-&gt;产品属性-&gt;扩展属性-&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
 <h4 id="_21">一、设置或者更新设备扩展属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
 //这里的key值需要与控制台里新建列表的属性标识保持一致
@@ -1035,10 +1043,16 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 
 <h1 id="_23">和云端通信</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
+<p><font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_24">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
-<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包。</strong>
-KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
+<p>KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
+<p><strong>在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。</strong>
+这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="klv_datapoint" src="../../pic/develop_guide/cloud_communication_klv.png" /></p>
+<p>【数据包】
+<img alt="klv_datapackage" src="../../pic/develop_guide/cloud_communication_klv_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
 { 69 ：[
@@ -1084,6 +1098,12 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 </code></pre>
 
 <h3 id="_25">二进制格式</h3>
+<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包</strong></p>
+<p>这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="binary_datapoint" src="../../pic/develop_guide/cloud_communication_binary.png" /></p>
+<p>【数据包】
+<img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
 { 68 ：[
@@ -1150,6 +1170,12 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 </code></pre>
 
 <h3 id="3json">3、json格式</h3>
+<p><strong>在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。</strong></p>
+<p>这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="json_datapoint" src="../../pic/develop_guide/cloud_communication_json.png" /></p>
+<p>【数据包】
+<img alt="json_datapackage" src="../../pic/develop_guide/cloud_communication_json_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
 { 70 ：[
@@ -1186,7 +1212,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 <h4 id="2_7">2、发送到设备</h4>
 <pre><code class="java">ACObject req = new ACObject();
 req.put(&quot;switch&quot;, 1);
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceI d, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
@@ -1226,10 +1252,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 </code></pre>
 
 <h2 id="_27">三、实时消息</h2>
-<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。</p>
-<blockquote>
-<p><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。</p>
-</blockquote>
+<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。</p>
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <h4 id="1_8">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
@@ -1249,8 +1272,8 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 </code></pre>
 
 <h4 id="3_5">3、订阅实时数据</h4>
-<p>以如下数据集为例：
-<img alt="cloud_syn_1" src="../../pic/develop_guide/cloud_syn_1.png" /></p>
+<p>以如下数据集为例：</p>
+<p><img alt="cloud_syn_1" src="../../pic/develop_guide/cloud_syn_1.png" /></p>
 <pre><code class="java">//实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
 //设置订阅的表名

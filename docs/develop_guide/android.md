@@ -274,7 +274,7 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 - 3.设备的秘钥可能存在问题。
 
 ####4.绑定设备
-在成功激活设备后的回调方法中，通过物理Id绑定设备。
+通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。
 ```java
 AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback<ACUserDevice>() {
     @Override
@@ -521,6 +521,7 @@ AC.bindMgr().listNewDevices(subDomain, gatewayDeviceId, new PayloadCallback<List
 
 ####3．绑定子设备
 通过上一步获取的子设备列表获取子设备的subdomain和physicalDeviceId进行绑定。
+
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备（即该接口每次只能绑定一个子设备。
 
 ```java
@@ -539,6 +540,11 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
 
+若无法添加子设备时，请检查是否有以下问题：
+1. 网关掉线
+1. 子设备已经被其他人绑定
+1. 子设备subdomain填写错误
+2. 子设备和网关的连接断开了
 
 ##Home模型
 
@@ -583,6 +589,7 @@ groupMgr.createHome(name, new PayloadCallback<ACHome>() {
 });
 ```
 
+
 ####3、创建Room
 ```java
 groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
@@ -602,9 +609,9 @@ groupMgr.createRoom(homeId, name, new PayloadCallback<ACRoom>() {
 
 ><font color="red">特别注意</font>：
 
->1、绑定设备流程与独立设备和网关型设备相同。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。
+>1、添加设备到Home的流程与独立设备和网关型设备的绑定流程相同，均要求设备是已经激活（在线）的状态。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。
 
->2、不能跨级移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
+>2、不能跨home移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
 
 ####添加设备到Home里
 创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
@@ -636,14 +643,13 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
     }
 });
 ```
-
-
+<font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。
 
 ##设备扩展属性
 
 功能介绍参见 [功能说明-功能介绍-设备扩展属性](../features/functions.md#_11)
 
-**<font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理-->选择产品点管理-->产品属性-->扩展属性-->新建属性，建立完扩展属性列表后才能使用如下接口。**
+**<font color="red">注意</font>：设备扩展属性需要先进入到控制台：产品管理->选择产品点管理->产品属性->扩展属性->新建属性，建立完扩展属性列表后才能使用如下接口。**
 
 ####一、设置或者更新设备扩展属性
 ```java
@@ -688,10 +694,22 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 
 功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
 
+<font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
+
 ##一、发送消息到设备
 ###KLV格式
-**在新建产品的时候选择klv通讯协议，并填写数据点与数据包。**
+
 KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
+
+**在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。**
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![klv_datapoint](../pic/develop_guide/cloud_communication_klv.png)
+
+【数据包】
+![klv_datapackage](../pic/develop_guide/cloud_communication_klv_pkg.png)
+
 
 **例如**：以开关设备为例,协议如下:
 ```
@@ -737,8 +755,22 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
     }
 });
 ```
+
+
 ###二进制格式
+
+**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![binary_datapoint](../pic/develop_guide/cloud_communication_binary.png)
+
+【数据包】
+![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
+
 **例如**：以开关设备为例,协议如下:
+
 ```
 //请求数据包
 { 68 ：[
@@ -804,6 +836,18 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte
 });
 ```
 ###3、json格式
+
+**在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![json_datapoint](../pic/develop_guide/cloud_communication_json.png)
+
+【数据包】
+![json_datapackage](../pic/develop_guide/cloud_communication_json_pkg.png)
+
+
 **例如**：以开关设备为例,协议如下:
 ```
 //请求数据包
@@ -841,7 +885,7 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```java
 ACObject req = new ACObject();
 req.put("switch", 1);
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceI d, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
@@ -884,9 +928,7 @@ AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallbac
 
 ##三、实时消息
 
-实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。
-
-><font color=red>注意：</font>监控主键必须是数据集主键的子集;例如deviceId，time为数据集主键，则监控主键只能是deviceId或者time或者两者。
+实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。
 
 
 ![cloud_syn](../pic/develop_guide/cloud_syn.png)
@@ -912,7 +954,9 @@ pushMgr.connect(new VoidCallback() {
 
 ####3、订阅实时数据
 以如下数据集为例：
+
 ![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
+
 ```java
 //实例化ACPushTable对象
 ACPushTable table = new ACPushTable();
