@@ -41,7 +41,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_AS
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
-
+```
 #帐号管理
 
 ##一、普通帐号注册
@@ -230,11 +230,12 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
 
-![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
 ###一．绑定设备
 
 ###WiFi设备
+
+![DM_wifi](../pic/develop_guide/DM_WiFi.png)
 
 ####1.获取ACDeviceActivator激活器
 Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如下：
@@ -266,6 +267,12 @@ deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEO
 });
 ```
 
+设备无法激活时，请检查以下问题：
+
+- 1.确认WIFI密码是否输入正确。
+- 2.确认路由器的广播功能有没有被禁用。
+- 3.设备的秘钥可能存在问题。
+
 ####4.绑定设备
 在成功激活设备后的回调方法中，通过物理Id绑定设备。
 ```java
@@ -281,9 +288,23 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
     }
 });
 ```
+设备无法绑定时，请检查以下问题：
+
+- 1.设备已经被其他人绑定过了。
+- 2.设备的domain和subdomain信息有误。
+- 3.电源供电是否正常，建议更换电源。
+- 4.确保设备的天线正常。
+- 5.确保网络环境不是公共环境。
+
+绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：
+
+- 1.设备电源供电不足造成断网。
+- 2.WIFI信号不好造成断网。
+- 3.路由器断网。
 
 ###GPRS设备
-**<font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。**建议通过扫二维码的形式获取物理Id进行绑定。
+**<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
+
 ```java
 AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback<ACUserDevice>() {
     @Override
@@ -300,8 +321,9 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 ><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
-+ **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；**
-+ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
+
++ **第一种分享方式是管理员输入用户的帐号（手机号）直接把设备分享给用户**
++ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备获得设备的使用权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给已注册的普通用户
 ```java
@@ -317,6 +339,7 @@ bindMgr.bindDeviceWithUser(subDomain, deviceId, account, new VoidCallback() {
     }
 });
 ```
+
 
 ####2、管理员通过分享设备二维码的形式分享设备
 ```java
@@ -345,6 +368,8 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback<ACUserDevice>() {
     }
 });
 ```
+
+<font color ="red"> 注：</font>管理员分享的二维码有有效期。默认为一个小时。调用getShareCode接口时开发者可以自定义有效时间。具体使用方法请参考[Reference->客户端-安卓->SDK接口列表->设备管理](../reference/android/#_7)
 
 ###三．设备解绑
 
@@ -492,10 +517,12 @@ AC.bindMgr().listNewDevices(subDomain, gatewayDeviceId, new PayloadCallback<List
     }
 });
 ```
+<font color-"red">注:</font>该接口可以在APP端列出所有当前被网关扫描出来的但之前尚未被添加到该网关的子设备。也就是，列表中的设备都可以直接调用addSubDevice接口添加到网关。
 
 ####3．绑定子设备
-通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
-如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。
+通过上一步获取的子设备列表获取子设备的subdomain和physicalDeviceId进行绑定。
+如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备（即该接口每次只能绑定一个子设备。
+
 ```java
 AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieName, new PayloadCallback<ACUserDevice>() {
     @Override
