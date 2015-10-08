@@ -319,8 +319,8 @@ ACDeviceMsg定义如下：
 @property (nonatomic, weak) id<ACFindDevicesDelegate> delegate;
 @property (nonatomic, strong, readonly) NSArray *devices;
 
-- (void)findDevicesWithSubDomainId:(NSInteger)subDomainId
-timeout:(NSTimeInterval)timeout;
+- (void)findDevicesWithSubDomainId:(NSInteger)subDomainId timeout:(NSTimeInterval)timeout;
+
 
 ```
 >注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断
@@ -372,14 +372,14 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
  * 可以调用前面介绍的帐号管理ACAccountManager提供的各个通用接口
  * @return	帐号管理器
  */
-类方法调用
+@interface ACAccountManager : NSObject
 
 /**
  * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
  * @param deviceType 设备wifi模块类型
  * @return	设备激活器
  */
-实例方法调用
+ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@"wifi模块"];
 
 /**
  * 获取简单无组的设备管理器
@@ -387,27 +387,19 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
  *
  * @return  绑定管理器
  */
-类方法调用
-
-/**
- * 获取分组管理器
- * 可以调用前面介绍的分组管理ACDeviceManager提供的各个通用接口
- *
- * @return 分组管理器
- */
-类方法调用
+@interface ACBindManager : NSObject
 
 /**
  * 获取消息推送管理器（集成了友盟推送的一部分接口）
- * 可以调用前面介绍的推送管理ACNotificationMgr提供的各个通用接口
+ * 可以调用前面介绍的推送管理ACNotificationManager提供的各个通用接口
  *
  * @return 推送通知管理器
  */
-类方法调用
+@interface ACNotificationManager : NSObject
 
 /**
  * 获取定时管理器
- * 可以调用前面介绍的定时管理ACTimerMgr提供的各个通用接口
+ * 可以调用前面介绍的定时管理ACTimerManager提供的各个通用接口
  * 获取定时管理器
  * @param timeZone 自定义时区
  */
@@ -418,11 +410,11 @@ ACTimerManager * timerManager = [[ACTimerManager alloc] initWithTimeZone：@"自
  * 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口 
  *
  */
-类方法调用
+@interface ACOTAManager : NSObject
 
 /**
  * 获取文件上传下载管理器
- * 可以调用前面介绍的文件管理ACFileMgr提供的各个通用接口
+ * 可以调用前面介绍的文件管理ACFileManager提供的各个通用接口
  */
 ACFileManager * filemanager = [[ACFileManager alloc] init];
 
@@ -453,16 +445,17 @@ import "ACAccountManager.h"
  * @param template 短信内容模板
  * @param callback 返回结果的监听回调
  */
-+ (void)sendVerifyCodeWithAccount:(NSString *)account  template:(NSString *)template
-callback:(void (^)(NSError *error))callback;
++ (void)sendVerifyCodeWithAccount:(NSString *)account 
+                         template:(NSString *)template
+                         callback:(void (^)(NSError *error))callback;
 /**
  * 校验手机验证码
  * @param account 手机号码
  * @param verifyCode 验证码
  */
 + (void)checkVerifyCodeWithAccount:(NSString *)account
-verifyCode:(NSString *)verifyCode
-callback:(void (^)(BOOL valid,NSError *error))callback;
+                        verifyCode:(NSString *)verifyCode
+                          callback:(void (^)(BOOL valid,NSError *error))callback;
 
 /**
  * 注册帐号
@@ -472,53 +465,53 @@ callback:(void (^)(BOOL valid,NSError *error))callback;
  * @param verifyCode 验证码
  */
 + (void)registerWithPhone:(NSString *)phone
-email:(NSString *)email
-password:(NSString *)password
-verifyCode:(NSString *)verifyCode
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                    email:(NSString *)email
+                 password:(NSString *)password
+               verifyCode:(NSString *)verifyCode
+                 callback:(void (^)(NSString *uid, NSError *error))callback;
 /**
  * 登陆帐号
  * @param account 手机号码或者邮箱地址（与邮箱地址二选一或者都填）
  * @param password 帐号密码
  */
 + (void)loginWithAccount:(NSString *)account
-password:(NSString *)password
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                password:(NSString *)password
+                callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  判断用户是否已经存在
  */
 + (void)checkExist:(NSString *)account
-callback:(void(^)(BOOL exist,NSError *error))callback;
+          callback:(void(^)(BOOL exist,NSError *error))callback;
 
 /**
  *  更换手机号
  */
 + (void)changePhone:(NSString *)phone
-password:(NSString *)password
-verifyCode:(NSString *)verifyCode
-callback:(void(^)(NSError *error)) callback;
+           password:(NSString *)password
+         verifyCode:(NSString *)verifyCode
+           callback:(void(^)(NSError *error)) callback;
 
 /**
  * 修改昵称
  */
 + (void) changeNickName:(NSString *)nickName
-callback:(void (^) (NSError *error))callback;
+               callback:(void (^) (NSError *error))callback;
 
 /**
  *  修改密码
  */
 + (void)changePasswordWithOld:(NSString *)old
-new:(NSString *)newPassword
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                          new:(NSString *)newPassword
+                     callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  重置密码
  */
 + (void)resetPasswordWithAccount:(NSString *)account
-verifyCode:(NSString *)verifyCode
-password:(NSString *)password
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                      verifyCode:(NSString *)verifyCode
+                        password:(NSString *)password
+                        callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  判断用户是否已经在本机上过登陆
@@ -534,23 +527,23 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
  *  三方注册
  */
 + (void)registerWithOpenId:(NSString *)openId
-provider:(NSString *)provider
-accessToken:(NSString *)accessToken
-callback:(void (^)(ACUserInfo *user, NSError *error))callback;
+                  provider:(NSString *)provider
+               accessToken:(NSString *)accessToken
+                  callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
  *  三方登陆
  */
 + (void)loginWithOpenId:(NSString *)openId
-provider:(NSString *)provider
-accessToken:(NSString *)accessToken
-callback:(void (^)(ACUserInfo *user, NSError *error))callback;
+               provider:(NSString *)provider
+            accessToken:(NSString *)accessToken
+               callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
-callback:(void (^) (NSError *error))callback;
+               callback:(void (^) (NSError *error))callback;
 
 /**
  * 获取帐号扩展属性
@@ -581,15 +574,15 @@ ablecloud提供了激活器供你使用，定义如下：
 + (NSString *)getCurrentSSID;
 //激活设备方式1
 - (void)sendWifiInfo:(NSString *)ssid
-password:(NSString *)password
-physicalDeviceId:(NSString *)physicalDeviceId
-timeout:(NSTimeInterval)timeout
-callback:(void (^)(NSString *deviceId, NSString *bindCode, NSError *error))callback;
+            password:(NSString *)password
+    physicalDeviceId:(NSString *)physicalDeviceId
+             timeout:(NSTimeInterval)timeout
+            callback:(void (^)(NSString *deviceId, NSString *bindCode, NSError *error))callback;
 //激活设备方式2-－常用
 - (void)sendWifiInfo:(NSString *)ssid
-password:(NSString *)password
-timeout:(NSTimeInterval)timeout
-callback:(void (^)(NSArray *localDevices, NSError *error))callback;
+            password:(NSString *)password
+             timeout:(NSTimeInterval)timeout
+            callback:(void (^)(NSArray *localDevices, NSError *error))callback;
 
 ```
 
@@ -622,8 +615,8 @@ callback:(void (^)(NSArray *localDevices, NSError *error))callback;
  *  @param callback 数组：users保存的对象是ACBindUser的对象
  */
 + (void)listUsersWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-calllback:(void(^)(NSArray *users,NSError *error))callback;
+                      deviceId:(NSInteger)deviceId
+                     calllback:(void(^)(NSArray *users,NSError *error))callback;
 
 /**
  *  绑定设备
@@ -633,9 +626,9 @@ calllback:(void(^)(NSArray *users,NSError *error))callback;
  *  @param callback         回调 deviceId 设备的逻辑Id
  */
 + (void)bindDeviceWithSubDomain:(NSString *)subDomain
-physicalDeviceId:(NSString *)physicalDeviceId
-name:(NSString *)name
-callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+               physicalDeviceId:(NSString *)physicalDeviceId
+                           name:(NSString *)name
+                       callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
  *  根据分享码 绑定设备
@@ -646,9 +639,9 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-subDomain:(NSString *)subDomain
-deviceId:(NSInteger )deviceId
-callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+                      subDomain:(NSString *)subDomain
+                       deviceId:(NSInteger )deviceId
+                      callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
  * 分享设备
@@ -667,8 +660,8 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
  *  @param deviceId     设备唯一标识
  */
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                         deviceId:(NSInteger)deviceId
+                         callback:(void(^)(NSError *error))callback;
 
 /**
  *  管理员取消 某个用户的绑定  （管理员接口）
@@ -679,9 +672,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param callback  回调
  */
 + (void)unbindDeviceWithUserSubDomain:(NSString *)subDomain
-userId:(NSInteger)userId
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                               userId:(NSInteger)userId
+                             deviceId:(NSInteger)deviceId
+                             callback:(void(^)(NSError *error))callback;
 
 /**
  * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
@@ -701,9 +694,9 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  *  @callback        shareCode 分享码
  */
 + (void)getShareCodeWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-timeout:(NSTimeInterval)timeout
-callback:(void(^)(NSString *shareCode,NSError *error))callback;
+                         deviceId:(NSInteger)deviceId
+                          timeout:(NSTimeInterval)timeout
+                         callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
 /**
  *  设备管理员权限转让 （管理员接口）
@@ -713,9 +706,9 @@ callback:(void(^)(NSString *shareCode,NSError *error))callback;
  *  @param userId       新的管理员ID
  */
 + (void)changeOwnerWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-userId:(NSInteger)userId
-callback:(void(^)(NSError *error))callback;
+                         deviceId:(NSInteger)deviceId
+                           userId:(NSInteger)userId
+                         callback:(void(^)(NSError *error))callback;
 
 /**
  *  更换物理设备 （管理员接口）
@@ -726,9 +719,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param bindCode         绑定码(可选)
  */
 + (void)changeDeviceWithSubDomain:(NSString *)subDomain
-physicalDeviceId:(NSString *)physicalDeviceId
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                 physicalDeviceId:(NSString *)physicalDeviceId
+                         deviceId:(NSInteger)deviceId
+                         callback:(void(^)(NSError *error))callback;
 
 /**
  *  修改设备名称 （管理员接口）
@@ -738,9 +731,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param name         设备的新名称
  */
 + (void)changNameWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-name:(NSString *)name
-callback:(void(^)(NSError *error))callback;
+                      deviceId:(NSInteger)deviceId
+                          name:(NSString *)name
+                      callback:(void(^)(NSError *error))callback;
 
 /**
  *  查询设备在线状态
@@ -751,9 +744,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param callback         online  是否在线
  */
 + (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-physicalDeviceId:(NSString *)physicalDeviceId
-callback:(void(^)(Boolean online,NSError *error))callback;
+                           deviceId:(NSInteger)deviceId
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void(^)(Boolean online,NSError *error))callback;
 
 /**
  * 绑定网关
@@ -764,9 +757,9 @@ callback:(void(^)(Boolean online,NSError *error))callback;
  * @param callback         返回结果的监听回调
  */
 + (void)bindGatewayWithSubDomain:(NSString *)subDomain
-physicalDeviceId:(NSString *)physicalDeviceId
-name:(NSString *)name
-callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+                physicalDeviceId:(NSString *)physicalDeviceId
+                            name:(NSString *)name
+                        callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 
 /**
  * 解绑网关
@@ -776,8 +769,8 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
  * @param callback  返回结果的监听回调
  */
 + (void)unbindGatewayWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void (^)(NSError *error))callback;
+                          deviceId:(NSInteger)deviceId
+                          callback:(void (^)(NSError *error))callback;
 
 /**
  * 添加子设备
@@ -789,10 +782,10 @@ callback:(void (^)(NSError *error))callback;
  * @param callback         返回结果的监听回调
  */
 + (void)addSubDeviceWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-physicalDeviceId:(NSString *)physicalDeviceId
-name:(NSString *)name
-callback:(void (^)(ACUserDevice *device, NSError *error))callback;
+                  gatewayDeviceId:(NSInteger)gatewayDeviceId
+                 physicalDeviceId:(NSString *)physicalDeviceId
+                             name:(NSString *)name
+                         callback:(void (^)(ACUserDevice *device, NSError *error))callback;
 
 /**
  * 删除子设备
@@ -802,8 +795,8 @@ callback:(void (^)(ACUserDevice *device, NSError *error))callback;
  * @param callback  返回结果的监听回调
  */
 + (void)deleteSubDeviceWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void (^)(NSError *error))callback;
+                            deviceId:(NSInteger)deviceId
+                            callback:(void (^)(NSError *error))callback;
 
 /**
  * 获取用户网关列表
@@ -812,7 +805,7 @@ callback:(void (^)(NSError *error))callback;
  * @param callback  返回结果的监听回调
  */
 + (void)listGatewaysWithSubDomain:(NSString *)subDomain
-callback:(void (^)(NSArray *devices, NSError *error))callback;
+                        callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
  * 获取用户子设备列表
@@ -822,8 +815,8 @@ callback:(void (^)(NSArray *devices, NSError *error))callback;
  * @param callback        返回结果的监听回调
  */
 + (void)listSubDevicesWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-callback:(void (^)(NSArray *devices, NSError *error))callback;
+                    gatewayDeviceId:(NSInteger)gatewayDeviceId
+                           callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
  * 获取网关新设备列表
@@ -833,8 +826,8 @@ callback:(void (^)(NSArray *devices, NSError *error))callback;
  * @param callback        返回结果的监听回调
  */
 + (void)listNewDevicesWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-callback:(void (^)(NSArray *devices, NSError *error))callback;
+                    gatewayDeviceId:(NSInteger)gatewayDeviceId
+                           callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
  * 开启网关接入
@@ -845,9 +838,9 @@ callback:(void (^)(NSArray *devices, NSError *error))callback;
  * @param callback        返回结果的监听回调
  */
 + (void)openGatewayMatchWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-time:(NSInteger)time
-callback:(void (^)(NSError *error))callback;
+                      gatewayDeviceId:(NSInteger)gatewayDeviceId
+                                 time:(NSInteger)time
+                             callback:(void (^)(NSError *error))callback;
 
 /**
  * 关闭网关接入
@@ -857,8 +850,8 @@ callback:(void (^)(NSError *error))callback;
  * @param callback        返回结果的监听回调
  */
 + (void)closeGatewayMathWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-callback:(void (^)(NSError *error))callback;
+                      gatewayDeviceId:(NSInteger)gatewayDeviceId
+                             callback:(void (^)(NSError *error))callback;
 
 /**
  * 剔除子设备
@@ -869,15 +862,15 @@ callback:(void (^)(NSError *error))callback;
  * @param callback        返回结果的监听回调
  */
 + (void)evictSubDeviceWithSubDomain:(NSString *)subDomain
-gatewayDeviceId:(NSInteger)gatewayDeviceId
-physicalDeviceId:(NSString *)physicalDeviceId
-callback:(void (^)(NSError *error))callback;
+                    gatewayDeviceId:(NSInteger)gatewayDeviceId
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void (^)(NSError *error))callback;
 
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
-callback:(void (^) (NSError *error))callback;
+               callback:(void (^) (NSError *error))callback;
 
 /**
  * 获取帐号扩展属性
@@ -914,9 +907,9 @@ callback:(void (^) (NSError *error))callback;
  *  @param msg       发送的消息
  */
 + (void)sendToDevice:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-msg:(ACDeviceMsg *)msg
-callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+             deviceId:(NSInteger)deviceId
+                  msg:(ACDeviceMsg *)msg
+             callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
 
 ```
 
@@ -929,26 +922,26 @@ callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
 ```c
 //检查设备是否有新的OTA版本，同时获取升级日志。
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
+                        deviceId:(NSInteger)deviceId
+                        callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
 //确认升级
 + (void)confirmUpdateWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-newVersion:(NSString *)newVersion
-callback:(void (^)(NSError *error))callback;
+                          deviceId:(NSInteger)deviceId
+                        newVersion:(NSString *)newVersion
+                          callback:(void (^)(NSError *error))callback;
 //查询蓝牙设备OTA发布版本
 + (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
+                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
 // 获取蓝牙设备OTA文件meta信息列表
 + (void)listFilesWithSubDomain:(NSString *)subDomain
-version:(NSString *)version
-callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
+                       version:(NSString *)version
+                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
 //获取蓝牙设备OTA文件
 + (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-type:(NSInteger)type
-checksum:(NSInteger)checksum
-version:(NSString *)version
-callback:(void (^)(NSData *fileData, NSError *error))callback;
+                              type:(NSInteger)type
+                          checksum:(NSInteger)checksum
+                           version:(NSString *)version
+                          callback:(void (^)(NSData *fileData, NSError *error))callback;
 ```
 >**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
 
@@ -998,12 +991,12 @@ callback:(void (^)(NSData *fileData, NSError *error))callback;
  * @param callback    返回结果的监听回调
  */
 - (void)addTaskWithDeviceId:(NSInteger)deviceId
-name:(NSString *)name
-timePoint:(NSString *)timePoint
-timeCycle:(NSString *)timeCycle
-description:(NSString *)description
-deviceMsg:(ACDeviceMsg *)deviceMsg
-callback:(void (^)(NSError *error))callback;
+                       name:(NSString *)name
+                  timePoint:(NSString *)timePoint
+                  timeCycle:(NSString *)timeCycle
+                description:(NSString *)description
+                  deviceMsg:(ACDeviceMsg *)deviceMsg
+                   callback:(void (^)(NSError *error))callback;
 
 /**
  * 创建定时任务(使用KLV模型)
@@ -1022,12 +1015,12 @@ callback:(void (^)(NSError *error))callback;
  * @param callback    返回结果的监听回调
  */
 - (void)addTaskWithDeviceId:(NSInteger)deviceId
-name:(NSString *)name
-timePoint:(NSString *)timePoint
-timeCycle:(NSString *)timeCycle
-description:(NSString *)description
-KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
-callback:(void (^)(NSError *error))callback;
+                       name:(NSString *)name
+                  timePoint:(NSString *)timePoint
+                  timeCycle:(NSString *)timeCycle
+                description:(NSString *)description
+               KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
+                   callback:(void (^)(NSError *error))callback;
 
 /**
  * 修改定时任务(使用二进制模型)
@@ -1047,13 +1040,13 @@ callback:(void (^)(NSError *error))callback;
  * @param callback    返回结果的监听回调
  */
 - (void)modifyTaskWithDeviceId:(NSInteger)deviceId
-taskId:(NSInteger)taskId
-name:(NSString *)name
-timePoint:(NSString *)timePoint
-timeCycle:(NSString *)timeCycle
-description:(NSString *)description
-deviceMsg:(ACDeviceMsg *)deviceMsg
-callback:(void (^)(NSError *error))callback;
+                        taskId:(NSInteger)taskId
+                          name:(NSString *)name
+                     timePoint:(NSString *)timePoint
+                     timeCycle:(NSString *)timeCycle
+                   description:(NSString *)description
+                     deviceMsg:(ACDeviceMsg *)deviceMsg
+                      callback:(void (^)(NSError *error))callback;
 
 /**
  * 修改定时任务(使用KLV模型)
@@ -1073,13 +1066,13 @@ callback:(void (^)(NSError *error))callback;
  * @param callback    返回结果的监听回调
  */
 - (void)modifyTaskWithDeviceId:(NSInteger)deviceId
-taskId:(NSInteger)taskId
-name:(NSString *)name
-timePoint:(NSString *)timePoint
-timeCycle:(NSString *)timeCycle
-description:(NSString *)description
-KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
-callback:(void (^)(NSError *error))callback;
+                        taskId:(NSInteger)taskId
+                          name:(NSString *)name
+                     timePoint:(NSString *)timePoint
+                     timeCycle:(NSString *)timeCycle
+                   description:(NSString *)description
+                  KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
+                      callback:(void (^)(NSError *error))callback;
 
 /**
  * 开启定时任务
@@ -1089,8 +1082,8 @@ callback:(void (^)(NSError *error))callback;
  * @param callback 返回结果的监听回调
  */
 - (void)openTaskWithDeviceId:(NSInteger)deviceId
-taskId:(NSInteger)taskId
-callback:(void (^)(NSError *error))callback;
+                      taskId:(NSInteger)taskId
+                    callback:(void (^)(NSError *error))callback;
 
 /**
  * 关闭定时任务
@@ -1100,8 +1093,8 @@ callback:(void (^)(NSError *error))callback;
  * @param callback 返回结果的监听回调
  */
 - (void)closeTaskWithDeviceId:(NSInteger)deviceId
-taskId:(NSInteger)taskId
-callback:(void (^)(NSError *error))callback;
+                       taskId:(NSInteger)taskId
+                     callback:(void (^)(NSError *error))callback;
 
 /**
  * 删除定时任务
@@ -1111,8 +1104,8 @@ callback:(void (^)(NSError *error))callback;
  * @param callback 返回结果的监听回调
  */
 - (void)deleteTaskWithDeviceId:(NSInteger)deviceId
-taskId:(NSInteger)taskId
-callback:(void (^)(NSError *error))callback;
+                        taskId:(NSInteger)taskId
+                      callback:(void (^)(NSError *error))callback;
 
 /**
  * 获取定时任务列表
@@ -1121,7 +1114,7 @@ callback:(void (^)(NSError *error))callback;
  * @param callback 返回结果的监听回调
  */
 - (void)listTasksWithDeviceId:(NSInteger)deviceId
-callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
+                     callback:(void (^)(NSArray *timerTaskArray, NSError *error))callback;
 ```
 
 
@@ -1265,7 +1258,7 @@ import "ACAccountManager.h"
  * @param account 手机号码或者邮箱地址，目前只支持手机号码
  */
 + (void)sendVerifyCodeWithAccount:(NSString *)account
-callback:(void (^)(NSError *error))callback;
+                         callback:(void (^)(NSError *error))callback;
 
 /**
  * 校验手机验证码
@@ -1273,8 +1266,8 @@ callback:(void (^)(NSError *error))callback;
  * @param verifyCode 验证码
  */
 + (void)checkVerifyCodeWithAccount:(NSString *)account
-verifyCode:(NSString *)verifyCode
-callback:(void (^)(BOOL valid,NSError *error))callback;
+                        verifyCode:(NSString *)verifyCode
+                          callback:(void (^)(BOOL valid,NSError *error))callback;
 
 /**
  * 注册帐号
@@ -1284,10 +1277,10 @@ callback:(void (^)(BOOL valid,NSError *error))callback;
  * @param verifyCode 验证码
  */
 + (void)registerWithPhone:(NSString *)phone
-email:(NSString *)email
-password:(NSString *)password
-verifyCode:(NSString *)verifyCode
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                    email:(NSString *)email
+                 password:(NSString *)password
+               verifyCode:(NSString *)verifyCode
+                 callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  * 登陆帐号
@@ -1295,43 +1288,43 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
  * @param password 帐号密码
  */
 + (void)loginWithAccount:(NSString *)account
-password:(NSString *)password
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                password:(NSString *)password
+                callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  判断用户是否已经存在
  */
 + (void)checkExist:(NSString *)account
-callback:(void(^)(BOOL exist,NSError *error))callback;
+          callback:(void(^)(BOOL exist,NSError *error))callback;
 
 /**
  *  更换手机号
  */
 + (void)changePhone:(NSString *)phone
-password:(NSString *)password
-verifyCode:(NSString *)verifyCode
-callback:(void(^)(NSError *error)) callback;
+           password:(NSString *)password
+          verifyCode:(NSString *)verifyCode
+           callback:(void(^)(NSError *error)) callback;
 
 /**
  * 修改昵称
  */
 + (void) changeNickName:(NSString *)nickName
-callback:(void (^) (NSError *error))callback;
+               callback:(void (^) (NSError *error))callback;
 
 /**
  *  修改密码
  */
 + (void)changePasswordWithOld:(NSString *)old
-new:(NSString *)newPassword
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                          new:(NSString *)newPassword
+                     callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  重置密码
  */
 + (void)resetPasswordWithAccount:(NSString *)account
-verifyCode:(NSString *)verifyCode
-password:(NSString *)password
-callback:(void (^)(NSString *uid, NSError *error))callback;
+                      verifyCode:(NSString *)verifyCode
+                        password:(NSString *)password
+                        callback:(void (^)(NSString *uid, NSError *error))callback;
 
 /**
  *  判断用户是否已经在本机上过登陆
@@ -1347,23 +1340,23 @@ callback:(void (^)(NSString *uid, NSError *error))callback;
  *  三方注册
  */
 + (void)registerWithOpenId:(NSString *)openId
-provider:(NSString *)provider
-accessToken:(NSString *)accessToken
-callback:(void (^)(ACUserInfo *user, NSError *error))callback;
+                  provider:(NSString *)provider
+               accessToken:(NSString *)accessToken
+                  callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
  *  三方登陆
  */
 + (void)loginWithOpenId:(NSString *)openId
-provider:(NSString *)provider
-accessToken:(NSString *)accessToken
-callback:(void (^)(ACUserInfo *user, NSError *error))callback;
+               provider:(NSString *)provider
+            accessToken:(NSString *)accessToken
+               callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
  * 修改帐号扩展属性
  */
 + (void) setUserProfile:(ACObject *)profile
-callback:(void (^) (NSError *error))callback;
+               callback:(void (^) (NSError *error))callback;
 
 /**
  * 获取帐号扩展属性
@@ -1395,8 +1388,8 @@ callback:(void (^) (NSError *error))callback;
  *  @param callback 数组：users保存的对象是ACBindUser的对象
  */
 + (void)listUsersWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-calllback:(void(^)(NSArray *users,NSError *error))callback;
+                      deviceId:(NSInteger)deviceId
+                     calllback:(void(^)(NSArray *users,NSError *error))callback;
 
 /**
  *  绑定设备
@@ -1406,9 +1399,9 @@ calllback:(void(^)(NSArray *users,NSError *error))callback;
  *  @param callback         回调 deviceId 设备的逻辑Id
  */
 + (void)bindDeviceWithSubDomain:(NSString *)subDomain
-physicalDeviceId:(NSString *)physicalDeviceId
-name:(NSString *)name
-callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+               physicalDeviceId:(NSString *)physicalDeviceId
+                           name:(NSString *)name
+                       callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
  *  根据分享码 绑定设备
@@ -1419,9 +1412,9 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-subDomain:(NSString *)subDomain
-deviceId:(NSInteger )deviceId
-callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+                      subDomain:(NSString *)subDomain
+                       deviceId:(NSInteger )deviceId
+                       callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
  *  根据账户绑定设备
@@ -1431,9 +1424,9 @@ callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
  *  @param phone     电话号码
  */
 + (void)bindDeviceWithUserSubdomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-account:(NSString *)account
-callback:(void(^)(NSError *error))callback;
+                           deviceId:(NSInteger)deviceId
+                            account:(NSString *)account
+                           callback:(void(^)(NSError *error))callback;
 
 /**
  *  解绑设备
@@ -1442,8 +1435,8 @@ callback:(void(^)(NSError *error))callback;
  *  @param deviceId     设备唯一标识
  */
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                         deviceId:(NSInteger)deviceId
+                          callback:(void(^)(NSError *error))callback;
 
 /**
  *  管理员取消 某个用户的绑定  （管理员接口）
@@ -1454,9 +1447,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param callback  回调
  */
 + (void)unbindDeviceWithUserSubDomain:(NSString *)subDomain
-userId:(NSInteger)userId
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                               userId:(NSInteger)userId
+                             deviceId:(NSInteger)deviceId
+                             callback:(void(^)(NSError *error))callback;
 
 /**
  *  获取分享码  （管理员接口）
@@ -1467,9 +1460,9 @@ callback:(void(^)(NSError *error))callback;
  *  @callback        shareCode 分享码
  */
 + (void)getShareCodeWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-timeout:(NSTimeInterval)timeout
-callback:(void(^)(NSString *shareCode,NSError *error))callback;
+                         deviceId:(NSInteger)deviceId
+                          timeout:(NSTimeInterval)timeout
+                         callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
 /**
  *  设备管理员权限转让 （管理员接口）
@@ -1479,9 +1472,9 @@ callback:(void(^)(NSString *shareCode,NSError *error))callback;
  *  @param userId       新的管理员ID
  */
 + (void)changeOwnerWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-userId:(NSInteger)userId
-callback:(void(^)(NSError *error))callback;
+                        deviceId:(NSInteger)deviceId
+                          userId:(NSInteger)userId
+                        callback:(void(^)(NSError *error))callback;
 
 /**
  *  更换物理设备 （管理员接口）
@@ -1492,9 +1485,9 @@ callback:(void(^)(NSError *error))callback;
  *  @param bindCode         绑定码(可选)
  */
 + (void)changeDeviceWithSubDomain:(NSString *)subDomain
-physicalDeviceId:(NSString *)physicalDeviceId
-deviceId:(NSInteger)deviceId
-callback:(void(^)(NSError *error))callback;
+                 physicalDeviceId:(NSString *)physicalDeviceId
+                         deviceId:(NSInteger)deviceId
+                         callback:(void(^)(NSError *error))callback;
 
 /** 
  *  修改设备名称 （管理员接口）
@@ -1504,24 +1497,24 @@ callback:(void(^)(NSError *error))callback;
  *  @param name         设备的新名称
  */
 + (void)changNameWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-name:(NSString *)name
-callback:(void(^)(NSError *error))callback;
+                      deviceId:(NSInteger)deviceId
+                          name:(NSString *)name
+                      callback:(void(^)(NSError *error))callback;
 
 /**
  * 修改设备扩展属性
  */
 + (void) setDeviceProfileWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-profile:(ACObject *)profile
-callback:(void (^) (NSError *error))callback;
+                              deviceId:(NSInteger)deviceId
+                               profile:(ACObject *)profile
+                              callback:(void (^) (NSError *error))callback;
 
 /**
  * 获取设备扩展属性
  */
 + (void) getDeviceProfileWithSubDomain:(NSString*)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void (^) (ACObject*profile, NSError *error))callback;
+                              deviceId:(NSInteger)deviceId
+                              callback:(void (^) (ACObject*profile, NSError *error))callback;
 ```  
 
 ##3、OTA
@@ -1530,26 +1523,26 @@ callback:(void (^) (ACObject*profile, NSError *error))callback;
 ```c
 //检查设备是否有新的OTA版本，同时获取升级日志。
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
+                        deviceId:(NSInteger)deviceId
+                         callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
 //确认升级
 + (void)confirmUpdateWithSubDomain:(NSString *)subDomain
-deviceId:(NSInteger)deviceId
-newVersion:(NSString *)newVersion
-callback:(void (^)(NSError *error))callback;
+                          deviceId:(NSInteger)deviceId
+                         newVersion:(NSString *)newVersion
+                           callback:(void (^)(NSError *error))callback;
 //查询蓝牙设备OTA发布版本
 + (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
+                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
 // 获取蓝牙设备OTA文件meta信息列表
 + (void)listFilesWithSubDomain:(NSString *)subDomain
-version:(NSString *)version
-callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
+                       version:(NSString *)version
+                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
 //获取蓝牙设备OTA文件
 + (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-type:(NSInteger)type
-checksum:(NSInteger)checksum
-version:(NSString *)version
-callback:(void (^)(NSData *fileData, NSError *error))callback;
+                              type:(NSInteger)type
+                          checksum:(NSInteger)checksum
+                           version:(NSString *)version
+                          callback:(void (^)(NSData *fileData, NSError *error))callback;
 ```
 
 ##4、消息推送
