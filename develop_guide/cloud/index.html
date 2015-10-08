@@ -507,7 +507,17 @@ start.cmd
 </code></pre>
 
 <blockquote>
-<p><font color="red"><strong>注：</strong></font>请按实际情况修改<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code>和<code>deviceId</code>的值。</p>
+<p><font color="red"><strong>注：</strong></font></p>
+<ol>
+<li>
+<p>请按实际情况修改<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code>和<code>deviceId</code>的值。
+<code>X-Zc-Major-Domain</code>是开发者帐号的主域的名字；<code>X-Zc-Sub-Domain</code>是要访问的服务所关联的子域的名字；<code>deviceId</code>是要被控制的设备的逻辑ID；<code>X-Zc-User-Id</code>是对设备发起控制指令的用户的ID。
+前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。</p>
+</li>
+<li>
+<p>例子中访问的controlLight方法需要参数<code>X-Zc-User-Id</code>和<code>deviceId</code>，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。</p>
+</li>
+</ol>
 </blockquote>
 <h2 id="_3">开发工具设置</h2>
 <p>熟悉上述流程之后，可以开始开发自己的UDS程序。以下从新建maven工程开始逐步介绍开发步骤。</p>
