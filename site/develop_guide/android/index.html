@@ -902,13 +902,8 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <p><font color-"red">注:</font>该接口可以在APP端列出所有当前被网关扫描出来的但之前尚未被添加到该网关的子设备。也就是，列表中的设备都可以直接调用addSubDevice接口添加到网关。</p>
 <h4 id="3_4">3．绑定子设备</h4>
-<<<<<<< HEAD
 <p>通过上一步获取的子设备列表获取子设备的subdomain和physicalDeviceId进行绑定。</p>
 <p>如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备（即该接口每次只能绑定一个子设备。</p>
-=======
-<p>通过上一步获取的子设备列表获取子设备的subdomain和physicalDeviceId进行绑定。
-如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备（即该接口每次只能绑定一个子设备。</p>
->>>>>>> 0c4e0a2b331e8ef4b1ad8f8fba6570096336ec90
 <pre><code class="java">AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice acUserDevice) {

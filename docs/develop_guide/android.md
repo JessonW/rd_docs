@@ -133,7 +133,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####1、直接使用第三方登录
 
 ```java
-	//APP端在完成OAuth认证登陆之后获取openId和accessToken
+	//APP端在完成OAuth认证登录之后获取openId和accessToken
 	AC.accountMgr().loginWithOpenId(ACThirdPlatform.QQ, openId, accessToken, new PayloadCallback<ACUserInfo>() {
         @Override
         public void success(ACUserInfo userInfo) {
@@ -171,7 +171,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
         }
 	});
 ```
-><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用
+><font color=red>注</font>：该接口需要在使用普通账户登录之后才可以调用
 
 ##三、添加帐号扩展属性
 

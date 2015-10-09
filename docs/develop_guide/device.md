@@ -1,4 +1,9 @@
 #嵌入式设备开发指导
+
+![device_wifi_activator](../pic/develop_guide/device_arch.png) 
+
+以最典型的WiFi设备为例，WiFi模块实现和云端的连接，MCU通过串口和WiFi模块通信。AbleCloud提供WiFi模块的联网固件，该固件实现了WiFi模块和AbleCloud的加密通信。开发者不需要关心WiFi模块和云端的具体通信过程，直接按照规定的数据格式通过串口和WiFi模块交互即可。
+
 #开发准备
 
 在进行设备开发前，需要先做以下准备：
