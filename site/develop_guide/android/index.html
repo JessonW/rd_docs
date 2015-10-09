@@ -555,7 +555,7 @@
 <h2 id="_9">二、第三方登录</h2>
 <p><img alt="account_Oauth" src="../../pic/develop_guide/account_Oauth.png" /></p>
 <h4 id="1_1">1、直接使用第三方登录</h4>
-<pre><code class="java">    //APP端在完成OAuth认证登陆之后获取openId和accessToken
+<pre><code class="java">    //APP端在完成OAuth认证登录之后获取openId和accessToken
     AC.accountMgr().loginWithOpenId(ACThirdPlatform.QQ, openId, accessToken, new PayloadCallback&lt;ACUserInfo&gt;() {
         @Override
         public void success(ACUserInfo userInfo) {
@@ -593,7 +593,7 @@
 </code></pre>
 
 <blockquote>
-<p><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用</p>
+<p><font color=red>注</font>：该接口需要在使用普通账户登录之后才可以调用</p>
 </blockquote>
 <h2 id="_10">三、添加帐号扩展属性</h2>
 <p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性</p>
