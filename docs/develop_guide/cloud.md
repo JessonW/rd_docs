@@ -88,7 +88,13 @@ curl -v -X POST -H "Content-Type:application/x-zc-object"  -H "X-Zc-Major-Domain
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-User-Id:1" --data-ascii "{\"deviceId\":1,\"action\":\"on\"}" "http://localHost:8080/controlLight"
 ```
-><font color="red">**注：**</font>请按实际情况修改`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`和`deviceId`的值。
+><font color="red">**注：**</font>
+
+>1. 请按实际情况修改`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`和`deviceId`的值。
+`X-Zc-Major-Domain`是开发者帐号的主域的名字；`X-Zc-Sub-Domain`是要访问的服务所关联的子域的名字；`deviceId`是要被控制的设备的逻辑ID；`X-Zc-User-Id`是对设备发起控制指令的用户的ID。
+前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。
+
+>2. 例子中访问的controlLight方法需要参数`X-Zc-User-Id`和`deviceId`，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。
 
 ##开发工具设置
 
