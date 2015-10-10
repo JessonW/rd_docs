@@ -609,9 +609,45 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
+```c
+[ACBindManager listDevicesWithStatusCallback:^(NSArray *devices, NSError *error) {
+         if (!error) {
+             for (ACUserDevice * device  in devices) 
+             {
+                    /**
+                     * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
+                     * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
+                     * 若只选择直连的通讯方式，则只有在2和3的状态下才能往设备发送成功
+                     */
+                //设备在线状态
+                NSInteger status = device.status;
+             }
+        }else{
+        //网络错误且之前从来没有获取过设备列表时返回
+        }
 
-最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
-
+}];
+```
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
+```c
+[ACBindManager networkChangeHanderCallback:^(NSError *error) {
+         if (!error) {
+         //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
+         
+         }
+}];
+```
+此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
+```c
+ACloud * cloud = [[ACloud alloc]init];
+[cloud findLocalDeviceTimeout:1000 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
+         if (!error) {
+         //发现局域网设备,根据更新局域网在线状态或者重新获取设备列表
+          }else{
+          //没有局域网设备，更新局域网在线状态或者重新获取设备列表
+          }
+}];
+```
 
 #定时任务
 
