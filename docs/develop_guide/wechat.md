@@ -631,11 +631,24 @@ $deviceService = ACClient::getDeviceService();
 // 向设备发送消息
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
-$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message);
+// 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
+$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message, 'weixin');
 // 其它处理逻辑
 ```
+上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字，如操作系统名，或者应用环境的名字等。'weixin'表示用户使用的是微信终端。
 
-**注：**该接口暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
+此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：
+```php
+// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 通过ACContext设置终端工具的信息
+$context = $deviceService->getContext();
+$context->setHandset('weixin', '', '');
+// 向设备发送消息：省略第五个参数。
+$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message);
+```
+
+**注：**ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
 
 #定时任务#
 
@@ -733,6 +746,27 @@ $needUpdate = $otaVersion->canUpdate();
 ```php
 // 将指定设备的固件升级为查询得到的新版本
 $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
+```
+
+#数据存储#
+
+ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：
+```php
+// 创建ACStoreScanner对象，设置查询条件。
+// 参数$datasetName是要查熏的数据集的名字。
+// 参数$entityGroupKeyValues是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+$scanner = new ACStoreScanner($datasetName, $entityGroupKeyValues);
+// 设置查询条件
+$filter1 = new ACStoreFilter('time', ACStoreFilter::$GreaterOrEqual, 12345670);
+$filter2 = new ACStoreFilter('time', ACStoreFilter::$Less, 12345679);
+$complicatedFilter1 = new ACStoreComplicatedFilter($filter1);
+$complicatedFilter2 = new ACStoreComplicatedFilter($filter2);
+$complicatedFilter1->linkTo($complicatedFilter2, true);
+$scanner->where($complicatedFilter1);
+// 实例化ACStoreService对象，执行查询。
+$storeService = ACClient::getStoreService();
+$storeIter = $storeService->scan($scanner);
+$rows = $storeIter->next();     // $rows即是查询结果。
 ```
 
 #消息推送#

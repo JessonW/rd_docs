@@ -1797,9 +1797,9 @@ class ACStoreScanner {
     /**
      * 构造函数。
      * @param $name 字符串。要被查询的数据集的名字。
-     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。
+     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
      */
-    function __construct($name, $entityGroupKeyValues);
+    function __construct($name, $entityGroupKeyValues = NULL);
 
     /**
      * 取要查询的数据集的名字。

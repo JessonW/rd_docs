@@ -444,7 +444,15 @@
         
         
         <li class="main">
-            <a href="#_40">消息推送</a>
+            <a href="#_40">数据存储</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_41">消息推送</a>
         </li>
         
     
@@ -968,11 +976,23 @@ $deviceService = ACClient::getDeviceService();
 // 向设备发送消息
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
-$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message);
+// 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
+$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message, 'weixin');
 // 其它处理逻辑
 </code></pre>
 
-<p><strong>注：</strong>该接口暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。</p>
+<p>上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字，如操作系统名，或者应用环境的名字等。'weixin'表示用户使用的是微信终端。</p>
+<p>此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 通过ACContext设置终端工具的信息
+$context = $deviceService-&gt;getContext();
+$context-&gt;setHandset('weixin', '', '');
+// 向设备发送消息：省略第五个参数。
+$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message);
+</code></pre>
+
+<p><strong>注：</strong>ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。</p>
 <h1 id="_31">定时任务</h1>
 <p>AbleCloud支持设备的定时任务，比如每天的固定时间向设备发送指令，控制设备运行特定的功能。这里的定时任务主要由三部分组成：执行任务的时间规则、任务执行时要发给设备的指令，以及权限及认证信息——定义任务的用户及执行任务的设备。</p>
 <h2 id="_32">添加定时任务</h2>
@@ -1048,7 +1068,26 @@ $needUpdate = $otaVersion-&gt;canUpdate();
 $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion());
 </code></pre>
 
-<h1 id="_40">消息推送</h1>
+<h1 id="_40">数据存储</h1>
+<p>ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：</p>
+<pre><code class="php">// 创建ACStoreScanner对象，设置查询条件。
+// 参数$datasetName是要查熏的数据集的名字。
+// 参数$entityGroupKeyValues是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+$scanner = new ACStoreScanner($datasetName, $entityGroupKeyValues);
+// 设置查询条件
+$filter1 = new ACStoreFilter('time', ACStoreFilter::$GreaterOrEqual, 12345670);
+$filter2 = new ACStoreFilter('time', ACStoreFilter::$Less, 12345679);
+$complicatedFilter1 = new ACStoreComplicatedFilter($filter1);
+$complicatedFilter2 = new ACStoreComplicatedFilter($filter2);
+$complicatedFilter1-&gt;linkTo($complicatedFilter2, true);
+$scanner-&gt;where($complicatedFilter1);
+// 实例化ACStoreService对象，执行查询。
+$storeService = ACClient::getStoreService();
+$storeIter = $storeService-&gt;scan($scanner);
+$rows = $storeIter-&gt;next();     // $rows即是查询结果。
+</code></pre>
+
+<h1 id="_41">消息推送</h1>
 <p>向用户的微信客户端推送消息可分两种情况：一种是用户打开公众号的HTML5页面时推送消息到HTML5页面；一种是直接推送消息到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
 <p>第一种情况下，可利用HTML5页面的WebSocket技术实现消息的实时推送。具体流程是：</p>
 <ul>
