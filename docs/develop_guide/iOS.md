@@ -222,10 +222,14 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
         }  
 }];
 ```
+设备无法激活时，请检查以下问题：
 
+- 1.确认WIFI密码是否输入正确。
+- 2.确认路由器的广播功能有没有被禁用。
+- 3.设备的秘钥可能存在问题。
 
 ####4.绑定设备
-在成功激活设备后的回调方法中，通过物理Id绑定设备。
+通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。
 ```c
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
@@ -237,9 +241,22 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
         }  
 }];
 ```
+设备无法绑定时，请检查以下问题：
+
+- 1.设备已经被其他人绑定过了。
+- 2.设备的domain和subdomain信息有误。
+- 3.电源供电是否正常，建议更换电源。
+- 4.确保设备的天线正常。
+- 5.确保网络环境不是公共环境。
+
+绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：
+
+- 1.设备电源供电不足造成断网。
+- 2.WIFI信号不好造成断网。
+- 3.路由器断网。
 
 ###GPRS设备
-**<font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。**建议通过扫二维码的形式获取物理Id进行绑定。
+**<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
 ```c
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
@@ -255,8 +272,9 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 ><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
-+ **第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；**
-+ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。**
+
++ **第一种分享方式是管理员输入用户的帐号（手机号）直接把设备分享给用户**
++ **第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备获得设备的使用权。推荐使用第二种分享机制。**
 
 ####1、管理员直接分享设备给普通用户
 ```c
@@ -289,6 +307,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
          }
 }];
 ```
+<font color ="red"> 注：</font>管理员分享的二维码有有效期。默认为一个小时。调用getShareCodeWithSubDomain接口时开发者可以自定义有效时间。具体使用方法请参考[Reference->客户端-iOS->SDK接口列表->设备管理](../reference/iOS/#_8)
 
 ###三．设备解绑
 
@@ -335,8 +354,8 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 
 ####1.获取ACWifiLinkManager激活器
 AbleCloud提供了ACWifiLinkManager激活器供你使用。
-```c
 
+```c
 @interface ACWifiLinkManager : NSObject
 ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@"easylink"];
 ```
@@ -413,6 +432,8 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 }];
 ```
 
+<font color-"red">注:</font>该接口可以在APP端列出所有当前被网关扫描出来的但之前尚未被添加到该网关的子设备。也就是，列表中的设备都可以直接调用addSubDevice接口添加到网关。
+
 ####3．绑定子设备
 通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。
@@ -427,6 +448,12 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 ```
 
 <font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。
+
+若无法添加子设备时，请检查是否有以下问题：
+1. 网关掉线
+1. 子设备已经被其他人绑定
+1. 子设备subdomain填写错误
+2. 子设备和网关的连接断开了
 
 
 ##设备扩展属性
@@ -463,10 +490,22 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
 
+<font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
+
 ##一、发送消息到设备
 ###KLV格式
-**在新建产品的时候选择klv通讯协议，并填写数据点与数据包。**
+
 KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
+
+**在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。**
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![klv_datapoint](../pic/develop_guide/cloud_communication_klv.png)
+
+【数据包】
+![klv_datapackage](../pic/develop_guide/cloud_communication_klv_pkg.png)
+
 
 **例如**：以开关设备为例,协议如下:
 ```c
@@ -533,7 +572,19 @@ KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/devic
 - (void)setObjectData:(NSDictionary *)data;
 ```
 ###二进制格式
+
+**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![binary_datapoint](../pic/develop_guide/cloud_communication_binary.png)
+
+【数据包】
+![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
+
 **例如**：以开关设备为例,协议如下:
+
 ```c
 //请求数据包
 { 68 ：[

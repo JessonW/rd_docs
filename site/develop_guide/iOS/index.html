@@ -623,8 +623,14 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 }];
 </code></pre>
 
+<p>设备无法激活时，请检查以下问题：</p>
+<ul>
+<li>1.确认WIFI密码是否输入正确。</li>
+<li>2.确认路由器的广播功能有没有被禁用。</li>
+<li>3.设备的秘钥可能存在问题。</li>
+</ul>
 <h4 id="4_1">4.绑定设备</h4>
-<p>在成功激活设备后的回调方法中，通过物理Id绑定设备。</p>
+<p>通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。</p>
 <pre><code class="c">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
@@ -636,8 +642,22 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 }];
 </code></pre>
 
+<p>设备无法绑定时，请检查以下问题：</p>
+<ul>
+<li>1.设备已经被其他人绑定过了。</li>
+<li>2.设备的domain和subdomain信息有误。</li>
+<li>3.电源供电是否正常，建议更换电源。</li>
+<li>4.确保设备的天线正常。</li>
+<li>5.确保网络环境不是公共环境。</li>
+</ul>
+<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：</p>
+<ul>
+<li>1.设备电源供电不足造成断网。</li>
+<li>2.WIFI信号不好造成断网。</li>
+<li>3.路由器断网。</li>
+</ul>
 <h3 id="gprs">GPRS设备</h3>
-<p><strong><font color="red">注</font>：GPRS设备无需激活流程，在设备连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
+<p><strong><font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="c">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
@@ -654,8 +674,8 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 </blockquote>
 <h3 id="_13">二．分享设备</h3>
 <ul>
-<li><strong>第一种分享方式不需要用户做任何操作，管理员把设备分享给用户后即直接拥有控制权；</strong></li>
-<li><strong>第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备才拥有控制权。推荐使用第二种分享机制。</strong></li>
+<li><strong>第一种分享方式是管理员输入用户的帐号（手机号）直接把设备分享给用户</strong></li>
+<li><strong>第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备获得设备的使用权。推荐使用第二种分享机制。</strong></li>
 </ul>
 <h4 id="1_3">1、管理员直接分享设备给普通用户</h4>
 <pre><code class="c">[ACBindManager bindDeviceWithUserSubdomain:subdomain deviceId:deviceId account:acount callback:^(NSError *error) {
@@ -686,6 +706,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 }];
 </code></pre>
 
+<p><font color ="red"> 注：</font>管理员分享的二维码有有效期。默认为一个小时。调用getShareCodeWithSubDomain接口时开发者可以自定义有效时间。具体使用方法请参考<a href="../../reference/iOS/#_8">Reference-&gt;客户端-iOS-&gt;SDK接口列表-&gt;设备管理</a></p>
 <h3 id="_14">三．设备解绑</h3>
 <h4 id="1_4">1、管理员或普通用户解绑设备</h4>
 <p><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。</p>
@@ -717,8 +738,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 <h3 id="wifi_1">WiFi网关</h3>
 <h4 id="1acwifilinkmanager_1">1.获取ACWifiLinkManager激活器</h4>
 <p>AbleCloud提供了ACWifiLinkManager激活器供你使用。</p>
-<pre><code class="c">
-@interface ACWifiLinkManager : NSObject
+<pre><code class="c">@interface ACWifiLinkManager : NSObject
 ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@&quot;easylink&quot;];
 </code></pre>
 
@@ -783,6 +803,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 }];
 </code></pre>
 
+<p><font color-"red">注:</font>该接口可以在APP端列出所有当前被网关扫描出来的但之前尚未被添加到该网关的子设备。也就是，列表中的设备都可以直接调用addSubDevice接口添加到网关。</p>
 <h4 id="3_4">3．绑定子设备</h4>
 <p>通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。</p>
@@ -796,6 +817,11 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <p><font color="red">注</font>：在绑定子设备addSubDevice的success回调里只是成功绑定该physicalDeviceId的单个设备，建议在成功绑定所有子设备之后再提示绑定成功。</p>
+<p>若无法添加子设备时，请检查是否有以下问题：
+1. 网关掉线
+1. 子设备已经被其他人绑定
+1. 子设备subdomain填写错误
+2. 子设备和网关的连接断开了</p>
 <h2 id="_19">设备扩展属性</h2>
 <p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备扩展属性</a></p>
 <p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;扩展属性--&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
@@ -821,10 +847,16 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <h1 id="_22">和云端通信</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
+<p><font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_23">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
-<p><strong>在新建产品的时候选择klv通讯协议，并填写数据点与数据包。</strong>
-KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
+<p>KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
+<p><strong>在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。</strong>
+这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="klv_datapoint" src="../../pic/develop_guide/cloud_communication_klv.png" /></p>
+<p>【数据包】
+<img alt="klv_datapackage" src="../../pic/develop_guide/cloud_communication_klv_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code class="c">//请求数据包
 { 68 ：[
@@ -890,6 +922,12 @@ KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设�
 </code></pre>
 
 <h3 id="_24">二进制格式</h3>
+<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包</strong></p>
+<p>这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="binary_datapoint" src="../../pic/develop_guide/cloud_communication_binary.png" /></p>
+<p>【数据包】
+<img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code class="c">//请求数据包
 { 68 ：[

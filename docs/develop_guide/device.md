@@ -1,4 +1,9 @@
 #嵌入式设备开发指导
+
+![device_wifi_activator](../pic/develop_guide/device_arch.png) 
+
+以最典型的WiFi设备为例，WiFi模块实现和云端的连接，MCU通过串口和WiFi模块通信。AbleCloud提供WiFi模块的联网固件，该固件实现了WiFi模块和AbleCloud的加密通信。开发者不需要关心WiFi模块和云端的具体通信过程，直接按照规定的数据格式通过串口和WiFi模块交互即可。
+
 #开发准备
 
 在进行设备开发前，需要先做以下准备：
@@ -33,36 +38,7 @@
 
 (包括独立设备和网关)
 
-
-对于市面上常见的WiFi模块，AbleCloud都进行了适配，已经完成适配的WiFi模块见下表：
-
-|合作厂商|模块型号|WIFI芯片      | AirKiss|Smartconfig|
-|-------|---------------|--------|----------|
-|	汉枫   | LPB100         |MTK	         |	支持  |	支持|
-|	      | LPB200         | Marvell	   |	支持  |	支持|
-|	      | LPT100         |MTK	         |	支持  |	支持|  
-|	      | LPT200         |MTK	         |	支持  |	支持|
-|	庆科   | EMW3162|broadcom        |	支持  |	支持|
-|	      | EMW3165|broadcom        |	支持  |	支持|
-|	      | EMW3088| Marvell              |	支持  |	支持|
-|	      | EMW1088| Marvell              |	支持  |	支持|
-|江波龙 | WK1230         |QCA4004       |	支持   |	支持|
-|       | GT1216         |QCA4004       |	支持   |	支持|
-|       | GT141         |QCA4004       |	支持   |	支持|
-|       | WK1221          |QCA4004       |	支持   |	支持|
-|思存	  |ITM-IOE01       |QCA4004		           |	支持 |	支持|
-|    	  |ITM-IOE20       |QCA4004		           |	支持 |	支持|
-|航锐	  |   HR WF411        |QCA4004		           |	不支持 |	支持|
-|   	  |   HR WF422        |QCA4004		           |	不支持 |	支持|
-| Marvel|          |Marvel-88MC500|	不支持|	支持|
-|联盛德 |          |HED10W07SN        |	支持|	支持|
-|卓立合 | LH781         |MTK7681       |  不支持   |支持|
-|新岸线 |        | NL6621      |  不支持   |支持|
-|Realtek |          |RTL8711       |  支持   |支持|
-|村田 |   MIDK       |QCA4002       |  不支持   |支持|
-|TI |   cc3200       |  cc3200     |  不支持   |支持|
-
-适配模块不断进行更新中，最新列表请联系技术支持。
+对于市面上常见的WiFi模块，AbleCloud都进行了适配，[点击查看已经完成适配的WiFi模块列表](http://www.ablecloud.cn/download/adapted-wifi.pdf)
 
 对于AbleCloud还没有进行适配的模块，AbleCloud提供上层交互所需要的SDK，厂商自己将下层驱动更改一下即可完成适配工作。
 
