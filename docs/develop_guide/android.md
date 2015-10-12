@@ -171,8 +171,13 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
         }
 	});
 ```
+<<<<<<< HEAD
+><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用
+
+=======
 ><font color=red>注</font>：该接口需要在使用普通账户登录之后才可以调用
 
+>>>>>>> 936e8bb8c13eab2a6cc4af17f3f95d7614cbf5d0
 ##三、添加帐号扩展属性
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性
