@@ -240,11 +240,12 @@ class ACContext {
     
     /**
      * 设置用户控制设备时所使用的终端工具的信息。
-     * @param $name 字符串，是终端工具所使用操作系统或应用环境的名字，如'weixin'（表示微信终端）等。
-     * @param $version 字符串，是终端工具所使用操作系统或应用环境的版本信息。缺省值为空字符串。
+     * @param $name 字符串，是终端工具所使用的应用的名字，如'weixin'（表示微信终端）等。
+     * @param $version 字符串，是终端工具所使用的应用的版本信息。缺省值为空字符串。
      * @param $id 字符串，是终端工具的ID，用于标识该工具。缺省值为空字符串。
+     * @param $osName 字符串，是终端工具所使用的操作系统的名字，如android，ios等。
      */
-    public function setHandset($name, $version = '', $id = '');
+    public function setHandset($name, $version = '', $id = '', $osName = '');
     
     /**
      * 为发给AbleCloud云端的HTTP请求配置自定义的HTTP Header。
@@ -1051,11 +1052,12 @@ class ACDeviceService extends ACService {
      * @param $deviceId 整数，是目标设备的逻辑ID。
      * @param $messageCode 发送给设备的消息的码。整数。
      * @param $message 以string对象存储的拟发送给设备的二进制数据。
-     * @param $handset 字符串。表示调用本方法时用户所使用的终端工具的名字，如操作系统名，或者应用环境的名字（如'weixin'表示微信终端）。
+     * @param $handset 字符串。表示调用本方法时用户所使用的终端工具的名字，如'weixin'表示微信终端。
      * 					开发者也可以通过ACContext对象设置终端工具信息。如果指定了本参数，则以本参数指定的值为准。
+     * @param $handsetVersion 字符除啊，表示调用本方法时用户所使用的终端工具的版本信息。
      * @return 返回ACResponse对象，表示设备或云端服务的响应。
      */
-    public function sendToDevice($user, $deviceId, $messageCode, $message, $handset = '');
+    public function sendToDevice($user, $deviceId, $messageCode, $message, $handset = '', $handsetVersion = '');
     
     /**
      * 修改设备名称。

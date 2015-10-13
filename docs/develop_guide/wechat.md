@@ -632,10 +632,11 @@ $deviceService = ACClient::getDeviceService();
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
 // 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
-$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message, 'weixin');
+// 参数值'6.2.1'描述的是微信的版本信息。
+$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message, 'weixin', '6.2.1');
 // 其它处理逻辑
 ```
-上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字，如操作系统名，或者应用环境的名字等。'weixin'表示用户使用的是微信终端。
+上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。
 
 此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：
 ```php
@@ -643,7 +644,7 @@ $response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $messag
 $deviceService = ACClient::getDeviceService();
 // 通过ACContext设置终端工具的信息
 $context = $deviceService->getContext();
-$context->setHandset('weixin', '', '');
+$context->setHandset('weixin', '6.2.1', '', 'android');
 // 向设备发送消息：省略第五个参数。
 $response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message);
 ```
@@ -752,17 +753,23 @@ $otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
 
 ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：
 ```php
+// 查询条件
 // 创建ACStoreScanner对象，设置查询条件。
 // 参数$datasetName是要查熏的数据集的名字。
-// 参数$entityGroupKeyValues是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-$scanner = new ACStoreScanner($datasetName, $entityGroupKeyValues);
-// 设置查询条件
+// 第二个参数是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+$scanner = new ACStoreScanner($datasetName, array('deviceId' => 1));
 $filter1 = new ACStoreFilter('time', ACStoreFilter::$GreaterOrEqual, 12345670);
 $filter2 = new ACStoreFilter('time', ACStoreFilter::$Less, 12345679);
 $complicatedFilter1 = new ACStoreComplicatedFilter($filter1);
 $complicatedFilter2 = new ACStoreComplicatedFilter($filter2);
 $complicatedFilter1->linkTo($complicatedFilter2, true);
+$scanner->select('deviceId', 'status');
 $scanner->where($complicatedFilter1);
+$scanner->addOrderBy('time', true);
+$scanner->addOrderBy('deviceId', false);
+$scanner->groupBy('deviceId', 'status', 'time');
+$scanner->limit(100);
+$scanner->avg('status');
 // 实例化ACStoreService对象，执行查询。
 $storeService = ACClient::getStoreService();
 $storeIter = $storeService->scan($scanner);
