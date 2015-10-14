@@ -514,6 +514,11 @@
 <td>OTA结束</td>
 </tr>
 <tr>
+<td>35</td>
+<td>AC_CODE_OTA_CONFIRM</td>
+<td>OTA确认升级</td>
+</tr>
+<tr>
 <td>36</td>
 <td>AC_CODE_UNBIND</td>
 <td>解除设备的绑定</td>
@@ -704,7 +709,7 @@ AC_MessagePayload
 <tbody>
 <tr>
 <td>u8EqVersion</td>
-<td>设备版本信息，通过此version来确定目前设备版本，用以后续OTA升级。版本信息设备需要自行存储</td>
+<td>设备版本信息，目前使用后3个字节确定目前设备版本，用于后续OTA升级。版本信息设备需要自行存储</td>
 </tr>
 <tr>
 <td>u8ModuleKey</td>
@@ -724,25 +729,25 @@ AC_MessagePayload
 </tr>
 </tbody>
 </table>
-<p>以上信息，都是在设备在出厂前进行相关的注册，注册成功后，自行存储。当设备启动后，先发送请求信息给wifi模块，wifi用来进行和云端认证。</p>
+<p>以上信息，都是在设备在出厂前进行相关的注册，注册成功后，自行存储。当设备启动后，先发送请求信息给wifi模块，wifi用来进行和云端认证。
+另外设备版本信息需要云端后台填写的版本号一致，否则云端会反复进行ota升级。</p>
 <p><strong><em>Message code 8:  AC_CODE_REST</em></strong></p>
 <p>Wifi密码重置情况，消息体为空，当局域网的wifi AP更换，或者密码更换后，重置密码。</p>
 <p><strong><em>Message code 15:  AC_CODE_ACK</em></strong></p>
 <p>OTA消息的正确回应，msgid要和请求消息一一对应。</p>
 <p><strong><em>Message code 16:  AC_CODE_ERR</em></strong></p>
-<p>OTA消息的错误回应。</p>
+<p>OTA消息的错误回应，msgid要和请求消息一一对应。</p>
 <pre><code>typedef struct{
     u8 ErrorCode;
 }AC_ErrorMsg;
 </code></pre>
 
 <p><strong><em>Message code 17:  AC_CODE_OTA_BEGIN</em></strong></p>
-<p>OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：</p>
+<p>OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 收到该消息后，设备端需要记录需要升级的文件数目，用于升级前的校验，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：</p>
 <pre><code>typedef struct
 {
     u8 u8FileNum;
     u8 u8Pad[3];
-    //u8 u8FileType[0];
 }AC_OtaBeginReq;
 </code></pre>
 
@@ -757,7 +762,7 @@ AC_MessagePayload
 <tbody>
 <tr>
 <td>u8FileNum</td>
-<td>用以指示本次升级时文件类型和个数。文件类型在该消息体之后，按字节依次排列</td>
+<td>用以指示本次升级时文件个数</td>
 </tr>
 <tr>
 <td>u8Pad</td>
@@ -770,13 +775,12 @@ AC_MessagePayload
 </tbody>
 </table>
 <p><strong><em>Message code 18:  AC_CODE_OTA_FILE_BEGIN</em></strong></p>
-<p>OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>OTA 文件传输启动请求，设备端需要记录本次升级文件的信息，用于升级前的文件校验,该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
 <pre><code>typedef struct
 {
     u8 u8FileType;
     u8 u8FileVersion;
     u16  u16TotalFileCrc;
-
     u32 u32FileTotalLen;
 }AC_OtaFileBeginReq;
 </code></pre>
@@ -813,7 +817,7 @@ AC_MessagePayload
 </tbody>
 </table>
 <p><strong><em>Message code 19:  AC_CODE_OTA_FILE_CHUNK</em></strong></p>
-<p>OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
+<p>OTA 文件块传输请求，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
 <pre><code>typedef struct
 {
     u32 u32Offset;
@@ -840,9 +844,12 @@ AC_MessagePayload
 </tbody>
 </table>
 <p><strong><em>Message code 20:  AC_CODE_OTA_FILE_END</em></strong></p>
-<p>OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。无消息体</p>
+<p>OTA升级文件传输结束消息，收到该消息后处理如下：</p>
+<p>1.校验已接收到的文件长度与AC_CODE_OTA_FILE_BEGIN消息存储的文件长度匹配</p>
+<p>2.校验已接收到的文件CRC与AC_CODE_OTA_FILE_BEGIN消息存储的文件CRC匹配  </p>
+<p>上述1、2 如果都执行成功，需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
 <p><strong><em>Message code 21:  AC_CODE_OTA_END </em></strong></p>
-<p>OTA升级结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+<p>OTA升级结束消息，收到该消息后需要校验已收到的文件数目与AC_CODE_OTA_BEGIN是否对应，如果对应则给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
 <p><strong><em>Message code 23:  AC_CODE_ZOTA_FILE_BEGIN</em></strong></p>
 <p>关于wifi模块，目前支持两种方式的wifi模块的升级方式，一种方式是wifi模块和云端直接进行OTA交互，一种方式是设备先和云端进行交互，获得wifi模块的文件，然后再由设备触发wifi模块升级。 该消息用在第二种方式下wifi模块升级。 消息格式同AC_CODE_OTA_FILE_BEGIN。</p>
 <p><strong><em>Message code 24:  AC_CODE_ZOTA_FILE_CHUNK </em></strong></p>
@@ -850,8 +857,10 @@ AC_MessagePayload
 <p><strong><em>Message code 25:  AC_CODE_ZOTA_FILE_END</em></strong></p>
 <p>消息格式同AC_CODE_OTA_FILE_END。</p>
 <p><strong><em>Message code 26:  AC_CODE_ZOTA_END</em></strong></p>
-<p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。</p>
-<p><strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
+<p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。
+<strong><em>Message code 35:  AC_CODE_OTA_CONFIRM</em></strong></p>
+<p>OTA确认升级消息，收到该消息设备侧启动设备内部更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+<strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
 <p>该消息用以设备解除自己绑定。相当于管理员删除设备。
 消息格式定义如下：</p>
 <pre><code>typedef struct

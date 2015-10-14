@@ -306,10 +306,18 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_9">设备管理<span class="main-set parent__9">+</span></a>
         </li>
+        
+            
+            <li class="sub parent__9" style="display: none;"><a href="#ablecloud">微信平台与AbleCloud平台</a></li>
+            
         
             
             <li class="sub parent__9" style="display: none;"><a href="#_10">独立设备</a></li>
@@ -324,7 +332,7 @@
             
         
             
-            <li class="sub parent__9" style="display: none;"><a href="#_22">设备的扩展属性</a></li>
+            <li class="sub parent__9" style="display: none;"><a href="#_25">设备的扩展属性</a></li>
             
         
     
@@ -340,15 +348,15 @@
         
         
         <li class="main">
-            <a href="#_25">和云端通信<span class="main-set parent__25">+</span></a>
+            <a href="#_28">和云端通信<span class="main-set parent__28">+</span></a>
         </li>
         
             
-            <li class="sub parent__25" style="display: none;"><a href="#_26">访问云端服务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_29">访问云端服务</a></li>
             
         
             
-            <li class="sub parent__25" style="display: none;"><a href="#_27">向设备发送消息</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_30">向设备发送消息</a></li>
             
         
     
@@ -380,31 +388,31 @@
         
         
         <li class="main">
-            <a href="#_28">定时任务<span class="main-set parent__28">+</span></a>
+            <a href="#_31">定时任务<span class="main-set parent__31">+</span></a>
         </li>
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_29">添加定时任务</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_32">添加定时任务</a></li>
             
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_30">查询定时任务列表</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_33">查询定时任务列表</a></li>
             
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_31">启动定时任务</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_34">启动定时任务</a></li>
             
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_32">停止定时任务</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_35">停止定时任务</a></li>
             
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_33">修改定时任务</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_36">修改定时任务</a></li>
             
         
             
-            <li class="sub parent__28" style="display: none;"><a href="#_34">删除定时任务</a></li>
+            <li class="sub parent__31" style="display: none;"><a href="#_37">删除定时任务</a></li>
             
         
     
@@ -424,11 +432,11 @@
         </li>
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#_35">检查更新</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#_38">检查更新</a></li>
             
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#_36">确认升级</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#_39">确认升级</a></li>
             
         
     
@@ -436,7 +444,15 @@
         
         
         <li class="main">
-            <a href="#_37">消息推送</a>
+            <a href="#_40">数据存储</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_41">消息推送</a>
         </li>
         
     
@@ -520,8 +536,9 @@ class ACConfig {
 使用用户的OpenID第一次登录AbleCloud平台时，平台会自动为该用户分配ID。后续再使用这个OpenID时，平台将返回相同的帐号信息。</p>
 <p>通过ACBridgeWeChat类直接登录，获取ACUser对象。</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
-$wxBridge = new ACBridgeWeChat($accessToken);
+// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token是有时效性的。
+// 参数$jsTicket是微信公众号的JS API Ticket。注意：微信的JS API Ticket也是有时效性的。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 使用用户的OpenID登录
 $user = $wxBridge-&gt;getUser($openId);
 </code></pre>
@@ -547,8 +564,9 @@ $accountServcie-&gt;sendVerifyCode($phone);
 <p><strong>注：</strong>向用户发送手机验证码时，要求开发者在AbleCloud平台已经配置了手机短信息模板等参数。同时也有向同一用户发送手机短信息的频次限制。</p>
 <p>2.根据验证码绑定用户的手机</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
-$wxBridge = new ACBridgeWeChat($accessToken);
+// 参数$accessToken是微信公众号的Access Token。注意：微信的Access Token是有时效性的。
+// 参数$jsTicket是微信公众号的JS API Ticket。注意：微信的JS API Ticket也是有时效性的。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 提交验证码，绑定手机号
 // 参数$verifyCode是字符串，表示用户修改手机号码的验证码。
 // 参数$openId为字符串，是微信用户的OpenID,开发者需要参考微信官方文档去获取OpenID。
@@ -575,7 +593,7 @@ $accountService-&gt;setUserProfile($user, $profile);
 <p>在已知用户在AbleCloud平台上的ID的条件下，可以获取用户在微信平台上对应的OpenId。</p>
 <p>通过ACBridgeWeChat类提供的方法获取用户的OpenID。</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取用户的OpenID
 $openId = $wxBridge-&gt;getUserOpenId($userId);
 </code></pre>
@@ -588,7 +606,57 @@ $openId = $accountService-&gt;getUserOpenId($userId, 'weixin');
 </code></pre>
 
 <h1 id="_9">设备管理</h1>
-<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a></p>
+<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a>。</p>
+<h2 id="ablecloud">微信平台与AbleCloud平台</h2>
+<p>微信硬件平台与AbleCloud平台都要求用户与设备建立绑定关系后采用使用设备，不过两个平台使用不用的策略来管理设备及其用户。</p>
+<p>首先，AbleCloud平台区分设备的管理员用户与非管理员用户。第一个绑定设备的用户就是设备的管理员用户。其他用户要绑定设备需要得到管理员用户的授权，比如通过管理员发放的分享码来绑定设备。
+普通用户可以也仅可以主动解除自己与设备的绑定关系。管理员用户可以解除任意用户（包括其自己）与设备的绑定关系。而且，如果管理员用户解除了自己与设备的绑定关系，那么同时也会解除设备与其他所有用户的绑定关系。
+微信平台不区分设备用户的角色，任何人都可以平等的绑定或解绑设备。</p>
+<p>其次，AbleCloud支持采用分组模型（即后文所述的Home模型）来批量管理设备及其用户。设备（或用户）加入某一个分组时，即表示与组中所有的用户（或设备）建立绑定关系。
+此时无论是之前加入的还是新加入的设备，其管理员用户都是创建该分组的用户（即分组的管理员用户）。设备（或用户）被移出分组时，即表示与分组中的所有用户（或设备）解除了绑定关系。
+微信平台没有分组模型。</p>
+<p>最后，AbleCloud平台区分网关设备及子设备。用户直接绑定网关设备，子设备则需要先接入网关设备，并经由网关设备接入AbleCloud平台，从而与用户绑定。而且，子设备被确认接入网关后会与所有绑定了网关设备的用户建立绑定关系。
+同样，将子设备从网关设备中移除时，也会将其与网关设备的所有用户解除绑定。
+子设备的这种处理流程不经过微信平台，微信平台也不区分网关设备与子设备。</p>
+<p>如上所述，AbleCloud平台比微信平台提供了更丰富的设备管理策略，因此在特定情况下要求开发者执行必要的操作通知微信平台与AbleCloud平台同步设备与其用户的信息。需要通知微信平台同步信息的场景包括：</p>
+<ol>
+<li>
+<p>采用非微信扫描二维码功能绑定设备后需要通知微信平台同步信息。</p>
+<p>使用微信终端时，推荐使用微信的“扫一扫”功能扫描设备的二维码（可以附加AbleCloud平台设备的管理员用户生成的分享码）来绑定设备。此时，微信平台会先完成设备绑定，然后推送消息给开发者的公众号后台。
+开发者可调用<strong>ACBridgeWeChat::onDeviceEventBind</strong>来处理该事件。该方法会调用AbleCloud平台的相关接口通知AbleCloud平台绑定用户与设备，开发者无需额外通知双方平台通许信息。
+但是如果直接调用了AbleCloud平台提供的API绑定了设备，如子设备接入了网关、将设备加入了Home分组等，则需要通知微信平台同步信息。此时可调用<strong>ACBridgeWeChat::syncBindingsByDevice</strong>来同步信息。
+该方法是要求微信平台同步关于指定设备的信息。</p>
+</li>
+<li>
+<p>调用AbleCloud平台的接口解除设备与用户的绑定关系后需要通知微信平台同步信息。</p>
+<p>如前问所述，如果管理员用户解除了与设备的绑定关系，那么AbleCloud平台会自动解除设备与其他用户的绑定关系。无论何时调用了AbleCloud平台提供的接口（如ACDeviceService::unbindDevice等）解除了用户与设备的绑定关系后，都需要调用<strong>ACBridgeWeChat::syncBindingsByDevice</strong>来同步信息。
+如ACBridgeWeChat::onDeviceEventUnbind调用了解除绑定的接口，同时也调用了syncBindingsByDevice方法来同步信息。</p>
+</li>
+<li>
+<p>绑定或解邦网关设备后需要通知微信平台同步信息。</p>
+<p>网关设备首次被用户绑定时除外（这时网关设备还没有接入子设备或者接入的子设备还没得到用户的确认），其他用户绑定网关设备时，会自动与网关所附带的子设备建立绑定关系。用户解除与网关的绑定关系时，也会自动解除与子设备的绑定关系。
+此时需调用<strong>ACBridgeWeChat::syncBindings</strong>来同步信息。该方法是要求微信平台同步关于指定用户的信息。如ACBridgeWeChat::onDeviceEventBind及onDeviceEventUnbind均调用了该方法来同步信息。</p>
+</li>
+<li>
+<p>确认网关子设备接入网关后或者从网关中删除子设备后需要通知微信平台同步信息。</p>
+<p>子设备加入网关或从网关中删除子设备时，会自动建立或解除与网关设备的所有用户的绑定关系。此时要调用<strong>ACBridgeWeChat::syncBindingsByDevice</strong>来同步信息。</p>
+</li>
+<li>
+<p>使用分组模型管理设备时，将设备添加进Home或者从Home中移除后需要通知微信平台同步信息。</p>
+<p>在这两种场景下，被操作的设备会自动与分组中的用户建立或解除绑定关系。开发者需要调用<strong>ACBridgeWeChat::syncBindingsByDevice</strong>来同步信息。</p>
+</li>
+<li>
+<p>使用分组模型管理设备时，将用户添加进Home或者从Home中移除后需要通知微信平台同步信息。</p>
+<p>在这两种场景下，用户会自动与Home内的设备建立或解除绑定关系。开发者需要调用<strong>ACBridgeWeChat::syncBindings</strong>来同步信息。</p>
+</li>
+<li>
+<p>使用分组模型管理设备时，删除Home对象后需要通知微信平台同步信息。</p>
+<p>删除Home对象时会批量解除设备与用户的绑定关系。开发者应直接调用<strong>ACBridgeWeChat::deleteHome</strong>来执行删除Home的操作，而不是调用ACDeviceService::deleteHome。</p>
+</li>
+</ol>
+<p>此外，微信平台会定期向开发者的公众号后台推送消息"device_event" - "subscribe_status"来查询设备的连接状态（仅针对WiFi设备）。开发者可以调用<strong>ACBridgeWeChat::onDeviceEventSubscribeStatus</strong>来处理该事件。
+微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用<strong>ACBridgeWeChat::onDeviceEventUnsubscribeStatus</strong>来处理该事件。上述两个方法均调用了<strong>ACBridgeWeChat::syncBindings</strong>同步当前用户的信息。</p>
+<p>开发者也可根据实际需求调用<strong>ACBridgeWeChat::syncBindings</strong>及<strong>ACBridgeWeChat::syncBindingsByDevice</strong>方法来同步信息。</p>
 <h2 id="_10">独立设备</h2>
 <p>设备绑定的交互流程如下图所示：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>
@@ -597,7 +665,7 @@ $openId = $accountService-&gt;getUserOpenId($userId, 'weixin');
 <p>参考<a href="http://iot.weixin.qq.com/document-2_6.html">微信硬件平台-设备授权</a>对硬件设备进行授权。</p>
 <p>授权完成后调用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>接口获取设备的二维码。PHP SDK也封装了该接口，其调用方式如下：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取设备的二维码串
 $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
 // 之后可使用相关工具将码串转换为二维码图片。
@@ -608,7 +676,7 @@ $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
 如果用户之前已经关注过公众号，则仅推送第二条消息。</p>
 <p>处理事件"event"-"subscribe"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 </code></pre>
@@ -616,7 +684,7 @@ $user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的�
 <p>方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，在AbleCloud平台上将该用户登记为开发者所提供服务的使用者。</p>
 <p>处理事件"device_event"-"bind"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, FALSE);   // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 </code></pre>
@@ -631,21 +699,30 @@ $device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, FALSE);   // $xm
 <h3 id="_13">设备分享</h3>
 <p>设备分享是指以设备的管理员用户的身份调用AbleCloud平台的接口生成设备的分享码，其它用户凭借该分享码绑定设备。</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取包含分享码的二维码串
 $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, TRUE, $openId, 300);
 // 将码串$qrCode转换为二维码图片。其他用户使用微信扫描该二维码就可绑定设备。
 </code></pre>
 
 <h3 id="_14">设备解绑</h3>
-<p>在AbleCloud平台及微信平台中同步解除用户与设备的绑定关系。</p>
+<p>需要在AbleCloud平台及微信平台中同步解除用户与设备的绑定关系。可以首先调用AbleCloud平台的设备解邦API，然后再执行AbleCloud平台与微信平台的信息同步操作。
+AbleCloud平台区分设备的管理员用户及非管理员用户。如果管理员用户解除了与设备的绑定关系，那么AbleCloud将自动解除其他用户与设备的绑定关系。而微信硬件平台不区分用户的角色，所以某用户解绑设备后，需要通知微信硬件平台对照AbleCloud平台的信息检查相关设备与用户的绑定关系。</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
-// 解邦设备
-$wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 获取用户信息
+$user = $wxBridge-&gt;getUser($openId);
+// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 获取设备的逻辑ID
+$deviceId = $deviceService-&gt;getDeviceId($physicalId);
+// 解绑设备
+$deviceService-&gt;unbindDevice($deviceId, $user);
+// 通知微信硬件平台同步设备的绑定信息。
+// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+$wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);
 </code></pre>
 
-<p>方法ACBridgeWeChat::unbindDevice实现的主要功能是在AbleCloud平台及微信平台中同步解除用户与设备的绑定关系。</p>
 <h2 id="_15">网关型设备</h2>
 <h3 id="_16">绑定网关</h3>
 <p>网关的绑定操作流程和独立设备是一样的，如下图：</p>
@@ -655,7 +732,7 @@ $wxBridge-&gt;unbindDevice($openId, $physicalId, FALSE);
 <p>参考<a href="http://iot.weixin.qq.com/document-2_6.html">微信硬件平台-设备授权</a>对硬件设备进行授权。</p>
 <p>授权完成后调用<a href="http://iot.weixin.qq.com/document-2_5.html">微信硬件平台-获取设备二维码</a>接口获取设备的二维码。PHP SDK也封装了该接口，其调用方式如下：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取设备的二维码串
 $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
 // 之后可使用相关工具将码串转换为二维码图片。
@@ -666,7 +743,7 @@ $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, FALSE, $openId);
 如果用户之前已经关注过公众号，则仅推送第二条消息。</p>
 <p>处理事件"event"-"subscribe"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 </code></pre>
@@ -674,7 +751,7 @@ $user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的�
 <p>方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，，在AbleCloud平台上将该用户登记为开发者的用户。</p>
 <p>处理事件"device_event"-"bind"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, TRUE);   // $xmlMsg是微信推送的完整XML消息内容。
 // 其它处理逻辑
 </code></pre>
@@ -696,14 +773,16 @@ $device = $wxBridge-&gt;onDeviceEventBind($xmlMsg, $deviceName, TRUE);   // $xml
 <p>查询新接入的子设备；</p>
 </li>
 <li>
-<p>绑定新接入的子设备；</p>
+<p>绑定新接入的子设备，并通知微信硬件平台同步设备的绑定关系；</p>
 </li>
 <li>
 <p>关闭网关接入功能。</p>
 </li>
 </ol>
 <p>代码示例如下：</p>
-<pre><code class="php">// 实例化ACDeviceService
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
 // 开启网关接入功能
 $deviceService-&gt;openGatewayMatch($gatewayId, $user, $timeout);
@@ -711,7 +790,11 @@ $deviceService-&gt;openGatewayMatch($gatewayId, $user, $timeout);
 $newSubDevices = $deviceService-&gt;listNewSubDevicesFromGateway($user, $gatewayId);
 // 绑定新子设备
 foreach ($newSubDevices as $dev) {
-    $deviceService–&gt;addSubDeviceToGateway($user, $gatewayId, $dev-&gt;getPhysicalId(), $name);
+    $d = $deviceService–&gt;addSubDeviceToGateway($user, $gatewayId, $dev-&gt;getPhysicalId(), $name);
+    if ($d != NULL) {
+        // 绑定子设备成功，需要通知微信平台同步设备的绑定关系。
+        $wxBridge-&gt;syncBindingsByDevice($dev-&gt;getPhysicalId(), $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+    }
 }
 // 关闭网关接入功能
 $deviceService -&gt;closeGatewayMatch($gatewayId, $user);
@@ -719,24 +802,43 @@ $deviceService -&gt;closeGatewayMatch($gatewayId, $user);
 
 <h3 id="_20">设备解绑</h3>
 <h4 id="1_1">1.解绑网关</h4>
-<p>解绑网关设备的过程与解绑独立设备一致，只是最后调用方法ACBridgeWeChat::unbindDevice的参数不一致。</p>
+<p>解绑网关设备的过程与解绑独立设备一致，也需要通知微信平台同步设备与用户的绑定关系。</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
-$wxBridge = new ACBridgeWeChat($accessToken);
-// 解邦网关设备
-$wxBridge-&gt;unbindDevice($openId, $physicalId, TRUE);
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 获取用户信息
+$user = $wxBridge-&gt;getUser($openId);
+// 实例化ACDeviceService
+$deviceService = ACClient::getDeviceService();
+// 获取设备的逻辑ID
+$deviceId = $deviceService-&gt;getDeviceId($physicalId);
+// 解绑设备
+$deviceService-&gt;unbindGateway($deviceId, $user);
+// 通知微信硬件平台同步设备的绑定信息。
+// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+$wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);
 </code></pre>
 
 <p>方法ACBridgeWeChat::unbindDevice第三个参数用于标记所操作的设备是否为网关设备。</p>
 <h4 id="2_1">2.解绑子设备</h4>
-<p>解绑子设备是指从网关设备中删除子设备。</p>
-<pre><code class="php">// 实例化ACDeviceService
+<p>解绑子设备是指从网关设备中删除子设备。同样也需要通知微信平台同步设备与用户的绑定关系。</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 获取用户信息
+$user = $wxBridge-&gt;getUser($openId);
+// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
+// 获取设备的逻辑ID
+$subDeviceId = $deviceService-&gt;getDeviceId($physicalId);
 // 解邦子设备
-$deviceService–&gt;deleteSubDeviceFromGateway($user, $subDeviceId)
+$deviceService-&gt;deleteSubDeviceFromGateway($user, $subDeviceId);
+// 通知微信硬件平台同步设备的绑定信息。
+// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+$wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);
 </code></pre>
 
 <h2 id="home">Home模型</h2>
-<p>针对微信公众号这种应用环境，在Home模型下，创建“Home”、“Room”并绑定设备的交互流程与Android设备的流程几乎一致，可参考<a href="../android/#home">Android设备的Home模型</a>。</p>
+<p>针对微信公众号这种应用环境，在Home模型下，创建“Home”、“Room”并绑定设备的交互流程与Android设备的流程几乎一致，可参考<a href="../android/#home">Android设备的Home模型</a>。
+需要说明的是，微信平台中没有设备分组管理的概念。AbleCloud平台提供的Home分组模型便于批量管理用户和设备。</p>
 <h3 id="homeroom">创建Home及Room</h3>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
@@ -747,15 +849,63 @@ $home = $deviceService-&gt;createHome($user, $homeName);
 $room = $deviceService-&gt;createRoom($user, $home-&gt;ownerId, $roomName);
 </code></pre>
 
-<h3 id="_21">添加或移动设备到分组中</h3>
-<p>用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。</p>
-<p>在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。</p>
+<h3 id="roomhome">删除Room或Home</h3>
+<p>删除Home中的Room不影响设备与用户的绑定关系。示例代码如下：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 删除Room
+$deviceService-&gt;deleteRoom($user, $homeId, $roomId);
+</code></pre>
+
+<p>删除Home本身时，会批量解除Home中所有设备与所有用户之间的绑定关系，并且需要额外通知微信平台从AbleCloud平台更新相关设备与用户的绑定关系。
+为此，ACBridgeWeChat类封装了方法deleteHome()来完成删除Home对象、通知微信平台更新相关数据的操作。示例代码如下：</p>
+<pre><code class="php">// 实例化ACBridgeWeChat对象
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 删除Home对象，同时通知微信平台更新相关信息。
+// 参数$openId是发起本次删除操作的用户的微信OpenId。
+// 参数$homeId则是要被删除的Home的ID。
+$wxBridge-&gt;deleteHome($openId, $homeId);
+</code></pre>
+
+<h3 id="_21">添加用户至分组中</h3>
+<p>Home的管理员用户（创建Home的用户）可以通过发放分享码的方式将其他用户添加至Home中来。用户加入Home之后即与Home中已有的设备建立绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 取分享码
+$shareCode = $deviceService-&gt;getHomeShareCode($user, $homeId, $timeout);
+// 其他用户使用分享码加入Home
+$deviceService-&gt;joinHomeWithShareCode($user2, $shareCode);  // 用户$user2加入Home
+// 通知微信平台更新用户$user2与设备的绑定关系。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+$openId = $wxBridge-&gt;getUserOpenId($user2-&gt;getId());    // 取用户$user2的OpenId
+$wxBridge-&gt;syncBindings($openId);                       // 同步信息
+</code></pre>
+
+<h3 id="_22">从分组中移除用户</h3>
+<p>Home的管理员用户（创建Home的用户）也可以从Home中移除指定用户。被移除的用户将被解除与Home中设备的绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 从Home中移除用户。参数$userId即表示要被移除的用户的ID。
+$deviceService-&gt;removeUserFromHome($adminUser, $homeId, $userId);
+// 通知微信平台更新用户$userId与设备的绑定关系。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+$openId = $wxBridge-&gt;getUserOpenId($userId);    // 取用户$userId对应的OpenId
+$wxBridge-&gt;syncBindings($openId);               // 同步信息
+</code></pre>
+
+<h3 id="_23">添加或移动设备到分组中</h3>
+<p>用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。
+在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。
+将设备添加至Home中之后，需要通知微信平台从AbleCloud平台更新设备与用户的绑定关系。同样，若从Home中删除了指定设备，也需要通知微信平台同步信息。</p>
 <p>只有Home中的设备才能通过ACDeviceService::moveDeviceToRoom方法将其添加至Room中。</p>
 <p>添加设备到Home中：</p>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
 // 添加设备到Home中：$homeId是Home的ID；$physicalId（设备的物理ID）或$deviceId（设备的逻辑ID）任意提供一个即可。
 $device = $deviceService-&gt;addDeviceToHome($user, $homeId, $name, $physicalId, $deviceId);
+// 通知微信平台同步信息
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+$wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
 </code></pre>
 
 <p>在Home中移动设备到Room中：</p>
@@ -765,15 +915,37 @@ $deviceService = ACClient::getDeviceService();
 $deviceService-&gt;moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
 </code></pre>
 
-<h2 id="_22">设备的扩展属性</h2>
-<h3 id="_23">获取设备的扩展属性</h3>
+<p>设备被添加至Home中时，已经与Home中的用户建立了绑定关系。再将设备移动至Room内时，不更改其与用户的绑定关系，因此不用额外通知微信或AbleCloud平台同步信息。
+同样，从Room中移出设备时，也不改变设备与用户的绑定关系，因此也不用额外同步信息。</p>
+<h3 id="_24">从分组中移除设备</h3>
+<p>用户可以调用方法ACDeviceService::removeDeviceFromRoom从Room中移除设备，此时该设备仍然属于Home，并且不改变设备与Home中用户的绑定关系。
+也可以调用方法ACDeviceService::deleteDeviceFromHome从Home中删除设备，此时将解除该设备与Home中所有用户的绑定关系。此操作过后，需要通知微信平台更新设备与用户的绑定关系。</p>
+<p>从Room中移除设备：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 从Room中移除指定设备
+$deviceService-&gt;removeDeviceFromRoom($user, $deviceId, $roomId, $homeId);
+</code></pre>
+
+<p>从Home中删除设备——需要通知微信平台同步信息：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 从Home中删除设备
+$deviceService-&gt;deleteDeviceFromHome($user, $homeId, $deviceId);
+// 通知微信平台同步设备与用户的绑定信息。参数$physicalId是设备$deviceId对应的物理ID。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+$wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+</code></pre>
+
+<h2 id="_25">设备的扩展属性</h2>
+<h3 id="_26">获取设备的扩展属性</h3>
 <pre><code class="php">// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
 // 获取设备的扩展属性
 $keyValues = $deviceService-&gt;getDeviceProfile($deviceId);
 </code></pre>
 
-<h3 id="_24">设置设备的扩展属性</h3>
+<h3 id="_27">设置设备的扩展属性</h3>
 <p>设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性列。</p>
 <pre><code class="php">// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
@@ -781,8 +953,8 @@ $deviceService = ACClient::getDeviceService();
 $deviceService-&gt;setDeviceProfile($user, $deviceId, $profile);
 </code></pre>
 
-<h1 id="_25">和云端通信</h1>
-<h2 id="_26">访问云端服务</h2>
+<h1 id="_28">和云端通信</h1>
+<h2 id="_29">访问云端服务</h2>
 <p>PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。</p>
 <pre><code class="php">// 实例化ACRequest对象
 $request = new ACRequest($serviceName, $methodName, $serviceVersion);
@@ -797,21 +969,33 @@ $response = ACClient::sendToService($request);
 </code></pre>
 
 <p>上例中，参数$serviceName是要访问的UDS服务的名字，$methodName是要访问的方法名，$serviceVersion用于指定服务的主版本。这三个参数组合起来描述了此次请求的目标。</p>
-<h2 id="_27">向设备发送消息</h2>
+<h2 id="_30">向设备发送消息</h2>
 <p>PHP SDK中的类ACDeviceService定义了方法sendToDevice用于向设备发送指令。该方法的使用示例如下：</p>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
 // 向设备发送消息
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
-$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message);
+// 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
+$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message, 'weixin', '6.2.1');
 // 其它处理逻辑
 </code></pre>
 
-<p><strong>注：</strong>该接口暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。</p>
-<h1 id="_28">定时任务</h1>
+<p>上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。</p>
+<p>此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：</p>
+<pre><code class="php">// 实例化ACDeviceService对象
+$deviceService = ACClient::getDeviceService();
+// 通过ACContext设置终端工具的信息
+$context = $deviceService-&gt;getContext();
+$context-&gt;setHandset('weixin', '6.2.1', '', 'android');
+// 向设备发送消息：省略第五个参数。
+$response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message);
+</code></pre>
+
+<p><strong>注：</strong>ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。</p>
+<h1 id="_31">定时任务</h1>
 <p>AbleCloud支持设备的定时任务，比如每天的固定时间向设备发送指令，控制设备运行特定的功能。这里的定时任务主要由三部分组成：执行任务的时间规则、任务执行时要发给设备的指令，以及权限及认证信息——定义任务的用户及执行任务的设备。</p>
-<h2 id="_29">添加定时任务</h2>
+<h2 id="_32">添加定时任务</h2>
 <pre><code class="php">// 实例化ACTimerTaskService对象
 $timerTaskService = ACClient::getTimerTaskService();
 // 配置定时任务
@@ -823,12 +1007,12 @@ $timerTaskService-&gt;addTask($task, $user);
 </code></pre>
 
 <p>上述例子中，ACTimerTask对象就用与设置任务的相关属性：执行任务的时间规则、任务执行时要发给设备的指令，定义任务的用户以及执行任务的设备。ACTimerTask的详细说明请参考<a href="../../reference/wechat/">Reference-微信客户端开发参考</a>中的“AbleCloud定时任务”。</p>
-<h2 id="_30">查询定时任务列表</h2>
+<h2 id="_33">查询定时任务列表</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 </code></pre>
 
-<h2 id="_31">启动定时任务</h2>
+<h2 id="_34">启动定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要启动的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要启动的任务的ID，记为$taskId。
@@ -836,7 +1020,7 @@ $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 $timerTaskService-&gt;startTask($user, $deviceId, $taskId);
 </code></pre>
 
-<h2 id="_32">停止定时任务</h2>
+<h2 id="_35">停止定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要停止的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要停止的任务的ID，记为$taskId。
@@ -844,7 +1028,7 @@ $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 $timerTaskService-&gt;stopTask($user, $deviceId, $taskId);
 </code></pre>
 
-<h2 id="_33">修改定时任务</h2>
+<h2 id="_36">修改定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要修改的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要修改的任务的ID，记为$taskId。
@@ -856,7 +1040,7 @@ $task = new ACTimerTask();
 $timerTaskService-&gt;modifyTask($taskId, $task, $user);
 </code></pre>
 
-<h2 id="_34">删除定时任务</h2>
+<h2 id="_37">删除定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要删除的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要删除的任务的ID，记为$taskId。
@@ -868,7 +1052,7 @@ $timerTaskService-&gt;deleteTask($user, $deviceId, $taskId);
 <p>本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
 此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。</p>
 <p>AbleCloud支持灵活的设备固件升级策略，开发者可以登录管理控制台制定相关信息。</p>
-<h2 id="_35">检查更新</h2>
+<h2 id="_38">检查更新</h2>
 <p>检查针对某个设备（WiFi设备）是否存在可升级的固件版本。</p>
 <pre><code class="php">// 实例化ACOtaService
 $otaService = ACClient::getOtaService();
@@ -878,13 +1062,38 @@ $needUpdate = $otaVersion-&gt;canUpdate();
 // $needUpdate为TRUE时表示云端发布了新版本的固件，可以执行升级。
 </code></pre>
 
-<h2 id="_36">确认升级</h2>
+<h2 id="_39">确认升级</h2>
 <p>经过前述步骤查询得到可升级的固件版本时，用户可以选择是否升级。确认升级的示例代码如下：</p>
 <pre><code class="php">// 将指定设备的固件升级为查询得到的新版本
 $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion());
 </code></pre>
 
-<h1 id="_37">消息推送</h1>
+<h1 id="_40">数据存储</h1>
+<p>ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：</p>
+<pre><code class="php">// 查询条件
+// 创建ACStoreScanner对象，设置查询条件。
+// 参数$datasetName是要查熏的数据集的名字。
+// 第二个参数是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+$scanner = new ACStoreScanner($datasetName, array('deviceId' =&gt; 1));
+$filter1 = new ACStoreFilter('time', ACStoreFilter::$GreaterOrEqual, 12345670);
+$filter2 = new ACStoreFilter('time', ACStoreFilter::$Less, 12345679);
+$complicatedFilter1 = new ACStoreComplicatedFilter($filter1);
+$complicatedFilter2 = new ACStoreComplicatedFilter($filter2);
+$complicatedFilter1-&gt;linkTo($complicatedFilter2, true);
+$scanner-&gt;select('deviceId', 'status');
+$scanner-&gt;where($complicatedFilter1);
+$scanner-&gt;addOrderBy('time', true);
+$scanner-&gt;addOrderBy('deviceId', false);
+$scanner-&gt;groupBy('deviceId', 'status', 'time');
+$scanner-&gt;limit(100);
+$scanner-&gt;avg('status');
+// 实例化ACStoreService对象，执行查询。
+$storeService = ACClient::getStoreService();
+$storeIter = $storeService-&gt;scan($scanner);
+$rows = $storeIter-&gt;next();     // $rows即是查询结果。
+</code></pre>
+
+<h1 id="_41">消息推送</h1>
 <p>向用户的微信客户端推送消息可分两种情况：一种是用户打开公众号的HTML5页面时推送消息到HTML5页面；一种是直接推送消息到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
 <p>第一种情况下，可利用HTML5页面的WebSocket技术实现消息的实时推送。具体流程是：</p>
 <ul>

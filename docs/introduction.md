@@ -42,6 +42,8 @@ AbleCloud云平台的接入流程如下图所示
 
 
 #开发流程
+
+![develop_flow](./pic/introduction/develop_flow.png) 
  
 我们制作了一个demo，该demo基于汉枫的开发板实现了一个可以远程控制的LED灯。开发者可以通过该demo快速熟悉AbleCloud的开发流程。[点击下载](http://www.ablecloud.cn/download/AbleCloud-Demo-Step-By-Step.zip)
 
@@ -59,36 +61,7 @@ AbleCloud云平台的接入流程如下图所示
 
 设备能够连接到云端才能够实现APP等客户端对设备的远程查看和控制。
 
-对于WiFi设备，AbleCloud已经对主流的WiFi模块进行了适配，在WiFi模块中烧入AbleCloud提供的固件后设备即可连接到云端。
-
-已经完成适配的WiFi模块见下表：
-
-|合作厂商|模块型号|WIFI芯片      | AirKiss|Smartconfig|
-|-------|---------------|--------|----------|
-|	汉枫   | LPB100         |MTK	         |	支持  |	支持|
-|	      | LPB200         | Marvell	   |	支持  |	支持|
-|	      | LPT100         |MTK	         |	支持  |	支持|
-|	      | LPT200         |MTK	         |	支持  |	支持|
-|	庆科   | EMW3162|broadcom        |	支持  |	支持|
-|	      | EMW3165|broadcom        |	支持  |	支持|
-|	      | EMW3088| Marvell              |	支持  |	支持|
-|	      | EMW1088| Marvell              |	支持  |	支持|
-|江波龙 | WK1230         |QCA4004       |	支持   |	支持|
-|       | GT1216         |QCA4004       |	支持   |	支持|
-|       | GT141         |QCA4004       |	支持   |	支持|
-|       | WK1221          |QCA4004       |	支持   |	支持|
-|思存	  |ITM-IOE01       |QCA4004		           |	支持 |	支持|
-|    	  |ITM-IOE20       |QCA4004		           |	支持 |	支持|
-|航锐	  |   HR WF411        |QCA4004		           |	不支持 |	支持|
-|   	  |   HR WF422        |QCA4004		           |	不支持 |	支持|
-| Marvel|          |Marvel-88MC500|	不支持|	支持|
-|联盛德 |          |HED10W07SN        |	支持|	支持|
-|卓立合 | LH781         |MTK7681       |  不支持   |支持|
-|新岸线 |        | NL6621      |  不支持   |支持|
-|Realtek |          |RTL8711       |  支持   |支持|
-|村田 |   MIDK       |QCA4002       |  不支持   |支持|
-|TI |   cc3200       |  cc3200     |  不支持   |支持|
-|	|				|				|			|	|
+对于WiFi设备，AbleCloud已经对主流的WiFi模块进行了适配，在WiFi模块中烧入AbleCloud提供的固件后设备即可连接到云端。[点击查看已经完成适配的WiFi模块列表](http://www.ablecloud.cn/download/adapted-wifi.pdf)
 
 
 对于安卓设备，AbleCloud提供安卓设备的SDK，SDK完成设备到云端的连接，开发者直接调用SDK开发功能即可。
