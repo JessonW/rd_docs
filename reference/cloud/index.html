@@ -837,7 +837,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     public ACContext newContext() {}
 
     /**
-     * 构建一个用户上下文，由于是框架创建的，因此也会带着开发者信息
+     * 构建一个用户上下文，由于是框架创建的，因此也会带着开发者信息，一般用于单测
      * @param userId
      * @return
      */
@@ -1109,7 +1109,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p><font color="red">注意</font>：此处应该传用户上下文，即<code>ac.newContext(userId)</code>或<code>req.getContext()</code>(仅调用listUsers方法时除外，使用<code>ac.newContext()</code>)。</p>
+<p><font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>(仅调用listUsers方法时，可以使用<code>ac.newContext()</code>)。</p>
 </blockquote>
 <h3 id="_15">接口说明</h3>
 <pre><code class="java">public interface ACBindMgr {
@@ -1806,7 +1806,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <blockquote>
-<p><font color="red">注意</font>：此处应该使用用户上下文，即<code>ac.newContext(userId)</code>或<code>req.getContext()</code>。</p>
+<p><font color="red">注意</font>：此处应该使用用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>。</p>
 </blockquote>
 <h3 id="_30">接口说明</h3>
 <pre><code class="java">public interface ACTimerTaskMgr {
