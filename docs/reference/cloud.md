@@ -453,7 +453,7 @@ public abstract class AC {
     public ACContext newContext() {}
 
     /**
-     * 构建一个用户上下文，由于是框架创建的，因此也会带着开发者信息
+     * 构建一个用户上下文，由于是框架创建的，因此也会带着开发者信息，一般用于单测
      * @param userId
      * @return
      */
@@ -724,7 +724,7 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 ```java
 ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该传用户上下文，即`ac.newContext(userId)`或`req.getContext()`(仅调用listUsers方法时除外，使用`ac.newContext()`)。
+><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`，单测中使用`ac.newContext(userId)`(仅调用listUsers方法时，可以使用`ac.newContext()`)。
 
 ###接口说明
 ```java
@@ -1420,7 +1420,7 @@ public class ACNotification {
 ```java
 ACTimerTaskMgr timerMgr = ac.timerTaskMgr(ACContext context);
 ```
-><font color="red">注意</font>：此处应该使用用户上下文，即`ac.newContext(userId)`或`req.getContext()`。
+><font color="red">注意</font>：此处应该使用用户上下文，即`req.getContext()`，单测中使用`ac.newContext(userId)`。
 
 ###接口说明
 ```java
