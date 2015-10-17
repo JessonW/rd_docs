@@ -977,6 +977,7 @@ $deviceService = ACClient::getDeviceService();
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
 // 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
+// 参数值'6.2.1'描述的是微信的版本信息。
 $response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $message, 'weixin', '6.2.1');
 // 其它处理逻辑
 </code></pre>
