@@ -1317,6 +1317,7 @@ public void testGet() {
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
+            client.disconnect();
         }
     } catch (IOException e) {
         fail(e.toString());
@@ -1346,6 +1347,7 @@ public void testPost() {
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
+            client.disconnect();
         }
     } catch (IOException e) {
         e.printStackTrace();

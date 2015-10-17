@@ -1964,6 +1964,7 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 
 <h2 id="_46">三、上传文件</h2>
 <h3 id="1_10">1、设置上传文件的权限管理</h3>
+<p>如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。</p>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
 //设置所有人可读，黑名单除外(或者设置所有人不可读，白名单除外)
