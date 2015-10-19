@@ -171,13 +171,8 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
         }
 	});
 ```
-<<<<<<< HEAD
-><font color=red>注</font>：该接口需要在使用普通账户登陆之后才可以调用
-
-=======
 ><font color=red>注</font>：该接口需要在使用普通账户登录之后才可以调用
 
->>>>>>> 936e8bb8c13eab2a6cc4af17f3f95d7614cbf5d0
 ##三、添加帐号扩展属性
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性
@@ -1694,6 +1689,7 @@ fileMgr.downloadFile(url, new ProgressCallback() {
 ##三、上传文件
 
 ###1、设置上传文件的权限管理
+如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。
 ```java
 //acl为权限管理
 ACACL acl = new ACACL();

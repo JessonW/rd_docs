@@ -82,7 +82,11 @@ h3 {
 }
 
 h4 {
+<<<<<<< HEAD
 	margin-top: 30px;
+=======
+	margin-top: 15px;
+>>>>>>> 3c0216b6ac0e703acb9b5db63b598832fc9112f6
     font-weight: 400;
 	font-family: "Microsoft YaHei","Apple LiSung Light";
 }
