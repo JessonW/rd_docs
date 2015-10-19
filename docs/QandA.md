@@ -1,4 +1,5 @@
 #云平台功能相关
+## <span class="skip">||SKIP||</span>
 
 ####问：AbleCloud现在支持模块类型有哪些？
 
@@ -48,6 +49,7 @@
 
 
 #APP开发相关
+## <span class="skip">||SKIP||</span>
 
 ####问：Android端.uid和token怎么获取与保存？
 
@@ -66,6 +68,8 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #设备联网相关
+## <span class="skip">||SKIP||</span>
+
 ####问：wifi模块怎么连接云端？
 
 答：如果使用的Wi-Fi模块是上述WIFI模块，我们会提供上述WIFI模块的固件，烧写固件后则可正常接入AbleCloud。如果使用自选的WIFI模块，可以联系我们BD，签署相关协议后，可获得相关文档和参考代码资源。
@@ -86,6 +90,7 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #设备管理/使用相关
+## <span class="skip">||SKIP||</span>
 
 ####问：APP/UDS显示控制设备失败怎么处理？
 控制设备失败可能的原因有：
@@ -127,6 +132,7 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #Home模型相关
+## <span class="skip">||SKIP||</span>
 
 ####问：网关类设备的子设备如何加入home中？
 网关类设备的子设备比较特殊，只能使用addSubDevice方法加入网关，当网关在home中时，子设备自动加入home中，网关移出home后，子设备自动移出home，当网关移入home后，子设备默认也移入home，需要用户自行将设备移入指定的room。子设备单独移出home也只能通过deleteSubDevice方法将其从网关中移出，云端自动将其从home中移出。
@@ -140,6 +146,7 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #OTA相关
+## <span class="skip">||SKIP||</span>
 ####问：HF-LPB100如何升级？
 
 
@@ -177,6 +184,8 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #云端服务相关
+## <span class="skip">||SKIP||</span>
+
 ####问：UDS返回查询结果为NULL是怎么回事？
 答:H5中获取的时间单位是秒，我们需要的是毫秒。
 
@@ -197,6 +206,7 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 
 #微信相关
+## <span class="skip">||SKIP||</span>
 
 ####1.makeQRCode方法，会报service not available的错误
 解决方法：
@@ -217,13 +227,15 @@ Ac.js支持通过url及cookie两种方式获取参数。如果用 /weixin/oauth2
 
 
 
-#管理后台相关
+#管理后台使用相关
+## <span class="skip">||SKIP||</span>
 
 ####问：设备已经从云端下线后为什么管理后台仍然显示设备在线？
 答：这是因为设备与云端采用TCP通信协议，如果设备下线时主动释放链路，那么云端可以立即检测到设备下线；当设备是异常掉电等场景导致设备不能主动断开连接的时候云端需要依赖设备与云端的心跳检测机制去检测设备是否在线，所以存在一定的延时。
 
 
 #设备生产相关
+## <span class="skip">||SKIP||</span>
 
 ####1.设备端如何从测试环境迁移正式环境?
 
