@@ -1,203 +1,259 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>基本概念 - AbleCloud 开发文档</title>
+  
 
-	<title>基本概念 - AbleCloud 开发文档</title>
+  <link rel="shortcut icon" href="../../img/favicon.ico">
 
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../css/highlight.css">
-        <link href="../../css/base.css" rel="stylesheet">
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
 
-        
-    </head>
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "基本概念";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+  <script src="../../js/theme.js"></script> 
 
-    <body>
+  
+</head>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+<body class="wy-body-for-nav" role="document">
 
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+  <div class="wy-grid-for-nav">
 
-            <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/">AbleCloud 开发文档</a>
-        </div>
-
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
-            <!-- Main navigation -->
-            <ul class="nav navbar-nav">
-            
-            
-                <li >
-                    <a href="../../introduction/">基本介绍</a>
-                </li>
-            
-            
-            
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li class="active">
-                            <a href="./">基本概念</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../functions/">功能介绍</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li >
-                            <a href="../../develop_guide/android/">客户端-安卓</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../develop_guide/iOS/">客户端-iOS</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../develop_guide/wechat/">客户端-微信</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../develop_guide/device/">设备-嵌入式系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../develop_guide/device_android/">设备-安卓系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../develop_guide/cloud/">云端服务</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li >
-                            <a href="../../reference/android/">客户端-安卓</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/iOS/">客户端-iOS</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/wechat/">客户端-微信</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/device/">设备-嵌入式系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/device_android/">设备-安卓系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/cloud/">云端服务</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../../reference/error_code/">Error Code</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li >
-                    <a href="../../QandA/">Q&A</a>
-                </li>
-            
-            
-            </ul>
-
-            <!-- Search, Navigation and Repo links -->
-            <ul class="nav navbar-nav navbar-right">
-                <li >
-                    <a rel="next" href="../../introduction/">
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
-                <li >
-                    <a rel="prev" href="../functions/">
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../../introduction/" class="icon icon-home"> AbleCloud 开发文档</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
 </div>
+      </div>
 
-        <div class="container">
-            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-    
-        <li class="main active"><a href="#_1">智能硬件架构模型</a></li>
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../introduction/">基本介绍</a>
         
-    
-        <li class="main "><a href="#ablecloud">AbleCloud的功能模块</a></li>
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>功能说明</span></li>
+
         
-    
-        <li class="main "><a href="#_2">名词解释</a></li>
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">基本概念</a>
         
-            <li><a href="#_3">通用</a></li>
+            <ul>
+            
+                <li class="toctree-l3"><a href="#_1">智能硬件架构模型</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#ablecloud">AbleCloud的功能模块</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#_2">名词解释</a></li>
+                
+                    <li><a class="toctree-l4" href="#_3">通用</a></li>
+                
+                    <li><a class="toctree-l4" href="#_4">产品定义相关</a></li>
+                
+                    <li><a class="toctree-l4" href="#_5">服务相关</a></li>
+                
+                    <li><a class="toctree-l4" href="#_6">帐号相关</a></li>
+                
+                    <li><a class="toctree-l4" href="#_7">设备相关</a></li>
+                
+                    <li><a class="toctree-l4" href="#_8">开发调试相关</a></li>
+                
+            
+            </ul>
         
-            <li><a href="#_4">产品定义相关</a></li>
+    </li>
+
         
-            <li><a href="#_5">服务相关</a></li>
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../functions/">功能介绍</a>
         
-            <li><a href="#_6">帐号相关</a></li>
+    </li>
+
         
-            <li><a href="#_7">设备相关</a></li>
-        
-            <li><a href="#_8">开发调试相关</a></li>
-        
-    
     </ul>
-</div></div>
-            <div class="col-md-9" role="main">
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>开发指导</span></li>
 
-<h1 id="_1">智能硬件架构模型</h1>
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/android/">客户端-安卓</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/iOS/">客户端-iOS</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/wechat/">客户端-微信</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/device/">设备-嵌入式系统</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/device_android/">设备-安卓系统</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../develop_guide/cloud/">云端服务</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Reference</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/android/">客户端-安卓</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/iOS/">客户端-iOS</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/wechat/">客户端-微信</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/device/">设备-嵌入式系统</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/device_android/">设备-安卓系统</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/cloud/">云端服务</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../reference/error_code/">Error Code</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../QandA/">Q&A</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../introduction/">AbleCloud 开发文档</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../introduction/">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>功能说明 &raquo;</li>
+        
+      
+    
+    <li>基本概念</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="_1">智能硬件架构模型</h1>
 <p><img alt="arch" src="../../pic/features/architecture.png" /> </p>
 <p>上图是目前常见的智能硬件联网解决方案，从图中可以看到，整个硬件联网闭环存在三条消息流，分别表示不同的消息传递方式。</p>
 <p><strong>远程控制 --</strong>
@@ -339,18 +395,50 @@ AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个�
 <li>
 <p><strong>虚拟设备</strong>：指云端虚拟出一个用户已经定义的产品的设备。方便在设备还没有开发完成时对APP的调试。虚拟设备可以模拟真实设备上报数据，也可以显示APP发来的指令。</p>
 </li>
-</ul></div>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../functions/" class="btn btn-neutral float-right" title="功能介绍"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../introduction/" class="btn btn-neutral" title="基本介绍"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
         </div>
+      </div>
 
-        <footer class="col-md-12">
-            <hr align=center>
-            
-            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
-        </footer>
+    </section>
 
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script src="../../js/base.js"></script>
-    </body>
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../introduction/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../functions/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+
+</body>
 </html>
