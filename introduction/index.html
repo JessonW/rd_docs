@@ -13,8 +13,8 @@
 
         <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
         <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -27,11 +27,12 @@
 
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
         <!-- Collapsed navigation -->
         <div class="navbar-header">
+            
             <!-- Expander button -->
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -39,168 +40,257 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
 
             <!-- Main title -->
-            <a class="navbar-brand" href="./">AbleCloud 开发文档</a>
+            <a class="navbar-brand" href="./"><img src="../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
         </div>
 
         <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
-            <!-- Main navigation -->
-            <ul class="nav navbar-nav">
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
             
-            
-                <li class="active">
-                    <a href="./">基本介绍</a>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li >
-                            <a href="../features/concepts/">基本概念</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../features/functions/">功能介绍</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li >
-                            <a href="../develop_guide/android/">客户端-安卓</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../develop_guide/iOS/">客户端-iOS</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../develop_guide/wechat/">客户端-微信</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../develop_guide/device/">设备-嵌入式系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../develop_guide/device_android/">设备-安卓系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../develop_guide/cloud/">云端服务</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        <li >
-                            <a href="../reference/android/">客户端-安卓</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/iOS/">客户端-iOS</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/wechat/">客户端-微信</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/device/">设备-嵌入式系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/device_android/">设备-安卓系统</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/cloud/">云端服务</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../reference/error_code/">Error Code</a>
-                        </li>
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li >
-                    <a href="../QandA/">Q&A</a>
-                </li>
-            
-            
-            </ul>
-
-            <!-- Search, Navigation and Repo links -->
-            <ul class="nav navbar-nav navbar-right">
-                <li class="disabled">
-                    <a rel="next" >
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
-                <li >
-                    <a rel="prev" href="../features/concepts/">
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </li>
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
                 
-            </ul>
+                
+                    <li class="active">
+                        <a href="./" style="background:#00a0dc;">基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../features/concepts/">基本概念</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../features/functions/">功能介绍</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../develop_guide/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../develop_guide/cloud/">云端服务</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../reference/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reference/error_code/">Error Code</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../QandA/" >Q&A</a>
+                    </li>
+                
+                
+                </ul>
+            
         </div>
     </div>
 </div>
 
-        <div class="container">
-            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+        <div class="container container-ac">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#_1">接入流程</a></li>
         
-            <li><a href="#ablecloud">一、AbleCloud注册</a></li>
         
-            <li><a href="#_2">二、商务接洽</a></li>
+            
+                
+            
         
-            <li><a href="#_3">三、技术评估</a></li>
+            
+                
+            
         
-            <li><a href="#_4">四、商务合同</a></li>
+            
+                
+            
         
-            <li><a href="#test">五、test环境产品开发</a></li>
+            
+                
+            
         
-            <li><a href="#_5">六、正式环境产品上线</a></li>
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main active">
+            <a href="#_1">接入流程<span class="main-set parent__1">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#ablecloud">一、AbleCloud注册</a></li>
+            
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#_2">二、商务接洽</a></li>
+            
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#_3">三、技术评估</a></li>
+            
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#_4">四、商务合同</a></li>
+            
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#test">五、test环境产品开发</a></li>
+            
+        
+            
+            <li class="sub parent__1" style="display: none;"><a href="#_5">六、正式环境产品上线</a></li>
+            
         
     
-        <li class="main "><a href="#_6">开发流程</a></li>
         
-            <li><a href="#_7">一、定义产品</a></li>
         
-            <li><a href="#_8">二、功能开发</a></li>
+            
+                
+            
         
-            <li><a href="#_9">三、调试</a></li>
+            
+                
+            
         
-            <li><a href="#_10">四、产品上线</a></li>
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_6">开发流程<span class="main-set parent__6">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_7">一、定义产品</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_8">二、功能开发</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_9">三、调试</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_10">四、产品上线</a></li>
+            
         
     
     </ul>
 </div></div>
-            <div class="col-md-9" role="main">
+                <div class="col-md-9" role="main">
 
 <h1 id="_1">接入流程</h1>
 <p>AbleCloud云平台的接入流程如下图所示</p>
@@ -290,17 +380,46 @@
 <p>产品开发在test环境进行，对应网址：test.ablecloud.cn。开发完成后，转移到正式生产环境进行设备生产和出货。</p>
 <p>将产品由test环境转移到正式环境的详细操作步骤详见<a href="https://www.ablecloud.cn/download/%E4%BA%A7%E5%93%81%E4%B8%8A%E7%BA%BF%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E.pdf">产品上线操作说明</a></p>
 <p>转移完成后，产品就可以正式生产和出货了。</p></div>
+            
         </div>
 
         <footer class="col-md-12">
             <hr>
             
-            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
         </footer>
 
-        <script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script>
-        <script src="../js/base.js"></script>
+        <script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
