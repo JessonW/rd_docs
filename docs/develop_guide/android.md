@@ -296,11 +296,7 @@ AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCall
 - 4.确保设备的天线正常。
 - 5.确保网络环境不是公共环境。
 
-绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：
-
-- 1.设备电源供电不足造成断网。
-- 2.WIFI信号不好造成断网。
-- 3.路由器断网。
+绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。
 
 ###GPRS设备
 **<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
