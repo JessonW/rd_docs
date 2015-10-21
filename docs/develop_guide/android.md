@@ -759,12 +759,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 
 ###二进制格式
 
-**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
-
-这里创建的数据点和数据包如下所示：
-
-【数据点】
-![binary_datapoint](../pic/develop_guide/cloud_communication_binary.png)
+**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建数据包**
 
 【数据包】
 ![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
