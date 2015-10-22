@@ -970,7 +970,7 @@
 </li>
 </ul>
 <h1 id="klv">KLV协议介绍</h1>
-<p>KLV是一种比json更轻量级的类json数据交换格式，适合在低处理能力的嵌入式设备上运行。KLV采用了流格式，KLV中key必须是数字，可以跟简单json进行转换，只是需要将json中的不同类型的key映射成KLV的数字的key。</p>
+<p>KLV是一种比json更轻量级的类json数据交换格式，适合在低处理能力的嵌入式设备上运行。KLV采用了流格式，KLV中key必须是数字，可以跟简单json进行转换，只是需要将json中的不同类型的key映射成KLV的数字的key。因此，使用KLV格式的数据，一方面降低了设备端运算压力另一方面，云端和APP端可以像JSON一样解析数据的具体内容。这样，在云端定义了KLV格式的数据点之后，大数据分析引擎就可以对设备的具体各个功能点的使用情况进行统计分析了。</p>
 <p>KLV数据格式如下图所示：</p>
 <p><img alt="device_KLV1.png" src="../../pic/features/device_KLV1.png" /></p>
 <p>KLV数据格式包含四部分：键值（Key），数据类型，长度（Length），数值（Value）。</p>
