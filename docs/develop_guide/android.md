@@ -695,7 +695,7 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 ##一、发送消息到设备
 ###KLV格式
 
-KLV协议介绍请参考：[reference-设备-KLV协议介绍](../reference/device.md#klv)。
+KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
 
 **在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。**
 这里创建的数据点和数据包如下所示：

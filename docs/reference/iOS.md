@@ -165,6 +165,8 @@ extern NSString *const ACMsgErrMSG;
 >+ **KLV**
 >KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
 
+KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
+
 ACDeviceMsg定义如下：
 ```c
 @property (nonatomic, assign) NSInteger msgId;
