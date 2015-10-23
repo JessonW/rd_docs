@@ -80,6 +80,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####2、发送验证码
 
 ```java
+    //1代表AbleCloud短信内容模板，具体开发需要先把短信模板提交到AbleCloud再获取对应的参数
 	AC.accountMgr().sendVerifyCode(phone, 1, new VoidCallback() {
         @Override
         public void success() {
@@ -95,7 +96,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####3、检测验证码正确性
 
 ```java
-	AC.accountMgr().checkVerifyCode(phone，code, new PayloadCallback<Boolean>() {
+	AC.accountMgr().checkVerifyCode(phone，verifyCode, new PayloadCallback<Boolean>() {
         @Override
         public void success(Boolean result) {
             if (result) {
@@ -114,10 +115,11 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####4、注册
 
 ```java
-	AC.accountMgr().register("", phone, password, name, verifyCode, new PayloadCallback<ACUserInfo>() {
+    //emai和phone可以任选其一
+	AC.accountMgr().register(email, phone, password, name, verifyCode, new PayloadCallback<ACUserInfo>() {
         @Override
         public void success(ACUserInfo userInfo) {
-            //获得用户userId和nickName，进入主页或设备管理
+            //获得用户userId和nickName，由此进入主页或设备管理
         }	
         @Override
         public void error(ACException e) {
@@ -133,7 +135,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####1、直接使用第三方登录
 
 ```java
-	//APP端在完成OAuth认证登录之后获取openId和accessToken
+	//APP端在完成OAuth认证登录之后可以获取到openId和accessToken
 	AC.accountMgr().loginWithOpenId(ACThirdPlatform.QQ, openId, accessToken, new PayloadCallback<ACUserInfo>() {
         @Override
         public void success(ACUserInfo userInfo) {
@@ -145,7 +147,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
         }
 	});
 	//绑定一个未被注册的普通帐号
-	AC.accountMgr().bindWithAccount( email, phone, password, nickName, verifyCode, new VoidCallback() {
+	AC.accountMgr().bindWithAccount(email, phone, password, nickName, verifyCode, new VoidCallback() {
         @Override
         public void success() {
             //绑定账号成功
@@ -160,7 +162,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####2、在已有普通账号登录时绑定第三方账号
 
 ```java
-	AC.accountMgr().bindWithAccount( email, phone, password, nickName, verifyCode, new VoidCallback() {
+	AC.accountMgr().bindWithAccount(email, phone, password, nickName, verifyCode, new VoidCallback() {
         @Override
         public void success() {
             //绑定第三方账号成功
@@ -254,6 +256,7 @@ deviceActivator. getSSID()
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。只支持配置手机当前连接的WiFi。
 
 ```java
+//ssid为wifi名，password为wifi密码
 deviceActivator.startAbleLink(ssid, password,  AC.DEVICE_ACTIVATOR_DEFAULT_TIMEOUT, new PayloadCallback<List<ACDeviceBind>>() {
     @Override
     public void success(List<ACDeviceBind> deviceBinds) {
@@ -711,33 +714,38 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ```
 //请求数据包
 { 69 ：[
-     //数据点[key：value(int8)]
-     //关灯
-     { 1 : 0 },
-     //开灯      
-     { 1 : 1 }
+     //数据点[key：value(int8)]，其中0代表关灯，1代表开灯
+     { 1 : 0/1 }
 ]}
 //响应数据包  
 { 60 ：[
-     //数据点[key：value(int8)]
-     //失败
-     { 1 : false },
-     //成功      
-     { 1 : true }
+     //数据点[key：value(boolean)]，其中false为失败，true为成功
+     { 1 : false/true }
 ]}
 ```
 截取开灯代码，如下:
 ```java
+public class Config {
+    public static final int LIGHT_MSGCODE = 69;
+    
+    public static final int KEY_SWITCH = 1;
+    public static final int VALUE_OPEN = 1;
+    public static final int VALUE_CLOSE = 0;
+
+    public static final int KEY_RESULT = 1;
+}
+```
+```java
 ACKLVObject req = new ACKLVObject();
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
-req.put(1, 1);
+req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(Config.LIGHT_MSGCODE, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
     @Override
     public void success(ACKLVDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
         //发送成功并接收设备的响应消息
-        boolean result = resp.get(1);
+        boolean result = resp.get(Config.KEY_RESULT);
         if(result) {
             //开灯成功
         } else {
@@ -765,17 +773,13 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 ```
 //请求数据包
 { 68 ：[
-     //关灯(二进制流，由厂商自己解析)
-     { 0 , 0 , 0 , 0 },
-     //开灯(二进制流，由厂商自己解析)   
-     { 1 , 0 , 0 , 0 }
+     //开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+     { 0/1 , 0 , 0 , 0 }
 ]}
 //响应数据包  
 { 102 ：[
-     //失败(二进制流，由厂商自己解析)
-     { 0 , 0 , 0 , 0 },
-     //成功(二进制流，由厂商自己解析)        
-     { 1 , 0 , 0 , 0 }
+     //结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+     { 0/1 , 0 , 0 , 0 }
 ]}
 ```
 截取开灯代码，如下:
@@ -791,7 +795,8 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
      */
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return (byte[]) msg.getContent();
+        LightMsg lightMsg = (LightMsg) msg.getContent();
+        return new byte[lightMsg.getLedOnOff, 0, 0, 0];
     }
 
     /**
@@ -809,7 +814,28 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```
 ####2、发送到设备
 ```java
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte[]{1, 0, 0, 0}), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+public class LightMsg {
+    public static final int REQ_CODE = 68;
+    public static final int RESP_CODE = 102;
+
+    //0代表关，1代表开
+    public static final byte ON = 1;
+    public static final byte OFF = 0;
+
+    private byte ledOnOff;
+
+    public LightMsg(byte ledOnOff) {
+        this.ledOnOff = ledOnOff;
+    }
+
+    public byte getLedOnOff() {
+        return ledOnOff;
+    }
+}
+
+```
+```java
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte[] resp = (byte[]) deviceMsg.getContent();
@@ -843,17 +869,13 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, new byte
 ```
 //请求数据包
 { 70 ：[
-     //关灯
-     {"switch", 0}
-     //开灯
-     {"switch", 1}
+     //开关灯，其中0代表关灯，1代表开灯
+     {"switch", 0/1}
 ]}
 //响应数据包  
 { 102 ：[
-     //失败
-     {"result", false},
-     //成功   
-     {"result", true}
+     //结果，其中false代表失败，1代表成功
+     {"result", false/true}
 ]}
 ```
 ####1、设置序列化器
@@ -873,10 +895,11 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 });
 ```
 ####2、发送到设备
+此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
 ```java
 ACObject req = new ACObject();
 req.put("switch", 1);
-bindMgr.sendToDeviceWithOption(subDomain, deviceI d, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
@@ -1026,26 +1049,31 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
-bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
-    @Override
-    public void success(List<ACUserDevice> deviceList) {
-        for(ACUserDevice device:deviceList){
-            /**
-              * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
-              * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
-              * 若只选择直连的通讯方式，则只有在2和3的状态下才能往设备发送成功
-              */
-            device.getStatus();
+//获取设备列表
+public void getDeviceList() {
+    bindMgr.listDevicesWithStatus(new PayloadCallback<List<ACUserDevice>>() {
+        @Override
+        public void success(List<ACUserDevice> deviceList) {
+            for(ACUserDevice device:deviceList){
+                /**
+                 * 设备在线状态(listDeviceWithStatus时返回，listDevice不返回该值)
+                 * 0不在线 1云端在线 2局域网在线 3云端和局域网同时在线
+                 * 若只选择直连的通讯方式，则只有在2和3的状态下才能往设备发送成功
+                 */
+                device.getStatus();
+            }
         }
-    }
 
-    @Override
-    public void error(ACException e) {
-        //网络错误且之前从来没有获取过设备列表时返回
-    }
-});
+        @Override
+        public void error(ACException e) {
+            //网络错误且之前从来没有获取过设备列表时返回
+        }
+    });
+}
 ```
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s，可以通过修改AC.FIND_DEVICE_DEFAULT_TIMEOUT时间从而提高获取局域网设备的准确性），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化并更新UI局域网状态
 ```java
 //监听网络变化
 ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
@@ -1058,7 +1086,7 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
 ```
 此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
 ```java
-//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动刷新设备列表与局域网状态
+//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动更新局域网状态
 AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
     @Override
     public void success(List<ACDeviceFind> acDeviceFin****ds) {
@@ -1155,12 +1183,12 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 timerMgr.openTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
-          //开启定时任务成功
+         //开启定时任务成功
      }
 
      @Override
      public void error(ACException e) {
-          //参数无误下一般为网络错误
+         //参数无误下一般为网络错误
      }
 });
 ```
@@ -1259,11 +1287,11 @@ otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() 
 otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
     @Override
     public void success() {
-         //确认升级     
+        //确认升级     
     }
     @Override
     public void error(ACException e) {
-         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 ```
@@ -1468,7 +1496,7 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 ####1、获取推送管理器
 ```java
-ACNotificationMgr notificationMgr=AC.notificationMgr();
+ACNotificationMgr notificationMgr = AC.notificationMgr();
 ```
 
 ####2、在应用的主Activity onCreate() 函数中开启推送服务
@@ -1730,17 +1758,17 @@ fileInfo.setData(bytes);
 fileMgr.uploadFile(fileInfo, new ProgressCallback() {
     @Override
     public void progress(double progress) {
-         //用于显示进度条，百分比，如99.99；此处一般为小文件上传，所以不需要显示进度条的时候传null
+        //用于显示进度条，百分比，如99.99；此处一般为小文件上传，所以不需要显示进度条的时候传null
     }
 }, new VoidCallback() {
     @Override
     public void success() {
-         //上传成功
+        //上传成功
     }
 
     @Override
     public void error(ACException e) {
-         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
+        //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
     }
 });
 ```

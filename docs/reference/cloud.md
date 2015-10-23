@@ -247,11 +247,11 @@ private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
 ```
 
 ##ACDeviceMsg
-该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值做出不同的处理响应。
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的序列化/反序列化操作。
 >+ **二进制/json**
 >在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
 >+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊格式。具体应用时，需要到AbleCloud平台定义设备的数据点和数据包。此时开发者不需要自己编写消息序列化/反序列化器，AbleCloud可依据定义的数据点和数据包自动解析消息的内容。。
+>KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊格式。具体应用时，需要到AbleCloud平台定义设备的数据点和数据包。此时开发者不需要自己编写消息序列化/反序列化器，AbleCloud可依据定义的数据点和数据包自动解析消息的内容。
 
 ACDeviceMsg定义如下：
 ```java
@@ -270,9 +270,9 @@ public class ACDeviceMsg {
 }
 ```
 
-<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型。若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容。在作具体的序列化/反序列化时，可根据code的不同值执行不同的序列化/反序列化操作。
+<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型。开发者需要根据实际情况实现序列化器用来解释content的内容。
 
-##ACDeviceMsgMarshaller
+####ACDeviceMsgMarshaller
 设备消息的序列化/反序列化器，用于解释ACDeviceMsg的具体内容。其定义如下：
 ```java
 public interface ACDeviceMsgMarshaller {
@@ -841,7 +841,7 @@ public interface ACBindMgr {
      *
      * @param subDomain 子域名，比如thermostat
      * @param deviceId  设备逻辑id
-     * @param reqMsg    具体的消息内容
+     * @param reqMsg    具体的消息内容，参考交互消息-->ACDeviceMsg
      * @return 设备返回的消息
      * @throws Exception
      */
