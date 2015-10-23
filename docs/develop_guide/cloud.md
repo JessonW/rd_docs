@@ -708,7 +708,7 @@ public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
 前文的代码实现了本示例的全部功能。在终端运行`mvn package`即可编译成jar包。你可以开发更多好玩的逻辑，比如多设备联动：当某些设备上报的数据达到设置的规则时，触发另外的设备做出响应。
 对该服务的测试见后文的相关章节。
 
-# 云端定时任务Demo
+# 后台任务Demo
 本小结介绍一个AbleCloud云端定时任务示例。
 
 一个完整的云端定时任务由两部分组成：

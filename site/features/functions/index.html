@@ -368,6 +368,118 @@
             
         
     
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_24">名词解释<span class="main-set parent__24">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_25">通用</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_26">产品定义相关</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_27">服务相关</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_28">帐号相关</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_29">设备相关</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_30">开发调试相关</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#klv">KLV协议介绍<span class="main-set parent_klv">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_klv" style="display: none;"><a href="#_31">设备侧使用说明</a></li>
+            
+        
+            
+            <li class="sub parent_klv" style="display: none;"><a href="#udsapp">UDS/APP侧使用说明</a></li>
+            
+        
+            
+            <li class="sub parent_klv" style="display: none;"><a href="#_32">厂商管理后台的使用说明</a></li>
+            
+        
+            
+            <li class="sub parent_klv" style="display: none;"><a href="#_33">云端消息解析</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#json">JSON<span class="main-set parent_json">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_json" style="display: none;"><a href="#_34">厂商管理后台使用说明</a></li>
+            
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -410,7 +522,7 @@
 <p><img alt="account5" src="../../pic/features/account5.png" /> </p>
 <p>开发指导请参考：</p>
 <p><a href="../../develop_guide/android/#_5">开发指导-安卓-帐号管理</a></p>
-<p><a href="../../develop_guide/iOS/#_4">开发指导-iOS-帐号管理</a></p>
+<p><a href="../../develop_guide/iOS/#_3">开发指导-iOS-帐号管理</a></p>
 <p><a href="../../develop_guide/wechat/#_3">开发指导-微信-帐号管理</a></p>
 <p>如果需要存储用户的头像，请参考 <a href="../functions#_21">文件存储</a></p>
 <h1 id="_2">设备管理</h1>
@@ -735,7 +847,231 @@
 <p>AbleCloud则提供了维护WIFI设备的工作状态、与WIFI设备远程通信、分组管理WIFI及蓝牙设备、管理网关设备、管理并实施设备OTA等与设备管理直接相关的功能。</p>
 <p>对于蓝牙设备，则由微信客户端负责与设备的具体通信。</p>
 <p>为帮助厂商开发支持硬件功能的微信公众号，AbleCloud提供了PHP及Java语言的SDK。厂商的微信公众号主要通过HTML5页面及公众号菜单等界面向用户提供交互功能。</p>
-<p>具体的开发请参考：<a href="../../develop_guide/wechat/">开发指导-微信</a></p></div>
+<p>具体的开发请参考：<a href="../../develop_guide/wechat/">开发指导-微信</a></p>
+<h1 id="_24">名词解释</h1>
+<h2 id="_25">通用</h2>
+<ul>
+<li>
+<p><strong>设备绑定</strong>：用户通过APP端对设备进行绑定，第一个绑定的人成为管理员，其他人只能够通过管理员的分享或者邀请绑定设备。只有通过绑定的用户才能控制设备。</p>
+</li>
+<li>
+<p><strong>设备解绑</strong>：管理员解绑设备相当于删除设备，所有和该设备的绑定关系都删除。设备从逻辑上变为一台新的设备，所有注册用户可以绑定，且绑定后不会看到该设备的历史数据。普通用户进行设备解绑只是放弃对该设备的使用权。</p>
+</li>
+<li>
+<p><strong>设备分享</strong>：管理员将设备的使用权分享给其他用户，一般模式下只有管理员才能够分享设备。设备的普通用户不能分享该设备。</p>
+</li>
+</ul>
+<h2 id="_26">产品定义相关</h2>
+<ul>
+<li>
+<p><strong>主域</strong>：Major Domain，是公司层面的概念，AbleCloud为每一个使用AbleCloud平台的公司分配一个唯一主域，如Google。</p>
+</li>
+<li>
+<p><strong>产品子域</strong>：SubDomain，是公司的某一款产品，如Glass。在管理后台创建产品时需要填入相应的产品子域名称。</p>
+</li>
+<li>
+<p><strong>产品</strong>：和产品子域等同的概念。一款产品包括产品名称和产品型号，如空调XXL。一款产品就是一个子域。对于网关型设备，网关和子设备分别要独立创建产品。因为不同的子设备看作是不同的产品。</p>
+</li>
+<li>
+<p><strong>设备</strong>：Device，即厂商生产的具体的一台设备。只有被绑定的设备才能被控制。在没有指明是“网关”还是“子设备”时，Devie可以表示任何有设备ID的独立设备、网关、子设备。一台设备一定是属于某款产品的。</p>
+</li>
+<li>
+<p><strong>网关</strong>：Gateway,是指自身具有联网能力，且可以连接控制其他设备的设备，如Zigbee网关、蓝牙网关等。网关下面的设备我们成为子设备。网关可以有独立的功能也可以纯粹作为一个协议转换的通道。</p>
+</li>
+<li>
+<p><strong>子设备</strong>：Subdevice,指通过网关和云端进行通信的设备。子设备和网关有隶属关系，对网关有权限的用户也对子设备有权限。子设备可以单独进行权限管理。</p>
+</li>
+<li>
+<p><strong>数据点</strong>：指设备的功能点。在创建产品的时候，需要在云端创建该产品的数据点。比如开发一款空调，该空调有设定开关、温度、模式三个功能，则需要创建对应的三个数据点。</p>
+</li>
+<li>
+<p><strong>数据包</strong>：数据点的集合，需要在管理后台创建。一个数据包中有一个或者多个数据点，用作在APP和设备之间进行消息传输。每一个数据包有一个message code，作为不同数据包的区分，也作为该数据包功能的标识。比如，每次控制空调时，都是把温度和模式一起传输，则创建一个数据包，分配一个message code（这里设定为80）。然后在message code里添加“温度”和“模式”两个数据点。因此，每次设备收到message code为80的消息，就知道该消息是要设定温度和模式。</p>
+</li>
+</ul>
+<h2 id="_27">服务相关</h2>
+<ul>
+<li>
+<p><strong>服务</strong>：即开发者开发的具体Service，如Controller。一个服务，必须属于某一主域、子域。</p>
+</li>
+<li>
+<p><strong>版本</strong>：为了支持服务升级、回滚等，AbleCloud支持为同一服务创建多个版本。版本由Major Version、Minor Version、Patch Version来标示。</p>
+</li>
+<li>
+<p><strong>云端通用服务</strong>：由AbleCloud提供的云服务，如帐号管理、设备管理。</p>
+</li>
+<li>
+<p><strong>自定义服务</strong>：由厂商基于AbleCloud的云服务引擎开发的自定义后端服务，也记为User Defined Service（UDS）。</p>
+</li>
+</ul>
+<h2 id="_28">帐号相关</h2>
+<ul>
+<li>
+<p><strong>管理员</strong>：对设备有终极权限的用户。可以对设备进行绑定、解绑、分享、添加子设备、删除子设备等操作，还可以将设备对普通用户进行授权管理。</p>
+</li>
+<li>
+<p><strong>普通用户</strong>：即智能设备的终端用户，对设备有查看和控制权限，但是没有管理权限。</p>
+</li>
+<li>
+<p><strong>开发者</strong>：产品的开发者。在AbleCloud的Web页面完成注册后可以在AbleCloud的后台进行产品的开发和管理。免费使用AbleCloud提供的各种开发工具和源代码。</p>
+</li>
+</ul>
+<h2 id="_29">设备相关</h2>
+<ul>
+<li>
+<p><strong>Smartconfig</strong>：是德州仪器开发的针对智能设备的APP端SDK。它支持将家庭WiFi的SSID以及密码通过加密后广播给智能设备，智能设备收到后自动完成配置并连上WiFi。 </p>
+</li>
+<li>
+<p><strong>Ablelink</strong>：AbleCloud对Smartconfig协议进行封装然后添加云端握手和本地局域网广播后的协议。</p>
+</li>
+<li>
+<p><strong>流量控制</strong>：对带宽等资源进行合理分配，防止资源抢占和拥堵。</p>
+</li>
+<li>
+<p><strong>握手认证</strong>：采用优化后的非对称加密算法，提升设备的安全性。</p>
+</li>
+<li>
+<p><strong>局域网直连</strong>：让手机可以在局域网内直接连接和控制设备。</p>
+</li>
+<li>
+<p><strong>命令转发</strong>：采用AbleCloud优化的传输协议，将APP的对设备的指令通过云端发送到设备。</p>
+</li>
+<li>
+<p><strong>数据上报</strong>：基于AbleCloud和设备的安全长链接通路，设备将数据上报到云端然后云端推送给用户或厂商自定义服务。</p>
+</li>
+<li>
+<p><strong>设备物理ID</strong>：简称设备ID，设备出厂时，由厂商生成的ID，通常为16个字符的字符串。可以使用每台设备单独烧制的方式生成，也可以使用设备的MAC地址等信息生成。</p>
+</li>
+<li>
+<p><strong>设备逻辑ID</strong>：设备在激活后被管理员绑定时生成的ID，通常为长整数。客户端（安卓、微信、iOS）对设备的控制和管理都使用逻辑ID。</p>
+</li>
+<li>
+<p><strong>设备密钥</strong>：设备和云端交互的时候，在握手阶段需要进行密钥验证。握手阶段采用RSA非对称加密，云端需要有设备的公钥。AbleCloud支持两种密钥管理方式。一种是该产品的所有设备使用相同的密钥对；一种是该产品的每台设备有独立的密钥对。对于第一种，AbleCloud可以直接生成密钥对，设备开发人员将私钥烧到设备固件中即可。对于第二种，AbleCloud提供密钥生成工具，可以生成和设备物理ID一一对应的密钥对。将密钥文件上传到云端后，设备才能够和云端通信握手成功。</p>
+</li>
+<li>
+<p><strong>设备公钥</strong>（RSA256）：32字节的整数，与设备私钥是一对。在设备批量出货前需要在管理后台提交设备公钥。在设备首次连接云端握手时，AbleCloud服务器用该公钥来加密给设备发送的消息。可以一款产品设置一对公钥私钥。对于安全性要求高的产品，也可以每台设备一个独立的公私钥对。</p>
+</li>
+<li>
+<p><strong>设备私钥</strong>（RSA256）：112字节的整数（需要和设备公钥保持匹配）。</p>
+</li>
+<li>
+<p><strong>设备版本</strong>：设备固件的版本信息，长度为4个字节。</p>
+</li>
+<li>
+<p><strong>设备域信息</strong>：设备所属产品的domainID和subdomianID，长度8字节（两个字节的DomainID加上6个字节的SubDomainID）。</p>
+</li>
+</ul>
+<h2 id="_30">开发调试相关</h2>
+<ul>
+<li>
+<p><strong>设备调试</strong>：一般指开发者对设备功能进行调试。AbleCloud云端提供了辅助调试的工具，称作设备调试。该工具可以将设备上的数据通过网页直接展示出来。方便在APP还没有开发的阶段对设备的功能进行调试。用户可以在网页上查看数据，还可以模拟APP在网页上给设备发送指令。</p>
+</li>
+<li>
+<p><strong>虚拟设备</strong>：指云端虚拟出一个用户已经定义的产品的设备。方便在设备还没有开发完成时对APP的调试。虚拟设备可以模拟真实设备上报数据，也可以显示APP发来的指令。</p>
+</li>
+</ul>
+<h1 id="klv">KLV协议介绍</h1>
+<p>KLV是一种比json更轻量级的类json数据交换格式，适合在低处理能力的嵌入式设备上运行。KLV采用了流格式，KLV中key必须是数字，可以跟简单json进行转换，只是需要将json中的不同类型的key映射成KLV的数字的key。</p>
+<p>KLV数据格式如下图所示：</p>
+<p><img alt="device_KLV1.png" src="../../pic/features/device_KLV1.png" /></p>
+<p>KLV数据格式包含四部分：键值（Key），数据类型，长度（Length），数值（Value）。</p>
+<p>键值：key使用8个bit的数字表示，范围从0～255，可以表示256个不同的key。如果产品的数据格式选择为KLV，在管理后台定义数据点时，需要填写数据点的key值。</p>
+<p>数据类型：使用第二个字节的低5个bit用于表示数值的数据类型，高3个bit预留不用，约定：</p>
+<ul>
+<li>0x00：无效，只有key，没有value，适用于不需要参数的控制，比如上报当前温度。</li>
+<li>0x01：布尔型（占用8bit数值表示，只使用第一个bit）</li>
+<li>0x02：8位整型</li>
+<li>0x03：16位整型（网络字节序，用户无须转换）</li>
+<li>0x04：32整型（网络字节序，用户无须转换）</li>
+<li>0x05：64整型（网络字节序，用户无须转换）</li>
+<li>0x06：浮点型（32位，网络字节序，用户无须转换）</li>
+<li>0x07：双精度型（64位，网络字节序，用户无须转换）</li>
+<li>0x08：字符串</li>
+<li>0x09：二进制</li>
+<li>0x0A：KLV类型[保留]</li>
+</ul>
+<p>数据长度：占用两个字节（网络字节序，用户无须转换），数据长度是可选参数，当数据类型是无效，布尔，整形，浮点型时，不需要数据长度，根据数据类型就可以知道数据长度，约定：
+无效数据类型数据长度为0，即第三个字节是下一个KLV结构。</p>
+<ul>
+<li>布尔型数据长度为1，占用其后一个字节。</li>
+<li>8位整形数据长度为1，占用其后一个字节。</li>
+<li>16整形数据长度为2，占用其后两个字节。</li>
+<li>32整形数据长度为4，占用其后四个字节。</li>
+<li>64整形数据长度为8，占用其后八个字节。</li>
+<li>浮点型数据长度为4，占用其后四个字节。</li>
+<li>双精度型数据长度为8，占用其后8个字节。</li>
+</ul>
+<p>字符串，二进制和KLV类型需要使用两个字节指示数据长度。</p>
+<p>数值：根据长度指示，其后指定的连续字节为数值，如果是整形和浮点型，统一采用网络字节序。</p>
+<p>KLV最短长度为2个字节。</p>
+<p>多个KLV打包的结构示意图如下：</p>
+<p><img alt="device_KLV2.png" src="../../pic/features/device_KLV2.png" /></p>
+<h2 id="_31">设备侧使用说明</h2>
+<p>设备需要预先知道各个key的真实含义，比如key 123代表温度。</p>
+<p>设备获取各个key对应的value，其value的含义由设备开发者定义。KLV中携带了value的数据类型。对于二进制类型，需要设备开发者自行处理其含义。对于布尔型，使用8bit的数字表示，0表示false，非0值表示true。</p>
+<p>如果一次请求中携带多组KLV，并且不止一组KLV需要响应这次请求，那么设备需要打包这些响应，组成KLVs一次回复，不能对其中的各个KLV单独回复一次。</p>
+<p>设备侧SDK与云端约定一个固定的messageCode作为设备控制的消息编码，一个固定的messageCode为响应消息编码，一个固定的messageCode为上报消息编码，这些消息编码对开发者不可见。</p>
+<p>设备端SDK也提供编解码接口，开发者需要编码和解码时直接调用对应的编解码接口即可。</p>
+<p>设备端开发参考 <a href="../../develop_guide/device/#和云端通信">开发指导-设备-和云端通信</a></p>
+<h2 id="udsapp">UDS/APP侧使用说明</h2>
+<p>UDS和APP如果使用json，那么就需要SDK将KLV转换为json。</p>
+<p>UDS和APP如果也直接使用KLV则SDK不需要做任何处理。</p>
+<p>SDK提供一套独立的编码和解码接口，当开发者认为需要编码为KLV时，调用我们的接口进行编码，当开发者认为需要解码时，调用SDK中的解码接口，解码为json格式的kv。</p>
+<p>开发者需要编码或者解码时，需要提供云端生成的数据点json文件，SDK按照提供的格式进行编解码。</p>
+<p>在正式上线环境，数据点的变动意为着产品升级。</p>
+<p>客户端开发请参考：</p>
+<p><a href="../../develop_guide/android/#和云端通信">开发指导-安卓-和云端通信</a></p>
+<p><a href="../../develop_guide/iOS/#和云端通信">开发指导-iOS-和云端通信</a></p>
+<p><a href="../../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p>
+<h2 id="_32">厂商管理后台的使用说明</h2>
+<p>厂商管理后台在创建产品时，选择产品的数据类型KLV。一个产品只能选择一种数据类型。</p>
+<p>然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、key值，数据类型。</p>
+<ul>
+<li>名称：用户自己定义的标识，不在开发中使用，在管理后台中方便区分标识的意思。</li>
+<li>标识：该标识在设备和客户端开发中不会使用。在开发UDS的时候，可以用作存储的列的唯一标识。</li>
+<li>key值：相当于JSON中的key，设备、云端、客户端开发中都会用到。是产品功能点的唯一标识，不能重复。</li>
+<li>数据类型：标识该key对应的数据类型。支持bool、int8、int16、int32、int64、float、double float、string、binary格式。目前还不支持数组。如果要使用数组，可以将该数据点定义为binary格式。</li>
+</ul>
+<p>数据点对应设备上的功能点。数据包对应设备和云端通信的通信包，一个数据包可以包括一个或者多个数据点。</p>
+<p>在数据点和数据包页面可以导出创建的数据点</p>
+<p>如果某些KLV存在关联，需要打包处理，可以使用KLV嵌套的方式将关联的KLV打包在一个KLV中，即KLV的value是KLVS。</p>
+<h2 id="_33">云端消息解析</h2>
+<p>在管理后台定义好数据点之后，云端就可以根据定义的数据点解析数据。</p>
+<p>如果不开发UDS，不需要关系此部分。如果需要开发UDS，参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
+<h1 id="json">JSON</h1>
+<p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 它采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。</p>
+<p>Ablecloud规定UDS/APP与设备通信使用简单json格式，即value支持的类型有：布尔、整形、浮点形、字符串、数组，字符串采用UTF-8编码，且不支持对象。举例说明，一条合法格式的控制指令：
+{
+“key1”: true,
+“key2”: 31.5,
+“key3”: 18,
+“key4”: ”hello world”,
+“key5”: [1,2,3,4],
+}</p>
+<p>非法格式的控制指令：
+{
+“key1”: true,
+“key2”: 31.5,
+“key3”: 18,
+“key4”: ”hello world”,
+“key5”: [1,2,3,4],
+“key6”: {“key7”:11, “key8”:”error”},
+}</p>
+<h2 id="_34">厂商管理后台使用说明</h2>
+<p>厂商管理后台在创建产品时，选择产品的数据类型JSON。一个产品只能选择一种数据类型。</p>
+<p>然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、数据类型。</p>
+<ul>
+<li>名称：用户自己定义的标识，不在开发中使用，在管理后台中方便区分标识的意思。</li>
+<li>标识：JSON中的key，设备、云端、客户端开发中都会用到。是产品功能点的唯一标识，不能重复。</li>
+<li>数据类型：标识该key对应的数据类型。支持bool、int8、int16、int32、int64、float、double float、string、binary格式。目前还不支持数组。如果要使用数组，可以将该数据点定义为binary格式。</li>
+</ul>
+<p>数据点对应设备上的功能点。数据包对应设备和云端通信的通信包，一个数据包可以包括一个或者多个数据点。</p>
+<p>在数据点和数据包页面可以导出创建的数据点</p>
+<p>设备端开发请参考：</p>
+<p><a href="../../develop_guide/device/#和云端通信">开发指导-设备-和云端通信</a></p>
+<p>客户端使用说明请参考：</p>
+<p><a href="../../develop_guide/android/#和云端通信">开发指导-安卓-和云端通信</a></p>
+<p><a href="../../develop_guide/iOS/#和云端通信">开发指导-iOS-和云端通信</a></p>
+<p><a href="../../develop_guide/wechat/#和云端通信">开发指导-微信-和云端通信</a></p></div>
             
         </div>
 

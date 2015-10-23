@@ -461,16 +461,16 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 <p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
 <h4 id="_4">接口说明</h4>
 <h4 id="_5">引入头文件</h4>
-<pre><code class="c">import &quot;ACAccountManager.h&quot;
+<pre><code class="objectivec">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
 <h3 id="_6">账号管理类</h3>
-<pre><code class="c">@interface ACAccountManager : NSObject
+<pre><code class="objectivec">@interface ACAccountManager : NSObject
 </code></pre>
 
 <h3 id="_7">普通帐号注册流程</h3>
 <h4 id="1">1、检查手机号是否已注册</h4>
-<pre><code class="c">[ACAccountManager checkExist:phoneNum callback:^(BOOL exist, NSError *error) {
+<pre><code class="objectivec">[ACAccountManager checkExist:phoneNum callback:^(BOOL exist, NSError *error) {
      if(error){
       //返回失败信息，根据error做不同的提示或者处理}else{
          if (exist) {
@@ -483,7 +483,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="2">2、发送验证码</h4>
-<pre><code class="c">[ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
+<pre><code class="objectivec">[ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
          if (error == nil) {
              //校验验证码
@@ -495,7 +495,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="3">3、检测验证码正确性</h4>
-<pre><code class="c">[ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
+<pre><code class="objectivec">[ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
            if(error){
             //返回失败信息，根据error做不同的提示或者处理
            }else{
@@ -510,7 +510,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="4">4、注册</h4>
-<pre><code class="c">[ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error) {
+<pre><code class="objectivec">[ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error) {
 
           if (error == nil) {
            //获得用户user.userId和user.nickName，进入主页或设备管理
@@ -524,7 +524,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 <h2 id="_8">二、第三方登录</h2>
 <p><img alt="account_Oauth" src="../../pic/develop_guide/account_Oauth.png" /></p>
 <h4 id="1_1">1、直接使用第三方登录</h4>
-<pre><code class="c">[ACAccountManager registerWithNickName:userName phone:phone email:nil password:pwd verifyCode:verify callback:^(ACUserInfo *user, NSError *error) {
+<pre><code class="objectivec">[ACAccountManager registerWithNickName:userName phone:phone email:nil password:pwd verifyCode:verify callback:^(ACUserInfo *user, NSError *error) {
              if(error){
              //返回失败信息，根据error做不同的提示或者处理
              }else{
@@ -544,7 +544,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="2_1">2、在已有普通账号登录时绑定第三方账号</h4>
-<pre><code class="c">[ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
+<pre><code class="objectivec">[ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
 {
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
@@ -557,11 +557,11 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 <h2 id="_9">三、添加帐号扩展属性</h2>
 <p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性</p>
 <h4 id="1_2">1、使用类</h4>
-<pre><code class="c">@interface ACAccountManager : NSObject
+<pre><code class="objectivec">@interface ACAccountManager : NSObject
 </code></pre>
 
 <h4 id="2_2">2、设置用户自定义扩展属性</h4>
-<pre><code class="c">/**
+<pre><code class="objectivec">/**
 * 修改帐号扩展属性
 *注意此处put进去的key与value类型需要跟平台添加的附加属  性一致
 *如：ACObject * profile = [[ACObject alloc]init];
@@ -579,7 +579,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="3_1">3、获取用户自定义扩展属性</h4>
-<pre><code class="c">[ACAccountManager getUserProfile:^(ACObject *profile, NSError *error)
+<pre><code class="objectivec">[ACAccountManager getUserProfile:^(ACObject *profile, NSError *error)
 { 
              if(error){
             //返回失败信息，根据error做不同的提示或者处理
@@ -598,7 +598,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 <h3 id="wifi">WiFi设备</h3>
 <h4 id="1acwifilinkmanager">1.ACWifiLinkManager类</h4>
 <p>Ablecloud提供了ACWifiLinkManager类激活器供你使用</p>
-<pre><code class="c">
+<pre><code class="objectivec">
 @interface ACWifiLinkManager : NSObject
 
 - (id)initWithLinkerName:(NSString *)linkerName;
@@ -609,12 +609,12 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
-<pre><code class="c">NSString * ssid = [ACWifilinkManager getCurrentSSID];
+<pre><code class="objectivec">NSString * ssid = [ACWifilinkManager getCurrentSSID];
 </code></pre>
 
 <h4 id="3_2">3.激活设备</h4>
 <p>APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。</p>
-<pre><code class="c">[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
+<pre><code class="objectivec">[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
         if(error){
         //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
         }else{
@@ -631,7 +631,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </ul>
 <h4 id="4_1">4.绑定设备</h4>
 <p>通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。</p>
-<pre><code class="c">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
+<pre><code class="objectivec">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
         if(error){
@@ -658,7 +658,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 </ul>
 <h3 id="gprs">GPRS设备</h3>
 <p><strong><font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
-<pre><code class="c">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
+<pre><code class="objectivec">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
 {
         if(error){
@@ -678,7 +678,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 <li><strong>第二种方式为管理员分享二维码后，用户再通过扫码的形式绑定设备获得设备的使用权。推荐使用第二种分享机制。</strong></li>
 </ul>
 <h4 id="1_3">1、管理员直接分享设备给普通用户</h4>
-<pre><code class="c">[ACBindManager bindDeviceWithUserSubdomain:subdomain deviceId:deviceId account:acount callback:^(NSError *error) {
+<pre><code class="objectivec">[ACBindManager bindDeviceWithUserSubdomain:subdomain deviceId:deviceId account:acount callback:^(NSError *error) {
           if(error){
           //返回失败信息，根据error做不同的提示或者处理
           }else{
@@ -688,7 +688,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 </code></pre>
 
 <h4 id="2_3">2、管理员通过分享设备二维码的形式分享设备</h4>
-<pre><code class="c">[ACBindManager getShareCodeWithSubDomain:subDmoain deviceId:deviceId timeout:timeout callback:^(NSString *shareCode, NSError *error) {
+<pre><code class="objectivec">[ACBindManager getShareCodeWithSubDomain:subDmoain deviceId:deviceId timeout:timeout callback:^(NSString *shareCode, NSError *error) {
           if(error){
           //返回失败信息，根据error做不同的提示或者处理
           }else{
@@ -710,7 +710,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 <h3 id="_14">三．设备解绑</h3>
 <h4 id="1_4">1、管理员或普通用户解绑设备</h4>
 <p><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。</p>
-<pre><code class="c">[ACBindManager unbindDeviceWithSubDomain:subDomian deviceId:deviceId callback:^(NSError *error) {
+<pre><code class="objectivec">[ACBindManager unbindDeviceWithSubDomain:subDomian deviceId:deviceId callback:^(NSError *error) {
          if(error){
          //返回失败信息，根据error做不同的提示或者处理
          }else{
@@ -720,7 +720,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 </code></pre>
 
 <h4 id="2_4">2、管理员取消其他普通成员对该设备的控制权</h4>
-<pre><code class="c">[ACBindManager unbindDeviceWithUserSubDomain:subDomain userId:userId deviceId:deviceId callback:^(NSError *error) {
+<pre><code class="objectivec">[ACBindManager unbindDeviceWithUserSubDomain:subDomain userId:userId deviceId:deviceId callback:^(NSError *error) {
          if(error){
          //返回失败信息，根据error做不同的提示或者处理
          }else{
@@ -738,19 +738,19 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 <h3 id="wifi_1">WiFi网关</h3>
 <h4 id="1acwifilinkmanager_1">1.获取ACWifiLinkManager激活器</h4>
 <p>AbleCloud提供了ACWifiLinkManager激活器供你使用。</p>
-<pre><code class="c">@interface ACWifiLinkManager : NSObject
+<pre><code class="objectivec">@interface ACWifiLinkManager : NSObject
 ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@&quot;easylink&quot;];
 </code></pre>
 
 <p><font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
 目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>。</p>
 <h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
-<pre><code class="c">NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
+<pre><code class="objectivec">NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
 </code></pre>
 
 <h4 id="3_3">3.激活网关</h4>
 <p>APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。</p>
-<pre><code class="c">[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
+<pre><code class="objectivec">[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
           if(error){
           //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
           }else{
@@ -761,7 +761,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <h4 id="4_2">4.绑定网关</h4>
 <p>在成功激活设备后的回调方法中，通过物理Id绑定网关。</p>
-<pre><code class="c">[ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
+<pre><code class="objectivec">[ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
           if(error){
            //返回失败信息，根据error做不同的提示或者处理
           }else{
@@ -772,7 +772,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <h3 id="_17">以太网网关</h3>
 <p><font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。建议通过扫码的形式获取网关物理Id进行绑定。</p>
-<pre><code class="c">[ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
+<pre><code class="objectivec">[ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
         if(error){
         //返回失败信息，根据error做不同的提示或者处理
         }else{
@@ -783,7 +783,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <h3 id="_18">二．绑定子设备</h3>
 <h4 id="1_5">1．开启网关接入配对</h4>
-<pre><code class="c">//由于子设备接入网关是一个异步的过程，所以建议在这里new一个Timer去定时获取新加入的子设备列表，在activity退出时停止Timer
+<pre><code class="objectivec">//由于子设备接入网关是一个异步的过程，所以建议在这里new一个Timer去定时获取新加入的子设备列表，在activity退出时停止Timer
 [ACBindManager openGatewayMatchWithSubDomain:subDomain gatewayDeviceId:gatewayDeviceId time:time callback:^(NSError *error) {
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
@@ -794,7 +794,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <h4 id="2_5">2．列举所有新加入的子设备列表</h4>
-<pre><code class="c">[ACBindManager listSubDevicesWithSubDomain:subDomain gatewayDeviceId:deviceId callback:^(NSArray *devices, NSError *error) {
+<pre><code class="objectivec">[ACBindManager listSubDevicesWithSubDomain:subDomain gatewayDeviceId:deviceId callback:^(NSArray *devices, NSError *error) {
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
            }else{
@@ -807,7 +807,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 <h4 id="3_4">3．绑定子设备</h4>
 <p>通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。</p>
-<pre><code class="c">[ACBindManager addSubDeviceWithSubDomain:subDomain gatewayDeviceId:deviceId physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
+<pre><code class="objectivec">[ACBindManager addSubDeviceWithSubDomain:subDomain gatewayDeviceId:deviceId physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
            }else{
@@ -826,7 +826,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 <p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备扩展属性</a></p>
 <p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台产品管理--&gt;产品列表--&gt;管理--&gt;产品属性--&gt;扩展属性--&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
 <h4 id="_20">一、设置或者更新设备扩展属性</h4>
-<pre><code class="c">[ACBindManager setDeviceProfileWithSubDomain:subDomain deviceId:deviceId profile:acobj  callback:^(NSError *error) {
+<pre><code class="objectivec">[ACBindManager setDeviceProfileWithSubDomain:subDomain deviceId:deviceId profile:acobj  callback:^(NSError *error) {
             if(error){
             //返回失败信息，根据error做不同的提示或者处理
             }else{
@@ -836,7 +836,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <h4 id="_21">二、获取设备扩展属性</h4>
-<pre><code class="c">[ACBindManager getDeviceProfileWithSubDomain:subDomain deviceId:deviceId callback:^(ACObject *profile, NSError *error) {
+<pre><code class="objectivec">[ACBindManager getDeviceProfileWithSubDomain:subDomain deviceId:deviceId callback:^(ACObject *profile, NSError *error) {
             if(error){
             //返回失败信息，根据error做不同的提示或者处理
             }else{
@@ -858,7 +858,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 <p>【数据包】
 <img alt="klv_datapackage" src="../../pic/develop_guide/cloud_communication_klv_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
-<pre><code class="c">//请求数据包
+<pre><code class="objectivec">//请求数据包
 { 68 ：[
 //数据点[key：value(int8)]
 //关灯
@@ -877,7 +877,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <p>定义如下:</p>
-<pre><code class="c">@interface ACKLVObject : NSObject
+<pre><code class="objectivec">@interface ACKLVObject : NSObject
 
 /**
 * 获取一个参数值
@@ -929,7 +929,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 <p>【数据包】
 <img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
-<pre><code class="c">//请求数据包
+<pre><code class="objectivec">//请求数据包
 { 68 ：[
 //关灯(二进制流，由厂商自己解析)
 { 0 , 0 , 0 , 0 },
@@ -947,7 +947,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <p>截取开灯代码，如下:</p>
 <h4 id="1_6">1、设置序列化器</h4>
-<pre><code class="c">//反序列化
+<pre><code class="objectivec">//反序列化
 + (instancetype)unmarshalWithData:(NSData *)data;
 
 //序列化
@@ -955,7 +955,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <h4 id="2_6">2、发送到设备</h4>
-<pre><code class="c">/**
+<pre><code class="objectivec">/**
 *  网络连接操作灯
 */
 - (void)operationLight:(LightOperationType)type
@@ -982,7 +982,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 
 <h2 id="_25">二、发送消息到服务</h2>
 <p><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的<strong>服务名称</strong>，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为<strong>主版本号</strong>，比如1-0-0，则version为1。</p>
-<pre><code class="c">ACMsg * msg = [[ACMsg alloc] init];
+<pre><code class="objectivec">ACMsg * msg = [[ACMsg alloc] init];
 msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]];
 [msg setName:@&quot;createDeviceInitState&quot;];
 [msg putLong:@&quot;deviceId&quot; value:userDevice.deviceId];
@@ -997,7 +997,7 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 <h1 id="_26">局域网通信</h1>
 <p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
-<pre><code class="c">[ACBindManager listDevicesWithStatusCallback:^(NSArray *devices, NSError *error) {
+<pre><code class="objectivec">[ACBindManager listDevicesWithStatusCallback:^(NSArray *devices, NSError *error) {
          if (!error) {
              for (ACUserDevice * device  in devices) 
              {
@@ -1017,7 +1017,7 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 </code></pre>
 
 <p>因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。</p>
-<pre><code class="c">[ACBindManager networkChangeHanderCallback:^(NSError *error) {
+<pre><code class="objectivec">[ACBindManager networkChangeHanderCallback:^(NSError *error) {
          if (!error) {
          //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
 
@@ -1026,7 +1026,7 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 </code></pre>
 
 <p>此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。</p>
-<pre><code class="c">ACloud * cloud = [[ACloud alloc]init];
+<pre><code class="objectivec">ACloud * cloud = [[ACloud alloc]init];
 [cloud findLocalDeviceTimeout:1000 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
          if (!error) {
          //发现局域网设备,根据更新局域网在线状态或者重新获取设备列表
@@ -1041,12 +1041,12 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="-actimermanager">获取定时管理器－－ACTimerManager类</h4>
 <p><strong>使用默认时区</strong></p>
-<pre><code class="c">
+<pre><code class="objectivec">
 ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 </code></pre>
 
 <p><strong>使用自定义时区</strong></p>
-<pre><code class="c">- (id)initWithTimeZone:(NSTimeZone *)timeZone {
+<pre><code class="objectivec">- (id)initWithTimeZone:(NSTimeZone *)timeZone {
        self = [super init];
        if (self) {
        self.timeZone = timeZone;
@@ -1086,7 +1086,7 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 </ul>
 </blockquote>
 <h4 id="_29">添加定时任务</h4>
-<pre><code class="c">ACDeviceMsg * dmsg = [[ACDeviceMsg alloc] init];
+<pre><code class="objectivec">ACDeviceMsg * dmsg = [[ACDeviceMsg alloc] init];
 dmsg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
 dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
@@ -1105,7 +1105,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <h4 id="_30">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
 <h4 id="_31">开启定时任务</h4>
-<pre><code class="c">[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+<pre><code class="objectivec">[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
         if (error) { 
         NSLog(@&quot;预约开失败－－%@&quot;,error);
         }else{
@@ -1115,7 +1115,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_32">关闭定时任务</h4>
-<pre><code class="c">[DeviceMsg closeTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+<pre><code class="objectivec">[DeviceMsg closeTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
          if (error){
          NSLog(@&quot;预约关失败－－%@&quot;,error);
          }else{
@@ -1126,7 +1126,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_33">删除定时任务</h4>
-<pre><code class="c">[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+<pre><code class="objectivec">[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
           if (error){
           //删除定时失败，处理error
           }else{
@@ -1136,7 +1136,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_34">获取定时任务列表</h4>
-<pre><code class="c">[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+<pre><code class="objectivec">[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
          if (error)
           {
           NSLog(@&quot;获取定时信息失败%@&quot;,error);
@@ -1155,12 +1155,12 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
 <p>若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota-acotamanager">一.获取OTA管理器对象--ACOTAManager类</h4>
-<pre><code class="c">@interface ACOTAManager : NSObject
+<pre><code class="objectivec">@interface ACOTAManager : NSObject
 </code></pre>
 
 <h4 id="_35">二. 检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
-<pre><code class="c">[ACOTAManager checkUpdateWithSubDomain:subDomain deviceId:deviceId callback:^(ACOTAUpgradeInfo *upgradeInfo, NSError *error) {
+<pre><code class="objectivec">[ACOTAManager checkUpdateWithSubDomain:subDomain deviceId:deviceId callback:^(ACOTAUpgradeInfo *upgradeInfo, NSError *error) {
          if(error){
           //返回失败信息，根据error做不同的提示或者处理
           }else{
@@ -1174,7 +1174,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_36">三．确认升级</h4>
-<pre><code class="c">[ACOTAManager confirmUpdateWithSubDomain:subDomain deviceId:deviceId newVersion:newVersion callback:^(NSError *error) {
+<pre><code class="objectivec">[ACOTAManager confirmUpdateWithSubDomain:subDomain deviceId:deviceId newVersion:newVersion callback:^(NSError *error) {
           if(error){
           //返回失败信息，根据error做不同的提示或者处理
           }else{
@@ -1204,18 +1204,18 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <h2 id="_40">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1-acnotificationmanager">1、获取推送管理器－－ACNotificationManager类</h4>
-<pre><code class="c">@interface ACNotificationManager : NSObject
+<pre><code class="objectivec">@interface ACNotificationManager : NSObject
 </code></pre>
 
 <h4 id="2_7">2、在应用的启动函数中开启推送服务</h4>
-<pre><code class="c">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+<pre><code class="objectivec">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
         [ACNotificationManager       startWithAppkey:@&quot;您的appKey&quot; launchOptions:launchOptions];
 }
 </code></pre>
 
 <h4 id="3_5">3、在登录成功之后添加推送别名</h4>
-<pre><code class="c">[ACNotificationManager addAliasWithUserId:user.userId callback:^(NSError *error) {
+<pre><code class="objectivec">[ACNotificationManager addAliasWithUserId:user.userId callback:^(NSError *error) {
          if(error){
          NSLog(@&quot;推送添加别名失败&quot;);
          }else{
@@ -1225,7 +1225,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="4_3">4、在退出登录之后移除掉旧的别名</h4>
-<pre><code class="c">[ACNotificationManager removeAliasWithUserId:uid callback:^(NSError *error){
+<pre><code class="objectivec">[ACNotificationManager removeAliasWithUserId:uid callback:^(NSError *error){
            if(error){
              //移除失败，处理错误信息
             }else{
@@ -1243,12 +1243,12 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <p>3、上传下载支持断点续传功能</p>
 </blockquote>
 <h2 id="_42">一、获取文件管理器</h2>
-<pre><code class="c">ACFileManager * fileManager =[[ACFileManager alloc] init];
+<pre><code class="objectivec">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
 <h2 id="_43">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
-<pre><code class="c">[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
+<pre><code class="objectivec">[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
            //获取URL失败，根据error作出不同的处理
@@ -1259,7 +1259,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h3 id="2url">2、根据url下载文件</h3>
-<pre><code class="c">[downManager downFileWithsession:urlString callBack:^(float progress, NSError *error)
+<pre><code class="objectivec">[downManager downFileWithsession:urlString callBack:^(float progress, NSError *error)
 {
           if(error ){
            //下载失败，处理error
@@ -1271,13 +1271,13 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 
 <h2 id="_44">三、上传文件</h2>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
-<pre><code class="c">@interface ACACL : NSObject
+<pre><code class="objectivec">@interface ACACL : NSObject
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
 <h3 id="2_8">2、上传文件</h3>
 <h4 id="1-acfileinfo">1)、设置上传文件信息－－ACFileInfo类</h4>
-<pre><code class="c">@interface ACFileInfo : NSObject
+<pre><code class="objectivec">@interface ACFileInfo : NSObject
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
 
@@ -1295,7 +1295,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="2_9">2)、设置文件权限</h4>
-<pre><code class="c">/**
+<pre><code class="objectivec">/**
 * 设置全局可读访问权限，不设置则默认为所有人可读
 * @param allow 是否全局可读
 */
@@ -1323,7 +1323,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="3_6">3)、上传文件</h4>
-<pre><code class="c">ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@&quot;3.jpg&quot; bucket:@&quot;jpg&quot;];
+<pre><code class="objectivec">ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@&quot;3.jpg&quot; bucket:@&quot;jpg&quot;];
 fileInfo.filePath = [self getPath];
 fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];

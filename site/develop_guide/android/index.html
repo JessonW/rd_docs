@@ -700,12 +700,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 <li>4.确保设备的天线正常。</li>
 <li>5.确保网络环境不是公共环境。</li>
 </ul>
-<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：</p>
-<ul>
-<li>1.设备电源供电不足造成断网。</li>
-<li>2.WIFI信号不好造成断网。</li>
-<li>3.路由器断网。</li>
-</ul>
+<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。</p>
 <h3 id="gprs">GPRS设备</h3>
 <p><strong><font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindDevice(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
@@ -1046,7 +1041,7 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <p><font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_24">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
-<p>KLV协议介绍请参考：<a href="../../reference/device/#klv">reference-设备-KLV协议介绍</a>。</p>
+<p>KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a>。</p>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。</strong>
 这里创建的数据点和数据包如下所示：</p>
 <p>【数据点】
@@ -1098,10 +1093,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(69, req),
 </code></pre>
 
 <h3 id="_25">二进制格式</h3>
-<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包</strong></p>
-<p>这里创建的数据点和数据包如下所示：</p>
-<p>【数据点】
-<img alt="binary_datapoint" src="../../pic/develop_guide/cloud_communication_binary.png" /></p>
+<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建数据包</strong></p>
 <p>【数据包】
 <img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>

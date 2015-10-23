@@ -45,16 +45,16 @@
 + auth_key, crypt_method, auth_ver
 
     用于指定设备与微信客户端或微信平台通信时采用的认证及数据加密方法。
-    对于通过AbleCloud平台与微信对接的设备（蓝牙设备除外），其身份认证与数据通信过程均由AbleCloud平台负责实施，采用AbleCloud平台的通信保密协议（已经集成在AbleCloud平台的WIFI固件中）。
+    对于通过AbleCloud平台与微信对接的设备（蓝牙设备除外），其身份认证与数据通信过程均由AbleCloud平台负责实施，采用AbleCloud平台的通信保密协议（已经集成在AbleCloud平台的WiFi固件中）。
     因此，如无特殊需求，上述三个参数可分别取值为""，"0"及"0"，表示不加密。
 
 其它参数请根据实际情况配置。
 
-在AbleCloud平台执行设备入库（目前仅要求WIFI设备）的目的是注册设备的公钥，用于设备接入的安全认证。开发者可以登录AbleCloud的管理控制平台执行设备入库操作。
+在AbleCloud平台执行设备入库（目前仅要求WiFi设备）的目的是注册设备的公钥，用于设备接入的安全认证。开发者可以登录AbleCloud的管理控制平台执行设备入库操作。
 
 **设备的二维码**
 
-为了方便用户绑定、使用WIFI设备，厂商需要使用“[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)”提供的接口，创建AbleCloud要求的具有长度为16个字节的物理ID的设备二维码。
+为了方便用户绑定、使用WiFi设备，厂商需要使用“[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)”提供的接口，创建AbleCloud要求的具有长度为16个字节的物理ID的设备二维码。
 
 ### (4) 配置微信公众号菜单 ###
 
@@ -289,10 +289,10 @@ AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。�
    
 ###设备激活###
 
-此处，“设备激活”是指为WIFI设备配置WIFI网络，使设备连网，连接云端，从而提供在线服务能力。
+此处，“设备激活”是指为WiFi设备配置WiFi网络，使设备连网，连接云端，从而提供在线服务能力。
 
-对于接入微信硬件平台的设备，可以调用微信的AirKiss页面配置设备的WIFI网络。
-在手机连上WIFI的情况下，在AirKiss页面输入WIFI密码，等待设备连接网络。AirKiss的具体信息请参考[微信硬件平台文档](http://iot.weixin.qq.com/document-0_1.html)。
+对于接入微信硬件平台的设备，可以调用微信的AirKiss页面配置设备的WiFi网络。
+在手机连上WiFi的情况下，在AirKiss页面输入WiFi密码，等待设备连接网络。AirKiss的具体信息请参考[微信硬件平台文档](http://iot.weixin.qq.com/document-0_1.html)。
 
 ###设备分享###
 
@@ -302,7 +302,7 @@ AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。�
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取包含分享码的二维码串
-$qrCode = $wxBridge->getDeviceQRCode($physicalId, TRUE, $openId, 300);
+$qrCode = $wxBridge->getDeviceQRCode($physicalId, TRUE, $openId, $timeout);
 // 将码串$qrCode转换为二维码图片。其他用户使用微信扫描该二维码就可绑定设备。
 ```
 
@@ -439,7 +439,6 @@ $deviceService->unbindGateway($deviceId, $user);
 // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
 $wxBridge->syncBindingsByDevice($physicalId, $deviceType);
 ```
-方法ACBridgeWeChat::unbindDevice第三个参数用于标记所操作的设备是否为网关设备。
 
 #### 2.解绑子设备 ####
 
