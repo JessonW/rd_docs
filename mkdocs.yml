@@ -1,6 +1,6 @@
 site_name: AbleCloud 开发文档
 theme_dir: ac_theme
-theme: slate
+theme: mkdocs
 #theme:Flatly
 
 pages:
