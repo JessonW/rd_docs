@@ -775,7 +775,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
             }
             cJSON_Delete(format);
         }
-        JSON内存申请
+        /*JSON内存申请/*
         root=cJSON_CreateObject();
         /*构造JSON消息*/
         cJSON_AddBoolToObject(root,"result",result);
