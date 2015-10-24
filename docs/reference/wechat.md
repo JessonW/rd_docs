@@ -87,17 +87,21 @@ class ACBridgeWeChat {
      * 微信推送消息：MsgType为"device_event"，Event为"bind"时的响应函数：将微信记录的用户与设备的绑定关系同步到AbleCloud平台。
      * @param $xmlMsg 微信推送的原始XML消息内容。
      * @param $deviceName 字符串，表示设备的显示名。
+     * @param $subDomain 字符串，是将要绑定的设备在AbleCloud平台上所属的子域的名字。如果设备的二维码信息中包含了其所属子域的名字，则以二维码中的信息为准。
      * @param $isGateway 布尔值，为TRUE时表示设备是网关设备；为FALSE时表示设备是独立设备。
      * @return 操作成功时返回ACDevice对象，表示绑定后设备的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function onDeviceEventBind($xmlMsg, $deviceName, $isGateway = FALSE);
+    public function onDeviceEventBind($xmlMsg, $deviceName, $subDomain, $isGateway);
     
     /**
      * 微信推送消息：MsgType为"device_event"，Event为"unbind"时的响应函数：将微信记录的用户与设备解除绑定的关系同步到AbleCloud平台。
+     * @details 本方法解绑设备后会自动通知微信平台执行额外的设备绑定关系同步。
      * @param $xmlMsg 微信推送的原始XML消息内容。
+     * @param $subDomain 字符串，是要解绑的设备在AbleCloud平台上所属的子域的名字。
+     * @param $isGateway 布尔值，为TRUE时表示该设备为网关设备，否则表示该设备为独立设备。
      * @return 操作成功时返回TRUE；失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
-    public function onDeviceEventUnbind($xmlMsg);
+    public function onDeviceEventUnbind($xmlMsg, $subDomain, $isGateway);
     
     /**
      * 微信推送消息：MsgType为"device_event"，Event为"subscribe_status"时的响应函数：微信订阅设备状态信息（目前微信仅查询WIFI设备的状态信息）。
@@ -138,14 +142,15 @@ class ACBridgeWeChat {
     public function setPhone($openId, $phone, $verifyCode);
     
     /**
-     * 获取设备的二维码：微信二维码，或者包含AbleCloud分享码的二维码。
+     * 获取设备的二维码：微信二维码（附加设备在AbleCloud平台上所属的子域的信息），还可选择是否附加AbleCloud分享码。附加的信息是以JSON格式的字符串表示的。
      * @param $physicalId 字符串，表示设备的物理ID。
+     * @param $subDomain 字符串，表示设备在AbleCloud平台中所属的子域的名字。如果值不为空字符串，则会以第三方自定义数据的方式在微信标准二维码的末尾附加该子域信息。
      * @param $withACShareCode 布尔值，为TRUE时表示需要附加设备的AbleCloud分享码，否则表示不需附加该信息。
      * @param $openId $withShareCode为TRUE时，需要指定获取该分享码的用户的微信OpenID。仅设备的管理员用户有权限获取设备的分享码。
      * @param $timeout $withShareCode为TRUE时，需要指定分享码的有效时长。该参数的类型为整数，是以秒为单位指定分享码的有效时长。
      * @return 操作成功时返回制作设备二维码的字符串。依据参数设置，该字符串中可能包含AbleCloud平台的分享码。操作失败时返回空字符串，此时可调用getLastError()方法获取错误消息。
      */
-    public function getDeviceQRCode($physicalId, $withACShareCode = FALSE, $openId = '', $timeout = 300);
+    public function getDeviceQRCode($physicalId, $subDomain, $withACShareCode = FALSE, $openId = '', $timeout = 300);
     
     /// @name 信息同步方法。
     //@{
@@ -164,10 +169,11 @@ class ACBridgeWeChat {
      * @details 在调用AbleCloud平台提供的API解除了某用户与设备的绑定关系后，或者将设备从“房间”或“家”中移除后，开发者需要调用本方法在AbleCloud平台与微信平台之间同步设备与用户的绑定关系。
      * 在其它情况下，开发者也可根据实际情况主动调用本方法同步数据。
      * @param $physicalId 字符串，是设备的物理ID。
-     * @param $deviceType 字符串，本微信公众号所关联的设备类型，目前为“微信公众账号原始ID”。
+     * @param $deviceType 字符串，是本设备在微信公众号平台上的设备类型。
+     * @param $subDomain 字符串，是本设备在AbleCloud平台上所属的子域的名字。
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，同时可调用方法getLastError()获取错误信息。
      */
-    public function syncBindingsByDevice($physicalId, $deviceType);
+    public function syncBindingsByDevice($physicalId, $deviceType, $subDomain);
     
     /**
      * 删除一个“家”对象。
@@ -202,11 +208,10 @@ class ACContext {
      * @param $accessKey 字符串。开发者的Access Key。
      * @param $secretKey 字符串。开发者的Secret Key。
      * @param $majorDomain 字符串。本地服务对应的主域的名字。
-     * @param $subDomain 字符串。本地服务对应的子域的名字。
      * @param $runtimeMode 字符串。运行模式：test（测试模式），production（生产模式）。
      * @param $routerAddress 字符串。AbleCloud远程服务的入口地址。
      */
-    function __construct($developerId, $accessKey, $secretKey, $majorDomain, $subDomain, $runtimeMode, $routerAddress);
+    function __construct($developerId, $accessKey, $secretKey, $majorDomain, $runtimeMode, $routerAddress);
     
     /**
      * 取AbleCloud开发者信息。
@@ -219,12 +224,6 @@ class ACContext {
      * @return 返回本地服务对应的主域的名字。
      */
     public function getMajorDomain();
-    
-    /**
-     * 取本地服务对应的子域的名字。
-     * @return 返回本地服务对应的子域的名字。
-     */
-    public function getSubDomain();
     
     /**
      * 取AbleCloud远程服务的访问入口地址。
@@ -309,13 +308,14 @@ class ACDeveloperSignature {
 	 * 计算开发者的签名。
 	 * @param $developer ACDeveloper对象，表示要生成其签名的开发者。
 	 * @param $context ACContext对象，表示访问AbleCloud远程服务的环境信息。
+	 * @param $subDomain 字符串。表示要访问的远程服务所属的子域的名字。可能为空字符串。
 	 * @param $methodName 字符串。表示要访问的远程服务的方法名。
 	 * @param $timestamp 此次签名所示使用的时间戳。是以秒为单位的UTC时间。
 	 * @param $timeout 此次签名的有效时长（以秒为单位）。表示该签名在自$timestamp时刻起的$timeout秒之内有效。
 	 * @param $nonce 此次签名所使用的随机字符串。
 	 * @return 返回表示签名结果的字符串。
 	 */
-	public static function signature($developer, $context, $methodName, $timestamp, $timeout, $nonce);
+	public static function signature($developer, $context, $subDomain, $methodName, $timestamp, $timeout, $nonce);
 }
 ```
 
@@ -362,9 +362,10 @@ class ACRequest {
      * 构造函数。
      * @param $serviceName 字符串。是拟访问的远程服务的名字。
      * @param $methodName 字符串。是拟访问的远程服务的方法的名字。
-     * @param $serviceVersion 整数。是拟访问的远程服务的主版本号。缺省值为1。
+     * @param $serviceVersion 整数。是拟访问的远程服务的主版本号。
+     * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串。
      */
-    function __construct($serviceName, $methodName, $serviceVersion = 1);
+    function __construct($serviceName, $methodName, $serviceVersion, $subDomain = '');
     
     /**
      * 设置本次请求所关联的用户。该用户是AbleCloud平台中开发者所提供服务的用户。
@@ -396,6 +397,12 @@ class ACRequest {
      * @return 返回拟访问的远程服务的方法名。
      */
     public function getMethodName();
+    
+    /**
+     * 取拟访问的远程服务所属的子域的名字。
+     * @return 返回拟访问的远程服务所属的子域的名字。
+     */
+    public function getSubDomain();
     
     /**
      * 添加请求的参数。这些参数是键值对，将会以查询字符串的方式置于访问远程服务的URL中传递给远程服务。
@@ -530,7 +537,6 @@ class ACConfig {
 	public static $AccessKey   = '';		// 开发者的AK/SK密钥对中的AK。字符串。
 	public static $SecretKey   = '';		// 开发者的AK/SK密钥对中的SK。字符串。
 	public static $MajorDomain = '';		// 本地服务对应的主域的名字。
-	public static $SubDomain   = '';		// 本地服务对应的子域的名字。
 	public static $RouterUrl   = 'http://test.ablecloud.cn:5000';	// AbleCloud远程服务的访问入口地址，如：http://test.ablecloud.cn:5000。
 }
 ```
@@ -695,6 +701,14 @@ class ACAccountService extends ACService {
     function __construct($name, $version, $context);
     
     /**
+     * 获取用户注册的验证码。
+     * @param $account 字符串，是用户的登录名：email地址或手机号。
+     * @param $timeout 整数，是验证码的有效时长。单位为秒。
+     * @return 操作成功时返回字符串形式的验证码。操作失败时返回空字符串，并且可以调用getLastError()方法获取错误信息。
+     */
+    public function getVerifyCode($account, $timeout);
+    
+    /**
      * 注册用户帐号。
      * @param $name 字符串。用户的显示名。
      * @param $email 字符串。新用户的邮箱。$email与$phone不能都为空字符串。
@@ -704,6 +718,14 @@ class ACAccountService extends ACService {
      * @return 用户注册成功时返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function register($name, $email, $phone, $password, $verifyCode);
+    
+    /**
+     * 按登录名和密码登录，取用户的信息。
+     * @param $login 用户的登录名。
+     * @param $password 用户登录密码。
+     * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     */
+    public function login($login, $password);
     
     /**
      * 按登录名和密码取用户的信息。
@@ -864,8 +886,9 @@ class ACDevice {
      * @param $subDomainId 设备所属的子域的ID。整数。
      * @param $rootId 整数，设备的RootId。
      * @param $status 整数，状态码。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      */
-    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0);
+    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain = '');
     
     public function getId();
     
@@ -880,6 +903,8 @@ class ACDevice {
     public function getGatewayId();
     
     public function getSubDomainId();
+    
+    public function getSubDomainName();
     
     public function getRootId();
     
@@ -909,17 +934,19 @@ class ACDeviceService extends ACService {
      * @param $physicalId 要被绑定的设备的物理ID。字符串。
      * @param $name 字符串，设备的名字。
      * @param $user ACUser对象，表示要被绑定的用户。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      * @return 操作成功返回ACDevice对象，表示被绑定的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function bindDevice($physicalId, $name, $user);
+    public function bindDevice($physicalId, $name, $user, $subDomain);
     
     /**
      * 解除设备与用户的绑定关系。
      * @param $deviceId 要被解除绑定关系的设备的逻辑ID。整数。
      * @param $user ACUser对象，表示要被解除绑定关系的用户。如果该用户是该设备的管理员，则解除这两者之间的绑定关系时，将解除设备与其它所有用户的绑定。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
      */
-    public function unbindDevice($deviceId, $user);
+    public function unbindDevice($deviceId, $user, $subDomain);
     
     /**
      * 设备的管理员用户获取设备的分享码。
@@ -946,34 +973,38 @@ class ACDeviceService extends ACService {
      * @param $physicalId 要被绑定的网关设备的物理ID。字符串。
      * @param $name 字符串，设备的名字。
      * @param $user ACUser对象，表示要被绑定的用户。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      * @return 操作成功时返回ACDeivce对象，表示被绑定设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function bindGateway($physicalId, $name, $user);
+    public function bindGateway($physicalId, $name, $user, $subDomain);
     
     /**
      * 解除网关设备与用户的绑定关系。
      * @param $deviceId 要被解除绑定关系的网关设备的逻辑ID。整数。
      * @param $user ACUser对象，表示要被解除绑定关系的用户。如果该用户是该设备的管理员，则解除这两者之间的绑定关系时，将解除设备与其它所有用户的绑定。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
      */
-    public function unbindGateway($deviceId, $user);
+    public function unbindGateway($deviceId, $user, $subDomain);
     
     /**
      * 开启网关设备允许新的子设备接入的功能。开启该功能后，网关才能发现新的子设备。
      * @param $deviceId 整数，表示要被操作的网关设备的逻辑ID。
      * @param $user ACUser对象，表示发起该操作的用户。该用户应该是网关设备的管理员。
      * @param $timeout 整数，单位为秒。表示在该参数指定的时长范围内，网关设备将允许发现新的子设备。
+     * @param $subDomain 字符串，是要被操作的网关设备所属的子域的名字。
      * @return 操作成功返回TRUE，否则返回FALSE。返回FALSE时，可以调用getLastError()获取错误信息。
      */
-    public function openGatewayMatch($deviceId, $user, $timeout = 300);
+    public function openGatewayMatch($deviceId, $user, $timeout, $subDomain);
     
     /**
      * 关闭网关设备允许新的子设备接入的功能。
      * @param $deviceId 整数，表示要被操作的网关设备的逻辑ID。
      * @param $user ACUser对象，表示发起该操作的用户。该用户应该是网关设备的管理员。
+     * @param $subDomain 字符串，是要操作的网关设备所属的子域的名字。
      * @return 操作成功返回TRUE，否则返回FALSE。返回FALSE时，可以调用getLastError()获取错误信息。
      */
-    public function closeGatewayMatch($deviceId, $user);
+    public function closeGatewayMatch($deviceId, $user, $subDomain);
     
     /**
      * 将指定设备添加为网关设备的子设备。
@@ -981,9 +1012,10 @@ class ACDeviceService extends ACService {
      * @param $gatewayId 网关设备的逻辑ID。整数。
      * @param $physicalId 拟被添加为子设备的设备物理ID。字符串。
      * @param $name 字符串，拟添加的子设备的名字。
+     * @param $subDomain 字符串，是拟新添加的子设备所属的子域的名字。
      * @return 操作成功返回ACDevice对象，表示新添加的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function addSubDeviceToGateway($user, $gatewayId, $physicalId, $name);
+    public function addSubDeviceToGateway($user, $gatewayId, $physicalId, $name, $subDomain);
     
     /**
      * 删除网关设备的某个子设备。
@@ -1032,19 +1064,27 @@ class ACDeviceService extends ACService {
     public function listUsers($deviceId);
     
     /**
-     * 通过设备逻辑ID或者物理ID查询设备的在线状态。
-     * @param $deviceId 设备的逻辑ID。整数。 如果参数值不大于0，表示按设备的物理ID查询状态；否则表示按设备的逻辑ID查询状态。
-     * @param $physicalId 设备的物理ID。字符串。仅当$deviceId的值小于1时，才按设备的物理ID查询状态。
+     * 通过设备逻辑ID查询设备的在线状态。
+     * @param $deviceId 整数。设备的逻辑ID。
      * @return 返回TRUE表示设备在线；返回FALSE表示设备不在线或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备不在线；否则表示操作出错，设备的状态为未知。
      */
-    public function isDeviceOnline($deviceId = 0, $physicalId = '');
+    public function isDeviceOnline($deviceId);
+    
+    /**
+     * 通过设备物理ID查询设备的在线状态。
+     * @param $physicalId 字符串，设备的物理ID。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
+     * @return 返回TRUE表示设备在线；返回FALSE表示设备不在线或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备不在线；否则表示操作出错，设备的状态为未知。
+     */
+    public function isDeviceOnlineByPhysicalId($physicalId, $subDomain);
     
     /**
      * 取设备的逻辑ID。
      * @param $physicalId 字符串，表示设备的物理ID。
+     * @param $subDomain 字符串，是设备所属的子域的名字。
      * @return 返回设备的逻辑ID。有效的逻辑ID是正整数。返回0表示操作失败。可调用getLastError()方法获取错误消息。
      */
-    public function getDeviceId($physicalId);
+    public function getDeviceId($physicalId, $subDomain);
     
     /**
      * 向设备发送消息。
@@ -1052,12 +1092,13 @@ class ACDeviceService extends ACService {
      * @param $deviceId 整数，是目标设备的逻辑ID。
      * @param $messageCode 发送给设备的消息的码。整数。
      * @param $message 以string对象存储的拟发送给设备的二进制数据。
+     * @param $subDomain 字符串，是拟操作的设备所属的子域的名字。
      * @param $handset 字符串。表示调用本方法时用户所使用的终端工具的名字，如'weixin'表示微信终端。
      * 					开发者也可以通过ACContext对象设置终端工具信息。如果指定了本参数，则以本参数指定的值为准。
      * @param $handsetVersion 字符除啊，表示调用本方法时用户所使用的终端工具的版本信息。
      * @return 返回ACResponse对象，表示设备或云端服务的响应。
      */
-    public function sendToDevice($user, $deviceId, $messageCode, $message, $handset = '', $handsetVersion = '');
+    public function sendToDevice($user, $deviceId, $messageCode, $message, $subDomain, $handset = '', $handsetVersion = '');
     
     /**
      * 修改设备名称。
@@ -1109,11 +1150,12 @@ class ACDeviceService extends ACService {
      * @param $user ACUser对象，是发起该操作的用户。
      * @param $homeId 整数，要添加该设备的“家”对象的ID。
      * @param $name 字符串，是新添加的设备的名字。
+     * @param $subDomain 字符串，是拟被添加的设备所属子域的名字。
      * @param $physicalId 字符串，是要添加至“家”中的设备的物理ID。该参数与参数$deviceId任意提供一个即可。
      * @param $deviceId 整数，是要添加至“家”中的设备的逻辑ID。该参数与参数$physicalId任意提供一个即可。
      * @return 操作成功返回ACDevice对象，表示被绑定的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function addDeviceToHome($user, $homeId, $name, $physicalId = '', $deviceId = 0);
+    public function addDeviceToHome($user, $homeId, $name, $subDomain, $physicalId = '', $deviceId = 0);
     
     /**
      * 从“家”中删除一个设备。
@@ -1160,6 +1202,15 @@ class ACDeviceService extends ACService {
      * @return 操作成功时返回一个ACHome对象，否则返回NULL。操作失败时可调用getLastError()获取错误信息。
      */
     public function joinHomeWithShareCode($user, $shareCode);
+    
+    /**
+     * 将指定的用户加入“家”对象。
+     * @param $user ACUser对象，是“家”的管理员用户。该管理员用户可以将帐号名字为$login的用户添加至“家”中。
+     * @param $homeId 整数，是“家”的ID。
+     * @param $account 字符串，是将被添加至“家”中的用户的帐号名：Email或手机号码）。
+     * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
+     */
+    public function addUserToHome($user, $homeId, $account);
     
     /**
      * 将用户从“家”中删除。
@@ -1317,18 +1368,20 @@ class ACOtaService extends ACService {
      * 检查设备的固件升级信息。
      * @param $user ACUser对象，表示设备的用户。
      * @param $deviceId 整数，是要被检查的设备的逻辑ID。
+     * @param $subDomain 字符串，是待检查的设备所属的子域的名字。
      * @return 返回一个ACOtaVersion对象，表示版本信息。如果操作失败，则返回NULL。此时，可调用getLastError()获取错误信息。
      */
-    public function checkUpdate($user, $deviceId);
+    public function checkUpdate($user, $deviceId, $subDomain);
     
     /**
      * 确认升级设备的固件版本。
      * @param $user ACUser对象，表示执行该操作的用户。
      * @param $deviceId 整数，是要被升级的设备的逻辑ID。
      * @param $toVersion 字符串，表示升级的目标版本号，如：2-0-3。
+     * @param $subDomain 字符串，是待操作的设备所属的子域的名字。
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
      */
-    public function confirmUpdate($user, $deviceId, $toVersion);
+    public function confirmUpdate($user, $deviceId, $toVersion, $subDomain);
 }
 ```
 
