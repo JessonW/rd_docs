@@ -428,8 +428,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 >1. 要开发服务程序，需从`ACService`派生子类来实现自己的服务框架。本示例中，`DemoService`就是继承自`ACService`的子类；
 >1. 服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为`handleMsg`提供具体的实现handler；
 >1. 服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式`LightMsg`；
->1. 在步骤3定义好了消息格式后，我们还需要根据`ACDeviceMsgMarshaller`实现具体的消息序列化/反序列化器`LightMsgMarshaller`；
->1. 实现了`LightMsgMarshaller`后，重载`ACService`的`init`接口，将序列化器设置到`ac`框架中；
+>1. 【使用KLV通讯格式则跳过此步骤】在步骤3定义好了消息格式后，我们还需要根据`ACDeviceMsgMarshaller`实现具体的消息序列化/反序列化器`LightMsgMarshaller`；最后重载`ACService`的`init`接口，将序列化器设置到`ac`框架中；
 >1. 服务要接收智能灯汇报的开/关消息，因此必须为`handleDeviceMsg`提供具体的实现handler。
 
 ##具体实现
@@ -530,14 +529,26 @@ public class DemoService extends ACService {
         if (action.equalsIgnoreCase("on")) {
             deviceAction = LightMsg.ON;
         } else
-            deviceAction = LightMsg.OFF;
+            deviceAction = LightMsg.OFF; 
+        //使用二进制通讯格式
         ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction, LightMsg.FROM_APP));
+        /*
+        //使用KLV通讯格式
+        ACKLVObject object = new ACKLVObject();
+        object.put(Scheme.KEY_ACTION, deviceAction);
+        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, object);
         ACDeviceMsg deviceRespMsg;
+        ACDeviceMsg deviceRespMsg;
+        */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
             deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg);
-            // 获取控制开关结果
+            // 获取控制开关结果【二进制通讯格式】
             byte result = (Byte) deviceRespMsg.getContent();
+            /*
+            // 获取控制开关结果【KLV通讯格式】
+            ACKLVObject result = (ACKLVObject) deviceRespMsg.getContent();
+            */
             resp.put("result", result == 1 ? "success" : "fail");
             resp.setAck();
             logger.info("handle control light ok, action[" + action + "].");

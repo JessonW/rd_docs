@@ -146,6 +146,7 @@ public void reportLight(int status, int type) {
     AC.reportDeviceMsg(req);
 }
 ```
+><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。
 ####2、使用二进制消息格式进行通讯
 以开关灯为例，协议如下：
 ```
@@ -208,7 +209,7 @@ public void reportLight(int status, int type) {
     AC.reportDeviceMsg(req);
 }
 ```
-
+><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。
 ####3、使用JSON消息格式进行通讯
 以开关灯为例，协议如下：
 ```
@@ -287,3 +288,4 @@ public void reportLight(int status, int type) {
     AC.reportDeviceMsg(req);
 }
 ```
+><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。

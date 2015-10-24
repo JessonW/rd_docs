@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>设备-安卓系统 - AbleCloud 开发文档</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
+                
+                
+                    <li >
+                        <a href="../../introduction/" >基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../features/concepts/">基本概念</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../features/functions/">功能介绍</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../cloud/">云端服务</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../reference/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/error_code/">Error Code</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../../QandA/" >Q&A</a>
+                    </li>
+                
+                
+                </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container container-ac">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">安卓设备开发指导</a>
+        </li>
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_2">开发准备<span class="main-set parent__2">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#sdk">SDK发布库</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_3">开发环境设置</a></li>
+            
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#_4">应用程序初始化</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#demo">Demo<span class="main-set parent_demo">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_demo" style="display: none;"><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
+            
+        
+            
+            <li class="sub parent_demo" style="display: none;"><a href="#2">2、使用二进制消息格式进行通讯</a></li>
+            
+        
+            
+            <li class="sub parent_demo" style="display: none;"><a href="#3json">3、使用JSON消息格式进行通讯</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="_1">安卓设备开发指导</h1>
+<h1 id="_2">开发准备</h1>
+<h4 id="sdk">SDK发布库</h4>
+<p>AbleCloud发布的安卓设备SDK为<code>ac_device_android.jar</code>，除此之外，还需要导入<code>libDevice-Service.so</code>文件（可根据不同cpu做不同选择）</p>
+<blockquote>
+<p><strong>具体步骤</strong>:把文件拷入你自己的工程的libs目录下并设置依赖。</p>
+</blockquote>
+<h4 id="_3">开发环境设置</h4>
+<p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
+<pre><code class="java">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot;/&gt;
+&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.CHANGE_WIFI_STATE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.CHANGE_NETWORK_STATE&quot;/&gt;
+</code></pre>
+
+<h4 id="_4">应用程序初始化</h4>
+<p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。</p>
+<blockquote>
+<p>具体步骤:在启动App的<code>MainActivity</code>的<code>onCreate()</code>方法中调用此方法来进行初始化。</p>
+</blockquote>
+<p>开发阶段，请初始化测试环境</p>
+<pre><code class="java">/**
+     * 请在主Activity的onCreate()中初始化安卓设备信息并开始连云操作
+     *
+     * @param mContext         获取Context实例
+     * @param MajorDomainId    AbleCloud domainId，可到AbleCloud平台工程管理查看
+     * @param SubDomainId      AbleCloud subDomainId，可到AbleCloud平台工程管理查看
+     * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+     * @param secretKey        AbleCloud设备密钥，在产品管理中--&gt;管理--&gt;设备密钥，若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并把上传文件
+     * @param version          AbleCloud设备版本，格式为&quot;1-0-0&quot;;在初始化一个OTA版本后，若需要进行OTA升级，需要在设备管理中--         &gt;OTA--&gt;新建OTA版本把新的apk文件上传
+     * @param mode             AC.TEST_MODE,当迁移到正式环境后使用AC.PRODUCTION_MODE，默认使用AC.PRODUCTION_MODE
+     * @param regional         AbleCloud地域设置，AC.REGIONAL_CHINA代表中国地域，AC.REGIONAL_SOUTHEAST_ASIA代表东南亚地域，默认使用中国地域
+     */
+AC.init(Context Context, long MajorDomainId, long SubDomainId, String PhysicalDeviceId, String SecretKey, String Version, int Mode, int Regional);
+</code></pre>
+
+<p><strong>国内地域</strong>
+测试环境</p>
+<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
+</code></pre>
+
+<p>在完成测试阶段之后，需要迁移到正式环境下。</p>
+<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version);
+</code></pre>
+
+<p><strong>国外地域</strong></p>
+<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+</code></pre>
+
+<p>在完成测试阶段之后，需要迁移到正式环境下。</p>
+<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE, AC.REGIONAL_CHINA);
+</code></pre>
+
+<blockquote>
+<p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>16字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>并补0或其他将长度拼至16字节；可通过AbleCloud后台查看<strong>在线设备</strong>查看设备物理ID。</p>
+</blockquote>
+<h1 id="demo">Demo</h1>
+<p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里以下的配置项。</p>
+<pre><code class="java">public static final long DOMAINID;
+public static final long SUBDOMAINID;
+public static final String VERSION;
+public static final String SECRETKEY;
+</code></pre>
+
+<p>下面以开关灯为例，简要介绍与安卓设备通讯的例子：</p>
+<h4 id="1klv">1、使用KLV消息格式进行通讯</h4>
+<p><strong>在新建产品的时候选择KLV通讯协议，并填写数据点与数据包</strong>。
+以开关灯为例,协议如下：</p>
+<pre><code>//请求数据包
+{ 68 ：[
+     //数据点[key：value(int8)]
+     //关灯
+     { 1 : 0 },
+     //开灯      
+     { 1 : 1 }
+]}
+//响应数据包  
+{ 60 ：[
+     //数据点[key：value(int8)]
+     //失败
+     { 1 : false },
+     //成功      
+     { 1 : true }
+]}
+</code></pre>
+
+<pre><code class="java">private static final int OFF = 0;
+private static final int ON = 1;
+
+AC.handleMsg(new ACMsgHandler() {
+    @Override
+    public void handleMsg(ACDeviceMsg reqMsg, ACDeviceMsg respMsg) {
+         //KLV格式的resp不需要设置msgCode
+         switch (reqMsg.getMsgCode()) {
+            case Config.CODE_KLV:
+                //请求消息体
+                ACKLVObject req = reqMsg.getKLVObject();
+                //请求操作类型，关灯或开灯
+                int value = req.get(Config.KEY_SWITCH);
+                //响应消息体
+                ACKLVObject resp = new ACKLVObject();
+                if (value == ON) {
+                    if (Light.turnLightOn()) {
+                        resp.put(Config.KEY_SWITCH, true);    //开灯成功
+                        respMsg.setKLVObject(resp);
+                    } else {
+                        resp.put(Config.KEY_SWITCH, false);   //开灯失败
+                        respMsg.setKLVObject(resp);
+                    }
+                } else if (value == OFF) {
+                    if (Light.turnLightOff()) {
+                        resp.put(Config.KEY_SWITCH, true);    //关灯成功
+                        respMsg.setKLVObject(resp);
+                    } else {
+                        resp.put(Config.KEY_SWITCH, false);   //关灯失败
+                        respMsg.setKLVObject(resp);
+                    }
+                }
+                break;
+        }
+    }
+});
+</code></pre>
+
+<p>数据上报：</p>
+<pre><code class="java">/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    ACKLVObject object = new ACKLVObject();
+    object.put(Config.KEY_SWITCH, (byte) status);
+    object.put(Config.KEY_TYPE, (byte) type);
+    req.setKLVObject(object);
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
+</code></pre>
+
+<h4 id="2">2、使用二进制消息格式进行通讯</h4>
+<p>以开关灯为例，协议如下：</p>
+<pre><code>//请求数据包
+{ 68 ：[
+     //关灯(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //开灯(二进制流，由厂商自己解析)   
+     { 1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+     //失败(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //成功(二进制流，由厂商自己解析)        
+     { 1 , 0 , 0 , 0 }
+]}
+</code></pre>
+
+<pre><code class="java">private static final int OFF = 0;
+private static final int ON = 1;
+
+AC.handleMsg(new ACMsgHandler() {
+    @Override
+    public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
+        switch (reqMsg.getMsgCode()) {
+            case Config.CODE_SWITCH_REQ:
+                //请求消息体
+                byte[] payload = reqMsg.getPayload();
+                if (payload[0] == ON) {
+                    if (Light.turnLightOn()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //开灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //开灯失败
+                } else {
+                    if (Light.turnLightOff()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //关灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //关灯失败
+                }
+                respMsg.setMsgCode(Config.CODE_SWITCH_RESP);
+                break;
+        }
+    }
+});
+</code></pre>
+
+<p>数据上报：</p>
+<pre><code class="java">/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
+</code></pre>
+
+<h4 id="3json">3、使用JSON消息格式进行通讯</h4>
+<p>以开关灯为例，协议如下：</p>
+<pre><code>//请求数据包
+{ 70 ：[
+     //关灯
+     {&quot;switch&quot;, 0}
+     //开灯
+     {&quot;switch&quot;, 1}
+]}
+//响应数据包  
+{ 102 ：[
+     //失败
+     {&quot;result&quot;, false},
+     //成功   
+     {&quot;result&quot;, true}
+]}
+</code></pre>
+
+<pre><code class="java">private static final int OFF = 0;
+private static final int ON = 1;
+
+AC.handleMsg(new ACMsgHandler() {
+    @Override
+    public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
+        //JSON格式的resp不需要设置msgCode
+        switch (reqMsg.getMsgCode()) {
+            case Config.CODE_JSON:
+                //请求消息体
+                JSONObject req = new JSONObject(reqMsg.getJsonPayload());
+                //请求操作类型，关灯或开灯
+                int value = req.getInt(&quot;switch&quot;);
+                //响应消息体
+                JSONObject resp = new JSONObject();
+                if (value == ON) {
+                    if (Light.turnLightOn()) {
+                        resp.put(&quot;result&quot;, true);
+                        respMsg.setJsonPayload(resp.toString());    //开灯成功
+                    } else {
+                        resp.put(&quot;result&quot;, false);
+                        respMsg.setJsonPayload(resp.toString());    //开灯失败
+                    }
+                } else if (value == OFF) {
+                    if (Light.turnLightOff()) {
+                        resp.put(&quot;result&quot;, true);
+                        respMsg.setJsonPayload(resp.toString());    //关灯成功
+                    } else {
+                        resp.put(&quot;result&quot;, false);
+                        respMsg.setJsonPayload(resp.toString());    //关灯失败
+                    }
+                }
+                break;
+        }
+    }
+});
+</code></pre>
+
+<pre><code class="java">/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    JSONObject jsonObject = new JSONObject();
+    try {
+        jsonObject.put(&quot;status&quot;, status);
+        jsonObject.put(&quot;controltype&quot;, type);
+        req.setJsonPayload(jsonObject.toString());
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
+</code></pre></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

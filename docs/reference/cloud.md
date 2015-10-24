@@ -954,9 +954,9 @@ AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先
 
 从上图我们可以看到，定义的一个存储模型如下：
 
-+ **entiry group keys：**deviceId，类型为字符串`String`。
-+ **primary keys：**deviceId，类型为字符串；timestamp，类型为整型`Long`。
-+ **attributes**：mode，类型为字符串；speed，类型为整型`Long`。
++ **分区键(entiry group keys)：**deviceId，类型为字符串`String`。
++ **主键(primary keys)：**deviceId，类型为字符串；timestamp，类型为整型`Long`。
++ **属性(attributes)**：mode，类型为字符串；speed，类型为整型`Long`。
 
 ><font color="brown">**注：**目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font>
 

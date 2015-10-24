@@ -808,7 +808,7 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
      */
     @Override
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        return new ACDeviceMsg(msgCode, payload);
+        return new ACDeviceMsg(msgCode, payload[0]);
     }
 });
 ```
@@ -838,8 +838,8 @@ public class LightMsg {
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
-        byte[] resp = (byte[]) deviceMsg.getContent();
-        if(resp[0] == 1 && resp[1] == 0 && ...){
+        byte resp = (byte) deviceMsg.getContent();
+        if(resp == 1){
             //开灯成功
         } else {
             //开灯失败
