@@ -801,8 +801,7 @@ start.cmd
 <li>要开发服务程序，需从<code>ACService</code>派生子类来实现自己的服务框架。本示例中，<code>DemoService</code>就是继承自<code>ACService</code>的子类；</li>
 <li>服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为<code>handleMsg</code>提供具体的实现handler；</li>
 <li>服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式<code>LightMsg</code>；</li>
-<li>在步骤3定义好了消息格式后，我们还需要根据<code>ACDeviceMsgMarshaller</code>实现具体的消息序列化/反序列化器<code>LightMsgMarshaller</code>；</li>
-<li>实现了<code>LightMsgMarshaller</code>后，重载<code>ACService</code>的<code>init</code>接口，将序列化器设置到<code>ac</code>框架中；</li>
+<li>【使用KLV通讯格式则跳过此步骤】在步骤3定义好了消息格式后，我们还需要根据<code>ACDeviceMsgMarshaller</code>实现具体的消息序列化/反序列化器<code>LightMsgMarshaller</code>；最后重载<code>ACService</code>的<code>init</code>接口，将序列化器设置到<code>ac</code>框架中；</li>
 <li>服务要接收智能灯汇报的开/关消息，因此必须为<code>handleDeviceMsg</code>提供具体的实现handler。</li>
 </ol>
 </blockquote>
@@ -903,14 +902,26 @@ public class DemoService extends ACService {
         if (action.equalsIgnoreCase(&quot;on&quot;)) {
             deviceAction = LightMsg.ON;
         } else
-            deviceAction = LightMsg.OFF;
+            deviceAction = LightMsg.OFF; 
+        //使用二进制通讯格式
         ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction, LightMsg.FROM_APP));
+        /*
+        //使用KLV通讯格式
+        ACKLVObject object = new ACKLVObject();
+        object.put(Scheme.KEY_ACTION, deviceAction);
+        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, object);
         ACDeviceMsg deviceRespMsg;
+        ACDeviceMsg deviceRespMsg;
+        */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
             deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg);
-            // 获取控制开关结果
+            // 获取控制开关结果【二进制通讯格式】
             byte result = (Byte) deviceRespMsg.getContent();
+            /*
+            // 获取控制开关结果【KLV通讯格式】
+            ACKLVObject result = (ACKLVObject) deviceRespMsg.getContent();
+            */
             resp.put(&quot;result&quot;, result == 1 ? &quot;success&quot; : &quot;fail&quot;);
             resp.setAck();
             logger.info(&quot;handle control light ok, action[&quot; + action + &quot;].&quot;);

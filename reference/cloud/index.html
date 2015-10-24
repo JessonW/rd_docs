@@ -1330,9 +1330,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <img alt="store" src="../../pic/reference/store.png" /></p>
 <p>从上图我们可以看到，定义的一个存储模型如下：</p>
 <ul>
-<li><strong>entiry group keys：</strong>deviceId，类型为字符串<code>String</code>。</li>
-<li><strong>primary keys：</strong>deviceId，类型为字符串；timestamp，类型为整型<code>Long</code>。</li>
-<li><strong>attributes</strong>：mode，类型为字符串；speed，类型为整型<code>Long</code>。</li>
+<li><strong>分区键(entiry group keys)：</strong>deviceId，类型为字符串<code>String</code>。</li>
+<li><strong>主键(primary keys)：</strong>deviceId，类型为字符串；timestamp，类型为整型<code>Long</code>。</li>
+<li><strong>属性(attributes)</strong>：mode，类型为字符串；speed，类型为整型<code>Long</code>。</li>
 </ul>
 <blockquote>
 <p><font color="brown"><strong>注：</strong>目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font></p>
