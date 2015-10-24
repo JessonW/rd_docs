@@ -62,7 +62,7 @@ ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法�
 public class ACMsg extends ACObject {
     private String name;
     private String payloadFormat;
-    private byte[] payload;
+    private byte[] payload;****
     private int payloadSize;
     private InputStream streamPayload;
 
@@ -1786,9 +1786,9 @@ public interface ACPushMgr {
  */
 public static void findLocalDevice(int timeout, PaylodCallback<List<ACDevice>> callback) {}
 ```
-**<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
+**<font color="red">注</font>：具体使用步骤见[开发指导-->局域网通信](http://shumonluo.github.io/rd_docs/develop_guide/android/#_28)**
 
-###文件存储
+##文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 ```java
 public interface ACFileMgr {
