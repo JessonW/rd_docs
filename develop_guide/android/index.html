@@ -1142,7 +1142,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(Config.LI
      */
     @Override
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        return new ACDeviceMsg(msgCode, payload);
+        return new ACDeviceMsg(msgCode, payload[0]);
     }
 });
 </code></pre>
@@ -1172,8 +1172,8 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(Config.LI
 <pre><code class="java">bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
-        byte[] resp = (byte[]) deviceMsg.getContent();
-        if(resp[0] == 1 &amp;&amp; resp[1] == 0 &amp;&amp; ...){
+        byte resp = (byte) deviceMsg.getContent();
+        if(resp == 1){
             //开灯成功
         } else {
             //开灯失败
