@@ -386,7 +386,7 @@ bindMgr.unbindDevice(subDomain, deviceId, new VoidCallback() {
     }
 });
 ```
-><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
+><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的使用权。
 
 ####2、管理员取消其他普通成员对该设备的控制权
 ```java
@@ -465,7 +465,7 @@ AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCal
 ```
 
 ###以太网网关
-**<font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。**建议通过扫码的形式获取网关物理Id进行绑定。
+**<font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。**可以采取通过扫码或通过局域网广播获取网关物理ID，然后进行绑定。
 ```java
 AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCallback<ACUserDevice>() {
     @Override
