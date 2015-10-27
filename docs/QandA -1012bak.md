@@ -10,7 +10,7 @@ PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
 
 ##微信
 
-####1.makeQRCode方法，会报service not available的错误
+####1.问.makeQRCode方法，会报service not available的错误
 解决方法：
 针对service not available的问题，可以检查一下ac.js文件里面第47附近的acServiceDevice的值，以及配置文件config.properties里第17行附近的device_service的值。这两个配置项的值应该都是zc-bind。
 
