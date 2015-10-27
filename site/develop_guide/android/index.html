@@ -785,7 +785,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <blockquote>
-<p><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。</p>
+<p><font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的使用权。</p>
 </blockquote>
 <h4 id="2_4">2、管理员取消其他普通成员对该设备的控制权</h4>
 <pre><code class="java">bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
@@ -850,7 +850,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <h3 id="_18">以太网网关</h3>
-<p><strong><font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。</strong>建议通过扫码的形式获取网关物理Id进行绑定。</p>
+<p><strong><font color="red">注</font>：以太网网关无需激活流程，在网关插上网线连上云端之后即可以直接进入绑定设备的流程。</strong>可以采取通过扫码或通过局域网广播获取网关物理ID，然后进行绑定。</p>
 <pre><code class="java">AC.bindMgr().bindGateway(subDomain, physicalDeviceId, deviceName, new PayloadCallback&lt;ACUserDevice&gt;() {
     @Override
     public void success(ACUserDevice userDevice) {
