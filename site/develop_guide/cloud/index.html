@@ -1335,8 +1335,8 @@ public class DemoServiceTest {
 </code></pre>
 
 <blockquote>
-<p><font color="red"><strong>注意：</strong>可以看到，所有的单元测试用例均是直接调用<code>handleMsg</code>或<code>handleDeviceMsg</code>驱动测试，无需编写或使用client工具。</p>
-<p>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签<strong>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</strong>固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</font></p>
+<p><font color="red"><strong>注意：</strong></font>可以看到，所有的单元测试用例均是直接调用<code>handleMsg</code>或<code>handleDeviceMsg</code>驱动测试，无需编写或使用client工具。</p>
+<p>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签<strong>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</strong>固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</p>
 </blockquote>
 <h4 id="_13">测试桩</h4>
 <p>从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中定义了设备桩<code>ACDeviceStub</code>的接口，开发者只需要依照此接口实现具体的设备桩即可。
