@@ -62,6 +62,7 @@ import "ACAccountManager.h"
 
 ####2、发送验证码
 ```c
+//1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
 [ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
          if (error == nil) {
@@ -76,6 +77,7 @@ import "ACAccountManager.h"
 
 ####3、检测验证码正确性
 ```c
+//phone和email可任选其一
 [ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
            if(error){
             //返回失败信息，根据error做不同的提示或者处理
@@ -652,6 +654,90 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
          callback(responseObject,error);
 }];
 ```
+##三、实时消息
+
+实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。
+
+
+![cloud_syn](../pic/develop_guide/cloud_syn.png)
+
+####1、获取实时消息管理器
+```c
+#import "ACPushManager.h"
+ACPushManager * pushManager = [[ACPushManager alloc] init];
+```
+
+####2、创建与服务器的连接
+```c
+[pushManager connectWithCallback:^(NSError *error) {
+            if (!error) {
+            //连接成功，可以订阅数据 
+            }else{、
+            //连接失败，网络错误 
+            }
+}];```
+
+####3、订阅实时数据
+以如下数据集为例：
+
+![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
+
+```c
+//实例化ACPushTable对象
+ACPushTable *table  = [[ACPushTable alloc] init];
+//设置订阅的表名
+table.className = @"BramcDeviceManager";
+//设置订阅的columns行
+table.cloumns = [NSMutableArray arrayWithObjects:@"speed", nil];
+//设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
+table.opType =  OPTYPE_CREATE |OPTYPE_DELETE | OPTYPE_REPLACE | OPTYPE_UPDATE;
+//设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
+ACObject * primaryKey = [[ACObject alloc] init];
+[primaryKey putInteger:@"deviceId" value:100001];
+table.primaryKey =primaryKey;
+//可以多次调用以下此方法watch多个table
+[pushManager watchWithTable:table Callback:^(NSError *error) {
+             if (!error) {
+             //订阅成功
+             }else{
+             //订阅失败，请自行检查参数类型，表名，columns以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
+             }
+}];
+```
+
+####4、接收已订阅的实时数据
+```c
+[pushManager onReceiveWithCallback:^(ACPushReceive *pushReceive, NSError *error) {
+             if (!error) {
+             //pushReceive.className 表名
+             //pushReceive.opType 接收类型，如ACPushTableOpType.CREATE
+             //pushReceive.Payload 接收数据ACObject格式
+             ACObject * obj = pushReceive.payload;
+             long speed = [obj getLong:@"windSpeed"];
+             }
+}];
+```
+
+####5、取消订阅
+建议在退出订阅的activity之后调用，避免造成流量浪费。
+```c
+//实例化ACPushTable对象
+ACPushTable *table  = [[ACPushTable alloc] init];
+//设置订阅的表名
+table.className = @"BramcDeviceManager";
+//设置监听主键
+ACObject * primaryKey = [[ACObject alloc] init];
+[primaryKey putInteger:@"deviceId" value:100001];
+table.primaryKey =primaryKey;
+
+[pushManager unWatchWithPushTable:table Callback:^(NSError *error) {
+             if (!error) {
+             //取消订阅成功
+            }else{
+            //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
+            }
+}];
+```
 
 
 
@@ -755,7 +841,7 @@ ACDeviceMsg * dmsg = [[ACDeviceMsg alloc] init];
 dmsg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
 dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
-[DeviceMsg addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
+[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
         if (error)
         {
         NSLog(@"添加定时失败");
@@ -772,7 +858,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 ####开启定时任务
 ```c
-[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
         if (error) { 
         NSLog(@"预约开失败－－%@",error);
         }else{
@@ -796,7 +882,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 ####删除定时任务
 ```c
-[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
           if (error){
           //删除定时失败，处理error
           }else{
@@ -808,7 +894,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 ####获取定时任务列表
 ```c
-[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
          if (error)
           {
           NSLog(@"获取定时信息失败%@",error);
