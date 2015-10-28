@@ -352,7 +352,7 @@
         
         
         <li class="main">
-            <a href="#_25">和云端通信<span class="main-set parent__25">+</span></a>
+            <a href="#_25">云端通信<span class="main-set parent__25">+</span></a>
         </li>
         
             
@@ -932,8 +932,8 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 }];
 </code></pre>
 
-<h1 id="_25">和云端通信</h1>
-<p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
+<h1 id="_25">云端通信</h1>
+<p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-云端通信</a></p>
 <p><font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_26">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
@@ -1269,12 +1269,18 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <h4 id="_34">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
 <h4 id="_35">开启定时任务</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre><code class="c">[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="objectivec">[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+
+=======
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+```c
+[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
 =======
 ```objectivec
 [DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
+
         if (error) { 
         NSLog(@&quot;预约开失败－－%@&quot;,error);
         }else{
@@ -1300,7 +1306,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 =======
 ```objectivec
 [DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
           if (error){
           //删除定时失败，处理error
           }else{
@@ -1315,7 +1320,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 =======
 ```objectivec
 [DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
+
          if (error)
           {
           NSLog(@&quot;获取定时信息失败%@&quot;,error);
@@ -1363,7 +1368,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h1 id="_41">推送</h1>
-<p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-推送</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
 <h2 id="_42">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
