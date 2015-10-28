@@ -26,6 +26,44 @@
 Xcode下直接**Command + R**运行。
 ><font color="brown">**注：**</font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
 
+#应用程序初始化
+在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
+在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
+####1.设置主域名和主域ID
+```objectivec
+[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId];
+```
+####2.设置开发环境
+```objectivec
+//*****测试开发环境******
+#define TEST_MODEL @"test"
+//*****正式开发环境******
+#define PRODUCTION_MODEL @"production"
+//*****国内开发环境******
+#define REGIONAL_CHINA @"REGIONAL_CHINA"
+//*****国外开发环境******
+//东南亚开发环境
+#define REGIONAL_SOUTHEAST_ASIA @"REGIONAL_SOUTHEAST_ASIA"
+```
+####**国内环境**
+开发阶段，请初始化**测试环境**
+```objectivec
+[ACloudLib setHostWithModel:TEST_MODEL Region:CHINA_URL_STRING];
+```
+在完成测试阶段之后，需要迁移到**正式环境**下
+```objectivec
+[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:CHINA_URL_STRING];
+```
+####**国外环境**
+开发阶段，请初始化**测试环境**
+```objectivec
+[ACloudLib setHostWithModel:TEST_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
+```
+在完成测试阶段之后，需要迁移到**正式环境**下
+```objectivec
+[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
+```
+
 
 #帐号管理
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
@@ -61,12 +99,8 @@ import "ACAccountManager.h"
 
 
 ####2、发送验证码
-<<<<<<< HEAD
-```c
-//1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
-=======
 ```objectivec
->>>>>>> d84050087dcaf994eb56b5c637ee8e4eaf37daef
+//1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
 [ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
          if (error == nil) {
@@ -80,12 +114,8 @@ import "ACAccountManager.h"
 
 
 ####3、检测验证码正确性
-<<<<<<< HEAD
-```c
-//phone和email可任选其一
-=======
 ```objectivec
->>>>>>> d84050087dcaf994eb56b5c637ee8e4eaf37daef
+//phone和email可任选其一
 [ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
            if(error){
             //返回失败信息，根据error做不同的提示或者处理
