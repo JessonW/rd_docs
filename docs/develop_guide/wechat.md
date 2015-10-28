@@ -84,6 +84,9 @@ class ACConfig {
 
 #帐号管理#
 
+
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
+
 ##用户登录##
 
 对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台，从而成为开发者所提供服务的使用者。
@@ -181,7 +184,7 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 
 #设备管理#
 
-说明参见[功能说明-设备管理](../features/functions.md#_12)。
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 ##微信平台与AbleCloud平台##
 
@@ -608,6 +611,8 @@ $deviceService->setDeviceProfile($user, $deviceId, $profile);
 
 #云端通信#
 
+功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
+
 ##访问云端服务##
 PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。
 ```php
@@ -743,7 +748,7 @@ $timerTaskService->deleteTask($user, $deviceId, $taskId);
 
 #OTA#
 
-说明参见[功能说明-OTA](../introduction.md#ota)。
+功能介绍参见[功能说明-OTA](../introduction.md#ota)。
 
 本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
 此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。
@@ -799,6 +804,8 @@ $rows = $storeIter->next();     // $rows即是查询结果。
 ```
 
 #消息推送#
+
+功能介绍参见 [功能说明-功能介绍-推送](../features/functions.md#20)
 
 消息推送指的是将消息直接推送到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。
 

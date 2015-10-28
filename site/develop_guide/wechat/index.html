@@ -332,31 +332,7 @@
             
         
             
-            <li class="sub parent__9" style="display: none;"><a href="#_25">设备的扩展属性</a></li>
-            
-        
-    
-        
-        
-            
-                
-            
-        
-            
-                
-            
-        
-        
-        <li class="main">
-            <a href="#_28">和云端通信<span class="main-set parent__28">+</span></a>
-        </li>
-        
-            
-            <li class="sub parent__28" style="display: none;"><a href="#_29">访问云端服务</a></li>
-            
-        
-            
-            <li class="sub parent__28" style="display: none;"><a href="#_30">向设备发送消息</a></li>
+            <li class="sub parent__9" style="display: none;"><a href="#_21">设备的扩展属性</a></li>
             
         
     
@@ -374,6 +350,38 @@
                 
             
         
+        
+        <li class="main">
+            <a href="#_24">云端通信<span class="main-set parent__24">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_25">访问云端服务</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_26">向设备发送消息</a></li>
+            
+        
+            
+            <li class="sub parent__24" style="display: none;"><a href="#_27">设备和微信消息同步</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
             
                 
             
@@ -388,31 +396,31 @@
         
         
         <li class="main">
-            <a href="#_31">定时任务<span class="main-set parent__31">+</span></a>
+            <a href="#_28">定时任务<span class="main-set parent__28">+</span></a>
         </li>
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_32">添加定时任务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_29">添加定时任务</a></li>
             
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_33">查询定时任务列表</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_30">查询定时任务列表</a></li>
             
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_34">启动定时任务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_31">启动定时任务</a></li>
             
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_35">停止定时任务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_32">停止定时任务</a></li>
             
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_36">修改定时任务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_33">修改定时任务</a></li>
             
         
             
-            <li class="sub parent__31" style="display: none;"><a href="#_37">删除定时任务</a></li>
+            <li class="sub parent__28" style="display: none;"><a href="#_34">删除定时任务</a></li>
             
         
     
@@ -432,11 +440,11 @@
         </li>
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#_38">检查更新</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#_35">检查更新</a></li>
             
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#_39">确认升级</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#_36">确认升级</a></li>
             
         
     
@@ -444,7 +452,7 @@
         
         
         <li class="main">
-            <a href="#_40">数据存储</a>
+            <a href="#_37">数据存储</a>
         </li>
         
     
@@ -452,7 +460,7 @@
         
         
         <li class="main">
-            <a href="#_41">消息推送</a>
+            <a href="#_38">消息推送</a>
         </li>
         
     
@@ -866,7 +874,7 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $wxBridge-&gt;deleteHome($openId, $homeId);
 </code></pre>
 
-<h3 id="_21">添加用户至分组中</h3>
+<h3 id="home_1">添加用户至Home中</h3>
 <p>Home的管理员用户（创建Home的用户）可以通过发放分享码的方式将其他用户添加至Home中来。用户加入Home之后即与Home中已有的设备建立绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。</p>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
@@ -880,7 +888,7 @@ $openId = $wxBridge-&gt;getUserOpenId($user2-&gt;getId());    // 取用户$user2
 $wxBridge-&gt;syncBindings($openId);                       // 同步信息
 </code></pre>
 
-<h3 id="_22">从分组中移除用户</h3>
+<h3 id="home_2">从Home中移除用户</h3>
 <p>Home的管理员用户（创建Home的用户）也可以从Home中移除指定用户。被移除的用户将被解除与Home中设备的绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。</p>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
@@ -892,7 +900,7 @@ $openId = $wxBridge-&gt;getUserOpenId($userId);    // 取用户$userId对应的O
 $wxBridge-&gt;syncBindings($openId);               // 同步信息
 </code></pre>
 
-<h3 id="_23">添加或移动设备到分组中</h3>
+<h3 id="home_3">添加或移动设备到Home中</h3>
 <p>用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。
 在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。
 将设备添加至Home中之后，需要通知微信平台从AbleCloud平台更新设备与用户的绑定关系。同样，若从Home中删除了指定设备，也需要通知微信平台同步信息。</p>
@@ -916,7 +924,7 @@ $deviceService-&gt;moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
 
 <p>设备被添加至Home中时，已经与Home中的用户建立了绑定关系。再将设备移动至Room内时，不更改其与用户的绑定关系，因此不用额外通知微信或AbleCloud平台同步信息。
 同样，从Room中移出设备时，也不改变设备与用户的绑定关系，因此也不用额外同步信息。</p>
-<h3 id="_24">从分组中移除设备</h3>
+<h3 id="home_4">从Home中移除设备</h3>
 <p>用户可以调用方法ACDeviceService::removeDeviceFromRoom从Room中移除设备，此时该设备仍然属于Home，并且不改变设备与Home中用户的绑定关系。
 也可以调用方法ACDeviceService::deleteDeviceFromHome从Home中删除设备，此时将解除该设备与Home中所有用户的绑定关系。此操作过后，需要通知微信平台更新设备与用户的绑定关系。</p>
 <p>从Room中移除设备：</p>
@@ -936,24 +944,25 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $wxBridge-&gt;syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
 </code></pre>
 
-<h2 id="_25">设备的扩展属性</h2>
-<h3 id="_26">获取设备的扩展属性</h3>
+<h2 id="_21">设备的扩展属性</h2>
+<p>设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性。
+步骤：登录AbleCloud厂商管理后台--&gt;用户管理--&gt;扩展属性--&gt;创建扩展属性</p>
+<h3 id="_22">获取设备的扩展属性</h3>
 <pre><code class="php">// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
 // 获取设备的扩展属性
 $keyValues = $deviceService-&gt;getDeviceProfile($deviceId);
 </code></pre>
 
-<h3 id="_27">设置设备的扩展属性</h3>
-<p>设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性列。</p>
+<h3 id="_23">设置设备的扩展属性</h3>
 <pre><code class="php">// 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
 // 设置设备的扩展属性。扩展属性以键值对组成的关联数组保存，记为$profile。
 $deviceService-&gt;setDeviceProfile($user, $deviceId, $profile);
 </code></pre>
 
-<h1 id="_28">和云端通信</h1>
-<h2 id="_29">访问云端服务</h2>
+<h1 id="_24">云端通信</h1>
+<h2 id="_25">访问云端服务</h2>
 <p>PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。</p>
 <pre><code class="php">// 实例化ACRequest对象
 $request = new ACRequest($serviceName, $methodName, $serviceVersion);
@@ -968,7 +977,7 @@ $response = ACClient::sendToService($request);
 </code></pre>
 
 <p>上例中，参数$serviceName是要访问的UDS服务的名字，$methodName是要访问的方法名，$serviceVersion用于指定服务的主版本。这三个参数组合起来描述了此次请求的目标。</p>
-<h2 id="_30">向设备发送消息</h2>
+<h2 id="_26">向设备发送消息</h2>
 <p>PHP SDK中的类ACDeviceService定义了方法sendToDevice用于向设备发送指令。该方法的使用示例如下：</p>
 <pre><code class="php">// 实例化ACDeviceService对象
 $deviceService = ACClient::getDeviceService();
@@ -993,9 +1002,24 @@ $response = $deviceService-&gt;sendToDevice($user, $deviceId, $messageCode, $mes
 </code></pre>
 
 <p><strong>注：</strong>ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。</p>
-<h1 id="_31">定时任务</h1>
+<h2 id="_27">设备和微信消息同步</h2>
+<p>利用HTML5页面的WebSocket技术实现设备和微信控制页面的消息的实时同步。具体流程是：</p>
+<ul>
+<li>
+<p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
+</li>
+<li>
+<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>，将消息推送给微信公众号后台；</p>
+</li>
+<li>
+<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。</p>
+</li>
+</ul>
+<p><strong>注：</strong> “开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。</p>
+<h1 id="_28">定时任务</h1>
 <p>AbleCloud支持设备的定时任务，比如每天的固定时间向设备发送指令，控制设备运行特定的功能。这里的定时任务主要由三部分组成：执行任务的时间规则、任务执行时要发给设备的指令，以及权限及认证信息——定义任务的用户及执行任务的设备。</p>
-<h2 id="_32">添加定时任务</h2>
+<p>功能详细介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
+<h2 id="_29">添加定时任务</h2>
 <pre><code class="php">// 实例化ACTimerTaskService对象
 $timerTaskService = ACClient::getTimerTaskService();
 // 配置定时任务
@@ -1007,12 +1031,12 @@ $timerTaskService-&gt;addTask($task, $user);
 </code></pre>
 
 <p>上述例子中，ACTimerTask对象就用与设置任务的相关属性：执行任务的时间规则、任务执行时要发给设备的指令，定义任务的用户以及执行任务的设备。ACTimerTask的详细说明请参考<a href="../../reference/wechat/">Reference-微信客户端开发参考</a>中的“AbleCloud定时任务”。</p>
-<h2 id="_33">查询定时任务列表</h2>
+<h2 id="_30">查询定时任务列表</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 </code></pre>
 
-<h2 id="_34">启动定时任务</h2>
+<h2 id="_31">启动定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要启动的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要启动的任务的ID，记为$taskId。
@@ -1020,7 +1044,7 @@ $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 $timerTaskService-&gt;startTask($user, $deviceId, $taskId);
 </code></pre>
 
-<h2 id="_35">停止定时任务</h2>
+<h2 id="_32">停止定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要停止的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要停止的任务的ID，记为$taskId。
@@ -1028,7 +1052,7 @@ $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 $timerTaskService-&gt;stopTask($user, $deviceId, $taskId);
 </code></pre>
 
-<h2 id="_36">修改定时任务</h2>
+<h2 id="_33">修改定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要修改的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要修改的任务的ID，记为$taskId。
@@ -1040,7 +1064,7 @@ $task = new ACTimerTask();
 $timerTaskService-&gt;modifyTask($taskId, $task, $user);
 </code></pre>
 
-<h2 id="_37">删除定时任务</h2>
+<h2 id="_34">删除定时任务</h2>
 <pre><code class="php">// 查询已配置的定时任务的列表，从中找到要删除的的定时任务，记录其ID。
 $tasks = $timerTaskService-&gt;listTasks($user, $deviceId);
 // 找到要删除的任务的ID，记为$taskId。
@@ -1049,10 +1073,11 @@ $timerTaskService-&gt;deleteTask($user, $deviceId, $taskId);
 </code></pre>
 
 <h1 id="ota">OTA</h1>
+<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
 <p>本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
 此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。</p>
 <p>AbleCloud支持灵活的设备固件升级策略，开发者可以登录管理控制台制定相关信息。</p>
-<h2 id="_38">检查更新</h2>
+<h2 id="_35">检查更新</h2>
 <p>检查针对某个设备（WiFi设备）是否存在可升级的固件版本。</p>
 <pre><code class="php">// 实例化ACOtaService
 $otaService = ACClient::getOtaService();
@@ -1062,13 +1087,13 @@ $needUpdate = $otaVersion-&gt;canUpdate();
 // $needUpdate为TRUE时表示云端发布了新版本的固件，可以执行升级。
 </code></pre>
 
-<h2 id="_39">确认升级</h2>
+<h2 id="_36">确认升级</h2>
 <p>经过前述步骤查询得到可升级的固件版本时，用户可以选择是否升级。确认升级的示例代码如下：</p>
 <pre><code class="php">// 将指定设备的固件升级为查询得到的新版本
 $otaService-&gt;confirmUpdate($user, $deviceId, $otaVersion-&gt;getNewVersion());
 </code></pre>
 
-<h1 id="_40">数据存储</h1>
+<h1 id="_37">数据存储</h1>
 <p>ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：</p>
 <pre><code class="php">// 查询条件
 // 创建ACStoreScanner对象，设置查询条件。
@@ -1093,21 +1118,9 @@ $storeIter = $storeService-&gt;scan($scanner);
 $rows = $storeIter-&gt;next();     // $rows即是查询结果。
 </code></pre>
 
-<h1 id="_41">消息推送</h1>
-<p>向用户的微信客户端推送消息可分两种情况：一种是用户打开公众号的HTML5页面时推送消息到HTML5页面；一种是直接推送消息到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
-<p>第一种情况下，可利用HTML5页面的WebSocket技术实现消息的实时推送。具体流程是：</p>
-<ul>
-<li>
-<p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
-</li>
-<li>
-<p>AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>，将消息推送给微信公众号后台；</p>
-</li>
-<li>
-<p>开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。</p>
-</li>
-</ul>
-<p>第二种情况下，可利用微信公众平台提供的消息推送接口（<a href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">微信公众平台-模板消息接口</a>）向用户推送消息。具体流程是：</p>
+<h1 id="_38">消息推送</h1>
+<p>消息推送指的是将消息直接推送到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
+<p>可以利用微信公众平台提供的消息推送接口（<a href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">微信公众平台-模板消息接口</a>）向用户推送消息。具体流程是：</p>
 <ul>
 <li>
 <p>首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；</p>
@@ -1122,7 +1135,7 @@ $rows = $storeIter-&gt;next();     // $rows即是查询结果。
 <p><strong>注：</strong></p>
 <ol>
 <li>
-<p>上述两种情况下，“开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。</p>
+<p>“开发者的微信公众号后台提供的一个<strong>数据推送接口（Web服务）</strong>”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。</p>
 </li>
 <li>
 <p>UDS调用微信公众号的数据推送接口时，涉及访问AbleCloud之外的远程服务，需要通过AbleCloud UDS SDK提供的专门访问远程服务的API来实现。</p>
