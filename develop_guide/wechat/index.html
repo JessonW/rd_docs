@@ -538,6 +538,7 @@ class ACConfig {
 </code></pre>
 
 <h1 id="_3">帐号管理</h1>
+<p>功能介绍参考： <a href="../../features/functions/#_1">功能说明-功能介绍-帐号管理</a></p>
 <h2 id="_4">用户登录</h2>
 <p>对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台，从而成为开发者所提供服务的使用者。
 该“登录”操作的目的一般是获取用户在AbleCloud平台对应的帐号信息，以方便通过AbleCloud平台提供的接口访问云端或设备提供的服务。
@@ -614,7 +615,7 @@ $openId = $accountService-&gt;getUserOpenId($userId, 'weixin');
 </code></pre>
 
 <h1 id="_9">设备管理</h1>
-<p>说明参见<a href="../../features/functions/#_12">功能说明-设备管理</a>。</p>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
 <h2 id="ablecloud">微信平台与AbleCloud平台</h2>
 <p>微信硬件平台与AbleCloud平台都要求用户与设备建立绑定关系后采用使用设备，不过两个平台使用不用的策略来管理设备及其用户。</p>
 <p>首先，AbleCloud平台区分设备的管理员用户与非管理员用户。第一个绑定设备的用户就是设备的管理员用户。其他用户要绑定设备需要得到管理员用户的授权，比如通过管理员发放的分享码来绑定设备。
@@ -962,6 +963,7 @@ $deviceService-&gt;setDeviceProfile($user, $deviceId, $profile);
 </code></pre>
 
 <h1 id="_24">云端通信</h1>
+<p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-云端通信</a></p>
 <h2 id="_25">访问云端服务</h2>
 <p>PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。</p>
 <pre><code class="php">// 实例化ACRequest对象
@@ -1073,7 +1075,7 @@ $timerTaskService-&gt;deleteTask($user, $deviceId, $taskId);
 </code></pre>
 
 <h1 id="ota">OTA</h1>
-<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
+<p>功能介绍参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
 <p>本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
 此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。</p>
 <p>AbleCloud支持灵活的设备固件升级策略，开发者可以登录管理控制台制定相关信息。</p>
@@ -1119,6 +1121,7 @@ $rows = $storeIter-&gt;next();     // $rows即是查询结果。
 </code></pre>
 
 <h1 id="_38">消息推送</h1>
+<p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-推送</a></p>
 <p>消息推送指的是将消息直接推送到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。</p>
 <p>可以利用微信公众平台提供的消息推送接口（<a href="http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html">微信公众平台-模板消息接口</a>）向用户推送消息。具体流程是：</p>
 <ul>
