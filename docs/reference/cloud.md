@@ -370,6 +370,37 @@ public abstract class ACService {
     public void handleJDGetStatusMsg(ACContext context, String physicalDeviceId, List<ACJDMsg> resp) throws Exception {}
     
     /**
+     * 处理SUNING-->Service之间的交互消息，收到Stream点数组，进行设备控制
+     *
+     * @param physicalDeviceId 设备的物理id
+     * @param req              请求消息体(Stream数组)
+     * @param resp             响应消息体
+     * @throws Exception
+     */
+    public void handleSNSetStatusMsg(ACContext context, String physicalDeviceId, List<ACSNMsg> req, ACMsg resp) throws Exception {
+    }
+
+    /**
+     * 处理SUNING-->Service之间的交互消息,获取设备上所有Stream点
+     *
+     * @param physicalDeviceId 设备的物理id
+     * @param resp             响应消息体(Stream数组)
+     * @throws Exception
+     */
+    public void handleSNGetStatusMsg(ACContext context, String physicalDeviceId, List<ACSNMsg> resp) throws Exception {
+    }
+
+    /**
+     * 处理设备强制解绑的消息（不需要调解绑接口，此时不能与设备进行交互）
+     * 如果除了解绑设备之外没有任何其他的处理逻辑，则无需继承此方法
+     *
+     * @param context          设备的上下文，其中uid字段为系统填充
+     * @param physicalDeviceId 设备的物理id
+     */
+    public void handleDeviceForceUnbind(ACContext context, String physicalDeviceId, ACMsg resp) throws Exception {
+    }
+
+    /**
      * 内部调用接口，开发者不用关注且不能修改。
      * 设置服务相关的信息，并将全局AC框架传给服务
      * 服务内部可以使用AC框架提供的各种功能，如

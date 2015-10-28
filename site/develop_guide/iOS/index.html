@@ -306,6 +306,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_22">和云端通信<span class="main-set parent__22">+</span></a>
@@ -319,12 +323,16 @@
             <li class="sub parent__22" style="display: none;"><a href="#_25">二、发送消息到服务</a></li>
             
         
+            
+            <li class="sub parent__22" style="display: none;"><a href="#_26">三、实时消息</a></li>
+            
+        
     
         
         
         
         <li class="main">
-            <a href="#_26">局域网通信</a>
+            <a href="#_27">局域网通信</a>
         </li>
         
     
@@ -334,7 +342,7 @@
         
         
         <li class="main">
-            <a href="#_27">定时任务</a>
+            <a href="#_28">定时任务</a>
         </li>
         
             
@@ -368,19 +376,19 @@
         
         
         <li class="main">
-            <a href="#_37">推送<span class="main-set parent__37">+</span></a>
+            <a href="#_38">推送<span class="main-set parent__38">+</span></a>
         </li>
         
             
-            <li class="sub parent__37" style="display: none;"><a href="#_38">推送开发准备</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_39">推送开发准备</a></li>
             
         
             
-            <li class="sub parent__37" style="display: none;"><a href="#_39">一、推送准备</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_40">一、推送准备</a></li>
             
         
             
-            <li class="sub parent__37" style="display: none;"><a href="#_40">二、开启推送服务</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_41">二、开启推送服务</a></li>
             
         
     
@@ -400,19 +408,19 @@
         
         
         <li class="main">
-            <a href="#_41">文件存储<span class="main-set parent__41">+</span></a>
+            <a href="#_42">文件存储<span class="main-set parent__42">+</span></a>
         </li>
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_42">一、获取文件管理器</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_43">一、获取文件管理器</a></li>
             
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_43">二、下载文件</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_44">二、下载文件</a></li>
             
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_44">三、上传文件</a></li>
+            <li class="sub parent__42" style="display: none;"><a href="#_45">三、上传文件</a></li>
             
         
     
@@ -483,7 +491,12 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="2">2、发送验证码</h4>
-<pre><code class="objectivec">[ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="c">//1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
+=======
+```objectivec
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
+[ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
          if (error == nil) {
              //校验验证码
@@ -495,7 +508,12 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="3">3、检测验证码正确性</h4>
-<pre><code class="objectivec">[ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="c">//phone和email可任选其一
+=======
+```objectivec
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
+[ACAccountManager checkVerifyCodeWithAccount:phoneNum verifyCode:verifyCode callback:^(BOOL valid, NSError *error) {
            if(error){
             //返回失败信息，根据error做不同的提示或者处理
            }else{
@@ -994,7 +1012,84 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 }];
 </code></pre>
 
-<h1 id="_26">局域网通信</h1>
+<h2 id="_26">三、实时消息</h2>
+<p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。</p>
+<p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
+<h4 id="1_7">1、获取实时消息管理器</h4>
+<pre><code class="c">#import &quot;ACPushManager.h&quot;
+ACPushManager * pushManager = [[ACPushManager alloc] init];
+</code></pre>
+
+<h4 id="2_7">2、创建与服务器的连接</h4>
+<pre><code class="c">[pushManager connectWithCallback:^(NSError *error) {
+            if (!error) {
+            //连接成功，可以订阅数据 
+            }else{、
+            //连接失败，网络错误 
+            }
+}];```
+
+####3、订阅实时数据
+以如下数据集为例：
+
+![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
+
+```c
+//实例化ACPushTable对象
+ACPushTable *table  = [[ACPushTable alloc] init];
+//设置订阅的表名
+table.className = @&quot;BramcDeviceManager&quot;;
+//设置订阅的columns行
+table.cloumns = [NSMutableArray arrayWithObjects:@&quot;speed&quot;, nil];
+//设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
+table.opType =  OPTYPE_CREATE |OPTYPE_DELETE | OPTYPE_REPLACE | OPTYPE_UPDATE;
+//设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
+ACObject * primaryKey = [[ACObject alloc] init];
+[primaryKey putInteger:@&quot;deviceId&quot; value:100001];
+table.primaryKey =primaryKey;
+//可以多次调用以下此方法watch多个table
+[pushManager watchWithTable:table Callback:^(NSError *error) {
+             if (!error) {
+             //订阅成功
+             }else{
+             //订阅失败，请自行检查参数类型，表名，columns以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
+             }
+}];
+</code></pre>
+
+<h4 id="4_3">4、接收已订阅的实时数据</h4>
+<pre><code class="c">[pushManager onReceiveWithCallback:^(ACPushReceive *pushReceive, NSError *error) {
+             if (!error) {
+             //pushReceive.className 表名
+             //pushReceive.opType 接收类型，如ACPushTableOpType.CREATE
+             //pushReceive.Payload 接收数据ACObject格式
+             ACObject * obj = pushReceive.payload;
+             long speed = [obj getLong:@&quot;windSpeed&quot;];
+             }
+}];
+</code></pre>
+
+<h4 id="5">5、取消订阅</h4>
+<p>建议在退出订阅的activity之后调用，避免造成流量浪费。</p>
+<pre><code class="c">//实例化ACPushTable对象
+ACPushTable *table  = [[ACPushTable alloc] init];
+//设置订阅的表名
+table.className = @&quot;BramcDeviceManager&quot;;
+//设置监听主键
+ACObject * primaryKey = [[ACObject alloc] init];
+[primaryKey putInteger:@&quot;deviceId&quot; value:100001];
+table.primaryKey =primaryKey;
+
+[pushManager unWatchWithPushTable:table Callback:^(NSError *error) {
+             if (!error) {
+             //取消订阅成功
+            }else{
+            //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
+            }
+}];
+</code></pre>
+
+<h1 id="_27">局域网通信</h1>
 <p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="objectivec">[ACBindManager listDevicesWithStatusCallback:^(NSArray *devices, NSError *error) {
@@ -1036,7 +1131,7 @@ ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInf
 }];
 </code></pre>
 
-<h1 id="_27">定时任务</h1>
+<h1 id="_28">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
 <h4 id="-actimermanager">获取定时管理器－－ACTimerManager类</h4>
@@ -1055,7 +1150,7 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 }
 </code></pre>
 
-<h4 id="_28">添加定时任务</h4>
+<h4 id="_29">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
 <p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
@@ -1085,12 +1180,12 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 </li>
 </ul>
 </blockquote>
-<h4 id="_29">添加定时任务</h4>
+<h4 id="_30">添加定时任务</h4>
 <pre><code class="objectivec">ACDeviceMsg * dmsg = [[ACDeviceMsg alloc] init];
 dmsg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
 dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
-[DeviceMsg addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
+[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
         if (error)
         {
         NSLog(@&quot;添加定时失败&quot;);
@@ -1102,10 +1197,15 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h4 id="_30">修改定时任务</h4>
+<h4 id="_31">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
-<h4 id="_31">开启定时任务</h4>
-<pre><code class="objectivec">[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+<h4 id="_32">开启定时任务</h4>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="c">[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+=======
+```objectivec
+[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
         if (error) { 
         NSLog(@&quot;预约开失败－－%@&quot;,error);
         }else{
@@ -1114,7 +1214,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h4 id="_32">关闭定时任务</h4>
+<h4 id="_33">关闭定时任务</h4>
 <pre><code class="objectivec">[DeviceMsg closeTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
          if (error){
          NSLog(@&quot;预约关失败－－%@&quot;,error);
@@ -1125,8 +1225,13 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 
 </code></pre>
 
-<h4 id="_33">删除定时任务</h4>
-<pre><code class="objectivec">[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+<h4 id="_34">删除定时任务</h4>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="c">[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+=======
+```objectivec
+[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
           if (error){
           //删除定时失败，处理error
           }else{
@@ -1135,8 +1240,13 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h4 id="_34">获取定时任务列表</h4>
-<pre><code class="objectivec">[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+<h4 id="_35">获取定时任务列表</h4>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<pre><code class="c">[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
+=======
+```objectivec
+[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; d84050087dcaf994eb56b5c637ee8e4eaf37daef
          if (error)
           {
           NSLog(@&quot;获取定时信息失败%@&quot;,error);
@@ -1158,7 +1268,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <pre><code class="objectivec">@interface ACOTAManager : NSObject
 </code></pre>
 
-<h4 id="_35">二. 检查升级</h4>
+<h4 id="_36">二. 检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
 <pre><code class="objectivec">[ACOTAManager checkUpdateWithSubDomain:subDomain deviceId:deviceId callback:^(ACOTAUpgradeInfo *upgradeInfo, NSError *error) {
          if(error){
@@ -1173,7 +1283,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h4 id="_36">三．确认升级</h4>
+<h4 id="_37">三．确认升级</h4>
 <pre><code class="objectivec">[ACOTAManager confirmUpdateWithSubDomain:subDomain deviceId:deviceId newVersion:newVersion callback:^(NSError *error) {
           if(error){
           //返回失败信息，根据error做不同的提示或者处理
@@ -1183,10 +1293,10 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h1 id="_37">推送</h1>
+<h1 id="_38">推送</h1>
 <p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
-<h2 id="_38">推送开发准备</h2>
+<h2 id="_39">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>
 <p>首先，需要创建友盟推送账号，并创建应用（安卓和iOS版本需要单独创建），如下图所示。</p>
 <p><img alt="push1" src="../../pic/develop_guide/push1.png" /> </p>
@@ -1199,15 +1309,15 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <p>2、推荐先登录友盟推送的后台进行推送测试，若能收到推送通知即代表流程通过，最后再与UDS服务进行下一步测试。</p>
 <p>3、推荐先使用友盟推送后台的设备状态查询（通过接口获取）或者设备别名查询（即登录成功之后的userId）等工具确认是否成功注册推送服务。若注册成功之后仍没有收到通知消息，再检查一下开发环境配置。</p>
 </blockquote>
-<h2 id="_39">一、推送准备</h2>
+<h2 id="_40">一、推送准备</h2>
 <h4 id="appkey-umeng-message-secret">添加 AppKey 和 Umeng Message Secret</h4>
-<h2 id="_40">二、开启推送服务</h2>
+<h2 id="_41">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
 <h4 id="1-acnotificationmanager">1、获取推送管理器－－ACNotificationManager类</h4>
 <pre><code class="objectivec">@interface ACNotificationManager : NSObject
 </code></pre>
 
-<h4 id="2_7">2、在应用的启动函数中开启推送服务</h4>
+<h4 id="2_8">2、在应用的启动函数中开启推送服务</h4>
 <pre><code class="objectivec">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
         [ACNotificationManager       startWithAppkey:@&quot;您的appKey&quot; launchOptions:launchOptions];
@@ -1224,7 +1334,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }];
 </code></pre>
 
-<h4 id="4_3">4、在退出登录之后移除掉旧的别名</h4>
+<h4 id="4_4">4、在退出登录之后移除掉旧的别名</h4>
 <pre><code class="objectivec">[ACNotificationManager removeAliasWithUserId:uid callback:^(NSError *error){
            if(error){
              //移除失败，处理错误信息
@@ -1234,7 +1344,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }
 </code></pre>
 
-<h1 id="_41">文件存储</h1>
+<h1 id="_42">文件存储</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_21">功能说明-功能介绍-文件存储</a></p>
 <blockquote>
 <p><font color="red">注意</font>：</p>
@@ -1242,11 +1352,11 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <p>2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现</p>
 <p>3、上传下载支持断点续传功能</p>
 </blockquote>
-<h2 id="_42">一、获取文件管理器</h2>
+<h2 id="_43">一、获取文件管理器</h2>
 <pre><code class="objectivec">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
-<h2 id="_43">二、下载文件</h2>
+<h2 id="_44">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="objectivec">[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
@@ -1269,13 +1379,13 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }
 </code></pre>
 
-<h2 id="_44">三、上传文件</h2>
+<h2 id="_45">三、上传文件</h2>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
 <pre><code class="objectivec">@interface ACACL : NSObject
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。</p>
-<h3 id="2_8">2、上传文件</h3>
+<h3 id="2_9">2、上传文件</h3>
 <h4 id="1-acfileinfo">1)、设置上传文件信息－－ACFileInfo类</h4>
 <pre><code class="objectivec">@interface ACFileInfo : NSObject
 //上传文件名字
@@ -1294,7 +1404,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 </code></pre>
 
-<h4 id="2_9">2)、设置文件权限</h4>
+<h4 id="2_10">2)、设置文件权限</h4>
 <pre><code class="objectivec">/**
 * 设置全局可读访问权限，不设置则默认为所有人可读
 * @param allow 是否全局可读
