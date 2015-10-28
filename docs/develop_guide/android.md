@@ -115,8 +115,8 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ####4、注册
 
 ```java
-    //emai和phone可以任选其一
-	AC.accountMgr().register(email, phone, password, name, verifyCode, new PayloadCallback<ACUserInfo>() {
+    //emai和phone可以任选其一;nickName为可选项，没有时传空字符串
+	AC.accountMgr().register(email, phone, password, nickName, verifyCode, new PayloadCallback<ACUserInfo>() {
         @Override
         public void success(ACUserInfo userInfo) {
             //获得用户userId和nickName，由此进入主页或设备管理
@@ -146,7 +146,7 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
             //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
         }
 	});
-	//绑定一个未被注册的普通帐号
+	//绑定一个未被注册的普通帐号；emai和phone可以任选其一;nickName为可选项，没有时传空字符串
 	AC.accountMgr().bindWithAccount(email, phone, password, nickName, verifyCode, new VoidCallback() {
         @Override
         public void success() {
@@ -835,6 +835,7 @@ public class LightMsg {
 
 ```
 ```java
+//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
@@ -899,6 +900,7 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```java
 ACObject req = new ACObject();
 req.put("switch", 1);
+//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
@@ -1086,7 +1088,7 @@ ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
 ```
 此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
 ```java
-//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动更新局域网状态
+//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动更新局域网状态；1000为发现的超时时间，单位毫秒
 AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
     @Override
     public void success(List<ACDeviceFind> acDeviceFin****ds) {
