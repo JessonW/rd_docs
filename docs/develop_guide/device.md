@@ -350,8 +350,18 @@ OTA启动请求。该消息执行成功需要回应AC_CODE_ACK消息，失败则
 ```c
     void AC_HandleOtaBeginMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        /*本例只升级本地设备，因而不记录文件数目*/
-        AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);  
+        AC_OtaBeginReq *pstruOtaBegin = (AC_OtaBeginReq *)(pu8Playload);
+        //校验云端下发的文件数目是否超过设备端可以存储的文件数目
+        if(pstruOtaBegin->u8FileNum>FILEMAXNUM)
+        {
+             AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);   
+        }
+        else
+        {
+            g_u32FileTransferNum = 0;
+            g_struOtaFileInfo.u32FileNum = pstruOtaBegin->u8FileNum;
+            AC_SendAckMsg(NULL, pstruMsg->MsgId);
+        }
     }
 ```
 
@@ -378,24 +388,42 @@ OTA文件传输启动请求。该消息执行成功需要回应AC_CODE_ACK消息
         u32 ret =0;
         u32 i = 0;
         u32 blocklen = 0;
-        /*存储文件信息*/
         AC_OtaFileBeginReq *pstruOta = (AC_OtaFileBeginReq *)(pu8Playload);
-        g_struOtaInfo.u32RecvOffset = 0;
-        g_struOtaInfo.u32TotalLen = AC_HTONL(pstruOta->u32FileTotalLen);
-        g_struOtaInfo.u8Crc[0] = pstruOta->u8TotalFileCrc[0];
-        g_struOtaInfo.u8Crc[1] = pstruOta->u8TotalFileCrc[1];
+        /*存储文件信息*/
+        g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32RecvOffset = 0;
+        g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32TotalLen = AC_HTONL(pstruOta->u32FileTotalLen);
+        g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u8Crc[0] = pstruOta->u8TotalFileCrc[0];
+        g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u8Crc[1] = pstruOta->u8TotalFileCrc[1];
         /*擦除OTA区域*/
-        blocklen =  (g_struOtaInfo.u32TotalLen + 4 + BLOCK_SIZE - 1)&(~(BLOCK_SIZE - 1));//include length + data
+        blocklen =  (g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32TotalLen + 4 + BLOCK_SIZE - 1)&(~(BLOCK_SIZE - 1));//include length + data
         for(i = 0;i<blocklen/BLOCK_SIZE;i++ )           
         {
             ret = FlashErase(g_ui32OtaFlagAddr +i*BLOCK_SIZE );
             if(ret!= 0)
-            break;
+                break;
         }
-       /*烧入升级文件长度*/
-        ret =  FlashProgram(&g_struOtaInfo.u32TotalLen, (g_ui32TransferFileLenAddress) , 4);
-        /*回响应*/                     
-        AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
+        if(i!=blocklen/BLOCK_SIZE)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0); 
+            return;
+        }
+        
+        /*烧入升级文件长度*/
+        ret =  FlashProgram(&g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32TotalLen, (g_ui32TransferFileLenAddress) , 4);
+        if(AC_RET_OK!=ret)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0); 
+            return;
+        }
+        /*烧入升级文件CRC*/
+        ret =  FlashProgram((u32 *)g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u8Crc, (g_ui32TransferFileCrcAddress) , 4); 
+        if(AC_RET_OK!=ret)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0); 
+            
+            /*回响应*/
+            AC_SendAckMsg(NULL, pstruMsg->MsgId);
+        }
     }
 ```
 ##OTA文件块传输消息
@@ -455,12 +483,30 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 参考代码如下:
 
 ```c
+
     void AC_HandleOtaFileEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-        /*回响应*/
+         //校验文件长度
+        if(g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32RecvOffset!=g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32TotalLen)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);  
+            return;
+        }
+        //校验文件内容
+        if (AC_RET_ERROR == AC_CheckCrc(g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u8Crc, (u8*)(g_ui32TransferFileAddress), g_struOtaFileInfo.struFileInfo[g_u32FileTransferNum].u32TotalLen))
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);  
+            return;
+        }
+        //校验云端下发的文件数目是否超过设备端可以存储的文件数目
+        if(g_u32FileTransferNum++>FILEMAXNUM)
+        {
+             AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);   
+             return;
+        }
         AC_Printf("Ota File End\n");
-        AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
-    }
+        AC_SendAckMsg(NULL, pstruMsg->MsgId);
+        }
 ```
 ##OTA结束消息
 
@@ -471,20 +517,16 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 ```c
     void AC_HandleOtaEndMsg(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8 *pu8Playload)
     {
-         u32 u32RetVal = AC_RET_OK;
-         u16 u16DataLen;
-         u32 u32OtaFlag = 0xAA55AA55;
-         AC_Printf("Ota End\n");
-     
-         /*回响应*/ 
-         if (AC_RET_OK == u32RetVal)
-         {
-             AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
-         }
-         else
-         {
-             AC_SendErrMsg(pstruOptList, pstruMsg->MsgId, NULL, 0);
-         }
+        AC_Printf("Ota End\n");
+    
+        //校验ota文件个数
+        if(g_u32FileTransferNum!=g_struOtaFileInfo.u32FileNum)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);  
+            return;
+        }
+    
+        AC_SendAckMsg(NULL, pstruMsg->MsgId)
     }
 ```
 
@@ -502,13 +544,20 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
         u32 u32OtaFlag = 0xAA55AA55;
         AC_Printf("Ota Confirm\n");
     
+        //校验ota文件个数
+        if(g_u32FileTransferNum!=g_struOtaFileInfo.u32FileNum)
+        {
+            AC_SendErrMsg(NULL, pstruMsg->MsgId,NULL,0);  
+            return;
+        }
         /*更新ota升级标志位*/
         u32RetVal =  FlashProgram(&u32OtaFlag, (g_ui32OtaFlagAddr) , 4);
         /*回响应,跳转到boot区域启动ota升级流程*/
         if (AC_RET_OK == u32RetVal)
         {
             AC_SendAckMsg(pstruOptList, pstruMsg->MsgId);
-            sleep(10);
+            Sleep(10);
+            //跳转到bootloader ，bootloader根据标志位和文件crc确定是否升级。
             AC_JumpToBootLoader();
         }
         else
@@ -726,7 +775,7 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
             }
             cJSON_Delete(format);
         }
-        JSON内存申请
+        /*JSON内存申请/*
         root=cJSON_CreateObject();
         /*构造JSON消息*/
         cJSON_AddBoolToObject(root,"result",result);

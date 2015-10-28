@@ -352,10 +352,23 @@ class ACBridgeWeChat {
     function __construct($accessToken);
 
     /**
+     * 构造函数。
+     * @param $accessToken 字符串，是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
+     * @param $jsTicket 字符串，是微信公众号的JS API Ticket。注意：微信公众号的JS API Ticket的有效期是有期限限制的。
+     */
+    function __construct($accessToken, $jsTicket);
+
+    /**
      * 设置/更新微信公众号的Access Token。
-     * @param $accessToken 新的Access Token。
+     * @param $accessToken 字符串，是新的Access Token。
      */
     public function setAccessToken($accessToken);
+
+    /**
+     * 设置/更新微信公众号的JS API Ticket。
+     * @param $jsTicket 字符串，是新的JS API Ticket。
+     */
+    public function setJsTicket($jsTicket);
 
     /// @name 微信推送的事件的处理方法
     //@{
@@ -390,14 +403,14 @@ class ACBridgeWeChat {
     public function onDeviceEventUnbind($xmlMsg);
 
     /**
-     * 微信推送消息：MsgType为&quot;device_event&quot;，Event为&quot;subscribe_status&quot;时的响应函数：微信查询设备状态信息（目前微信仅查询WIFI设备的状态信息）。
+     * 微信推送消息：MsgType为&quot;device_event&quot;，Event为&quot;subscribe_status&quot;时的响应函数：微信订阅设备状态信息（目前微信仅查询WIFI设备的状态信息）。
      * @param $xmlMsg 微信推送的原始XML消息内容。
      * @return 返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
      */
     public function onDeviceEventSubscribeStatus($xmlMsg);
 
     /**
-     * 微信推送消息：MsgType为&quot;device_event&quot;，Event为&quot;unsubscribe_status&quot;时的响应函数：微信查询退订设备状态信息（目前微信仅查询WIFI设备的状态信息）。
+     * 微信推送消息：MsgType为&quot;device_event&quot;，Event为&quot;unsubscribe_status&quot;时的响应函数：微信退订设备状态信息（目前微信仅查询WIFI设备的状态信息）。
      * @param $xmlMsg 微信推送的原始XML消息内容。
      * @return 返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
      */
@@ -437,24 +450,37 @@ class ACBridgeWeChat {
      */
     public function getDeviceQRCode($physicalId, $withACShareCode = FALSE, $openId = '', $timeout = 300);
 
+    /// @name 信息同步方法。
+    //@{
     /**
-     * 解除用户与设备的绑定关系。
-     * @param $openId 字符串，要解除绑定关系的用户的OpenID。
-     * @param $physicalId 字符串，是要解除绑定关系的设备的物理ID。
-     * @param $isGateway 布尔值，为TRUE时表示该设备是网关设备，否则表示其为独立设备。缺省值为FALSE。
-     * @return 返回TRUE表示操作成功；返回FALSE表示操作失败，此时可调用getLastError()获取错误消息。
-     */
-    public function unbindDevice($openId, $physicalId, $isGateway = FALSE);
-
-    /**
-     * 同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
+     * 针对指定用户，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
      * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
-     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据（比如处理蓝牙设备绑定关系的同步）。
+     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据，比如处理蓝牙设备绑定关系的同步，或者将用户从“家”或“房间”里移除之后。
      * @param $openId 字符串，是待检查的用户的微信OpenID。
      * @param $physicalIdOfStatus 字符串，是要查询其在线状态的设备的物理ID。
      * @return 返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
      */
     public function syncBindings($openId, $physicalIdOfStatus = '');
+
+    /**
+     * 针对指定设备，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。
+     * @details 在调用AbleCloud平台提供的API解除了某用户与设备的绑定关系后，或者将设备从“房间”或“家”中移除后，开发者需要调用本方法在AbleCloud平台与微信平台之间同步设备与用户的绑定关系。
+     * 在其它情况下，开发者也可根据实际情况主动调用本方法同步数据。
+     * @param $physicalId 字符串，是设备的物理ID。
+     * @param $deviceType 字符串，本微信公众号所关联的设备类型，目前为“微信公众账号原始ID”。
+     * @return 操作成功时返回TRUE；操作失败时返回FALSE，同时可调用方法getLastError()获取错误信息。
+     */
+    public function syncBindingsByDevice($physicalId, $deviceType);
+
+    /**
+     * 删除一个“家”对象。
+     * @details 微信公众号开发者应该通过本方法来删除“家”。本方法将在AbleCloud平台与微信平台之间同步因删除“家”而引起的用户-设备绑定关系的变更。
+     * @param $openId 字符串，是发起删除“家”这个操作的用户的OpenID。
+     * @param $homeId 整数，是要被删除的“家”的ID。
+     * @return 操作成功时返回TRUE，操作失败时返回FALSE。操作失败时，可以调用方法getLastError()获取错误信息。
+     */
+    public function deleteHome($openId, $homeId);
+    //@}
 
     /**
      * 取最近一次错误消息。
@@ -511,6 +537,29 @@ class ACContext {
      * @return 返回TRUE表示当前配置为生产环境，否则表示为测试环境。
      */
     public function isProductionMode();
+
+    /**
+     * 设置用户控制设备时所使用的终端工具的信息。
+     * @param $name 字符串，是终端工具所使用的应用的名字，如'weixin'（表示微信终端）等。
+     * @param $version 字符串，是终端工具所使用的应用的版本信息。缺省值为空字符串。
+     * @param $id 字符串，是终端工具的ID，用于标识该工具。缺省值为空字符串。
+     * @param $osName 字符串，是终端工具所使用的操作系统的名字，如android，ios等。
+     */
+    public function setHandset($name, $version = '', $id = '', $osName = '');
+
+    /**
+     * 为发给AbleCloud云端的HTTP请求配置自定义的HTTP Header。
+     * @param $header 字符串，是要配置的HTTP Header的名字。
+     * @param $value 字符串，是$header对应的值。
+     * @return 无。
+     */
+    public function addExtHttpHeader($header, $value);
+
+    /**
+     * 取自定义的HTTP Header信息。
+     * @return 返回一个关联数组。数组的每一个键值对表示一项自定义的Header。
+     */
+    public function getExtHttpHeaders();
 }
 </code></pre>
 
@@ -1271,9 +1320,12 @@ class ACDeviceService extends ACService {
      * @param $deviceId 整数，是目标设备的逻辑ID。
      * @param $messageCode 发送给设备的消息的码。整数。
      * @param $message 以string对象存储的拟发送给设备的二进制数据。
+     * @param $handset 字符串。表示调用本方法时用户所使用的终端工具的名字，如'weixin'表示微信终端。
+     *                  开发者也可以通过ACContext对象设置终端工具信息。如果指定了本参数，则以本参数指定的值为准。
+     * @param $handsetVersion 字符除啊，表示调用本方法时用户所使用的终端工具的版本信息。
      * @return 返回ACResponse对象，表示设备或云端服务的响应。
      */
-    public function sendToDevice($user, $deviceId, $messageCode, $message);
+    public function sendToDevice($user, $deviceId, $messageCode, $message, $handset = '', $handsetVersion = '');
 
     /**
      * 修改设备名称。
@@ -1729,7 +1781,8 @@ class ACStoreIterator extends ACService {
     function __construct($name, $version, $context, $scanner);
 
     /**
-     * 取查询结果集合中的下一条数据记录。返回NULL时表示已遍历完整个数据集。
+     * 取查询结果集合中的下一批数据记录。返回NULL时表示已遍历完整个数据集。
+     * @details 实际上，当前第一次调用本方法就返回所有符合条件的记录，因此不用多次调用来检查是否已取到了所有数据。
      * @return - 返回一个数组。数组中的每个元素是一个关联数组，表示一条数据记录。
      *  - 返回NULL表示已遍历完整个集合。
      *  - 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
@@ -1746,9 +1799,9 @@ class ACStoreScanner {
     /**
      * 构造函数。
      * @param $name 字符串。要被查询的数据集的名字。
-     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。
+     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
      */
-    function __construct($name, $entityGroupKeyValues);
+    function __construct($name, $entityGroupKeyValues = NULL);
 
     /**
      * 取要查询的数据集的名字。
@@ -1920,13 +1973,6 @@ class ACStoreService extends ACService {
      * @return 返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
      */
     public function scan($scanner);
-
-    /**
-     * 执行跨所有分区的数据查询。
-     * @param $name 字符串。要查询的数据集的名字。
-     * @return 返回ACStoreScanner对象，用于查询数据记录。
-     */
-    public function fullScan($name);
 }
 </code></pre>
 

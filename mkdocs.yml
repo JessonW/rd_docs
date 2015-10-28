@@ -1,6 +1,7 @@
 site_name: AbleCloud 开发文档
 theme_dir: ac_theme
-theme: readthedocs
+theme: mkdocs
+#theme:Flatly
 
 pages:
 #- Home: index.md

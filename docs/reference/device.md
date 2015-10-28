@@ -76,6 +76,7 @@ AC_MessageHead中各个字段的说明：
 |19		|AC_CODE_OTA_FILE_CHUNK	|OTA文件传输			|
 |20		|AC_CODE_OTA_FILE_END	|OTA文件传输结束		|
 |21		|AC_CODE_OTA_END		|OTA结束				|
+|35		|AC_CODE_OTA_CONFIRM		|OTA确认升级			|
 |36		|AC_CODE_UNBIND			|解除设备的绑定		|
 |45		|AC_CODE_GATEWAY_CTRL	|网关控制消息			|
 |46		|AC_CODE_LIST_SUBDEVICES_REQ|查询所有子设备列表请求|
@@ -203,13 +204,14 @@ typedef struct
 
 |名称		|作用						|
 |-----------|---------------------------|
-|u8EqVersion|设备版本信息，通过此version来确定目前设备版本，用以后续OTA升级。版本信息设备需要自行存储|
+|u8EqVersion|设备版本信息，目前使用后3个字节确定目前设备版本，用于后续OTA升级。版本信息设备需要自行存储|
 |u8ModuleKey|设备的秘钥Key，不同设备Key是唯一的|
 |u8Domain	|设备域信息，不同设备类型不一样|
 |u8DeviceId	|设备唯一标示					|
 |			|							|
 
 以上信息，都是在设备在出厂前进行相关的注册，注册成功后，自行存储。当设备启动后，先发送请求信息给wifi模块，wifi用来进行和云端认证。
+另外设备版本信息需要云端后台填写的版本号一致，否则云端会反复进行ota升级。
 
 ***Message code 8:  AC_CODE_REST***
 
@@ -221,7 +223,7 @@ OTA消息的正确回应，msgid要和请求消息一一对应。
 
 ***Message code 16:  AC_CODE_ERR***
 
-OTA消息的错误回应。
+OTA消息的错误回应，msgid要和请求消息一一对应。
 
 ```
 typedef struct{
@@ -232,14 +234,13 @@ typedef struct{
 
 ***Message code 17:  AC_CODE_OTA_BEGIN***
 
-OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：
+OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 收到该消息后，设备端需要记录需要升级的文件数目，用于升级前的校验，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：
 
 ```
 typedef struct
 {
     u8 u8FileNum;
     u8 u8Pad[3];
-    //u8 u8FileType[0];
 }AC_OtaBeginReq;
 ```
 
@@ -247,13 +248,13 @@ typedef struct
 
 |名称		|作用						|
 |-----------|---------------------------|
-|u8FileNum	|用以指示本次升级时文件类型和个数。文件类型在该消息体之后，按字节依次排列|
+|u8FileNum	|用以指示本次升级时文件个数|
 |u8Pad		|填充位，无意义				|
 |			|							|
 
 ***Message code 18:  AC_CODE_OTA_FILE_BEGIN***
 
-OTA 文件传输启动请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+OTA 文件传输启动请求，设备端需要记录本次升级文件的信息，用于升级前的文件校验,该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
 
 ```
 typedef struct
@@ -261,7 +262,6 @@ typedef struct
     u8 u8FileType;
     u8 u8FileVersion;
     u16  u16TotalFileCrc;
-
     u32 u32FileTotalLen;
 }AC_OtaFileBeginReq;
 ```
@@ -278,7 +278,7 @@ typedef struct
 
 ***Message code 19:  AC_CODE_OTA_FILE_CHUNK***
 
-OTA 文件块传输请求，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。
+OTA 文件块传输请求，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。
 
 ```
 typedef struct
@@ -296,11 +296,17 @@ typedef struct
 
 ***Message code 20:  AC_CODE_OTA_FILE_END***
 
-OTA升级文件传输结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。无消息体
+OTA升级文件传输结束消息，收到该消息后处理如下：
+
+1.校验已接收到的文件长度与AC_CODE_OTA_FILE_BEGIN消息存储的文件长度匹配
+
+2.校验已接收到的文件CRC与AC_CODE_OTA_FILE_BEGIN消息存储的文件CRC匹配  
+
+上述1、2 如果都执行成功，需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
 
 ***Message code 21:  AC_CODE_OTA_END ***
 
-OTA升级结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+OTA升级结束消息，收到该消息后需要校验已收到的文件数目与AC_CODE_OTA_BEGIN是否对应，如果对应则给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
 
 ***Message code 23:  AC_CODE_ZOTA_FILE_BEGIN***
 
@@ -317,7 +323,9 @@ OTA升级结束消息，该消息需要给回应AC_CODE_ACK消息，失败回应
 ***Message code 26:  AC_CODE_ZOTA_END***
 
 该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。
+***Message code 35:  AC_CODE_OTA_CONFIRM***
 
+OTA确认升级消息，收到该消息设备侧启动设备内部更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
 ***Message code 36: AC_CODE_UNBIND***
 
 该消息用以设备解除自己绑定。相当于管理员删除设备。
@@ -441,163 +449,7 @@ AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息�
 
 
 
-#KLV协议介绍
 
-
-KLV是一种比json更轻量级的类json数据交换格式，适合在低处理能力的嵌入式设备上运行。KLV采用了流格式，KLV中key必须是数字，可以跟简单json进行转换，只是需要将json中的不同类型的key映射成KLV的数字的key。
-
-KLV数据格式如下图所示：
-
-![device_KLV1.png](../pic/reference/device_KLV1.png)
- 
-KLV数据格式包含四部分：键值（Key），数据类型，长度（Length），数值（Value）。
-
-键值：key使用8个bit的数字表示，范围从0～255，可以表示256个不同的key。如果产品的数据格式选择为KLV，在管理后台定义数据点时，需要填写数据点的key值。
-
-数据类型：使用第二个字节的低5个bit用于表示数值的数据类型，高3个bit预留不用，约定：
-
--   0x00：无效，只有key，没有value，适用于不需要参数的控制，比如上报当前温度。
--   0x01：布尔型（占用8bit数值表示，只使用第一个bit）
--   0x02：8位整型
--   0x03：16位整型（网络字节序，用户无须转换）
-- 	0x04：32整型（网络字节序，用户无须转换）
-- 	0x05：64整型（网络字节序，用户无须转换）
-- 	0x06：浮点型（32位，网络字节序，用户无须转换）
-- 	0x07：双精度型（64位，网络字节序，用户无须转换）
-- 	0x08：字符串
-- 	0x09：二进制
-- 	0x0A：KLV类型[保留]
-
-数据长度：占用两个字节（网络字节序，用户无须转换），数据长度是可选参数，当数据类型是无效，布尔，整形，浮点型时，不需要数据长度，根据数据类型就可以知道数据长度，约定：
-无效数据类型数据长度为0，即第三个字节是下一个KLV结构。
-
-- 布尔型数据长度为1，占用其后一个字节。
-- 8位整形数据长度为1，占用其后一个字节。
-- 16整形数据长度为2，占用其后两个字节。
-- 32整形数据长度为4，占用其后四个字节。
-- 64整形数据长度为8，占用其后八个字节。
-- 浮点型数据长度为4，占用其后四个字节。
-- 双精度型数据长度为8，占用其后8个字节。
-
-字符串，二进制和KLV类型需要使用两个字节指示数据长度。
-
-数值：根据长度指示，其后指定的连续字节为数值，如果是整形和浮点型，统一采用网络字节序。
-
-KLV最短长度为2个字节。
-
-多个KLV打包的结构示意图如下：
- 
-![device_KLV2.png](../pic/reference/device_KLV2.png)
-
-
-##设备侧使用说明
-
-设备需要预先知道各个key的真实含义，比如key 123代表温度。
-
-设备获取各个key对应的value，其value的含义由设备开发者定义。KLV中携带了value的数据类型。对于二进制类型，需要设备开发者自行处理其含义。对于布尔型，使用8bit的数字表示，0表示false，非0值表示true。
-
-如果一次请求中携带多组KLV，并且不止一组KLV需要响应这次请求，那么设备需要打包这些响应，组成KLVs一次回复，不能对其中的各个KLV单独回复一次。
-
-设备侧SDK与云端约定一个固定的messageCode作为设备控制的消息编码，一个固定的messageCode为响应消息编码，一个固定的messageCode为上报消息编码，这些消息编码对开发者不可见。
-
-设备端SDK也提供编解码接口，开发者需要编码和解码时直接调用对应的编解码接口即可。
-
-设备端开发参考 [开发指导-设备-和云端通信](../develop_guide/device.md#和云端通信)
-
-##UDS/APP侧使用说明
-
-UDS和APP如果使用json，那么就需要SDK将KLV转换为json。
-
-UDS和APP如果也直接使用KLV则SDK不需要做任何处理。
-
-SDK提供一套独立的编码和解码接口，当开发者认为需要编码为KLV时，调用我们的接口进行编码，当开发者认为需要解码时，调用SDK中的解码接口，解码为json格式的kv。
-
-开发者需要编码或者解码时，需要提供云端生成的数据点json文件，SDK按照提供的格式进行编解码。
-
-在正式上线环境，数据点的变动意为着产品升级。
-
-客户端开发请参考：
-
-[开发指导-安卓-和云端通信](../develop_guide/android.md#和云端通信)
-
-[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
-
-[开发指导-微信-和云端通信](../develop_guide/wechat.md#和云端通信)
-
-
-##厂商管理后台的使用说明
-
-厂商管理后台在创建产品时，选择产品的数据类型KLV。一个产品只能选择一种数据类型。
-
-然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、key值，数据类型。
-
-- 名称：用户自己定义的标识，不在开发中使用，在管理后台中方便区分标识的意思。
-- 标识：该标识在设备和客户端开发中不会使用。在开发UDS的时候，可以用作存储的列的唯一标识。
-- key值：相当于JSON中的key，设备、云端、客户端开发中都会用到。是产品功能点的唯一标识，不能重复。
-- 数据类型：标识该key对应的数据类型。支持bool、int8、int16、int32、int64、float、double float、string、binary格式。目前还不支持数组。如果要使用数组，可以将该数据点定义为binary格式。
-
-数据点对应设备上的功能点。数据包对应设备和云端通信的通信包，一个数据包可以包括一个或者多个数据点。
-
-在数据点和数据包页面可以导出创建的数据点
-
-如果某些KLV存在关联，需要打包处理，可以使用KLV嵌套的方式将关联的KLV打包在一个KLV中，即KLV的value是KLVS。
-
-##云端消息解析
-
-在管理后台定义好数据点之后，云端就可以根据定义的数据点解析数据。
-
-如果不开发UDS，不需要关系此部分。如果需要开发UDS，参考[开发指导-云端服务](../develop_guide/cloud.md)
-
-
-#JSON
-
-JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 它采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。
-
-Ablecloud规定UDS/APP与设备通信使用简单json格式，即value支持的类型有：布尔、整形、浮点形、字符串、数组，字符串采用UTF-8编码，且不支持对象。举例说明，一条合法格式的控制指令：
-{
-“key1”: true,
-“key2”: 31.5,
-“key3”: 18,
-“key4”: ”hello world”,
-“key5”: [1,2,3,4],
-}
-
-非法格式的控制指令：
-{
-“key1”: true,
-“key2”: 31.5,
-“key3”: 18,
-“key4”: ”hello world”,
-“key5”: [1,2,3,4],
-“key6”: {“key7”:11, “key8”:”error”},
-}
-
-##厂商管理后台使用说明
-
-厂商管理后台在创建产品时，选择产品的数据类型JSON。一个产品只能选择一种数据类型。
-
-然后在功能点设置页面，创建设备的数据点（数据点对应设备上的功能点），填写数据点的名称、标识、数据类型。
-
-- 名称：用户自己定义的标识，不在开发中使用，在管理后台中方便区分标识的意思。
-- 标识：JSON中的key，设备、云端、客户端开发中都会用到。是产品功能点的唯一标识，不能重复。
-- 数据类型：标识该key对应的数据类型。支持bool、int8、int16、int32、int64、float、double float、string、binary格式。目前还不支持数组。如果要使用数组，可以将该数据点定义为binary格式。
-
-数据点对应设备上的功能点。数据包对应设备和云端通信的通信包，一个数据包可以包括一个或者多个数据点。
-
-在数据点和数据包页面可以导出创建的数据点
-
-
-设备端开发请参考：
-
-[开发指导-设备-和云端通信](../develop_guide/device.md#和云端通信)
-
-客户端使用说明请参考：
-
-[开发指导-安卓-和云端通信](../develop_guide/android.md#和云端通信)
-
-[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
-
-[开发指导-微信-和云端通信](../develop_guide/wechat.md#和云端通信)
 
 
 #设备接口定义
