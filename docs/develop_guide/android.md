@@ -424,8 +424,8 @@ AbleCloud提供了ACDeviceActivitor激活器供你使用。
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
-<font color="red">注</font>：AC.DEVICE_HF表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要修改。
-目前支持的wifi模块有AC.Device_MTK、AC.Device_MX、AC.Device_MARVELL、AC.Device_MURATA、AC.Device_WM、AC.Device_RAK。
+><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
+目前支持的wifi模块有`AC.DEVICE_MTK(MTK模块)`、`AC.DEVICE_MX（庆科模块）`、`AC.DEVICE_MARVELL（MARVELL模块）`、`AC.DEVICE_MURATA（村田模块）`、`AC.DEVICE_WM（联盛德模块）`、`AC.DEVICE_RAK（RAK模块）`。
 
 ####2.得到WiFi SSID
 ```java
