@@ -335,7 +335,7 @@ AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户�
 [开发指导-微信-设备扩展属性](../develop_guide/wechat.md#设备扩展属性)
 
 
-#和云端通信
+#云端通信
 
 
 云端通信指的是APP到云端、设备到云端的通信。分别对应下图中的绿色和紫色线所标注的数据流。
@@ -395,11 +395,11 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 **开发指导请参考：**
 
-[开发指导-安卓-和云端通信](../develop_guide/android.md#_17)
+[开发指导-安卓-云端通信](../develop_guide/android.md#_17)
 
-[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
+[开发指导-iOS-云端通信](../develop_guide/iOS.md#云端通信)
 
-[开发指导-微信-和云端通信](../develop_guide/wechat.md#_16)
+[开发指导-微信-云端通信](../develop_guide/wechat.md#_16)
 
 
 ##设备上报消息
@@ -419,7 +419,7 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 开发指导请参考：
 
-[开发指导-设备-和云端通信](../develop_guide/device.md#_14)
+[开发指导-设备-云端通信](../develop_guide/device.md#_14)
 
 
 #局域网通信
@@ -730,7 +730,7 @@ KLV最短长度为2个字节。
 
 设备端SDK也提供编解码接口，开发者需要编码和解码时直接调用对应的编解码接口即可。
 
-设备端开发参考 [开发指导-设备-和云端通信](../develop_guide/device.md#和云端通信)
+设备端开发参考 [开发指导-设备-云端通信](../develop_guide/device.md#云端通信)
 
 ##UDS/APP侧使用说明
 
@@ -746,11 +746,11 @@ SDK提供一套独立的编码和解码接口，当开发者认为需要编码�
 
 客户端开发请参考：
 
-[开发指导-安卓-和云端通信](../develop_guide/android.md#和云端通信)
+[开发指导-安卓-云端通信](../develop_guide/android.md#云端通信)
 
-[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
+[开发指导-iOS-云端通信](../develop_guide/iOS.md#云端通信)
 
-[开发指导-微信-和云端通信](../develop_guide/wechat.md#和云端通信)
+[开发指导-微信-云端通信](../develop_guide/wechat.md#云端通信)
 
 
 ##厂商管理后台的使用说明
@@ -817,15 +817,15 @@ Ablecloud规定UDS/APP与设备通信使用简单json格式，即value支持的�
 
 设备端开发请参考：
 
-[开发指导-设备-和云端通信](../develop_guide/device.md#和云端通信)
+[开发指导-设备-云端通信](../develop_guide/device.md#云端通信)
 
 客户端使用说明请参考：
 
-[开发指导-安卓-和云端通信](../develop_guide/android.md#和云端通信)
+[开发指导-安卓-云端通信](../develop_guide/android.md#云端通信)
 
-[开发指导-iOS-和云端通信](../develop_guide/iOS.md#和云端通信)
+[开发指导-iOS-云端通信](../develop_guide/iOS.md#云端通信)
 
-[开发指导-微信-和云端通信](../develop_guide/wechat.md#和云端通信)
+[开发指导-微信-云端通信](../develop_guide/wechat.md#云端通信)
 
 
 

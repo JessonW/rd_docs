@@ -689,9 +689,9 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 ```
 
 
-#和云端通信
+#云端通信
 
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
+功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 
 **说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
@@ -1302,7 +1302,7 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 #推送
 
 
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#20)
+功能介绍参见 [功能说明-功能介绍-推送](../features/functions.md#20)
 
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。
