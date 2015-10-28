@@ -62,7 +62,7 @@ AbleCloud的基本帐号属性只包括账户名和密码以及用户昵称。�
 
 [开发指导-安卓-帐号管理](../develop_guide/android.md#_5)
 
-[开发指导-iOS-帐号管理](../develop_guide/iOS.md#_3)
+[开发指导-iOS-帐号管理](../develop_guide/iOS.md#_6)
 
 [开发指导-微信-帐号管理](../develop_guide/wechat.md#_3)
 
@@ -130,9 +130,9 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 [开发指导-安卓-独立设备管理](../develop_guide/android.md#_12)
 
-[开发指导-iOS-独立设备管理](../develop_guide/iOS.md#_6)
+[开发指导-iOS-独立设备管理](../develop_guide/iOS.md#_14)
 
-[开发指导-微信-独立设备管理](../develop_guide/wechat.md#_11)
+[开发指导-微信-独立设备管理](../develop_guide/wechat.md#_9)
 
 [开发指导-设备-设备激活](../develop_guide/device.md#_4)
 
@@ -209,9 +209,9 @@ AbleCloud的设备管理采用基于管理员的方案。即每个设备都有�
 
 [开发指导-安卓-网关型设备管理](../develop_guide/android.md#_16)
 
-[开发指导-iOS-网关型设备管理](../develop_guide/iOS.md#_7)
+[开发指导-iOS-网关型设备管理](../develop_guide/iOS.md#_18)
 
-[开发指导-微信-网关型设备管理](../develop_guide/wechat.md#_16)
+[开发指导-微信-网关型设备管理](../develop_guide/wechat.md#_15)
 
 [开发指导-设备(嵌入式系统)-设备绑定管理](../develop_guide/device.md#_7)
 
@@ -328,11 +328,11 @@ AbleCloud的基本设备属性只包括设备名称。如果厂商需要用户�
 
 开发指导参考：
 
-[开发指导-安卓-设备扩展属性](../develop_guide/android.md#_14)
+[开发指导-安卓-设备扩展属性](../develop_guide/android.md#_20)
 
-[开发指导-iOS-设备扩展属性](../develop_guide/iOS.md#设备扩展属性)
+[开发指导-iOS-设备扩展属性](../develop_guide/iOS.md#_22)
 
-[开发指导-微信-设备扩展属性](../develop_guide/wechat.md#设备扩展属性)
+[开发指导-微信-设备扩展属性](../develop_guide/wechat.md#_21)
 
 
 #云端通信
@@ -395,12 +395,11 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 **开发指导请参考：**
 
-[开发指导-安卓-云端通信](../develop_guide/android.md#_17)
+[开发指导-安卓-云端通信](../develop_guide/android.md#_23)
 
-[开发指导-iOS-云端通信](../develop_guide/iOS.md#云端通信)
+[开发指导-iOS-云端通信](../develop_guide/iOS.md#_25)
 
-[开发指导-微信-云端通信](../develop_guide/wechat.md#_16)
-
+[开发指导-微信-云端通信](../develop_guide/wechat.md#_24)
 
 ##设备上报消息
 
@@ -419,7 +418,7 @@ AbleCloud的实时消息同步是和存储相关的。若要显示设备实时�
 
 开发指导请参考：
 
-[开发指导-设备-云端通信](../develop_guide/device.md#_14)
+[开发指导-设备-云端通信](../develop_guide/device.md#_15)
 
 
 #局域网通信
@@ -436,7 +435,13 @@ AbleCloud提供了非常简单的接口实现设备的局域网发现和状态�
 
 我们提供的接口能够帮助厂商直接获取到当前设备的在线状态：云端和局域网在线、云端在线、局域网在线、云端和局域网都不在线。因此APP开发人员可以根据设备的在线情况调用相关的处理接口，是用户感受不到网络的切换。
 
-具体请参考[开发指导-设备-局域网通信](../develop_guide/device.md#局域网通信)
+**开发指导请参考：**
+
+[开发指导-安卓-云端通信](../develop_guide/android.md#_28)
+
+[开发指导-iOS-云端通信](../develop_guide/iOS.md#_30)
+
+[开发指导-设备-局域网通信](../develop_guide/device.md#_20)
 
 
 **安全机制**
@@ -463,11 +468,11 @@ AbleCloud的定时任务功能支持单次任务、按天重复、按星期重�
 
 开发指导请参考：
 
-[开发指导-安卓-定时任务](../develop_guide/android.md#_22)
+[开发指导-安卓-定时任务](../develop_guide/android.md#_29)
 
-[开发指导-iOS-定时任务](../develop_guide/iOS.md#定时任务)
+[开发指导-iOS-定时任务](../develop_guide/iOS.md#_31)
 
-[开发指导-微信-定时任务](../develop_guide/wechat.md#定时任务)
+[开发指导-微信-定时任务](../develop_guide/wechat.md#_28)
 
 #OTA
 
@@ -535,11 +540,11 @@ AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发�
 
 安卓、iOS和微信实现推送的方式不同，具体开发请参考开发指导：
 
-[开发指导-安卓-推送](../develop_guide/android.md#_34)
+[开发指导-安卓-推送](../develop_guide/android.md#_39)
 
-[开发指导-iOS-推送](../develop_guide/iOS.md#推送)
+[开发指导-iOS-推送](../develop_guide/iOS.md#_41)
 
-[开发指导-微信-推送](../develop_guide/wechat.md#推送)
+[开发指导-微信-推送](../develop_guide/wechat.md#_38)
 
 #文件存储
 
@@ -549,11 +554,10 @@ AbleCloud提供三种类型的推送，一种是厂商在后台定义的群发�
 
 使用方法请参考
 
-[开发指导-安卓-文件存储](../develop_guide/android.md#_37)
+[开发指导-安卓-文件存储](../develop_guide/android.md#_43)
 
-[开发指导-iOS-文件存储](../develop_guide/iOS.md#文件存储)
+[开发指导-iOS-文件存储](../develop_guide/iOS.md#_45)
 
-[开发指导-微信-文件存储](../develop_guide/wechat.md#文件存储)
 
 #第三方云对接
 
