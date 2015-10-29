@@ -1306,7 +1306,7 @@ ACOTAMgr otaMgr = AC.otaMgr();
 
 ####二、查询OTA新版本信息
 ```java
-// 初始化当前设备的版本号otaCheckInfo信息,version为蓝牙设备当前版本
+// 初当前设备的版本号ACOtaCheckInfo信息,version为蓝牙设备当前版本
 otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback<ACOTAUpgradeInfo>() {
     @Override
     public void success(ACOTAUpgradeInfo upgradeInfo) {
