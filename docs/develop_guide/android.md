@@ -44,8 +44,10 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 ```
 #帐号管理
 
-##一、普通帐号注册
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
+
+##一、普通帐号注册
+
 
 ![account_register](../pic/develop_guide/account_register.png)
 
@@ -226,9 +228,11 @@ accountMgr.getUserProfile(new PayloadCallback<ACObject>() {
 
 #设备管理
 
+
 ##独立设备
 
-功能介绍参见 [功能说明-功能介绍-独立设备管理](../features/functions.md#_3)
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
+
 
 用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。
 
@@ -407,7 +411,7 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
 ##网关型设备
 
-功能介绍参见 [功能说明-功能介绍-网关型设备管理](../features/functions.md#_6)
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：
 
@@ -547,7 +551,7 @@ AC.bindMgr().addSubDevice(subDomain, gatewayDeviceId, physicalDeviceId, devcieNa
 
 ##Home模型
 
-功能介绍参见 [功能说明-功能介绍-Home模型](../features/functions.md#home)
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 
 创建Home，然后绑定WiFi设备的建议流程如下图：
@@ -646,7 +650,7 @@ groupMgr.moveDeviceToRoom(deviceId, homeId, roomId, new VoidCallback() {
 
 ##设备扩展属性
 
-功能介绍参见 [功能说明-功能介绍-设备扩展属性](../features/functions.md#_11)
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 **<font color="red">注意</font>：设备扩展属性需要先进入到控制台：产品管理->选择产品点管理->产品属性->扩展属性->新建属性，建立完扩展属性列表后才能使用如下接口。**
 
@@ -689,9 +693,9 @@ bindMgr.getDeviceProfile(subDomain, deviceId, new PayloadCallback<ACObject>() {
 ```
 
 
-#和云端通信
+#云端通信
 
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#_12)
+功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 
 **说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
@@ -1047,7 +1051,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 #局域网通信
 
-功能说明参见[功能说明-局域网通信](../features/functions.md#_28)。
+功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
@@ -1254,7 +1258,7 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 ![OTA](../pic/develop_guide/OTA.png)
 
-说明参见[功能说明-OTA](../introduction.md#ota)。
+功能介绍参见[功能说明-OTA](../introduction.md#ota)。
 
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 
@@ -1302,7 +1306,7 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 #推送
 
 
-功能介绍参见 [功能说明-功能介绍-和云端通信](../features/functions.md#20)
+功能介绍参见 [功能说明-功能介绍-推送](../features/functions.md#20)
 
 
 AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功能之前，现需要进行一些配置。

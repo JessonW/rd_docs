@@ -320,7 +320,7 @@
         
         
         <li class="main">
-            <a href="#_23">和云端通信<span class="main-set parent__23">+</span></a>
+            <a href="#_23">云端通信<span class="main-set parent__23">+</span></a>
         </li>
         
             
@@ -484,8 +484,8 @@
 </code></pre>
 
 <h1 id="_5">帐号管理</h1>
-<h2 id="_6">一、普通帐号注册</h2>
 <p>功能介绍参考： <a href="../../features/functions/#_1">功能说明-功能介绍-帐号管理</a></p>
+<h2 id="_6">一、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <h3 id="_7">获取账号管理对象</h3>
 <pre><code class="java">    ACAccountMgr accountMgr=AC.accountMgr();
@@ -640,7 +640,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
 <h1 id="_11">设备管理</h1>
 <h2 id="_12">独立设备</h2>
-<p>功能介绍参见 <a href="../../features/functions/#_3">功能说明-功能介绍-独立设备管理</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
 <p>用户登录/注册后，需要绑定设备才能够使用。对于wifi设备，绑定设备时，首先需在APP上给出配置设备进入Smartconfig状态的提示；然后填写当前手机连接的WiFi的密码，调用startAbleLink将WiFi密码广播给设备，设备拿到WiFi密码后连接到云端然后开始局域网广播自己的物理Id和subdomainID，APP拿到这些信息后调用bindDevice接口绑定设备。对于GPRS设备，则无需以上设备激活的流程，通过扫码或其他方式获取物理Id后调用bindDevice进行绑定。</p>
 <h3 id="_13">一．绑定设备</h3>
 <h3 id="wifi">WiFi设备</h3>
@@ -802,7 +802,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 </code></pre>
 
 <h2 id="_16">网关型设备</h2>
-<p>功能介绍参见 <a href="../../features/functions/#_6">功能说明-功能介绍-网关型设备管理</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
 <p>网关的绑定流程和WiFi设备是一样的。网关绑定以后绑定子设备的建议流程如下：</p>
 <p><img alt="DM_gateway" src="../../pic/develop_guide/DM_gateway.png" /></p>
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
@@ -924,7 +924,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 1. 子设备subdomain填写错误
 2. 子设备和网关的连接断开了</p>
 <h2 id="home">Home模型</h2>
-<p>功能介绍参见 <a href="../../features/functions/#home">功能说明-功能介绍-Home模型</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
 <p>创建Home，然后绑定WiFi设备的建议流程如下图：</p>
 <p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
 <p>创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：</p>
@@ -1003,7 +1003,7 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 
 <p><font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。</p>
 <h2 id="_20">设备扩展属性</h2>
-<p>功能介绍参见 <a href="../../features/functions/#_11">功能说明-功能介绍-设备扩展属性</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
 <p><strong><font color="red">注意</font>：设备扩展属性需要先进入到控制台：产品管理-&gt;选择产品点管理-&gt;产品属性-&gt;扩展属性-&gt;新建属性，建立完扩展属性列表后才能使用如下接口。</strong></p>
 <h4 id="_21">一、设置或者更新设备扩展属性</h4>
 <pre><code class="java">ACObject deviceProfile = new ACObject();
@@ -1041,8 +1041,8 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 });
 </code></pre>
 
-<h1 id="_23">和云端通信</h1>
-<p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-和云端通信</a></p>
+<h1 id="_23">云端通信</h1>
+<p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-云端通信</a></p>
 <p><strong>说明</strong>：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_24">一、发送消息到设备</h2>
 <h3 id="klv">KLV格式</h3>
@@ -1363,7 +1363,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 </code></pre>
 
 <h1 id="_28">局域网通信</h1>
-<p>功能说明参见<a href="../../features/functions/#_28">功能说明-局域网通信</a>。</p>
+<p>功能介绍参见 <a href="../../features/functions/#_18">功能说明-功能介绍-局域网通信</a></p>
 <p>获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。</p>
 <pre><code class="java">//获取设备列表
 public void getDeviceList() {
@@ -1556,7 +1556,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 <p>功能介绍参见 <a href="../../features/functions/#ota">功能说明-功能介绍-OTA</a></p>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
-<p>说明参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
+<p>功能介绍参见<a href="../../introduction/#ota">功能说明-OTA</a>。</p>
 <p>若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
 <h4 id="ota_1">一.获取OTA管理器对象</h4>
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
@@ -1594,7 +1594,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h1 id="_39">推送</h1>
-<p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-和云端通信</a></p>
+<p>功能介绍参见 <a href="../../features/functions/#20">功能说明-功能介绍-推送</a></p>
 <p>AbleCloud的推送使用<a href="http://www.umeng.com/">友盟</a>的服务，在开发功能之前，现需要进行一些配置。</p>
 <h2 id="_40">推送开发准备</h2>
 <p>下面以友盟推送为例，介绍开发推送功能前需要做的准备工作。</p>

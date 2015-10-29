@@ -84,6 +84,9 @@ class ACConfig {
 
 #帐号管理#
 
+
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
+
 ##用户登录##
 
 对AbleCloud平台来说，微信用户是来自第三方平台的用户。可以使用微信用户的OpenID登录AbleCloud平台，从而成为开发者所提供服务的使用者。
@@ -181,7 +184,7 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 
 #设备管理#
 
-说明参见[功能说明-设备管理](../features/functions.md#_12)。
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 ##微信平台与AbleCloud平台##
 
@@ -498,7 +501,7 @@ $wxBridge->deleteHome($openId, $homeId);
 ```
 
 
-###添加用户至分组中###
+###添加用户至Home中###
 
 Home的管理员用户（创建Home的用户）可以通过发放分享码的方式将其他用户添加至Home中来。用户加入Home之后即与Home中已有的设备建立绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。
 ```php
@@ -514,7 +517,7 @@ $openId = $wxBridge->getUserOpenId($user2->getId());    // 取用户$user2的Ope
 $wxBridge->syncBindings($openId);                       // 同步信息
 ```
 
-###从分组中移除用户###
+###从Home中移除用户###
 
 Home的管理员用户（创建Home的用户）也可以从Home中移除指定用户。被移除的用户将被解除与Home中设备的绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。
 ```php
@@ -528,7 +531,7 @@ $openId = $wxBridge->getUserOpenId($userId);    // 取用户$userId对应的Open
 $wxBridge->syncBindings($openId);               // 同步信息
 ```
 
-###添加或移动设备到分组中###
+###添加或移动设备到Home中###
 
 用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。
 在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。
@@ -557,7 +560,7 @@ $deviceService->moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
 设备被添加至Home中时，已经与Home中的用户建立了绑定关系。再将设备移动至Room内时，不更改其与用户的绑定关系，因此不用额外通知微信或AbleCloud平台同步信息。
 同样，从Room中移出设备时，也不改变设备与用户的绑定关系，因此也不用额外同步信息。
 
-###从分组中移除设备###
+###从Home中移除设备###
 
 用户可以调用方法ACDeviceService::removeDeviceFromRoom从Room中移除设备，此时该设备仍然属于Home，并且不改变设备与Home中用户的绑定关系。
 也可以调用方法ACDeviceService::deleteDeviceFromHome从Home中删除设备，此时将解除该设备与Home中所有用户的绑定关系。此操作过后，需要通知微信平台更新设备与用户的绑定关系。
@@ -583,6 +586,9 @@ $wxBridge->syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType
 
 ##设备的扩展属性##
 
+设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性。
+步骤：登录AbleCloud厂商管理后台-->用户管理-->扩展属性-->创建扩展属性
+
 ###获取设备的扩展属性###
 
 ```php
@@ -594,7 +600,8 @@ $keyValues = $deviceService->getDeviceProfile($deviceId);
 
 ###设置设备的扩展属性###
 
-设置设备的扩展属性之前，应通过开发者管理控制台定义设备的扩展属性列。
+
+
 ```php
 // 实例化ACDeviceService
 $deviceService = ACClient::getDeviceService();
@@ -602,7 +609,9 @@ $deviceService = ACClient::getDeviceService();
 $deviceService->setDeviceProfile($user, $deviceId, $profile);
 ```
 
-#和云端通信#
+#云端通信#
+
+功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 
 ##访问云端服务##
 PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。
@@ -650,9 +659,26 @@ $response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $messag
 
 **注：**ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
 
+
+##设备和微信消息同步
+
+利用HTML5页面的WebSocket技术实现设备和微信控制页面的消息的实时同步。具体流程是：
+
+- 首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；
+
+- AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**，将消息推送给微信公众号后台；
+
+- 开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。
+
+**注：** “开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。
+
 #定时任务#
 
+
+
 AbleCloud支持设备的定时任务，比如每天的固定时间向设备发送指令，控制设备运行特定的功能。这里的定时任务主要由三部分组成：执行任务的时间规则、任务执行时要发给设备的指令，以及权限及认证信息——定义任务的用户及执行任务的设备。
+
+功能详细介绍参见 [功能说明-功能介绍-定时任务](../features/functions.md#_19)
 
 ##添加定时任务##
 
@@ -722,6 +748,8 @@ $timerTaskService->deleteTask($user, $deviceId, $taskId);
 
 #OTA#
 
+功能介绍参见[功能说明-OTA](../introduction.md#ota)。
+
 本小结描述的OTA是指针对WiFi设备，在需要用户确认是否升级设备固件版本的情况下，通过微信客户端向用户提示其绑定的WiFi设备有可更新的固件版本，并征求用户的意见是否执行升级。
 此时，可将用户的意见反馈给AbleCloud云端的OTA服务。云端OTA服务将根据用户的选择执行相应的操作。如与设备通信，发送固件升级文件，完成升级；或者暂不执行固件升级。
 
@@ -777,17 +805,12 @@ $rows = $storeIter->next();     // $rows即是查询结果。
 
 #消息推送#
 
-向用户的微信客户端推送消息可分两种情况：一种是用户打开公众号的HTML5页面时推送消息到HTML5页面；一种是直接推送消息到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。
+功能介绍参见 [功能说明-功能介绍-推送](../features/functions.md#20)
 
-第一种情况下，可利用HTML5页面的WebSocket技术实现消息的实时推送。具体流程是：
+消息推送指的是将消息直接推送到用户的微信客户端。现假设设备端监控到的实时数据触发了某一报警规则，需要向用户推送该消息。
 
-- 首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；
 
-- AbleCloud云端会选择开发者的UDS服务来处理设备上报的数据。在UDS处理该上报消息时，可以调用开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**，将消息推送给微信公众号后台；
-
-- 开发者的微信公众号后台收到该消息后，识别目标用户，通过与用户正在浏览的HTML5页面之间的WebSocket连接将消息推送给页面，并由该页面及时显示出来。
-
-第二种情况下，可利用微信公众平台提供的消息推送接口（[微信公众平台-模板消息接口](http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html)）向用户推送消息。具体流程是：
+可以利用微信公众平台提供的消息推送接口（[微信公众平台-模板消息接口](http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html)）向用户推送消息。具体流程是：
 
 - 首先设备通过正常的上报数据的方式将数据上报给AbleCloud云端；
 
@@ -797,7 +820,7 @@ $rows = $storeIter->next();     // $rows即是查询结果。
 
 **注：**
 
-1. 上述两种情况下，“开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。
+1. “开发者的微信公众号后台提供的一个**数据推送接口（Web服务）**”是指开发者在其自己开发的微信公众号后台中实现的一个可被访问的RESTful接口。该接口可接收调用者传递的消息（如通过HTTP POST方法传递的消息），并执行相应的处理。
 
 1. UDS调用微信公众号的数据推送接口时，涉及访问AbleCloud之外的远程服务，需要通过AbleCloud UDS SDK提供的专门访问远程服务的API来实现。
 
