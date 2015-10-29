@@ -402,6 +402,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_42">文件存储<span class="main-set parent__42">+</span></a>
@@ -413,6 +417,10 @@
         
             
             <li class="sub parent__42" style="display: none;"><a href="#_44">二、下载文件</a></li>
+            
+        
+            
+            <li class="sub parent__42" style="display: none;"><a href="#_45">三、上传文件</a></li>
             
         
     
@@ -642,7 +650,8 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 
 <h4 id="3_2">3.激活设备</h4>
 <p>APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。</p>
-<pre><code class="objectivec">[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
+<pre><code class="objectivec">//ssid是Wi-Fi名字 pwd是Wi-Fi密码
+[wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
         if(error){
         //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
         }else{
@@ -678,12 +687,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 <li>4.确保设备的天线正常。</li>
 <li>5.确保网络环境不是公共环境。</li>
 </ul>
-<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：</p>
-<ul>
-<li>1.设备电源供电不足造成断网。</li>
-<li>2.WIFI信号不好造成断网。</li>
-<li>3.路由器断网。</li>
-</ul>
+<p>绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。</p>
 <h3 id="gprs">GPRS设备</h3>
 <p><strong><font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。</strong>建议通过扫二维码的形式获取物理Id进行绑定。</p>
 <pre><code class="objectivec">[ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
@@ -1210,17 +1214,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <h4 id="_31">修改定时任务</h4>
 <p>接口为modifyTask，其他参数与定义与创建定时任务相同。</p>
 <h4 id="_32">开启定时任务</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 <pre><code class="objectivec">[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-
-=======
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-```c
-[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-=======
-```objectivec
-[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
 
         if (error) { 
         NSLog(@&quot;预约开失败－－%@&quot;,error);
@@ -1242,11 +1236,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_34">删除定时任务</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre><code class="c">[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
-=======
-```objectivec
-[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+<pre><code class="objectivec">[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
           if (error){
           //删除定时失败，处理error
           }else{
@@ -1256,11 +1246,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 </code></pre>
 
 <h4 id="_35">获取定时任务列表</h4>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre><code class="c">[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
-=======
-```objectivec
-[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+<pre><code class="objectivec">[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
 
          if (error)
           {
@@ -1393,13 +1379,13 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 
 } CompleteCallback:^(NSString *filePath) {
 //返回下载文件沙盒中的路径
-}];```
-##三、上传文件
+}];
+</code></pre>
 
-###1、设置上传文件的权限管理类－－ACACL
-如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。
-```objectivec
-@interface ACACL : NSObject
+<h2 id="_45">三、上传文件</h2>
+<p>如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如果不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限</p>
+<h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
+<pre><code class="objectivec">@interface ACACL : NSObject
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
