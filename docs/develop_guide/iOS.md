@@ -296,7 +296,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 }];
 ```
 
-><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
+><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过Timer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
 
@@ -517,7 +517,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 
-<font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
+**说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
 ##一、发送消息到设备
 ###KLV格式
@@ -537,24 +537,20 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 **例如**：以开关设备为例,协议如下:
 ```objectivec
 //请求数据包
-{ 68 ：[
-//数据点[key：value(int8)]
-//关灯
-{ 1 : 0 },
-//开灯      
-{ 1 : 1 }
+{ 69 ：[
+//数据点[key：value(int8)]，其中0代表关灯，1代表开灯
+{ 1 : 0/1 }
 ]}
 //响应数据包  
 { 60 ：[
-//数据点[key：value(int8)]
-//失败
-{ 1 : 0 },
-//成功      
-{ 1 : 1 }
+//数据点[key：value(boolean)]，其中false为失败，true为成功
+{ 1 : false/true }
 ]}
 ```
 定义如下:
 ```objectivec
+
+
 @interface ACKLVObject : NSObject
 
 /**
@@ -602,11 +598,6 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 
 **在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
 
-这里创建的数据点和数据包如下所示：
-
-【数据点】
-![binary_datapoint](../pic/develop_guide/cloud_communication_binary.png)
-
 【数据包】
 ![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
 
@@ -615,25 +606,21 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ```objectivec
 //请求数据包
 { 68 ：[
-//关灯(二进制流，由厂商自己解析)
-{ 0 , 0 , 0 , 0 },
-//开灯(二进制流，由厂商自己解析)   
-{ 1 , 0 , 0 , 0 }
+//开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+{ 0/1 , 0 , 0 , 0 }
 ]}
 //响应数据包  
 { 102 ：[
-//失败(二进制流，由厂商自己解析)
-{ 0 , 0 , 0 , 0 },
-//成功(二进制流，由厂商自己解析)        
-{ 1 , 0 , 0 , 0 }
+//结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+{ 0/1 , 0 , 0 , 0 }
 ]}
+
 ```
 截取开灯代码，如下:
 ####1、设置序列化器
 ```objectivec
 //反序列化
 + (instancetype)unmarshalWithData:(NSData *)data;
-
 //序列化
 - (NSData *)marshal;
 ```
@@ -642,25 +629,63 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 /**
 *  网络连接操作灯
 */
-- (void)operationLight:(LightOperationType)type
-{
-     DeviceMsg  *deMsg = self.device[0];
-     NSString *subDomain = [[NSUserDefaults standardUserDefaults] stringForKey:@"subDomain"];;
-     NSInteger deviceId = deMsg.deviceId;
-     ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
-     msg.msgId = 0;
-     msg.msgCode =68;
-     Byte content[] ={type,0,0,0};
-     msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
-     [ACBindManager sendToDevice:subDomain deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-                 if (error) {
-                  NSLog(@"sendToDevice-error:%@",error);
-                 }else
-                   {
-                   NSLog(@"sendToDevice - 成功");
-                   }
-                   }];
-}
+//LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+     if(!error){
+     //开灯成功
+     }else{
+     //开灯失败
+     }
+
+}];
+```
+###3、json格式
+
+**在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![json_datapoint](../pic/develop_guide/cloud_communication_json.png)
+
+【数据包】
+![json_datapackage](../pic/develop_guide/cloud_communication_json_pkg.png)
+
+
+**例如**：以开关设备为例,协议如下:
+```objectivec
+//请求数据包
+{ 70 ：[
+//开关灯，其中0代表关灯，1代表开灯
+{"switch", 0/1}
+]}
+//响应数据包  
+{ 102 ：[
+//结果，其中false代表失败，1代表成功
+{"result", false/true}
+]}
+```
+####1、设置序列化器
+```objective
+ACObject * req = [[ACObject alloc]init];
+[req marshal];
+```
+####2、发送到设备
+此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
+```objective
+[req putInteger:@"switch" value:1];
+ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
+msg.msgCode = 68;
+msg.payload = [req marshal];
+//LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+          if(!error){
+          //开灯成功
+          }else{
+          //开灯失败
+          }
+
+}];
 
 ```
 
@@ -790,6 +815,8 @@ table.primaryKey =primaryKey;
 
 }];
 ```
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+
 因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
 ```objectivec
 [ACBindManager networkChangeHanderCallback:^(NSError *error) {
@@ -1002,7 +1029,9 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 ![push2](../pic/develop_guide/push2.png) 
 
 友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
+![push3](../pic/develop_guide/push3.png)
 
+在AbleCloud平台中添加应用，并填写App Key和App Master Secret
 
 ><font color="red">注意</font>
 
@@ -1103,33 +1132,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ```
 ##三、上传文件
 如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如果不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限
-###1、设置上传文件的权限管理类－－ACACL
-```objectivec
-@interface ACACL : NSObject
-```
-<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
-
-###2、上传文件
-####1)、设置上传文件信息－－ACFileInfo类
-```objectivec
-@interface ACFileInfo : NSObject
-//上传文件名字
-@property (copy,nonatomic) NSString * name;
-
-//上传文件路径，支持断点续传
-@property (copy,nonatomic) NSString * filePath;
-
-//文件访问权限 如果不设置 则默认
-@property (retain,nonatomic) ACACL  * acl;
-
-//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
-@property (copy,nonatomic) NSString * bucket;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-+ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
-```
-####2)、设置文件权限
-
+###1、设置上传文件的权限管理
 ```objectivec
 /**
 * 设置全局可读访问权限，不设置则默认为所有人可读
@@ -1157,7 +1160,29 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 */
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
 ```
-####3)、上传文件
+
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
+
+###2、上传文件
+####1)、设置上传文件信息－－ACFileInfo类
+```objectivec
+@interface ACFileInfo : NSObject
+//上传文件名字
+@property (copy,nonatomic) NSString * name;
+
+//上传文件路径，支持断点续传
+@property (copy,nonatomic) NSString * filePath;
+
+//文件访问权限 如果不设置 则默认
+@property (retain,nonatomic) ACACL  * acl;
+
+//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
+@property (copy,nonatomic) NSString * bucket;
+
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
++ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
+```
+####2)、上传
 ```objectivec
 ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@"3.jpg" bucket:@"jpg"];
 fileInfo.filePath = [self getPath];
