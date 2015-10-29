@@ -722,10 +722,11 @@ ACPushManager * pushManager = [[ACPushManager alloc] init];
 [pushManager connectWithCallback:^(NSError *error) {
             if (!error) {
             //连接成功，可以订阅数据 
-            }else{、
+            }else{
             //连接失败，网络错误 
             }
-}];```
+}];
+```
 
 ####3、订阅实时数据
 以如下数据集为例：
