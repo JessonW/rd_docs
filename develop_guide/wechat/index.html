@@ -567,7 +567,9 @@ $user = $accountService-&gt;getUserByOpenId($openId, 'weixin');
 $accountServcie = ACClient::getAccountService();
 // 发送验证码
 // 参数$phone为字符串，是用户的手机号。
-$accountServcie-&gt;sendVerifyCode($phone);
+// 参数$template是拟采用的短信模板的编号。
+// 参数$timeout是验证码的有效时长。
+$accountServcie-&gt;sendVerifyCode($phone, $template, $timeout);
 </code></pre>
 
 <p><strong>注：</strong>向用户发送手机验证码时，要求开发者在AbleCloud平台已经配置了手机短信息模板等参数。同时也有向同一用户发送手机短信息的频次限制。</p>
