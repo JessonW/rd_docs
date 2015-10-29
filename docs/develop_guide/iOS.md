@@ -244,6 +244,7 @@ NSString * ssid = [ACWifilinkManager getCurrentSSID];
 ####3.激活设备
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
 ```objectivec
+//ssid是Wi-Fi名字 pwd是Wi-Fi密码
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
         if(error){
         //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
@@ -279,11 +280,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 - 4.确保设备的天线正常。
 - 5.确保网络环境不是公共环境。
 
-绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：
-
-- 1.设备电源供电不足造成断网。
-- 2.WIFI信号不好造成断网。
-- 3.路由器断网。
+绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。
 
 ###GPRS设备
 **<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
@@ -885,18 +882,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 接口为modifyTask，其他参数与定义与创建定时任务相同。
 
 ####开启定时任务
-<<<<<<< HEAD
-<<<<<<< HEAD
 ```objectivec
 [timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-
-=======
-<<<<<<< HEAD
-```c
-[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-=======
-```objectivec
-[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
 
         if (error) { 
         NSLog(@"预约开失败－－%@",error);
@@ -920,12 +907,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ####删除定时任务
-<<<<<<< HEAD
-```c
-[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
-=======
 ```objectivec
-[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
           if (error){
           //删除定时失败，处理error
           }else{
@@ -936,12 +919,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ####获取定时任务列表
-<<<<<<< HEAD
-```c
-[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
-=======
 ```objectivec
-[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
 
          if (error)
           {
@@ -1120,11 +1099,11 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 
 } CompleteCallback:^(NSString *filePath) {
 //返回下载文件沙盒中的路径
-}];```
+}];
+```
 ##三、上传文件
-
+如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如果不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限
 ###1、设置上传文件的权限管理类－－ACACL
-如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。
 ```objectivec
 @interface ACACL : NSObject
 ```
