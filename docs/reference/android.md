@@ -2090,7 +2090,7 @@ public interface ACAccountMgr {
 
 ##2、设备管理
 
-```
+```java
 public interface ACBindMgr {
 
     /**
@@ -2100,7 +2100,7 @@ public interface ACBindMgr {
      */
     public void listDevices(PayloadCallback<List<ACUserDevice>> callback);
 
-     /**
+    /**
      * 获取接入设备的所有用户列表
      *
      * @param subDomain 子域名，如djj（豆浆机）
@@ -2250,6 +2250,7 @@ public interface ACOTAMgr {
 
 ```java
 public class AC {
+
     /**
      * 往某一服务发送命令/消息
      *
@@ -2325,7 +2326,8 @@ public interface ACFileMgr {
 另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
 ```java
 public class ACACL {
-   /**
+
+    /**
      * 设置全局可读访问权限，不设置则默认为所有人可读
      *
      * @param allow 是否全局可读

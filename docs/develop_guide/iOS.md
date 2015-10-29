@@ -974,8 +974,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 ![OTA](../pic/develop_guide/OTA.png)
 
-功能介绍参见[功能说明-OTA](../introduction.md#ota)。
-
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 
 ####一.获取OTA管理器对象--ACOTAManager类
