@@ -751,9 +751,11 @@ class ACAccountService extends ACService {
     /**
      * 向指定的手机号发送验证码。
      * @param $phone 接收验证码的手机号。
+     * @param $template 整数，是短信模板的代码。
+     * @param $timeout 整数，是验证码的有效时长，单位是秒。
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()后去错误信息。
      */
-    public function sendVerifyCode($phone);
+    public function sendVerifyCode($phone, $template, $timeout);
     
     /**
      * 修改用户的手机号码。
