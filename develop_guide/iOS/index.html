@@ -1059,18 +1059,16 @@ ACPushManager * pushManager = [[ACPushManager alloc] init];
 <pre><code class="c">[pushManager connectWithCallback:^(NSError *error) {
             if (!error) {
             //连接成功，可以订阅数据 
-            }else{、
+            }else{
             //连接失败，网络错误 
             }
-}];```
+}];
+</code></pre>
 
-####3、订阅实时数据
-以如下数据集为例：
-
-![cloud_syn_1](../pic/develop_guide/cloud_syn_1.png)
-
-```c
-//实例化ACPushTable对象
+<h4 id="3_5">3、订阅实时数据</h4>
+<p>以如下数据集为例：</p>
+<p><img alt="cloud_syn_1" src="../../pic/develop_guide/cloud_syn_1.png" /></p>
+<pre><code class="c">//实例化ACPushTable对象
 ACPushTable *table  = [[ACPushTable alloc] init];
 //设置订阅的表名
 table.className = @&quot;BramcDeviceManager&quot;;
@@ -1351,7 +1349,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 }
 </code></pre>
 
-<h4 id="3_5">3、在登录成功之后添加推送别名</h4>
+<h4 id="3_6">3、在登录成功之后添加推送别名</h4>
 <pre><code class="objectivec">[ACNotificationManager addAliasWithUserId:user.userId callback:^(NSError *error) {
          if(error){
          NSLog(@&quot;推送添加别名失败&quot;);
