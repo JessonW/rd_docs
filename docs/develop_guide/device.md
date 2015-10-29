@@ -31,6 +31,8 @@
 
 #设备激活
 
+
+
 设备连接到云端，和云端完成通信握手叫做设备激活。
 在设备管理部分，设备首先需要实现的功能是设备激活。设备激活以后，才能够进行绑定、控制等操作。
 
@@ -123,6 +125,8 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 
 #设备绑定管理
+
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
 
 对于WiFi设备，在连接到云端成功以后会在局域网中自动广播设备的subdomainID和物理ID。客户端（APP）接收到这些信息后调用绑定接口，完成设备和用户的绑定。
 
@@ -328,6 +332,9 @@ void AC_DealNotifyMessage(AC_MessageHead *pstruMsg, AC_OptList *pstruOptList, u8
 
 
 #OTA
+
+功能介绍参见 [功能说明-功能介绍-OTA](../features/functions.md#ota)
+
 ##设备与云端交互流程
 
 ![device_OTA](../pic/develop_guide/device_OTA.png)
@@ -567,7 +574,9 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
     }
 ```
 
-#和云端通信
+#云端通信
+
+功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 ##设备上报消息
 设备可以在定时或者根据外界条件触发的情况下将设备数据和状态主动上报到云端。其中上报的消息号必须大于等于200。
 
@@ -605,6 +614,9 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
     }
 ```
 ###KLV格式
+
+KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
+
 参考代码如下：
 
 上报数据包=code:203+key:KEY_LED_ON_OFF value:int8(0为关闭，1为开启) + key:KEY_LED_CONTROL_STATUS value:int8(0为APP控制开关，1为按键控制开关) 
@@ -794,6 +806,9 @@ OTA升级文件传输结束消息无消息体。该消息执行成功需要回�
 
 
 #局域网通信
+
+功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
+
 WiFi设备及以太网设备可以和客户端（APP）进行局域网通信。
 AbleCloud的SDK已经封装好了局域网通信的协议和加密格式。因此设备端不需要专门针对局域网功能进行开发即可和客户端（APP）在局域网内通信。
 
