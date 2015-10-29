@@ -1,6 +1,6 @@
 #IOS客户端开发指导
 
-###开发环境设置
+#开发环境设置
 ####系统准备
 在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。
 + **OS X**
@@ -26,61 +26,47 @@
 Xcode下直接**Command + R**运行。
 ><font color="brown">**注：**</font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
 
-#应用程序初始化
+####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
-####1.设置主域名和主域ID
 ```objectivec
+//设置主域名和主域ID
 [ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId];
 ```
-####2.设置开发环境
-```objectivec
-//*****测试开发环境******
-#define TEST_MODEL @"test"
-//*****正式开发环境******
-#define PRODUCTION_MODEL @"production"
-//*****国内开发环境******
-#define REGIONAL_CHINA @"REGIONAL_CHINA"
-//*****国外开发环境******
-//东南亚开发环境
-#define REGIONAL_SOUTHEAST_ASIA @"REGIONAL_SOUTHEAST_ASIA"
-```
-####**国内环境**
+**国内环境**
 开发阶段，请初始化**测试环境**
 ```objectivec
-[ACloudLib setHostWithModel:TEST_MODEL Region:CHINA_URL_STRING];
+//设置开发环境
+[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:CHINA_URL_STRING];
+[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
 ```
-####**国外环境**
+**国外环境**
 开发阶段，请初始化**测试环境**
 ```objectivec
-[ACloudLib setHostWithModel:TEST_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
+[ACloudLib setMode:TEST_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
+[ACloudLib setMode:PRODUCTION_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
 ```
 
 
 #帐号管理
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 
-####接口说明
+##一、普通帐号注册
+功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
-####引入头文件
-```objectivec
-import "ACAccountManager.h"
-```
+![account_register](../pic/develop_guide/account_register.png)
 
 ###账号管理类
 ```objectivec
 @interface ACAccountManager : NSObject
 ```
-
-###普通帐号注册流程###
+###普通帐号注册流程
 
 ####1、检查手机号是否已注册
 ```objectivec
@@ -103,7 +89,7 @@ import "ACAccountManager.h"
 //1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
 [ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
-         if (error == nil) {
+         if (!error) {
              //校验验证码
          }else{
             //获取失败，根据error做不同的提示或者处理
@@ -148,20 +134,21 @@ import "ACAccountManager.h"
 
 ####1、直接使用第三方登录
 ```objectivec
-[ACAccountManager registerWithNickName:userName phone:phone email:nil password:pwd verifyCode:verify callback:^(ACUserInfo *user, NSError *error) {
-             if(error){
-             //返回失败信息，根据error做不同的提示或者处理
-             }else{
-             //获得用户user.userId和user.nickName，进入主页或设备管理
-             }
+[ACAccountManager loginWithOpenId:openID provider:provider accessToken:accessToken callback:^(ACUserInfo *user, NSError *error) {
+            if(!error){
+            //获得用户userId和nickName，进入主页或设备管理
+            }else{
+            //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+            }
 }];
 
+//绑定一个未被注册的普通帐号；emai和phone可以任选其一;nickName为可选项，没有时传空字符串
 [ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
 {
              if(error){
              //返回失败信息，根据error做不同的提示或者处理
              }else{
-             //根据获得的user，得到基本信息
+             //绑定账号成功
              }
 }];
 
@@ -174,7 +161,7 @@ import "ACAccountManager.h"
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
             }else{
-            //绑定成功
+            //绑定第三方账号成功
             }
 }];
 ```
@@ -1090,7 +1077,7 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 ><font color="red">注意</font>：
 
->1、iOS权限原因，下载文件上传文件到云端只能在本应用的沙盒中操作
+>1、iOS权限原因，下载文件上传文件的操作只能在本应用的沙盒中操作
 
 >2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现
 
@@ -1105,6 +1092,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ##二、下载文件
 ###1、获取下载url
 ```objectivec
+//0代表URL链接的有效时间为长期有效
 [ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
@@ -1116,22 +1104,23 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ```
 ###2、根据url下载文件
 ```objectivec
-[downManager downFileWithsession:urlString callBack:^(float progress, NSError *error)
-{
-          if(error ){
-           //下载失败，处理error
-           }else{
-           //下载成功，处理下载的文件
-           }
-}
-```
+[fileManager downFileWithsession:urlString callBack:^(float progress, NSError *error) {
+     
+       if(!error){
+      //下载成功，返回下载进度
+      }
+
+} CompleteCallback:^(NSString *filePath) {
+//返回下载文件沙盒中的路径
+}];```
 ##三、上传文件
 
 ###1、设置上传文件的权限管理类－－ACACL
+如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。
 ```objectivec
 @interface ACACL : NSObject
 ```
-<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
 ###2、上传文件
 ####1)、设置上传文件信息－－ACFileInfo类
@@ -1153,6 +1142,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 ```
 ####2)、设置文件权限
+
 ```objectivec
 /**
 * 设置全局可读访问权限，不设置则默认为所有人可读
@@ -1186,10 +1176,9 @@ ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@"3.jpg" bucket:@"jpg"]
 fileInfo.filePath = [self getPath];
 fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];
-[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)
-{ 
+[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)｛
      if(error){
-      //上传失败，处理error
+      //支持断点续传，所以此处若发生网络错误，会在网络恢复之后继续上传
      }else{
      //上传成功
      }
