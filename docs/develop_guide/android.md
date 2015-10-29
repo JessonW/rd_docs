@@ -48,7 +48,6 @@ AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHE
 
 ##一、普通帐号注册
 
-
 ![account_register](../pic/develop_guide/account_register.png)
 
 ###获取账号管理对象

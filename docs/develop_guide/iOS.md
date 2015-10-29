@@ -30,29 +30,18 @@ Xcode下直接**Command + R**运行。
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
 ```objectivec
-//设置主域名和主域ID
-[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId];
+//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
+[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId Region:REGIONAL_CHINA];
 ```
-**国内环境**
 开发阶段，请初始化**测试环境**
 ```objectivec
 //设置开发环境
-[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
+[ACloudLib setMode:TEST_MODE];
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
+[ACloudLib setMode:PRODUCTION_MODE];
 ```
-**国外环境**
-开发阶段，请初始化**测试环境**
-```objectivec
-[ACloudLib setMode:TEST_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
-```
-在完成测试阶段之后，需要迁移到**正式环境**下
-```objectivec
-[ACloudLib setMode:PRODUCTION_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
-```
-
 
 #帐号管理
 
@@ -61,7 +50,6 @@ Xcode下直接**Command + R**运行。
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 
 ##一、普通帐号注册
-功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
 ![account_register](../pic/develop_guide/account_register.png)
 
