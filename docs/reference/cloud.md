@@ -992,6 +992,7 @@ AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先
 
 ><font color=red>务必注意</font>：
 1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+
 2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
 
 ###分区键与主键
