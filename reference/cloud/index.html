@@ -332,15 +332,15 @@
             
         
             
-            <li class="sub parent__8" style="display: none;"><a href="#_23">推送服务接口</a></li>
+            <li class="sub parent__8" style="display: none;"><a href="#_24">推送服务接口</a></li>
             
         
             
-            <li class="sub parent__8" style="display: none;"><a href="#_28">定时服务接口</a></li>
+            <li class="sub parent__8" style="display: none;"><a href="#_29">定时服务接口</a></li>
             
         
             
-            <li class="sub parent__8" style="display: none;"><a href="#_33">测试桩</a></li>
+            <li class="sub parent__8" style="display: none;"><a href="#_34">测试桩</a></li>
             
         
     
@@ -352,11 +352,11 @@
         
         
         <li class="main">
-            <a href="#_36">附录<span class="main-set parent__36">+</span></a>
+            <a href="#_37">附录<span class="main-set parent__37">+</span></a>
         </li>
         
             
-            <li class="sub parent__36" style="display: none;"><a href="#_37">签名算法</a></li>
+            <li class="sub parent__37" style="display: none;"><a href="#_38">签名算法</a></li>
             
         
     
@@ -1351,12 +1351,6 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </blockquote>
 <h3 id="_20">存储模型</h3>
 <p>AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。为定位数据所在分区，需要定义数据分区key，AbleCloud称其为entity group key（分区键）。当我们要查找一条存储在AbleCloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，AbleCloud称其为primary key（主键）。</p>
-<blockquote>
-<ul>
-<li><font color="red">entity group key必须属于primary key的一部分，可以相同。</font></li>
-<li><font color="red">一次查询命令只能选择一个分区</font></li>
-</ul>
-</blockquote>
 <p>存储模型示例如下：
 <img alt="store" src="../../pic/reference/store.png" /></p>
 <p>从上图我们可以看到，定义的一个存储模型如下：</p>
@@ -1367,8 +1361,61 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </ul>
 <blockquote>
 <p><font color="brown"><strong>注：</strong>目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font></p>
+<p><font color=red>务必注意</font>：
+1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。</p>
 </blockquote>
-<h3 id="_21">接口说明</h3>
+<p>2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题</p>
+<h3 id="_21">分区键与主键</h3>
+<p>分区键（entity group key）用于实现数据库分表，写入store的数据会根据分区键的值，写入到不同的分区。
+主键（primary key）用于唯一索引一条数据。
+分区键必须为主键的一部分，可以相同。</p>
+<p>以下面这个实例来说明：</p>
+<p>数据集：device_data
+分区键：device_id
+主键：device_id, timestamp
+所有列：device_id, timestamp, pm25</p>
+<p>假设云端有4个分区，这个数据集总共有5行分数据：</p>
+<table>
+<thead>
+<tr>
+<th>device_id</th>
+<th>timestamp</th>
+<th>pm25</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00001</td>
+<td>1420872001</td>
+<td>10</td>
+</tr>
+<tr>
+<td>00001</td>
+<td>1420872002</td>
+<td>11</td>
+</tr>
+<tr>
+<td>00002</td>
+<td>1420872003</td>
+<td>12</td>
+</tr>
+<tr>
+<td>00003</td>
+<td>1420872004</td>
+<td>13</td>
+</tr>
+<tr>
+<td>00004</td>
+<td>1420872005</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+<p>因为device_id是分区键，所以分区键相同的数据肯定会在同一个分区，在上面的实例中：
+设备00001的两行数据，肯定是在同一个分区。而设备00001与设备00002是有可能不再同一个分区的。</p>
+<p>分区的优点是可以实现存储的水平扩展，缺点是会导致一些使用的限制，比如，用户无法在一次请求中跨分区查询或写入数据，任何请求都要加上分区键才能实现。</p>
+<p>所以如果数据集的数据量比较少的话，可以选择不分区，如果数据量很大的话，建议选择分区;分区键的选择要符合自己的场景，比如对于设备上报数据集的话，分区键一般为设备ID，主键一般为设备ID+时间戳。是否分区，一旦选定，不能更改</p>
+<h3 id="_22">接口说明</h3>
 <h4 id="acfilter">ACFilter：</h4>
 <p>数据查询过滤器，独立于数据集之外，同一个过滤器可用于在不同的数据集中进行数据查询过滤。</p>
 <p>获取方式：</p>
@@ -1651,9 +1698,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<blockquote>
-<p><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序。</p>
-</blockquote>
+<p><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序</p>
 <h4 id="aciterator">ACIterator：</h4>
 <p>FullScan操作的游标。</p>
 <pre><code class="java">public class ACIterator {
@@ -1668,7 +1713,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <blockquote>
 <p><font color=red>注意</font>：ACIterator仅用于分区数据集。对于未分区的数据集，请直接使用Scan接口。</p>
 </blockquote>
-<h3 id="_22">单元测试接口说明</h3>
+<h3 id="_23">单元测试接口说明</h3>
 <p>测试过程如果用到了AbleCloud云端存储，也会在云端存储中存储一些测试用的数据。在每次单元测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），可对测试数据进行清理。该类便提供了创建/删除数据集（类似于table）的功能。接口定义如下：</p>
 <pre><code class="java">public interface ACStoreForTest {
     /**
@@ -1703,16 +1748,16 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h2 id="_23">推送服务接口</h2>
+<h2 id="_24">推送服务接口</h2>
 <p>该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）。</p>
-<h3 id="_24">获取方式</h3>
+<h3 id="_25">获取方式</h3>
 <pre><code class="java">ACNotificationMgr notificationMgr = ac.notificationMgr(ac.newContext());
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处使用开发者上下文，即<code>ac.newContext()</code>。</p>
 </blockquote>
-<h3 id="_25">接口说明</h3>
+<h3 id="_26">接口说明</h3>
 <pre><code class="java">public interface ACNotificationMgr {
     //通知绑定该设备的所有用户
     public static long NOTIFY_ALL_USER = 0;
@@ -1738,7 +1783,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="_26">单元测试接口说明</h3>
+<h3 id="_27">单元测试接口说明</h3>
 <pre><code class="java">public interface ACNotificationMgrForTest extends ACNotificationMgr {
 
     /**
@@ -1763,7 +1808,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="_27">数据结构说明</h3>
+<h3 id="_28">数据结构说明</h3>
 <pre><code class="java">public class ACNotification {
     public static final long GO_APP = 0;
     public static final long GO_URL = 1;
@@ -1822,16 +1867,16 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <blockquote>
 <p><font color=red>注意：</font><code>title</code>跟<code>content</code>为必填项，其它为可选项。</p>
 </blockquote>
-<h2 id="_28">定时服务接口</h2>
+<h2 id="_29">定时服务接口</h2>
 <p>该服务用于定时向设备下发消息。</p>
-<h3 id="_29">获取方式</h3>
+<h3 id="_30">获取方式</h3>
 <pre><code class="java">ACTimerTaskMgr timerMgr = ac.timerTaskMgr(ACContext context);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处应该使用用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>。</p>
 </blockquote>
-<h3 id="_30">接口说明</h3>
+<h3 id="_31">接口说明</h3>
 <pre><code class="java">public interface ACTimerTaskMgr {
 
     /**
@@ -1896,7 +1941,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="_31">单元测试接口说明</h3>
+<h3 id="_32">单元测试接口说明</h3>
 <pre><code class="java">public interface ACTimerTaskMgrForTest {
 
     /**
@@ -1908,7 +1953,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="_32">数据结构说明</h3>
+<h3 id="_33">数据结构说明</h3>
 <pre><code class="java">public class ACTimerTask {
     private String name;            // 任务的名字。
     private String description;     // 该任务的描述信息。
@@ -2138,14 +2183,14 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h2 id="_33">测试桩</h2>
+<h2 id="_34">测试桩</h2>
 <p>在开发较大型项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游服务还在开发之中。此时不能等着下游完全就绪后才开始测试。上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
 开发者基于AbleCloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此AbleCloud的服务开发框架支持两类桩：</p>
 <ul>
 <li><strong>设备桩：</strong>模拟一个智能设备，对服务发过来的命令/消息做出响应。</li>
 <li><strong>服务桩：</strong>模拟一个服务，对当前服务发过来的消息做出响应。</li>
 </ul>
-<h3 id="_34">设备桩</h3>
+<h3 id="_35">设备桩</h3>
 <p>设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2153,7 +2198,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h3 id="_35">服务桩</h3>
+<h3 id="_36">服务桩</h3>
 <p>服务桩的定义和真正的服务开发类似，开发者需要实现其中的<code>handleMsg(ACMsg req, ACMsg resp)</code>接口以模拟服务提供的功能。</p>
 <pre><code class="java">public abstract class ACServiceSub {
 
@@ -2171,8 +2216,8 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <blockquote>
 <p><font color="red"><strong>注：</strong>无论是设备桩，还是服务桩，仅在测试（<strong>test</strong>）模式生效，正式生产（<strong>production</strong>）环境无效。</font></p>
 </blockquote>
-<h1 id="_36">附录</h1>
-<h2 id="_37">签名算法</h2>
+<h1 id="_37">附录</h1>
+<h2 id="_38">签名算法</h2>
 <pre><code class="java">public class ACSigner {
     private static final Logger logger = LoggerFactory.getLogger(ACSigner.class);
     private static final String ENCODING = &quot;UTF-8&quot;;
