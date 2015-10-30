@@ -1276,7 +1276,11 @@ public abstract class ACStore {
 }
 ```
 
-><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序。
+
+><font color=red>务必注意</font>：
+1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
+
 
 ####ACIterator：
 FullScan操作的游标。
