@@ -977,8 +977,6 @@ ACStore store = ac.store(String className, ACContext contexte);
 
 ###存储模型
 AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。为定位数据所在分区，需要定义数据分区key，AbleCloud称其为entity group key（分区键）。当我们要查找一条存储在AbleCloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，AbleCloud称其为primary key（主键）。
->+ <font color="red">entity group key必须属于primary key的一部分，可以相同。</font>
->+ <font color="red">一次查询命令只能选择一个分区</font>
 
 存储模型示例如下：
 ![store](../pic/reference/store.png)
@@ -990,6 +988,41 @@ AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先
 + **属性(attributes)**：mode，类型为字符串；speed，类型为整型`Long`。
 
 ><font color="brown">**注：**目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font>
+
+
+><font color=red>务必注意</font>：
+1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
+
+###分区键与主键
+
+分区键（entity group key）用于实现数据库分表，写入store的数据会根据分区键的值，写入到不同的分区。
+主键（primary key）用于唯一索引一条数据。
+分区键必须为主键的一部分，可以相同。
+
+以下面这个实例来说明：
+
+数据集：device_data
+分区键：device_id
+主键：device_id, timestamp
+所有列：device_id, timestamp, pm25
+
+假设云端有4个分区，这个数据集总共有5行分数据：
+
+|device_id|timestamp|pm25|
+|---------|---------|----|
+|00001|1420872001|10|
+|00001|1420872002|11|
+|00002|1420872003|12|
+|00003|1420872004|13|
+|00004|1420872005|14|
+
+因为device_id是分区键，所以分区键相同的数据肯定会在同一个分区，在上面的实例中：
+设备00001的两行数据，肯定是在同一个分区。而设备00001与设备00002是有可能不再同一个分区的。
+
+分区的优点是可以实现存储的水平扩展，缺点是会导致一些使用的限制，比如，用户无法在一次请求中跨分区查询或写入数据，任何请求都要加上分区键才能实现。
+
+所以如果数据集的数据量比较少的话，可以选择不分区，如果数据量很大的话，建议选择分区;分区键的选择要符合自己的场景，比如对于设备上报数据集的话，分区键一般为设备ID，主键一般为设备ID+时间戳。是否分区，一旦选定，不能更改
 
 ###接口说明
 ####ACFilter：
@@ -1277,9 +1310,7 @@ public abstract class ACStore {
 ```
 
 
-><font color=red>务必注意</font>：
-1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
-2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
+<font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序
 
 
 ####ACIterator：
