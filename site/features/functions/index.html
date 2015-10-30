@@ -522,7 +522,7 @@
 <p><img alt="account5" src="../../pic/features/account5.png" /> </p>
 <p>开发指导请参考：</p>
 <p><a href="../../develop_guide/android/#_5">开发指导-安卓-帐号管理</a></p>
-<p><a href="../../develop_guide/iOS/#_3">开发指导-iOS-帐号管理</a></p>
+<p><a href="../../develop_guide/iOS/#_6">开发指导-iOS-帐号管理</a></p>
 <p><a href="../../develop_guide/wechat/#_3">开发指导-微信-帐号管理</a></p>
 <p>如果需要存储用户的头像，请参考 <a href="../functions#_21">文件存储</a></p>
 <h1 id="_2">设备管理</h1>
@@ -558,8 +558,8 @@
 <p>客户端为微信时，目前AbleCloud只能够支持管理员分享的方式分享设备。</p>
 <p>开发指导参考：</p>
 <p><a href="../../develop_guide/android/#_12">开发指导-安卓-独立设备管理</a></p>
-<p><a href="../../develop_guide/iOS/#_6">开发指导-iOS-独立设备管理</a></p>
-<p><a href="../../develop_guide/wechat/#_11">开发指导-微信-独立设备管理</a></p>
+<p><a href="../../develop_guide/iOS/#_14">开发指导-iOS-独立设备管理</a></p>
+<p><a href="../../develop_guide/wechat/#_9">开发指导-微信-独立设备管理</a></p>
 <p><a href="../../develop_guide/device/#_4">开发指导-设备-设备激活</a></p>
 <h2 id="_6">网关型设备管理</h2>
 <h3 id="_7">功能介绍</h3>
@@ -603,8 +603,8 @@
 <p>客户端为微信时，只能够使用“管理员分享”的模式分享设备。</p>
 <p>开发指导参考：</p>
 <p><a href="../../develop_guide/android/#_16">开发指导-安卓-网关型设备管理</a></p>
-<p><a href="../../develop_guide/iOS/#_7">开发指导-iOS-网关型设备管理</a></p>
-<p><a href="../../develop_guide/wechat/#_16">开发指导-微信-网关型设备管理</a></p>
+<p><a href="../../develop_guide/iOS/#_18">开发指导-iOS-网关型设备管理</a></p>
+<p><a href="../../develop_guide/wechat/#_15">开发指导-微信-网关型设备管理</a></p>
 <p><a href="../../develop_guide/device/#_7">开发指导-设备(嵌入式系统)-设备绑定管理</a></p>
 <h2 id="home">home模型</h2>
 <h3 id="_9">基本介绍</h3>
@@ -669,9 +669,9 @@
 <p><img alt="device_appendix" src="../../pic/features/device_appendix.png" /> </p>
 <p>其中：属性标识是该属性的唯一标识，在SDK的扩展属性接口中需要作为参数。</p>
 <p>开发指导参考：</p>
-<p><a href="../../develop_guide/android/#_14">开发指导-安卓-设备扩展属性</a></p>
-<p><a href="../../develop_guide/iOS/#设备扩展属性">开发指导-iOS-设备扩展属性</a></p>
-<p><a href="../../develop_guide/wechat/#设备扩展属性">开发指导-微信-设备扩展属性</a></p>
+<p><a href="../../develop_guide/android/#_20">开发指导-安卓-设备扩展属性</a></p>
+<p><a href="../../develop_guide/iOS/#_22">开发指导-iOS-设备扩展属性</a></p>
+<p><a href="../../develop_guide/wechat/#_21">开发指导-微信-设备扩展属性</a></p>
 <h1 id="_12">云端通信</h1>
 <p>云端通信指的是APP到云端、设备到云端的通信。分别对应下图中的绿色和紫色线所标注的数据流。</p>
 <p><img alt="cloudcommunication" src="../../pic/features/cloudcommunication.png" /> </p>
@@ -753,9 +753,9 @@
 <p>当APP上采用实时消息同步显示设备上报的数据时，在网络环境比较差的情景下，数据显示可能会不及时。此时，如果用户无法看到数据变化同时也不能进行任何操作，会导致用户焦虑。所以，建议对于实时显示数据的页面设计可以手动刷新数据的功能。这样，当实时数据显示没有变化时，用户可以手动刷新。</p>
 <p>一般来讲，当APP没有打开的情况下，对于需要定时上报数据的设备也一般不建议设备高频次快速上报数据。但是在APP打开的情况下开启实施消息同步时，为了用户能快速及时的看到设备的数据和状态的变化，需要将设备的上报时间间隔变小。然后，在APP退出或者离开监控的页面的时候，再把设备的上报间隔变回原来的值。因此在设备开发时，需要开发调整上报频率的功能；在APP开发时，需要在进入需要实时监控设备状态变化的页面时给设备发一条指令，通知设备快速上报数据，当APP离开该页面的时候，再发一条指令，通知设备使用正常的上报间隔。</p>
 <p><strong>开发指导请参考：</strong></p>
-<p><a href="../../develop_guide/android/#_17">开发指导-安卓-云端通信</a></p>
-<p><a href="../../develop_guide/iOS/#云端通信">开发指导-iOS-云端通信</a></p>
-<p><a href="../../develop_guide/wechat/#_16">开发指导-微信-云端通信</a></p>
+<p><a href="../../develop_guide/android/#_23">开发指导-安卓-云端通信</a></p>
+<p><a href="../../develop_guide/iOS/#_25">开发指导-iOS-云端通信</a></p>
+<p><a href="../../develop_guide/wechat/#_24">开发指导-微信-云端通信</a></p>
 <h2 id="_16">设备上报消息</h2>
 <p>设备可以在定时或者根据外界条件触发的情况下将设备数据和状态主动上报到云端。其中上报的消息号(message code)必须大于等于200。</p>
 <h2 id="_17">设备接收云端指令</h2>
@@ -764,7 +764,7 @@
 <p>查询指令是查询设备状态和数据，并返回查询结果，其中查询指令的消息号必须大于64且小于200。</p>
 <p>设备接收到云端指令必须返回响应结果,控制指令和查询指令的返回值均不需要填写消息号。</p>
 <p>开发指导请参考：</p>
-<p><a href="../../develop_guide/device/#_14">开发指导-设备-云端通信</a></p>
+<p><a href="../../develop_guide/device/#_15">开发指导-设备-云端通信</a></p>
 <h1 id="_18">局域网通信</h1>
 <p>局域网通信是指设备和设备、APP和设备在一个局域网内时，不通过云端直接进行通信。 </p>
 <p>局域网通信能够保证在外网断开的情况下设备的正常使用，提供设备之间的高速访问能力及关联控制功能。</p>
@@ -772,7 +772,10 @@
 <p>AbleCloud提供了非常简单的接口实现设备的局域网发现和状态获取以及控制。</p>
 <p>如果要求用户进入到局域网以后，APP和设备的交互能够自动切换到局域网模式，而不再通过云端，那么对于用户来讲，最好的交互是完全感受不到这种切换。</p>
 <p>我们提供的接口能够帮助厂商直接获取到当前设备的在线状态：云端和局域网在线、云端在线、局域网在线、云端和局域网都不在线。因此APP开发人员可以根据设备的在线情况调用相关的处理接口，是用户感受不到网络的切换。</p>
-<p>具体请参考<a href="../../develop_guide/device/#局域网通信">开发指导-设备-局域网通信</a></p>
+<p><strong>开发指导请参考：</strong></p>
+<p><a href="../../develop_guide/android/#_28">开发指导-安卓-云端通信</a></p>
+<p><a href="../../develop_guide/iOS/#_30">开发指导-iOS-云端通信</a></p>
+<p><a href="../../develop_guide/device/#_20">开发指导-设备-局域网通信</a></p>
 <p><strong>安全机制</strong></p>
 <p>局域网本身并不是可信网络，并不能依赖于局域网的安全机制，所以不能够认为接到同一个局域网的设备和用户就互相有权限。AbleCloud在局域网中采用基于localAccessKey的认证机制。只有设备之间、应用和设备之间有相同的localAccessKey的时候才能够进行局域网通信。localAccessKey由云端发放，在特定场景下进行更新。</p>
 <p>设备绑定、用户分享时，localAccessKey的获取流程如下：</p>
@@ -789,9 +792,9 @@
 <p>AbleCloud的定时任务功能支持单次任务、按天重复、按星期重复、按月重复等功能。用户只需要调用相关的接口，将任务类型和执行的指令内容发送到云端，云端就会在设定的时间将该指令下发到设备。而设备上不需要针对定时任务做任何开发，因为从设备端看来只是执行了一条普通指令。只不过该指令由云端按照用户设定的时间下发。</p>
 <p>建议的用户交互请参考手机的闹钟设定方法。只是在闹钟设定的基础上增加对设备操作的设定。</p>
 <p>开发指导请参考：</p>
-<p><a href="../../develop_guide/android/#_22">开发指导-安卓-定时任务</a></p>
-<p><a href="../../develop_guide/iOS/#定时任务">开发指导-iOS-定时任务</a></p>
-<p><a href="../../develop_guide/wechat/#定时任务">开发指导-微信-定时任务</a></p>
+<p><a href="../../develop_guide/android/#_29">开发指导-安卓-定时任务</a></p>
+<p><a href="../../develop_guide/iOS/#_31">开发指导-iOS-定时任务</a></p>
+<p><a href="../../develop_guide/wechat/#_28">开发指导-微信-定时任务</a></p>
 <h1 id="ota">OTA</h1>
 <p>OTA（Over－the－Air Technology），即空中下载技术。</p>
 <p>在智能硬件领域，当设备固件需要升级的时候，可以借助OTA实现远程升级。</p>
@@ -829,17 +832,16 @@
 <p><strong>和用户状态相关的推送</strong></p>
 <p>一个典型的应用场景是，某用户被管理员解绑后收到被解绑通知。这种类型的推送厂商根据实际需求开发。</p>
 <p>安卓、iOS和微信实现推送的方式不同，具体开发请参考开发指导：</p>
-<p><a href="../../develop_guide/android/#_34">开发指导-安卓-推送</a></p>
-<p><a href="../../develop_guide/iOS/#推送">开发指导-iOS-推送</a></p>
-<p><a href="../../develop_guide/wechat/#推送">开发指导-微信-推送</a></p>
+<p><a href="../../develop_guide/android/#_39">开发指导-安卓-推送</a></p>
+<p><a href="../../develop_guide/iOS/#_41">开发指导-iOS-推送</a></p>
+<p><a href="../../develop_guide/wechat/#_38">开发指导-微信-推送</a></p>
 <h1 id="_21">文件存储</h1>
 <p>文件存储是AbleCloud提供的非结构化存储功能。可以用来存储头像、文件等大的数据块。
 文件存储由于占用空间和带宽比较大，因此费用需要单独核算。具体请来电咨询我司商务。
 目前文件存储功能只在客户端提供接口，设备端还不提供文件存储功能。</p>
 <p>使用方法请参考</p>
-<p><a href="../../develop_guide/android/#_37">开发指导-安卓-文件存储</a></p>
-<p><a href="../../develop_guide/iOS/#文件存储">开发指导-iOS-文件存储</a></p>
-<p><a href="../../develop_guide/wechat/#文件存储">开发指导-微信-文件存储</a></p>
+<p><a href="../../develop_guide/android/#_43">开发指导-安卓-文件存储</a></p>
+<p><a href="../../develop_guide/iOS/#_45">开发指导-iOS-文件存储</a></p>
 <h1 id="_22">第三方云对接</h1>
 <p>为了方便硬件厂商使用其它云厂商的已有资源，如终端优势，渠道优势等，AbleCloud实现了和其它云厂商的对接。这样一来，硬件厂商已经接入AbleCloud的硬件很方便就能和第三方打通，并且硬件厂商可以同时拥有多个云厂商的资源，不用再一家一家的实现对接，因为这些和第三方云的对接工作，已经由AbleCloud完成了。 当前，AbleCloud实现了和微信、京东云的对接，后续会对接更多的第三方云。</p>
 <h2 id="_23">微信</h2>

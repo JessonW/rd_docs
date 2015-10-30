@@ -1,6 +1,6 @@
 #IOS客户端开发指导
 
-###开发环境设置
+#开发环境设置
 ####系统准备
 在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。
 + **OS X**
@@ -26,44 +26,22 @@
 Xcode下直接**Command + R**运行。
 ><font color="brown">**注：**</font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
 
-#应用程序初始化
+####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
-####1.设置主域名和主域ID
 ```objectivec
-[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId];
+//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
+[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId Region:REGIONAL_CHINA];
 ```
-####2.设置开发环境
-```objectivec
-//*****测试开发环境******
-#define TEST_MODEL @"test"
-//*****正式开发环境******
-#define PRODUCTION_MODEL @"production"
-//*****国内开发环境******
-#define REGIONAL_CHINA @"REGIONAL_CHINA"
-//*****国外开发环境******
-//东南亚开发环境
-#define REGIONAL_SOUTHEAST_ASIA @"REGIONAL_SOUTHEAST_ASIA"
-```
-####**国内环境**
 开发阶段，请初始化**测试环境**
 ```objectivec
-[ACloudLib setHostWithModel:TEST_MODEL Region:CHINA_URL_STRING];
+//设置开发环境
+[ACloudLib setMode:TEST_MODE];
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:CHINA_URL_STRING];
+[ACloudLib setMode:PRODUCTION_MODE];
 ```
-####**国外环境**
-开发阶段，请初始化**测试环境**
-```objectivec
-[ACloudLib setHostWithModel:TEST_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
-```
-在完成测试阶段之后，需要迁移到**正式环境**下
-```objectivec
-[ACloudLib setHostWithModel:PRODUCTION_MODEL Region:REGIONAL_SOUTHEAST_ASIA];
-```
-
 
 #帐号管理
 
@@ -71,19 +49,15 @@ Xcode下直接**Command + R**运行。
 
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 
-####接口说明
+##一、普通帐号注册
 
-####引入头文件
-```objectivec
-import "ACAccountManager.h"
-```
+![account_register](../pic/develop_guide/account_register.png)
 
 ###账号管理类
 ```objectivec
 @interface ACAccountManager : NSObject
 ```
-
-###普通帐号注册流程###
+###普通帐号注册流程
 
 ####1、检查手机号是否已注册
 ```objectivec
@@ -106,7 +80,7 @@ import "ACAccountManager.h"
 //1代表Ablecloud短信内容的模版，具体开发需要先把短信内容模版提交到Ablecloud再获取对应的参数
 [ACAccountManager sendVerifyCodeWithAccount:phoneNum template:1 callback:^(NSError *error) {
 
-         if (error == nil) {
+         if (!error) {
              //校验验证码
          }else{
             //获取失败，根据error做不同的提示或者处理
@@ -151,20 +125,21 @@ import "ACAccountManager.h"
 
 ####1、直接使用第三方登录
 ```objectivec
-[ACAccountManager registerWithNickName:userName phone:phone email:nil password:pwd verifyCode:verify callback:^(ACUserInfo *user, NSError *error) {
-             if(error){
-             //返回失败信息，根据error做不同的提示或者处理
-             }else{
-             //获得用户user.userId和user.nickName，进入主页或设备管理
-             }
+[ACAccountManager loginWithOpenId:openID provider:provider accessToken:accessToken callback:^(ACUserInfo *user, NSError *error) {
+            if(!error){
+            //获得用户userId和nickName，进入主页或设备管理
+            }else{
+            //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+            }
 }];
 
+//绑定一个未被注册的普通帐号；emai和phone可以任选其一;nickName为可选项，没有时传空字符串
 [ACAccountManager registerWithNickName:userName phone:self.phoneNum email:nil password:passwd verifyCode:self.verifyCode callback:^(ACUserInfo *user, NSError *error)
 {
              if(error){
              //返回失败信息，根据error做不同的提示或者处理
              }else{
-             //根据获得的user，得到基本信息
+             //绑定账号成功
              }
 }];
 
@@ -177,7 +152,7 @@ import "ACAccountManager.h"
            if(error){
            //返回失败信息，根据error做不同的提示或者处理
             }else{
-            //绑定成功
+            //绑定第三方账号成功
             }
 }];
 ```
@@ -257,6 +232,7 @@ NSString * ssid = [ACWifilinkManager getCurrentSSID];
 ####3.激活设备
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
 ```objectivec
+//ssid是Wi-Fi名字 pwd是Wi-Fi密码
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
         if(error){
         //返回失败信息，根据error做不同的提示或者处理，此处一般为1993配置超时错误
@@ -292,11 +268,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 - 4.确保设备的天线正常。
 - 5.确保网络环境不是公共环境。
 
-绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。如果无法列出设备列表，请检查以下问题：
-
-- 1.设备电源供电不足造成断网。
-- 2.WIFI信号不好造成断网。
-- 3.路由器断网。
+绑定成功后，通过listdevice 接口可以列出已经绑定的设备列表。
 
 ###GPRS设备
 **<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
@@ -312,7 +284,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 }];
 ```
 
-><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过CountDownTimer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
+><font color="red">建议流程</font>：若设备上有是否连接上AbleCloud云端的指示灯，则可以提示用户在指示灯亮起的时候绑定设备。若无指示灯，则可在用户点击开始绑定之后，建议通过Timer每隔2s钟绑定一次设备，在连续绑定几次之后再提示用户失败或成功。
 
 ###二．分享设备
 
@@ -533,7 +505,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 功能介绍参见 [功能说明-功能介绍-云端通信](../features/functions.md#_12)
 
-<font color="red">说明</font>在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
+**说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
 ##一、发送消息到设备
 ###KLV格式
@@ -553,24 +525,20 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 **例如**：以开关设备为例,协议如下:
 ```objectivec
 //请求数据包
-{ 68 ：[
-//数据点[key：value(int8)]
-//关灯
-{ 1 : 0 },
-//开灯      
-{ 1 : 1 }
+{ 69 ：[
+//数据点[key：value(int8)]，其中0代表关灯，1代表开灯
+{ 1 : 0/1 }
 ]}
 //响应数据包  
 { 60 ：[
-//数据点[key：value(int8)]
-//失败
-{ 1 : 0 },
-//成功      
-{ 1 : 1 }
+//数据点[key：value(boolean)]，其中false为失败，true为成功
+{ 1 : false/true }
 ]}
 ```
 定义如下:
 ```objectivec
+
+
 @interface ACKLVObject : NSObject
 
 /**
@@ -618,11 +586,6 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 
 **在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
 
-这里创建的数据点和数据包如下所示：
-
-【数据点】
-![binary_datapoint](../pic/develop_guide/cloud_communication_binary.png)
-
 【数据包】
 ![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
 
@@ -631,25 +594,21 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ```objectivec
 //请求数据包
 { 68 ：[
-//关灯(二进制流，由厂商自己解析)
-{ 0 , 0 , 0 , 0 },
-//开灯(二进制流，由厂商自己解析)   
-{ 1 , 0 , 0 , 0 }
+//开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+{ 0/1 , 0 , 0 , 0 }
 ]}
 //响应数据包  
 { 102 ：[
-//失败(二进制流，由厂商自己解析)
-{ 0 , 0 , 0 , 0 },
-//成功(二进制流，由厂商自己解析)        
-{ 1 , 0 , 0 , 0 }
+//结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+{ 0/1 , 0 , 0 , 0 }
 ]}
+
 ```
 截取开灯代码，如下:
 ####1、设置序列化器
 ```objectivec
 //反序列化
 + (instancetype)unmarshalWithData:(NSData *)data;
-
 //序列化
 - (NSData *)marshal;
 ```
@@ -658,25 +617,63 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 /**
 *  网络连接操作灯
 */
-- (void)operationLight:(LightOperationType)type
-{
-     DeviceMsg  *deMsg = self.device[0];
-     NSString *subDomain = [[NSUserDefaults standardUserDefaults] stringForKey:@"subDomain"];;
-     NSInteger deviceId = deMsg.deviceId;
-     ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
-     msg.msgId = 0;
-     msg.msgCode =68;
-     Byte content[] ={type,0,0,0};
-     msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
-     [ACBindManager sendToDevice:subDomain deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-                 if (error) {
-                  NSLog(@"sendToDevice-error:%@",error);
-                 }else
-                   {
-                   NSLog(@"sendToDevice - 成功");
-                   }
-                   }];
-}
+//LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+     if(!error){
+     //开灯成功
+     }else{
+     //开灯失败
+     }
+
+}];
+```
+###3、json格式
+
+**在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![json_datapoint](../pic/develop_guide/cloud_communication_json.png)
+
+【数据包】
+![json_datapackage](../pic/develop_guide/cloud_communication_json_pkg.png)
+
+
+**例如**：以开关设备为例,协议如下:
+```objectivec
+//请求数据包
+{ 70 ：[
+//开关灯，其中0代表关灯，1代表开灯
+{"switch", 0/1}
+]}
+//响应数据包  
+{ 102 ：[
+//结果，其中false代表失败，1代表成功
+{"result", false/true}
+]}
+```
+####1、设置序列化器
+```objective
+ACObject * req = [[ACObject alloc]init];
+[req marshal];
+```
+####2、发送到设备
+此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
+```objective
+[req putInteger:@"switch" value:1];
+ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
+msg.msgCode = 68;
+msg.payload = [req marshal];
+//LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+          if(!error){
+          //开灯成功
+          }else{
+          //开灯失败
+          }
+
+}];
 
 ```
 
@@ -713,10 +710,11 @@ ACPushManager * pushManager = [[ACPushManager alloc] init];
 [pushManager connectWithCallback:^(NSError *error) {
             if (!error) {
             //连接成功，可以订阅数据 
-            }else{、
+            }else{
             //连接失败，网络错误 
             }
-}];```
+}];
+```
 
 ####3、订阅实时数据
 以如下数据集为例：
@@ -806,6 +804,8 @@ table.primaryKey =primaryKey;
 
 }];
 ```
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+
 因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
 ```objectivec
 [ACBindManager networkChangeHanderCallback:^(NSError *error) {
@@ -898,18 +898,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 接口为modifyTask，其他参数与定义与创建定时任务相同。
 
 ####开启定时任务
-<<<<<<< HEAD
-<<<<<<< HEAD
 ```objectivec
 [timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-
-=======
-<<<<<<< HEAD
-```c
-[timerMgr openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
-=======
-```objectivec
-[DeviceMsg openTaskWithDeviceId:self.upDeivceId taskId:acTask.taskId callback:^(NSError *error) {
 
         if (error) { 
         NSLog(@"预约开失败－－%@",error);
@@ -933,12 +923,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ####删除定时任务
-<<<<<<< HEAD
-```c
-[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
-=======
 ```objectivec
-[DeviceMsg deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
+[timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
           if (error){
           //删除定时失败，处理error
           }else{
@@ -949,12 +935,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ####获取定时任务列表
-<<<<<<< HEAD
-```c
-[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
-=======
 ```objectivec
-[DeviceMsg firstLoadTimerWithdeviceId:self.upDeivceId callback:^(NSArray *timerTaskArray, NSError *error) {
+[timerMgr listTasksWithDeviceId:deviceId callback:^(NSArray *timerTaskArray, NSError *error) {
 
          if (error)
           {
@@ -979,8 +961,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ![OTA](../pic/develop_guide/OTA.png)
-
-功能介绍参见[功能说明-OTA](../introduction.md#ota)。
 
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 
@@ -1036,7 +1016,9 @@ AbleCloud的推送使用[友盟](http://www.umeng.com/)的服务，在开发功�
 ![push2](../pic/develop_guide/push2.png) 
 
 友盟平台配置完成后，到AbleCloud的管理后台的推送管理页面填写对应信息即可使用AbleCloud提供的推送服务。
+![push3](../pic/develop_guide/push3.png)
 
+在AbleCloud平台中添加应用，并填写App Key和App Master Secret
 
 ><font color="red">注意</font>
 
@@ -1098,7 +1080,7 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 ><font color="red">注意</font>：
 
->1、iOS权限原因，下载文件上传文件到云端只能在本应用的沙盒中操作
+>1、iOS权限原因，下载文件上传文件的操作只能在本应用的沙盒中操作
 
 >2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现
 
@@ -1113,6 +1095,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ##二、下载文件
 ###1、获取下载url
 ```objectivec
+//0代表URL链接的有效时间为长期有效
 [ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
@@ -1124,43 +1107,19 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ```
 ###2、根据url下载文件
 ```objectivec
-[downManager downFileWithsession:urlString callBack:^(float progress, NSError *error)
-{
-          if(error ){
-           //下载失败，处理error
-           }else{
-           //下载成功，处理下载的文件
-           }
-}
+[fileManager downFileWithsession:urlString callBack:^(float progress, NSError *error) {
+     
+       if(!error){
+      //下载成功，返回下载进度
+      }
+
+} CompleteCallback:^(NSString *filePath) {
+//返回下载文件沙盒中的路径
+}];
 ```
 ##三、上传文件
-
-###1、设置上传文件的权限管理类－－ACACL
-```objectivec
-@interface ACACL : NSObject
-```
-<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。
-
-###2、上传文件
-####1)、设置上传文件信息－－ACFileInfo类
-```objectivec
-@interface ACFileInfo : NSObject
-//上传文件名字
-@property (copy,nonatomic) NSString * name;
-
-//上传文件路径，支持断点续传
-@property (copy,nonatomic) NSString * filePath;
-
-//文件访问权限 如果不设置 则默认
-@property (retain,nonatomic) ACACL  * acl;
-
-//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
-@property (copy,nonatomic) NSString * bucket;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-+ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
-```
-####2)、设置文件权限
+如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如果不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限
+###1、设置上传文件的权限管理
 ```objectivec
 /**
 * 设置全局可读访问权限，不设置则默认为所有人可读
@@ -1188,16 +1147,37 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 */
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
 ```
-####3)、上传文件
+
+<font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
+
+###2、上传文件
+####1)、设置上传文件信息－－ACFileInfo类
+```objectivec
+@interface ACFileInfo : NSObject
+//上传文件名字
+@property (copy,nonatomic) NSString * name;
+
+//上传文件路径，支持断点续传
+@property (copy,nonatomic) NSString * filePath;
+
+//文件访问权限 如果不设置 则默认
+@property (retain,nonatomic) ACACL  * acl;
+
+//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
+@property (copy,nonatomic) NSString * bucket;
+
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
++ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
+```
+####2)、上传
 ```objectivec
 ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@"3.jpg" bucket:@"jpg"];
 fileInfo.filePath = [self getPath];
 fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];
-[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)
-{ 
+[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)｛
      if(error){
-      //上传失败，处理error
+      //支持断点续传，所以此处若发生网络错误，会在网络恢复之后继续上传
      }else{
      //上传成功
      }

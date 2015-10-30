@@ -2090,7 +2090,7 @@ public interface ACAccountMgr {
 
 ##2、设备管理
 
-```
+```java
 public interface ACBindMgr {
 
     /**
@@ -2100,7 +2100,7 @@ public interface ACBindMgr {
      */
     public void listDevices(PayloadCallback<List<ACUserDevice>> callback);
 
-     /**
+    /**
      * 获取接入设备的所有用户列表
      *
      * @param subDomain 子域名，如djj（豆浆机）
@@ -2205,7 +2205,7 @@ public interface ACBindMgr {
      */
 public void changeName(String subDomain, long deviceId, String name, VoidCallback callback);
 
-/**
+    /**
      * 设置设备自定义扩展属性
      *
      * @param deviceId      设备逻辑id
@@ -2227,37 +2227,18 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
    
 ##3、OTA
 
-
 ```java
 public interface ACOTAMgr {
 
     /**
-     * 查询蓝牙设备OTA发布版本
+     * 检查蓝牙设备OTA发布版本
+     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据oldVersion与newVersion是否相等判断有无更新
      *
      * @param subDomain 子域名，如djj（豆浆机）
+     * @param checkInfo 设备与OTA信息
      * @param callback  返回结果的监听回调
      */
-    public void bluetoothVersion(String subDomain, PayloadCallback<ACOTAUpgradeInfo> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件meta信息列表
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param version   蓝牙设备OTA版本
-     * @param callback  返回结果的监听回调
-     */
-    public void listFiles(String subDomain, String version, PayloadCallback<List<ACOTAFileMeta>> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param type      升级文件类型
-     * @param checksum  升级文件校验和
-     * @param version   升级文件版本号
-     * @param callback  返回结果的监听回调
-     */
-    public void bluetoothFile(String subDomain, int type, int checksum, String version, PayloadCallback<byte[]> callback);
+    public void checkBluetoothUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback<ACOTAUpgradeInfo> callback);
 }
 ```
 
@@ -2267,8 +2248,9 @@ public interface ACOTAMgr {
 
 ##5、和云端通信
 
-```
+```java
 public class AC {
+
     /**
      * 往某一服务发送命令/消息
      *
@@ -2340,9 +2322,12 @@ public interface ACFileMgr {
      */
     public void cancelUpload(ACFileInfo fileInfo);
 }
+```
 另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
+```java
 public class ACACL {
-   /**
+
+    /**
      * 设置全局可读访问权限，不设置则默认为所有人可读
      *
      * @param allow 是否全局可读

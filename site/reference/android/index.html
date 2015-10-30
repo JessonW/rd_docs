@@ -2464,7 +2464,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h2 id="2">2、设备管理</h2>
-<pre><code>public interface ACBindMgr {
+<pre><code class="java">public interface ACBindMgr {
 
     /**
      * 从云端获取所有设备列表并保存到本地缓存中
@@ -2473,7 +2473,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
      */
     public void listDevices(PayloadCallback&lt;List&lt;ACUserDevice&gt;&gt; callback);
 
-     /**
+    /**
      * 获取接入设备的所有用户列表
      *
      * @param subDomain 子域名，如djj（豆浆机）
@@ -2578,7 +2578,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
      */
 public void changeName(String subDomain, long deviceId, String name, VoidCallback callback);
 
-/**
+    /**
      * 设置设备自定义扩展属性
      *
      * @param deviceId      设备逻辑id
@@ -2602,39 +2602,22 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
-     * 查询蓝牙设备OTA发布版本
+     * 检查蓝牙设备OTA发布版本
+     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据oldVersion与newVersion是否相等判断有无更新
      *
      * @param subDomain 子域名，如djj（豆浆机）
+     * @param checkInfo 设备与OTA信息
      * @param callback  返回结果的监听回调
      */
-    public void bluetoothVersion(String subDomain, PayloadCallback&lt;ACOTAUpgradeInfo&gt; callback);
-
-    /**
-     * 获取蓝牙设备OTA文件meta信息列表
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param version   蓝牙设备OTA版本
-     * @param callback  返回结果的监听回调
-     */
-    public void listFiles(String subDomain, String version, PayloadCallback&lt;List&lt;ACOTAFileMeta&gt;&gt; callback);
-
-    /**
-     * 获取蓝牙设备OTA文件
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param type      升级文件类型
-     * @param checksum  升级文件校验和
-     * @param version   升级文件版本号
-     * @param callback  返回结果的监听回调
-     */
-    public void bluetoothFile(String subDomain, int type, int checksum, String version, PayloadCallback&lt;byte[]&gt; callback);
+    public void checkBluetoothUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback&lt;ACOTAUpgradeInfo&gt; callback);
 }
 </code></pre>
 
 <h2 id="4">4、消息推送</h2>
 <p>参考<a href="../../develop_guide/android/#_34">开发指导-安卓-推送</a></p>
 <h2 id="5">5、和云端通信</h2>
-<pre><code>public class AC {
+<pre><code class="java">public class AC {
+
     /**
      * 往某一服务发送命令/消息
      *
@@ -2704,9 +2687,12 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
      */
     public void cancelUpload(ACFileInfo fileInfo);
 }
-另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
-public class ACACL {
-   /**
+</code></pre>
+
+<p>另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：</p>
+<pre><code class="java">public class ACACL {
+
+    /**
      * 设置全局可读访问权限，不设置则默认为所有人可读
      *
      * @param allow 是否全局可读
