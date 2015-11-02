@@ -183,8 +183,14 @@
                 
                 </ul>
             
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://docs.ablecloud.cn/" style="font-size:0.9em;">旧版文档</a></li>
+            </ul>
         </div>
+
     </div>
+
 </div>
 
         <div class="container container-ac">
@@ -1610,7 +1616,7 @@ timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new Voi
 </code></pre>
 
 <h4 id="ota_5">二、查询OTA新版本信息</h4>
-<pre><code class="java">// 初始化当前设备的版本号otaCheckInfo信息,version为蓝牙设备当前版本
+<pre><code class="java">// 初当前设备的版本号ACOtaCheckInfo信息,version为蓝牙设备当前版本
 otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
     public void success(ACOTAUpgradeInfo upgradeInfo) {
