@@ -559,45 +559,45 @@ class ACClient {
     
     /**
      * AbleCloud帐号服务。
-     * @return 返回ACAccountService对象。
+     * @return 返回ACAccountMgr对象。
      */
-    public static function getAccountService();
+    public static function getAccountMgr();
     
     /**
      * AbleCloud文件存储服务。
-     * @return 返回ACBlobStoreService对象。
+     * @return 返回ACBlobStoreMgr对象。
      */
-    public static function getBlobStoreService();
+    public static function getBlobStoreMgr();
     
     /**
      * AbleCloud设备管理服务。
-     * @return 返回ACDeviceService对象。
+     * @return 返回ACBindMgr对象。
      */
-    public static function getDeviceService();
+    public static function getBindMgr();
     
     /**
      * AbleCloud设备OTA服务。
-     * @return 返回ACOtaService对象。
+     * @return 返回ACOtaMgr对象。
      */
-    public static function getOtaService();
+    public static function getOtaMgr();
     
     /**
      * AbleCloud消息推送服务。
-     * @return 返回ACNotificationService对象。
+     * @return 返回ACNotificationMgr对象。
      */
-    public static function getNotificationService();
+    public static function getNotificationMgr();
     
     /**
      * AbleCloud数据存储服务。
-     * @return 返回ACStoreService对象。
+     * @return 返回ACStore对象。
      */
-    public static function getStoreService();
+    public static function getStore();
     
     /**
-     * AbleCloud数据存储服务。
-     * @return 返回ACStoreService对象。
+     * AbleCloud定时任务管理服务。
+     * @return 返回ACTimerTaskMgr对象。
      */
-    public static function getTimerTaskService();
+    public static function getTimerTaskMgr();
     
     /**
      * 取访问AbleCloud远程服务的环境信息。
@@ -685,13 +685,13 @@ class ACUser {
 }
 ```
 
-###ACAccountService###
+###ACAccountMgr###
 
 ```php
 /**
  * AbleCloud帐号服务。
  */
-class ACAccountService extends ACService {
+class ACAccountMgr extends ACService {
     /**
      * 构造函数。
      * @param $name AbleCloud帐号服务的名字。
@@ -814,13 +814,13 @@ class ACAccountService extends ACService {
 ```
 ##AbleCloud文件存储服务##
 
-###ACBlobStoreService###
+###ACBlobStoreMgr###
 
 ```php
 /**
  * AbleCloud文件存储服务。
  */
-class ACBlobStoreService extends ACService {
+class ACBlobStoreMgr extends ACService {
     /**
      * 构造函数。
      * @param $name AbleCloud文件存储服务的名字。
@@ -912,13 +912,13 @@ class ACDevice {
 }
 ```
 
-###ACDeviceService###
+###ACBindMgr###
 
 ```php
 /**
  * AbleCloud设备管理服务。
  */
-class ACDeviceService extends ACService {
+class ACBindMgr extends ACService {
     /**
      * 构造函数。
      * @param $name AbleCloud设备管理服务的名字。
@@ -1349,13 +1349,13 @@ class ACHome {
 
 ##AbleCloud OTA服务##
 
-###ACOtaService###
+###ACOtaMgr###
 
 ```php
 /**
  * AbleCloud设备OTA服务。
  */
-class ACOtaService extends ACService {
+class ACOtaMgr extends ACService {
     /**
      * 构造函数。
      * @param $name AbleCloud设备OAT服务的名字。
@@ -1467,6 +1467,7 @@ class ACStoreClass {
 	public $columns;			// 数据集的全部数据列：ACStoreClassColumn对象的数组。
 	public $primaryKeys;		// 数据集的主键：ACStoreClassColumn对象的数组。
 	public $entityGroupKeys;	// 数据集的分区键：ACStoreClassColumn对象的数组。如果该数组不为空数组，则表示使用分区策略；否则表示不使用分区策略。
+	public $enableWatch;		// 布尔值，是否启用数据监控功能。缺省取FALSE。
 
 	/**
 	 * 构造函数。
@@ -1503,7 +1504,7 @@ class ACStoreComplicatedFilter {
      * 将一个简单查询条件ACStoreFilter链接至本对象所包含的简单查询条件链表的末尾。
      * @param $filter ACStoreFilter对象，表示要被连接的查询条件。
      * @param $logicalAnd 为true时，表示以逻辑“与”的关系连接$filter，否则表示以逻辑“或”的关系连接$filter。目前仅支持逻辑“与”的连接关系。
-     * @return 无
+     * @return 本ACStoreComplicatedFilter对象。
      */
     public function appendFilter($filter, $logicalAnd = true);
     
@@ -1517,7 +1518,7 @@ class ACStoreComplicatedFilter {
      * 将另一个复杂查询条件（ACStoreComplicatedFilter）链接至本对象所属复杂查询条件链表的末尾。
      * @param $complicatedFilter ACStoreComplicatedFilter对象，表示要链接的复杂查询条件。
      * @param $logicalAnd 为true时，表示以逻辑与操作链接$complicatedFilter对象，否则表示以逻辑或操作链接$complicatedFilter对象。
-     * @return 无。
+     * @return 位于链表末尾的ACStoreComplicatedFilter对象。
      */
     public function linkTo($complicatedFilter, $logicalAnd);
     
@@ -1559,6 +1560,20 @@ class ACStoreFilter {
      * @param $value      整数、浮点数、字符串或布尔值，是查询条件中的目标值。
      */
     function __construct($columnName, $operator, $value);
+    
+    /**
+     * 将本对象以逻辑“与”的关系与另一个ACStoreFilter对象关联起来。
+     * @param $filter ACStoreFilter对象，要关联的查询条件。
+     * @return ACStoreFitler对象，是当前关联起来的查询条件的列表中处于末尾位置的ACStoreFilter对象。
+     */
+    public function andFilter($filter);
+    
+    /**
+     * 将本对象以逻辑“或”的关系与另一个ACStoreFilter对象关联起来。
+     * @param $filter ACStoreFilter对象，要关联的查询条件。
+     * @return ACStoreFitler对象，是当前关联起来的查询条件的列表中处于末尾位置的ACStoreFilter对象。
+     */
+    public function orFilter($filter);
 
     public $columnName;        /// 查询所依赖的数据列。
     public $operator;          /// 查询的操作符。
@@ -1617,81 +1632,121 @@ class ACStoreScanner {
     public function getClassName();
     
     /**
-     * 检查当前查询是否为跨分区的全表查询。
-     * @return 返回true表示是跨分区的全表查询，否则表示为指定分区内的查询。
-     */
-    public function isFullScan();
-    
-    /**
      * 设置要被查询的数据列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * 该方法的调用方式，如查询单列：$scanner->select('deviceId')；或查询多列：$scanner->select('deviceId', 'time', 'message')。
      * @param $columnNames 字符串，表示要被查询的数据列的名字。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function select(...$columnNames);
     
     /**
-     * 设置查询条件。
+     * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
      * @param $complicatedFilter ACStoreComplicatedFilter对象，表示查询的过滤条件。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function where($complicatedFilter);
+    
+    /**
+     * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
+     * @param $filter ACStoreFilter对象，表示查询条件。
+     * @return 本ACStoreScanner对象。
+     */
+    public function whereExt($filter);
+    
+    /**
+     * 以逻辑“与”的关系添加一个查询条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
+     * @param $filter ACStoreFilter对象，表示新添加的查询条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreScanner对象。
+     */
+    public function andWhere($filter);
+    
+    /**
+     * 以逻辑“或”的关系添加一个查询条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
+     * @param $filter ACStoreFilter对象，表示新添加的查询条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreScanner对象。
+     */
+    public function orWhere($filter);
     
     /**
      * 增加对查询结果进行排序的列及方式。
      * @param $columnName 字符串，是用作排序的列的名字。如该名字与之前添加过的列重名，则以最后一次设置的排序方式为准。
      * @param $asc 布尔值，为true时表示依据$columnName升序排序，否则表示以降序排序。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function addOrderBy($columnName, $asc);
     
     /**
      * 设置查询结果集的分组数据列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnNames 字符串，是分组所依据的数据列的名字。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function groupBy(...$columnNames);
     
     /**
      * 设置查询结果集的最大记录数。
      * @param $number 非负整数，指定查询结果集中的最大记录数。如果为0,表示不限制查询结果集的大小。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function limit($number);
     
     /**
      * 添加聚集函数COUNT()为查询结果列。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function count();
     
     /**
      * 添加聚集函数SUM()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName SUM()函数作用的目标数据列。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function sum($columnName);
     
     /**
      * 添加聚集函数AVG()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName AVG()函数作用的目标数据列。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function avg($columnName);
     
     /**
      * 添加聚集函数MAX()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName MAX()函数作用的目标数据列。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function max($columnName);
     
     /**
      * 添加聚集函数MIN()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName MIN()函数作用的目标数据列。
-     * @return 无
+     * @return 本ACStoreScanner对象。
      */
     public function min($columnName);
+    
+    /**
+     * 执行查询，返回查询结果。
+     * @return - 返回一个数组。数组中的每个元素是一个关联数组，表示一条数据记录。
+     *  - 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+    
+    /**
+     * 设置访问ACStore服务的参数。
+     * @details 调用ACStoreScanner::execute之前需要调用本方法配置ACStore的访问信息。
+     * @param $serviceName 字符串，是ACStore服务的名字。
+     * @param $serviceVersion 整数，是ACStore服务的主版本号。
+     * @param $acContext ACContext对象，是访问ACStore服务的上下文环境。
+     * @return 本ACStoreScanner对象。
+     */
+    public function setACStore($serviceName, $serviceVersion, $acContext);
+    
+    /**
+     * 取最近一次错误消息。
+     * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
+     */
+    public function getLastError();
     
     /**
      * 将本对象转换为AbleCloud存储服务的scanParam结构。
@@ -1701,13 +1756,13 @@ class ACStoreScanner {
 }
 ```
 
-###ACStoreService###
+###ACStore###
 
 ```php
 /**
  * AbleCloud数据存储服务。
  */
-class ACStoreService extends ACService {
+class ACStore extends ACService {
     /**
      * 构造函数。
      * @param $name 数据存储服务的名字。
@@ -1782,6 +1837,14 @@ class ACStoreService extends ACService {
      * @return 返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
      */
     public function scan($scanner);
+    
+    /**
+     * 查询数据。
+     * @param $name 字符串。要被查询的数据集的名字。
+     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return 返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
+     */
+    public function scanExt($name, $entityGroupKeyValues = NULL);
 }
 ```
 
@@ -1819,13 +1882,13 @@ class ACTimerTask {
 }
 ```
 
-###ACTimerTaskService###
+###ACTimerTaskMgr###
 
 ```php
 /**
  * APP端定时任务服务。
  */
-class ACTimerTaskService extends ACService {
+class ACTimerTaskMgr extends ACService {
     /**
      * 构造函数。
      * @param $name AbleCloud APP端定时任务管理服务的名字。
@@ -1889,4 +1952,4 @@ class ACTimerTaskService extends ACService {
 ```
 
 #Error Code
-参考[reference-Error Code](../reference/error_code.md)
+参考[reference-Error Code](../reference/error_code.md)。
