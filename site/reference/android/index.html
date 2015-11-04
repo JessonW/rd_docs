@@ -784,15 +784,15 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </code></pre>
 
 <h4 id="acfileinfo">ACFileInfo</h4>
-<p>说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：</p>
+<p>说明：文件管理中获取下载url或上传文件时用来表示文件信息，定义如下：</p>
 <pre><code class="java">public class ACFileInfo {
     //自定义文件目录，如ota
     private String bucket;
     //文件名
     private String filename;
-    //上传文件数据
+    //上传文件二进制流数据，用于小文件上传，如拍照后头像直接上传
     private byte[] data;
-    //上传文件的File对象
+    //上传文件的File对象，用于大文件上传，从内存卡读取文件
     private File file;
     //权限管理
     private ACACL acl;
@@ -802,6 +802,9 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
+<blockquote>
+<p>data与file二选其一上传数据，一同赋值情况下，以data为准</p>
+</blockquote>
 <h4 id="acdevicefind">ACDeviceFind</h4>
 <p>说明：用来获取局域网本地设备，定义如下：</p>
 <pre><code class="java">public class ACDeviceFind {
