@@ -303,7 +303,7 @@ public interface ACDeviceMsgMarshaller {
 
 #服务开发框架
 开发者在使用AbleCloud框架开发服务时，仅需简单的使用前文介绍的基础数据结构，将精力集中在实现应用的业务逻辑上，快速完成服务程序的开发/测试/发布。
-##ACService：自定义后端服务
+##ACService：UDS
 AbleCloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:
 ```java
 public abstract class ACService {
@@ -421,7 +421,7 @@ public abstract class ACService {
 
 ><font color="red">**注：**</font>通常情况下，开发者只需要重点实现**handleMsg**即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现**handleDeviceMsg**并根据不同code做不同处理 。
 
-##ACCronJob：云端定时任务
+##ACCronJob：后台任务
 AbleCloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：
 ```java
 public abstract class ACCronJob {
@@ -1179,7 +1179,8 @@ public abstract class ACStore {
         public List<ACObject> execute() throws Exception;
     }
 
-    // 基于entity group key（分区键）的全表扫描，每次处理一个数据分区的数据并返回结果集
+    // 基于entity group key（分区键）的全表扫描，每次处理一个数据分区的数据并返回结果集。
+	//<font color = "red">注意：</font>FullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
     public interface FullScan {
         // 设置需要返回的keys，类似find的select
         public FullScan select(String... keys);
@@ -1219,6 +1220,7 @@ public abstract class ACStore {
     }
 
     // 简单全表扫描，基于用户每次设定的limit
+	//	//<font color = "red">注意：</font>FullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
     public interface SimpleFullScan {
         // 设置需要返回的keys，类似find的select
         public SimpleFullScan select(String... keys);

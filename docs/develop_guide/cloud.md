@@ -1206,6 +1206,9 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .execute();
 ```
 ##FullScan
+
+<font color= "red">注意：</font>fullscan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
+
 分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
 同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。
 ```java
@@ -1255,6 +1258,8 @@ ac.store("test_data", context).batchDelete("deviceId", "12345")
 ```
 ##SimpleFullScan和Scan
 **基于SimpleFullScan和Scan的全表分页浏览**
+
+<font color= "red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
 
 全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。
 
