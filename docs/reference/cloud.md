@@ -1046,6 +1046,12 @@ public class ACFilter {
     public static long GREATER_OR_EQUAL = 4;  // 大于等于
     public static long LESS             = 5;  // 小于
     public static long LESS_OR_EQUAL    = 6;  // 小于等于
+    public static long LIKE             = 7;
+    public static long NOT_LIKE         = 8;
+    public static long BINARY_LIKE      = 9;
+    public static long BINARY_NOT_LIKE  = 10;
+    public static long IN               = 11;
+    public static long NOT_IN           = 12;
 
     // 向查询过滤器中添加等于表达式
     public ACFilter whereEqualTo(String key, Object value);
@@ -1059,6 +1065,18 @@ public class ACFilter {
     public ACFilter whereLessThan(String key, Object value);
     // 向查询过滤器中添加小于等于表达式
     public ACFilter whereLessThanOrEqualTo(String key, Object value);
+    // 向查询过滤器中添加LIKE表达式(不区分大小写)
+    public ACFilter whereLike(String key, Object value);
+    // 向查询过滤器中添加NOT LIKE表达式(不区分大小写)
+    public ACFilter whereNotLike(String key, Object value);
+    // 向查询过滤器中添加LIKE表达式(区分大小写)
+    public ACFilter whereBinaryLike(String key, Object value);
+    // 向查询过滤器中添加NOT LIKE表达式(区分大小写)
+    public ACFilter whereBinaryNotLike(String key, Object value);
+    // 向查询过滤器中添加IN表达式(不区分大小写)
+    public ACFilter whereIn(String key, Object value);
+    // 向查询过滤器中添加NOT IN表达式(不区分大小写)
+    public ACFilter whereNotIn(String key, Object value);
 }
 ```
 
