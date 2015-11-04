@@ -1092,7 +1092,10 @@ Long speed = ao.get("speed");
 ```
 ##Scan
 由于是分区数据集，在Scan时需要传入分区键值对，这里是`deviceId`及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如`ac.store("test_data", context).scan()...`
-><font color=red>务必注意</font>：存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+
+><font color=red>务必注意</font>：
+1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
 
 ###示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列
 ```java
