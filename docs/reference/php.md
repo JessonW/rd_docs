@@ -897,7 +897,7 @@ class ACDevice {
      * @param $status 整数，状态码。
      * @param $subDomain 字符串，是设备所属的子域的名字。
      */
-    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain = '');
+    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain);
     
     public function getId();
     
