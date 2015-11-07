@@ -1449,7 +1449,7 @@ public interface ACTimerMgr {
      * @param msg         具体的消息内容
      * @param callback    返回结果的监听回调
      */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
+    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, PayloadCallback<ACTimerTask> callback);
 
     /**
      * 修改定时任务

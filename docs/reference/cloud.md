@@ -1497,10 +1497,10 @@ public interface ACTimerTaskMgr {
      * 添加一个新定时任务。
      *
      * @param task 新定时任务。
-     * @return 返回true表示添加任务成功，否则表示添加任务失败。
+     * @return ACTimerTask 包含taskId
      * @throws Exception
      */
-    public boolean addTask(ACTimerTask task) throws Exception;
+    public ACTimerTask addTask(ACTimerTask task) throws Exception;
 
 
     /**
@@ -1508,15 +1508,13 @@ public interface ACTimerTaskMgr {
      *
      * @param taskId 要被修改的任务的ID。
      * @param task   任务的新内容。
-     * @return 返回true表示修改任务成功，否则表示修改任务失败。
      * @throws Exception
      */
-    public boolean modifyTask(long taskId, ACTimerTask task) throws Exception;
+    public void modifyTask(long taskId, ACTimerTask task) throws Exception;
 
     /**
      * 取用户针对某设备定制的定时任务。
      *
-     * @param userId   用户ID。
      * @param deviceId 设备的逻辑ID。
      * @return 返回用户（userId）针对设备（deviceId）设置的所有定时任务的列表。
      * @throws Exception
@@ -1528,30 +1526,27 @@ public interface ACTimerTaskMgr {
      *
      * @param deviceId 要被删除的任务所关联的设备的逻辑ID。
      * @param taskId   要被删除的任务的ID。
-     * @return 返回true表示操作成功，否则表示操作失败。
      * @throws Exception
      */
-    public boolean deleteTask(long deviceId, long taskId) throws Exception;
+    public void deleteTask(long deviceId, long taskId) throws Exception;
 
     /**
      * 停止一个定时任务。
      *
      * @param deviceId 要被停止的任务所关联的设备的逻辑ID。
      * @param taskId   要被停止的任务的ID。
-     * @return 返回true表示操作成功，否则表示操作失败。
      * @throws Exception
      */
-    public boolean stopTask(long deviceId, long taskId) throws Exception;
+    public void stopTask(long deviceId, long taskId) throws Exception;
 
     /**
      * 启动一个定时任务。
      *
      * @param deviceId 要被启动的任务所关联的设备的逻辑ID。
      * @param taskId   要被启动的任务的ID。
-     * @return 返回true表示操作成功，否则表示操作失败。
      * @throws Exception
      */
-    public boolean startTask(long deviceId, long taskId) throws Exception;
+    public void startTask(long deviceId, long taskId) throws Exception;
 }
 ```
 ###单元测试接口说明
