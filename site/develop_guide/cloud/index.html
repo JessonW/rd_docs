@@ -167,6 +167,18 @@
                         
                             
 <li >
+    <a href="../../reference/php/">PHP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../reference/java/">Java SDK</a>
+</li>
+
+                        
+                            
+<li >
     <a href="../../reference/error_code/">Error Code</a>
 </li>
 
@@ -1566,6 +1578,7 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
 </code></pre>
 
 <h2 id="fullscan">FullScan</h2>
+<p><font color= "red">注意：</font>fullscan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
 <p>分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
 同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。</p>
 <pre><code class="java">// 延续Scan示例七中的查询条件进行全表所有分区的扫描
@@ -1614,6 +1627,7 @@ ac.store(&quot;test_data&quot;, context).batchDelete(&quot;deviceId&quot;, &quot
 
 <h2 id="simplefullscanscan">SimpleFullScan和Scan</h2>
 <p><strong>基于SimpleFullScan和Scan的全表分页浏览</strong></p>
+<p><font color= "red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
 <p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
 <h3 id="_20">非分区数据集</h3>
 <pre><code class="java">// limit是每个分页的最大数据条数，举例为50
