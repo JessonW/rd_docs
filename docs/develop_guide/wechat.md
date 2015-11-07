@@ -337,9 +337,9 @@ $user = $wxBridge->getUser($openId);
 // 实例化ACBindMgr
 $bindMgr = ACClient::getBindMgr();
 // 获取设备的逻辑ID。参数$subDomain表示设备在AbleCloud平台上所属子域的名字。
-$deviceId = $bindMgr->getDeviceId($physicalId, $subDomain);
+$deviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解绑设备
-$bindMgr->unbindDevice($deviceId, $user, $subDomain);
+$bindMgr->unbindDevice($subDomain, $deviceId, $user);
 // 通知微信硬件平台同步设备的绑定信息。
 // 参数$deviceType是设备在微信公众号平台上对应的设备类型。
 $wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
@@ -430,7 +430,7 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 实例化ACBindMgr
 $bindMgr = ACClient::getBindMgr();
 // 开启网关接入功能。参数$gatewaySubDomain是被操作的网关设备在AbleCloud平台所属的子域的名字。
-$bindMgr->openGatewayMatch($gatewayId, $user, $timeout, $gatewaySubDomain);
+$bindMgr->openGatewayMatch($gatewaySubDomain, $gatewayId, $user, $timeout);
 // 列举网关设备上新接入的子设备（尚未绑定）
 $newSubDevices = $bindMgr->listNewSubDevicesFromGateway($user, $gatewayId);
 // 绑定新子设备
@@ -443,7 +443,7 @@ foreach ($newSubDevices as $dev) {
     }
 }
 // 关闭网关接入功能
-$bindMgr->closeGatewayMatch($gatewayId, $user, $gatewaySubDomain);
+$bindMgr->closeGatewayMatch($gatewaySubDomain, $gatewayId, $user);
 ```
 
 ###设备解绑###
@@ -459,9 +459,9 @@ $user = $wxBridge->getUser($openId);
 // 实例化ACBindMgr
 $bindMgr = ACClient::getBindMgr();
 // 获取设备的逻辑ID。参数$subDomain是设备在AbleCloud平台上所属子域的名字。
-$deviceId = $bindMgr->getDeviceId($physicalId, $subDomain);
+$deviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解绑设备
-$bindMgr->unbindGateway($deviceId, $user);
+$bindMgr->unbindGateway($subDomain, $deviceId, $user);
 // 通知微信硬件平台同步设备的绑定信息。
 // 参数$deviceType是设备在微信公众号平台上的设备类型。
 $wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
@@ -478,7 +478,7 @@ $user = $wxBridge->getUser($openId);
 // 实例化ACBindMgr
 $bindMgr = ACClient::getBindMgr();
 // 获取设备的逻辑ID。参数$subDomain是要被删除的子设备在AbleCloud平台上所属子域的名字。
-$subDeviceId = $bindMgr->getDeviceId($physicalId, $subDomain);
+$subDeviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解邦子设备
 $bindMgr->deleteSubDeviceFromGateway($user, $subDeviceId);
 // 通知微信硬件平台同步设备的绑定信息。
@@ -676,15 +676,15 @@ PHP SDK中的类ACBindMgr定义了方法sendToDevice用于向设备发送指令�
 // 实例化ACBindMgr对象
 $bindMgr = ACClient::getBindMgr();
 // 向设备发送消息
+// 参数$subDomain是目标设备在AbleCloud平台上所属子域的名字。
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
-// 参数$subDomain是目标设备在AbleCloud平台上所属子域的名字。
 // 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
 // 参数值'6.2.1'描述的是微信的版本信息。
-$response = $bindMgr->sendToDevice($user, $deviceId, $messageCode, $message, $subDomain, 'weixin', '6.2.1');
+$response = $bindMgr->sendToDevice($user, $deviceId, $subDomain, $messageCode, $message, 'weixin', '6.2.1');
 // 其它处理逻辑
 ```
-上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。
+上例中，调用方法sendToDevice时使用的第六及第七个参数分别用于表示调用本方法时用户所使用的终端工具的名字及版本。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。
 
 此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：
 ```php
@@ -693,8 +693,8 @@ $bindMgr = ACClient::getBindMgr();
 // 通过ACContext设置终端工具的信息
 $context = $bindMgr->getContext();
 $context->setHandset('weixin', '6.2.1', '', 'android');
-// 向设备发送消息：省略第五个参数。
-$response = $bindMgr->sendToDevice($user, $deviceId, $messageCode, $message, $subDomain);
+// 向设备发送消息：省略最后两个参数。
+$response = $bindMgr->sendToDevice($user, $deviceId, $subDomain, $messageCode, $message);
 ```
 
 **注：**ACBindMgr::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
@@ -794,7 +794,7 @@ $needUpdate = $otaVersion->canUpdate();
 经过前述步骤查询得到可升级的固件版本时，用户可以选择是否升级。确认升级的示例代码如下：
 ```php
 // 将指定设备的固件升级为查询得到的新版本
-$otaMgr->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion(), $subDomain);
+$otaMgr->confirmUpdate($user, $deviceId, $subDomain, $otaVersion->getNewVersion());
 ```
 
 #数据存储#
