@@ -167,6 +167,18 @@
                         
                             
 <li >
+    <a href="../php/">PHP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java/">Java SDK</a>
+</li>
+
+                        
+                            
+<li >
     <a href="../error_code/">Error Code</a>
 </li>
 
@@ -1851,7 +1863,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
      * @param msg         具体的消息内容
      * @param callback    返回结果的监听回调
      */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
+    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, PayloadCallback&lt;ACTimerTask&gt; callback);
 
     /**
      * 修改定时任务
