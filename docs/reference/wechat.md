@@ -263,9 +263,9 @@ public class ACBridgeWeChat {
      * 构造函数。
      * @param accessToken 微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
      * @param jsTicket    微信公众号的JS API Ticket。注意：微信公众号的JS API Ticket的有效期是有期限限制的。
-     * @param config      AbleCloud-微信公众号服务接口配置。
+     * @param ac          AbleCloud云端服务代理工具。
      */
-    public ACBridgeWeChat(String accessToken, String jsTicket, ACWeChatConfig config);
+    public ACBridgeWeChat(String accessToken, String jsTicket, AC ac);
     
     /**
      * 设置/更新微信公众号的Access Token。
@@ -292,10 +292,10 @@ public class ACBridgeWeChat {
     public String getJsTicket();
     
     /**
-     * 取ACConfig对象。
-     * @return ACConfig对象。
+     * 取AC对象。
+     * @return AC对象。
      */
-    public ACConfig getConfig();
+    public AC getAC();
     
     /// @name 微信推送的事件的处理方法
     //@{
@@ -444,6 +444,13 @@ public class ACBridgeWeChat {
      */
     public String getDeviceQRCode(String physicalId, String subDomain, long userId, long timeout) throws Exception;
 }
+```
+
+示例：创建ACBridgeWeChat对象。
+```java
+ACWetChatConfig conf = new ACWeChatConfig(majorDomain, developerId, accessKey, secretKey, routerUrl);
+ACCloud ac = new ACCloud(conf);
+ACBridgeWeChat bridge = new ACBridgeWeChat(accessToken, jsTicket, ac);
 ```
 
 ##AbleCloud API##
