@@ -449,7 +449,7 @@ public class ACBridgeWeChat {
 示例：创建ACBridgeWeChat对象。
 ```java
 ACWetChatConfig conf = new ACWeChatConfig(majorDomain, developerId, accessKey, secretKey, routerUrl);
-ACCloud ac = new ACCloud(conf);
+com.ablecloud.cloudservice.ACCloud ac = new com.ablecloud.cloudservice.ACCloud(conf);
 ACBridgeWeChat bridge = new ACBridgeWeChat(accessToken, jsTicket, ac);
 ```
 
