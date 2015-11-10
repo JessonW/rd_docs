@@ -797,9 +797,9 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
      * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
      */
     @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        LightMsg lightMsg = (LightMsg) msg.getContent();
-        return new byte[lightMsg.getLedOnOff, 0, 0, 0];
+    public byte[] marshal(ACDeviceMsg deviceMsg) throws Exception {
+        LightMsg lightMsg = (LightMsg) deviceMsg.getContent();
+        return lightMsg.getLedOnOff();
     }
 
     /**
@@ -831,15 +831,15 @@ public class LightMsg {
         this.ledOnOff = ledOnOff;
     }
 
-    public byte getLedOnOff() {
-        return ledOnOff;
+    public byte[] getLedOnOff() {
+        return new byte[]{ledOnOff, 0, 0, 0};
     }
 }
 
 ```
 ```java
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON)), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte resp = (byte) deviceMsg.getContent();
