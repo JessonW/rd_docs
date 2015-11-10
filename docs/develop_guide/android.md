@@ -1071,7 +1071,7 @@ public void getDeviceList() {
 
         @Override
         public void error(ACException e) {
-            //网络错误且之前从来没有获取过设备列表时返回
+            //云端获取错误时返回，一般情况下不返回
         }
     });
 }
