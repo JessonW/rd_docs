@@ -721,8 +721,10 @@ public class ACBridgeWeChat {
 </code></pre>
 
 <p>示例：创建ACBridgeWeChat对象。</p>
-<pre><code class="java">ACWetChatConfig conf = new ACWeChatConfig(majorDomain, developerId, accessKey, secretKey, routerUrl);
-com.ablecloud.cloudservice.ACCloud ac = new com.ablecloud.cloudservice.ACCloud(conf);
+<pre><code class="java">import com.ablecloud.cloudservice.ACCloud;
+
+ACWetChatConfig conf = new ACWeChatConfig(majorDomain, developerId, accessKey, secretKey, routerUrl);
+ACCloud ac = new ACCloud(conf);
 ACBridgeWeChat bridge = new ACBridgeWeChat(accessToken, jsTicket, ac);
 </code></pre>
 

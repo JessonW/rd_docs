@@ -1321,9 +1321,10 @@ UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的�
 ```java
 @Test
 public void testGet() {
+	ACHttpClient client = null;
     try {
         //获取访问外网的ACHttpClient客户端
-        ACHttpClient client = ac.getHttpClient("http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC");
+        client = ac.getHttpClient("http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC");
         //默认为GET方法
         client.setRequestMethod("GET");
         //默认超时时间为5000
@@ -1336,9 +1337,11 @@ public void testGet() {
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
-            client.disconnect();
         }
+        client.disconnect();
     } catch (IOException e) {
+    	if (client != null)
+    		client.disconnect();
         fail(e.toString());
     }
 }
@@ -1347,10 +1350,11 @@ public void testGet() {
 ```java
 @Test
 public void testPost() {
+	ACHttpClient client = null;
     try {
         String body = "fromdevice=pc&clientip=10.10.10.0&detecttype=LocateRecognize&languagetype=CHN_ENG&imagetype=1&image=/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDABMNDxEPDBMREBEWFRMXHTAfHRsbHTsqLSMwRj5KSUU+RENNV29eTVJpU0NEYYRiaXN3fX59S12Jkoh5kW96fXj/2wBDARUWFh0ZHTkfHzl4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHj/wAARCAAfACEDAREAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDBQb/xAAjEAACAgICAgEFAAAAAAAAAAABAgADBBESIRMxBSIyQXGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APawEBAQEBAgy8i8ZTVV3UY6V1eU2XoWDDZB19S646Gz39w9fkKsW1r8Wm2yo1PYis1be0JG9H9QNYCAgc35Cl3yuVuJZl0cB41rZQa32dt2y6OuOiOxo61vsLcVblxaVyXD3hFFjL6La7I/sDWAgICAgICB/9k=";
         //获取访问外网的ACHttpClient客户端
-        ACHttpClient client = ac.getHttpClient("http://apis.baidu.com/apistore/idlocr/ocr");
+        client = ac.getHttpClient("http://apis.baidu.com/apistore/idlocr/ocr");
         //默认为GET方法
         client.setRequestMethod("POST");
         //默认超时时间为5000
@@ -1366,9 +1370,11 @@ public void testPost() {
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
-            client.disconnect();
         }
+        client.disconnect();
     } catch (IOException e) {
+    	if (client != null)
+            client.disconnect();
         e.printStackTrace();
     }
 }
