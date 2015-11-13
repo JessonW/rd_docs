@@ -1366,7 +1366,7 @@ public void testPost() {
         client.connect();
         //设置访问外网消息体
         client.setEntity(body.getBytes("UTF-8"));
-        //AbleCloud签名认证失败
+        //获取服务器返回的数据
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
