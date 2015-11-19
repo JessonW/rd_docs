@@ -209,8 +209,9 @@ public class ACWeChatConfig extends ACConfig {
      * @param accessKey   开发者在AbleCloud平台上可用的密钥对中的Access Key。
      * @param secretKey   开发者在AbleCloud平台上可用的密钥对中的Secret Key。
      * @param routerUrl   AbleCloud云端服务的入口地址，如：http://test.ablecloud.cn:5000。
+     * @param runtimeMode 运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
      */
-    public ACWeChatConfig(String majorDomain, long developerId, String accessKey, String secretKey, String routerUrl);
+    public ACWeChatConfig(String majorDomain, long developerId, String accessKey, String secretKey, String routerUrl, String runtimeMode);
     
     /**
      * 取开发者帐号ID。
@@ -237,18 +238,10 @@ public class ACWeChatConfig extends ACConfig {
     public String getAuthSecretKey();
     
     /**
-     * 设置AbleCloud云端服务的入口地址。
-     * @param addrs 可以用英语逗号（,）分隔多个地址。如："192.168.0.1:5000"，或者"192.168.0.1:5000,192.168.0.2:5000"，
-     *              或者"http://192.168.0.1:5000"，或者"http://192.168.0.1:5000,https://192.168.0.2:5000"，或者"192.168.0.1:5000,https://192.168.0.2:5000"。
-     *              如果地址中没有指定协议（http或者https），则使用http协议。
+     * 取运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
+     * @return 返回运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
      */
-    public void setRouterAddr(String addrs);
-    
-    /**
-     * 取AbleCloud云端服务的入口地址。
-     * @return 返回的地址的格式是：http://host:port 或 https://host:port。
-     */
-    public String getRouterAddr();
+    public String getMode();
 }
 ```
 
