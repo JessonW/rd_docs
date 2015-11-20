@@ -1210,7 +1210,7 @@ AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先
 + **主键(primary keys)：**deviceId，类型为字符串；timestamp，类型为整型`Long`。
 + **属性(attributes)**：mode，类型为字符串；speed，类型为整型`Long`。
 
-><font color="brown">**注：**目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font>
+><font color="brown">**注：**目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。如果云端数据类型是浮点型，而实际存储的数据中不包含小数点的话，比如3.000，JDK从云端查询的数据结果是整型（3）而不是3.000，需要用户自己根据需要做类型转换</font>
 
 
 ><font color=red>务必注意</font>：
