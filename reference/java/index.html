@@ -1744,7 +1744,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <li><strong>属性(attributes)</strong>：mode，类型为字符串；speed，类型为整型<code>Long</code>。</li>
 </ul>
 <blockquote>
-<p><font color="brown"><strong>注：</strong>目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。</font></p>
+<p><font color="brown"><strong>注：</strong>目前整型统一为Long，浮点型统一为Double，字符串型可以设定字符串长度。如果云端数据类型是浮点型，而实际存储的数据中不包含小数点的话，比如3.000，JDK从云端查询的数据结果是整型（3）而不是3.000，需要用户自己根据需要做类型转换</font></p>
 <p><font color=red>务必注意</font>：
 1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。</p>
 </blockquote>
@@ -2621,13 +2621,15 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     private static final String HASH = &quot;HmacSHA256&quot;;
 
     /**
-     * developerId 开发者id
-     * majorDomain 主域名
-     * subDomain   子域名
-     * method      接口方法名(即ACMsg里对应的name)
-     * timestamp   当前时间，单位秒
-     * timeout     签名有效期，单位毫秒
-     * nonce       随机16位字符串
+     * 获取用于签名字符串
+     * 
+     * @param developerId 开发者id
+     * @param majorDomain 主域名
+     * @param subDomain   子域名
+     * @param method      接口方法名(即ACMsg里对应的name)
+     * @param timestamp   当前时间，单位秒
+     * @param timeout     签名有效期，单位毫秒
+     * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,
                                        String subDomain, String method,
@@ -2642,6 +2644,12 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
         return stringToSign;
     }
 
+    /**
+     * 获取X-Zc-Developer-Signature的签名值
+     *
+     * @param sk 开发密钥对，与ak对应，从控制台--&gt;服务管理--&gt;开发密钥--&gt;Secrety Key获取
+     * @param stringToSign 由上面函数获取
+     */
     public static String genSignature(String sk, String stringToSign) {
         String signature = &quot;&quot;;
 
