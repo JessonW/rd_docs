@@ -2080,13 +2080,15 @@ public class ACSigner {
     private static final String HASH = "HmacSHA256";
     
     /**
-     * developerId 开发者id
-     * majorDomain 主域名
-     * subDomain   子域名
-     * method      接口方法名(即ACMsg里对应的name)
-     * timestamp   当前时间，单位秒
-     * timeout     签名有效期，单位毫秒
-     * nonce       随机16位字符串
+     * 获取用于签名字符串
+     * 
+     * @param developerId 开发者id
+     * @param majorDomain 主域名
+     * @param subDomain   子域名
+     * @param method      接口方法名(即ACMsg里对应的name)
+     * @param timestamp   当前时间，单位秒
+     * @param timeout     签名有效期，单位毫秒
+     * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,
                                        String subDomain, String method,
@@ -2101,6 +2103,12 @@ public class ACSigner {
         return stringToSign;
     }
 
+    /**
+     * 获取X-Zc-Developer-Signature的签名值
+     *
+     * @param sk 开发密钥对，与ak对应，从控制台-->服务管理-->开发密钥-->Secrety Key获取
+     * @param stringToSign 由上面函数获取
+     */
     public static String genSignature(String sk, String stringToSign) {
         String signature = "";
 
