@@ -2621,13 +2621,15 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     private static final String HASH = &quot;HmacSHA256&quot;;
 
     /**
-     * developerId 开发者id
-     * majorDomain 主域名
-     * subDomain   子域名
-     * method      接口方法名(即ACMsg里对应的name)
-     * timestamp   当前时间，单位秒
-     * timeout     签名有效期，单位毫秒
-     * nonce       随机16位字符串
+     * 获取用于签名字符串
+     * 
+     * @param developerId 开发者id
+     * @param majorDomain 主域名
+     * @param subDomain   子域名
+     * @param method      接口方法名(即ACMsg里对应的name)
+     * @param timestamp   当前时间，单位秒
+     * @param timeout     签名有效期，单位毫秒
+     * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,
                                        String subDomain, String method,
@@ -2642,6 +2644,12 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
         return stringToSign;
     }
 
+    /**
+     * 获取X-Zc-Developer-Signature的签名值
+     *
+     * @param sk 开发密钥对，与ak对应，从控制台--&gt;服务管理--&gt;开发密钥--&gt;Secrety Key获取
+     * @param stringToSign 由上面函数获取
+     */
     public static String genSignature(String sk, String stringToSign) {
         String signature = &quot;&quot;;
 
