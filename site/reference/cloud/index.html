@@ -282,11 +282,11 @@
         </li>
         
             
-            <li class="sub parent__7" style="display: none;"><a href="#acservice">ACService：自定义后端服务</a></li>
+            <li class="sub parent__7" style="display: none;"><a href="#acserviceuds">ACService：UDS</a></li>
             
         
             
-            <li class="sub parent__7" style="display: none;"><a href="#accronjob">ACCronJob：云端定时任务</a></li>
+            <li class="sub parent__7" style="display: none;"><a href="#accronjob">ACCronJob：后台任务</a></li>
             
         
             
@@ -687,7 +687,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 当UDS接收到设备上报的消息时，开发框架会自动调用该序列化/反序列化器的unmarshal方法依据设备上报的消息创建ACDeviceMsg对象，并以该ACDeviceMsg对象为参数调用开发者重载的ACService.handleDeviceMsg()方法。</p>
 <h1 id="_7">服务开发框架</h1>
 <p>开发者在使用AbleCloud框架开发服务时，仅需简单的使用前文介绍的基础数据结构，将精力集中在实现应用的业务逻辑上，快速完成服务程序的开发/测试/发布。</p>
-<h2 id="acservice">ACService：自定义后端服务</h2>
+<h2 id="acserviceuds">ACService：UDS</h2>
 <p>AbleCloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:</p>
 <pre><code class="java">public abstract class ACService {
     // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
@@ -805,7 +805,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <blockquote>
 <p><font color="red"><strong>注：</strong></font>通常情况下，开发者只需要重点实现<strong>handleMsg</strong>即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现<strong>handleDeviceMsg</strong>并根据不同code做不同处理 。</p>
 </blockquote>
-<h2 id="accronjob">ACCronJob：云端定时任务</h2>
+<h2 id="accronjob">ACCronJob：后台任务</h2>
 <p>AbleCloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：</p>
 <pre><code class="java">public abstract class ACCronJob {
     // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
@@ -1573,7 +1573,8 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
         public List&lt;ACObject&gt; execute() throws Exception;
     }
 
-    // 基于entity group key（分区键）的全表扫描，每次处理一个数据分区的数据并返回结果集
+    // 基于entity group key（分区键）的全表扫描，每次处理一个数据分区的数据并返回结果集。
+    //&lt;font color = &quot;red&quot;&gt;注意：&lt;/font&gt;FullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
     public interface FullScan {
         // 设置需要返回的keys，类似find的select
         public FullScan select(String... keys);
@@ -1613,6 +1614,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     }
 
     // 简单全表扫描，基于用户每次设定的limit
+    //  //&lt;font color = &quot;red&quot;&gt;注意：&lt;/font&gt;FullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
     public interface SimpleFullScan {
         // 设置需要返回的keys，类似find的select
         public SimpleFullScan select(String... keys);
