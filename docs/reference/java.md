@@ -582,6 +582,17 @@ public interface ACAccountMgr {
     public ACAccount registerWithOpenId(ACThirdPlatform thirdPlatform, String openId) throws Exception;
 
     /**
+     * 注册一个来自第三方平台的用户。
+     *
+     * @param thirdPlatform 第三方平台的标识符。
+     * @param openId        新用户在第三方平台上的ID。
+     * @param unionId       对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+     * @return
+     * @throws Exception
+     */
+    public ACAccount registerWithOpenId(ACThirdPlatform thirdPlatform, String openId, String unionId) throws Exception;
+
+    /**
      * 登录一个来自第三方平台的用户。
      *
      * @param thirdPlatform 第三方平台的标识符。
