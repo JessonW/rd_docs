@@ -76,7 +76,6 @@ class ACConfig {
     public static $AccessKey   = '';        // 开发者的AK/SK密钥对中的AK。字符串。
     public static $SecretKey   = '';        // 开发者的AK/SK密钥对中的SK。字符串。
     public static $MajorDomain = '';        // 本地服务对应的主域的名字。
-    public static $SubDomain   = '';        // 本地服务对应的子域的名字。
     public static $RouterUrl   = 'http://test.ablecloud.cn:5000';   // AbleCloud远程服务的访问入口地址，如：http://test.ablecloud.cn:5000。
 }
 ```
@@ -103,12 +102,12 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $user = $wxBridge->getUser($openId);
 ```
 
-通过ACCountService提供的方法登录，获取ACUser对象。
+通过ACCountMgr提供的方法登录，获取ACUser对象。
 ```php
-// 实例化ACAccountService对象
-$accountServcie = ACClient::getAccountService();
+// 实例化ACAccountMgr对象
+$accountMgr = ACClient::getAccountMgr();
 // 使用微信用户的OpenID登录。参数$openId是微信用户的OpenID；'weixin'用于标记第三方用户来自微信平台。
-$user = $accountService->getUserByOpenId($openId, 'weixin');
+$user = $accountMgr->getUserByOpenId($openId, 'weixin');
 ```
 
 ##绑定手机号##
@@ -120,12 +119,12 @@ AbleCloud平台只能获取用户的微信OpenID信息。关于用户的其它�
 
 ```php
 // 获取账号管理对象
-$accountServcie = ACClient::getAccountService();
+$accountMgr = ACClient::getAccountMgr();
 // 发送验证码
 // 参数$phone为字符串，是用户的手机号。
 // 参数$template是拟采用的短信模板的编号。
 // 参数$timeout是验证码的有效时长。
-$accountServcie->sendVerifyCode($phone, $template, $timeout);
+$accountMgr->sendVerifyCode($phone, $template, $timeout);
 ```
 
 **注：**向用户发送手机验证码时，要求开发者在AbleCloud平台已经配置了手机短信息模板等参数。同时也有向同一用户发送手机短信息的频次限制。
@@ -148,20 +147,20 @@ $wxBridge->setPhone($openId, $phone, $verifyCode)；
 ###获取用户帐号的扩展属性###
 
 ```php
-// 实例化ACAccountService对象
-$accountService = ACClient::getAccountService();
+// 实例化ACAccountMgr对象
+$accountMgr = ACClient::getAccountMgr();
 // 获取用户的扩展属性
-$keyValues = $accountService->getUserProfile($user);
+$keyValues = $accountMgr->getUserProfile($user);
 ```
 
 ###设置用户帐号的扩展属性###
 
 设置帐号的扩展属性之前，应通过开发者管理控制台定义帐号的扩展属性列。
 ```php
-// 实例化ACAccountService对象
-$accountService = ACClient::getAccountService();
+// 实例化ACAccountMgr对象
+$accountMgr = ACClient::getAccountMgr();
 // 设置帐号的扩展属性。扩展属性以键值对组成的关联数组保存，记为$profile。
-$accountService->setUserProfile($user, $profile);
+$accountMgr->setUserProfile($user, $profile);
 ```
 
 ##获取用户的微信OpenId##
@@ -176,12 +175,12 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $openId = $wxBridge->getUserOpenId($userId);
 ```
 
-通过ACCountService类提供的方法获取用户的OpenID。
+通过ACCountMgr类提供的方法获取用户的OpenID。
 ```php
-// 实例化ACAccountService对象
-$accountService = ACClient::getAccountService();
+// 实例化ACAccountMgr对象
+$accountMgr = ACClient::getAccountMgr();
 // 获取用户的OpenID。参数$userId是用户在AbleCloud平台上的ID；'weixin'用于标记第三方用户来自微信平台。
-$openId = $accountService->getUserOpenId($userId, 'weixin');
+$openId = $accountMgr->getUserOpenId($userId, 'weixin');
 ```
 
 #设备管理#
@@ -215,7 +214,7 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 
 2. 调用AbleCloud平台的接口解除设备与用户的绑定关系后需要通知微信平台同步信息。
 
-    如前问所述，如果管理员用户解除了与设备的绑定关系，那么AbleCloud平台会自动解除设备与其他用户的绑定关系。无论何时调用了AbleCloud平台提供的接口（如ACDeviceService::unbindDevice等）解除了用户与设备的绑定关系后，都需要调用**ACBridgeWeChat::syncBindingsByDevice**来同步信息。
+    如前问所述，如果管理员用户解除了与设备的绑定关系，那么AbleCloud平台会自动解除设备与其他用户的绑定关系。无论何时调用了AbleCloud平台提供的接口（如ACBindMgr::unbindDevice等）解除了用户与设备的绑定关系后，都需要调用**ACBridgeWeChat::syncBindingsByDevice**来同步信息。
     如ACBridgeWeChat::onDeviceEventUnbind调用了解除绑定的接口，同时也调用了syncBindingsByDevice方法来同步信息。
 
 3. 绑定或解邦网关设备后需要通知微信平台同步信息。
@@ -237,7 +236,7 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
     
 7. 使用分组模型管理设备时，删除Home对象后需要通知微信平台同步信息。
 
-    删除Home对象时会批量解除设备与用户的绑定关系。开发者应直接调用**ACBridgeWeChat::deleteHome**来执行删除Home的操作，而不是调用ACDeviceService::deleteHome。
+    删除Home对象时会批量解除设备与用户的绑定关系。开发者应直接调用**ACBridgeWeChat::deleteHome**来执行删除Home的操作，而不是调用ACBindMgr::deleteHome。
     
 此外，微信平台会定期向开发者的公众号后台推送消息"device_event" - "subscribe_status"来查询设备的连接状态（仅针对WiFi设备）。开发者可以调用**ACBridgeWeChat::onDeviceEventSubscribeStatus**来处理该事件。
 微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用**ACBridgeWeChat::onDeviceEventUnsubscribeStatus**来处理该事件。上述两个方法均调用了**ACBridgeWeChat::syncBindings**同步当前用户的信息。
@@ -261,10 +260,24 @@ $openId = $accountService->getUserOpenId($userId, 'weixin');
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-// 获取设备的二维码串
-$qrCode = $wxBridge->getDeviceQRCode($physicalId, FALSE, $openId);
+// 获取设备的二维码串。
+// 参数$subDomain是设备在AbleCloud平台上所属子域的名字。
+// 第三个参数取值为FALSE表示不需要生成AbleCloud的设备分享码。
+$qrCode = $wxBridge->getDeviceQRCode($physicalId, $subDomain, FALSE);
 // 之后可使用相关工具将码串转换为二维码图片。
 ```
+
+上例中调用的方法（getDeviceQRCode）会在微信标准二维码后附加设备在AbleCloud平台上所属的子域的信息。在新发布的版本中，微信支持在一个公众号中支持多种设备。AbleCloud推荐开发者在设备的二维码中附带设备所属的子域信息，便于AbleCloud处理用户通过微信客户端扫描设备二维码触发的绑定设备的事件。
+下面是附带了子域信息的二维码的例子。其子域名为"test"。
+```
+http://we.qq.com/d/AQDjGOyOs3jzItRm4TdpIP-zZeyqVsHn6xy5B277#{"sub_domain":"test"}
+```
+下面是附带了子域信息及分享码的二维码的例子。其子域名为"test"，分享码的值为"8mRftXCMM21ZyQfzoTtHZfQWYvH1H6ni#3"。
+```
+http://we.qq.com/d/AQDjGOyOOtb6ZZA9EeWNKQ5fONgNz6fq4MXBCzBC#{"sub_domain":"test","share_code":"8mRftXCMM21ZyQfzoTtHZfQWYvH1H6ni#3"}
+```
+
+ACBridgeWeChat::getDeviceQRCode是以JSON格式的字符串将第三方的数据附加在微信平台标准的设备二维码的末尾。
 
 2.处理用户扫描二维码的事件
 
@@ -284,7 +297,12 @@ $user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完�
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, FALSE);   // $xmlMsg是微信推送的完整XML消息内容。
+// 参数$xmlMsg是微信推送的完整XML消息内容。
+// 参数$deviceName是设备被绑定后的显示名。
+// 参数$subDomain是被绑定的设备在AbleCloud平台上所属的子域的名字。
+// 如果设备的二维码信息中包含了其所属子域的名字（以第三方附加数据的形式），则以二维码中的信息为准。此时$xmlMsg会包含有二维码中附加的子域的名字等第三方数据。
+// 最后一个参数取值为FALSE，表示这个设备不是网关设备。
+$device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, $subDomain, FALSE);
 // 其它处理逻辑
 ```
 方法ACBridgeWeChat::onDeviceEventBind实现的主要功能是识别用户及设备信息，在AbleCloud平台中同步用户与设备的绑定关系。
@@ -307,7 +325,8 @@ AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。�
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取包含分享码的二维码串
-$qrCode = $wxBridge->getDeviceQRCode($physicalId, TRUE, $openId, $timeout);
+// 第三个参数取值为TRUE，表示需要生成设备的分享码。
+$qrCode = $wxBridge->getDeviceQRCode($physicalId, $subDomain, TRUE, $openId, $timeout);
 // 将码串$qrCode转换为二维码图片。其他用户使用微信扫描该二维码就可绑定设备。
 ```
 
@@ -320,15 +339,15 @@ AbleCloud平台区分设备的管理员用户及非管理员用户。如果管�
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取用户信息
 $user = $wxBridge->getUser($openId);
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
-// 获取设备的逻辑ID
-$deviceId = $deviceService->getDeviceId($physicalId);
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
+// 获取设备的逻辑ID。参数$subDomain表示设备在AbleCloud平台上所属子域的名字。
+$deviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解绑设备
-$deviceService->unbindDevice($deviceId, $user);
+$bindMgr->unbindDevice($subDomain, $deviceId, $user);
 // 通知微信硬件平台同步设备的绑定信息。
-// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
-$wxBridge->syncBindingsByDevice($physicalId, $deviceType);
+// 参数$deviceType是设备在微信公众号平台上对应的设备类型。
+$wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
 ```
 
 ##网关型设备##
@@ -350,8 +369,10 @@ $wxBridge->syncBindingsByDevice($physicalId, $deviceType);
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-// 获取设备的二维码串
-$qrCode = $wxBridge->getDeviceQRCode($physicalId, FALSE, $openId);
+// 获取设备的二维码串。
+// 参数$subDomain是设备在AbleCloud平台上所属子域的名字。
+// 第三个参数取值为FALSE表示不需要生成AbleCloud的设备分享码。
+$qrCode = $wxBridge->getDeviceQRCode($physicalId, $subDomain, FALSE);
 // 之后可使用相关工具将码串转换为二维码图片。
 ```
 
@@ -373,10 +394,15 @@ $user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完�
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, TRUE);   // $xmlMsg是微信推送的完整XML消息内容。
+// 参数$xmlMsg是微信推送的完整XML消息内容。
+// 参数$deviceName是设备被绑定后的显示名。
+// 参数$subDomain是被绑定的设备在AbleCloud平台上所属的子域的名字。
+// 如果设备的二维码信息中包含了其所属子域的名字（以第三方附加数据的形式），则以二维码中的信息为准。此时$xmlMsg会包含有二维码中附加的子域的名字等第三方数据。
+// 最后一个参数取值为FALSE，表示这个设备是网关设备。
+$device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, $subDomain, TRUE);
 // 其它处理逻辑
 ```
-方法ACBridgeWeChat::onDeviceEventBind实现的主要功能是识别用户及设备信息，在AbleCloud平台中同步用户与设备的绑定关系。其第三个参数用来标记该设备是否为网关设备。
+方法ACBridgeWeChat::onDeviceEventBind实现的主要功能是识别用户及设备信息，在AbleCloud平台中同步用户与设备的绑定关系。其第四个参数用来标记该设备是否为网关设备。
 
 ###网关激活###
 
@@ -406,22 +432,23 @@ $device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, TRUE);   // $xmlMsg
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
-// 开启网关接入功能
-$deviceService->openGatewayMatch($gatewayId, $user, $timeout);
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
+// 开启网关接入功能。参数$gatewaySubDomain是被操作的网关设备在AbleCloud平台所属的子域的名字。
+$bindMgr->openGatewayMatch($gatewaySubDomain, $gatewayId, $user, $timeout);
 // 列举网关设备上新接入的子设备（尚未绑定）
-$newSubDevices = $deviceService->listNewSubDevicesFromGateway($user, $gatewayId);
+$newSubDevices = $bindMgr->listNewSubDevicesFromGateway($user, $gatewayId);
 // 绑定新子设备
 foreach ($newSubDevices as $dev) {
-    $d = $deviceService–>addSubDeviceToGateway($user, $gatewayId, $dev->getPhysicalId(), $name);
+    $d = $bindMgr–>addSubDeviceToGateway($user, $gatewayId, $dev->getPhysicalId(), $name, $dev->getSubDomainName());
     if ($d != NULL) {
         // 绑定子设备成功，需要通知微信平台同步设备的绑定关系。
-        $wxBridge->syncBindingsByDevice($dev->getPhysicalId(), $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+        // 参数$deviceType是新添加的子设备的在微信公众号平台上的设备类型。
+        $wxBridge->syncBindingsByDevice($dev->getPhysicalId(), $deviceType, $dev->getSubDomainName());
     }
 }
 // 关闭网关接入功能
-$deviceService ->closeGatewayMatch($gatewayId, $user);
+$bindMgr->closeGatewayMatch($gatewaySubDomain, $gatewayId, $user);
 ```
 
 ###设备解绑###
@@ -434,15 +461,15 @@ $deviceService ->closeGatewayMatch($gatewayId, $user);
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取用户信息
 $user = $wxBridge->getUser($openId);
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
-// 获取设备的逻辑ID
-$deviceId = $deviceService->getDeviceId($physicalId);
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
+// 获取设备的逻辑ID。参数$subDomain是设备在AbleCloud平台上所属子域的名字。
+$deviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解绑设备
-$deviceService->unbindGateway($deviceId, $user);
+$bindMgr->unbindGateway($subDomain, $deviceId, $user);
 // 通知微信硬件平台同步设备的绑定信息。
-// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
-$wxBridge->syncBindingsByDevice($physicalId, $deviceType);
+// 参数$deviceType是设备在微信公众号平台上的设备类型。
+$wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
 ```
 
 #### 2.解绑子设备 ####
@@ -453,15 +480,15 @@ $wxBridge->syncBindingsByDevice($physicalId, $deviceType);
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 // 获取用户信息
 $user = $wxBridge->getUser($openId);
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
-// 获取设备的逻辑ID
-$subDeviceId = $deviceService->getDeviceId($physicalId);
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
+// 获取设备的逻辑ID。参数$subDomain是要被删除的子设备在AbleCloud平台上所属子域的名字。
+$subDeviceId = $bindMgr->getDeviceId($subDomain, $physicalId);
 // 解邦子设备
-$deviceService->deleteSubDeviceFromGateway($user, $subDeviceId);
+$bindMgr->deleteSubDeviceFromGateway($user, $subDeviceId);
 // 通知微信硬件平台同步设备的绑定信息。
-// 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
-$wxBridge->syncBindingsByDevice($physicalId, $deviceType);
+// 参数$deviceType是设备在微信公众号平台上的设备类型。
+$wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
 ```
 
 ##Home模型##
@@ -472,23 +499,23 @@ $wxBridge->syncBindingsByDevice($physicalId, $deviceType);
 ###创建Home及Room###
 
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 创建名字为$homeName的Home
-$home = $deviceService->createHome($user, $homeName);
+$home = $bindMgr->createHome($user, $homeName);
 // ......
 // 创建名字为$roomName的Room
-$room = $deviceService->createRoom($user, $home->ownerId, $roomName);
+$room = $bindMgr->createRoom($user, $home->ownerId, $roomName);
 ```
 
 ###删除Room或Home###
 
 删除Home中的Room不影响设备与用户的绑定关系。示例代码如下：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 删除Room
-$deviceService->deleteRoom($user, $homeId, $roomId);
+$bindMgr->deleteRoom($user, $homeId, $roomId);
 ```
 
 删除Home本身时，会批量解除Home中所有设备与所有用户之间的绑定关系，并且需要额外通知微信平台从AbleCloud平台更新相关设备与用户的绑定关系。
@@ -502,31 +529,47 @@ $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $wxBridge->deleteHome($openId, $homeId);
 ```
 
-
 ###添加用户至Home中###
 
 Home的管理员用户（创建Home的用户）可以通过发放分享码的方式将其他用户添加至Home中来。用户加入Home之后即与Home中已有的设备建立绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 取分享码
-$shareCode = $deviceService->getHomeShareCode($user, $homeId, $timeout);
+$shareCode = $bindMgr->getHomeShareCode($user, $homeId, $timeout);
 // 其他用户使用分享码加入Home
-$deviceService->joinHomeWithShareCode($user2, $shareCode);  // 用户$user2加入Home
+$bindMgr->joinHomeWithShareCode($user2, $shareCode);  // 用户$user2加入Home
 // 通知微信平台更新用户$user2与设备的绑定关系。
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $openId = $wxBridge->getUserOpenId($user2->getId());    // 取用户$user2的OpenId
 $wxBridge->syncBindings($openId);                       // 同步信息
 ```
 
-###从Home中移除用户###
+如果已知用户的帐号名字，也可以不使用分享码，直接将用户添加至Home中。
+```php
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
+// 其他用户使用分享码加入Home
+// 参数$adminUser是Home的管理员用户。
+// 参数$homeId是Home的ID。
+// 参数$accountOfUser是要被添加的用户的帐号名称（Email或者手机号）。
+$bindMgr->addUserToHome($adminUser, $homeId, $accountOfUser);
+// 通知微信平台更新用户$user2与设备的绑定关系。
+$wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
+// 取被添加的用户的OpenId。$idOfUser是该用户在AbleCloud平台上的ID。
+$openId = $wxBridge->getUserOpenId($idOfUser);
+// 同步信息
+$wxBridge->syncBindings($openId);
+```
+
+###从分组中移除用户###
 
 Home的管理员用户（创建Home的用户）也可以从Home中移除指定用户。被移除的用户将被解除与Home中设备的绑定关系。此时需要通知微信平台从AbleCloud平台更新用户与设备的绑定关系。
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 从Home中移除用户。参数$userId即表示要被移除的用户的ID。
-$deviceService->removeUserFromHome($adminUser, $homeId, $userId);
+$bindMgr->removeUserFromHome($adminUser, $homeId, $userId);
 // 通知微信平台更新用户$userId与设备的绑定关系。
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $openId = $wxBridge->getUserOpenId($userId);    // 取用户$userId对应的OpenId
@@ -535,52 +578,56 @@ $wxBridge->syncBindings($openId);               // 同步信息
 
 ###添加或移动设备到Home中###
 
-用户通过ACDeviceService::bindDevice或ACDeviceService::bindGateway方法绑定的设备可以通过ACDeviceService::addDeviceToHome添加至Home中。
-在通过其它方法绑定设备之前，也可直接调用ACDeviceService::addDeviceToHome方法完成绑定、添加设备到Home中的操作。
+用户通过ACBindMgr::bindDevice或ACBindMgr::bindGateway方法绑定的设备可以通过ACBindMgr::addDeviceToHome添加至Home中。
+在通过其它方法绑定设备之前，也可直接调用ACBindMgr::addDeviceToHome方法完成绑定、添加设备到Home中的操作。
 将设备添加至Home中之后，需要通知微信平台从AbleCloud平台更新设备与用户的绑定关系。同样，若从Home中删除了指定设备，也需要通知微信平台同步信息。
 
-只有Home中的设备才能通过ACDeviceService::moveDeviceToRoom方法将其添加至Room中。
+只有Home中的设备才能通过ACBindMgr::moveDeviceToRoom方法将其添加至Room中。
 
 添加设备到Home中：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
-// 添加设备到Home中：$homeId是Home的ID；$physicalId（设备的物理ID）或$deviceId（设备的逻辑ID）任意提供一个即可。
-$device = $deviceService->addDeviceToHome($user, $homeId, $name, $physicalId, $deviceId);
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
+// 添加设备到Home中：
+// $homeId是Home的ID；
+// $subDomain是设备在AbleCloud平台中所属子域的名字；
+// $physicalId（设备的物理ID）或$deviceId（设备的逻辑ID）任意提供一个即可。
+$device = $bindMgr->addDeviceToHome($user, $homeId, $name, $subDomain, $physicalId, $deviceId);
 // 通知微信平台同步信息
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$wxBridge->syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
+// 参数$deviceType是设备在微信公众号平台中的设备类型。
+$wxBridge->syncBindingsByDevice($physicalId, $deviceType, $subDomain);
 ```
 
 在Home中移动设备到Room中：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 移动Home中的设备到Room中
-$deviceService->moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
+$bindMgr->moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
 ```
 设备被添加至Home中时，已经与Home中的用户建立了绑定关系。再将设备移动至Room内时，不更改其与用户的绑定关系，因此不用额外通知微信或AbleCloud平台同步信息。
 同样，从Room中移出设备时，也不改变设备与用户的绑定关系，因此也不用额外同步信息。
 
 ###从Home中移除设备###
 
-用户可以调用方法ACDeviceService::removeDeviceFromRoom从Room中移除设备，此时该设备仍然属于Home，并且不改变设备与Home中用户的绑定关系。
-也可以调用方法ACDeviceService::deleteDeviceFromHome从Home中删除设备，此时将解除该设备与Home中所有用户的绑定关系。此操作过后，需要通知微信平台更新设备与用户的绑定关系。
+用户可以调用方法ACBindMgr::removeDeviceFromRoom从Room中移除设备，此时该设备仍然属于Home，并且不改变设备与Home中用户的绑定关系。
+也可以调用方法ACBindMgr::deleteDeviceFromHome从Home中删除设备，此时将解除该设备与Home中所有用户的绑定关系。此操作过后，需要通知微信平台更新设备与用户的绑定关系。
 
 从Room中移除设备：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 从Room中移除指定设备
-$deviceService->removeDeviceFromRoom($user, $deviceId, $roomId, $homeId);
+$bindMgr->removeDeviceFromRoom($user, $deviceId, $roomId, $homeId);
 ```
 
 从Home中删除设备——需要通知微信平台同步信息：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 从Home中删除设备
-$deviceService->deleteDeviceFromHome($user, $homeId, $deviceId);
+$bindMgr->deleteDeviceFromHome($user, $homeId, $deviceId);
 // 通知微信平台同步设备与用户的绑定信息。参数$physicalId是设备$deviceId对应的物理ID。
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
 $wxBridge->syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType是微信公众号所关联的设备的类型，目前就是“微信公众账号原始ID”。
@@ -594,10 +641,10 @@ $wxBridge->syncBindingsByDevice($physicalId, $deviceType);  // 参数$deviceType
 ###获取设备的扩展属性###
 
 ```php
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
 // 获取设备的扩展属性
-$keyValues = $deviceService->getDeviceProfile($deviceId);
+$keyValues = $bindMgr->getDeviceProfile($deviceId);
 ```
 
 ###设置设备的扩展属性###
@@ -605,10 +652,10 @@ $keyValues = $deviceService->getDeviceProfile($deviceId);
 
 
 ```php
-// 实例化ACDeviceService
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr
+$bindMgr = ACClient::getBindMgr();
 // 设置设备的扩展属性。扩展属性以键值对组成的关联数组保存，记为$profile。
-$deviceService->setDeviceProfile($user, $deviceId, $profile);
+$bindMgr->setDeviceProfile($user, $deviceId, $profile);
 ```
 
 #云端通信#
@@ -618,8 +665,8 @@ $deviceService->setDeviceProfile($user, $deviceId, $profile);
 ##访问云端服务##
 PHP SDK中的类ACClient定义了方法sendToService，用于访问运行在AbleCloud云端的开发者的UDS服务。
 ```php
-// 实例化ACRequest对象
-$request = new ACRequest($serviceName, $methodName, $serviceVersion);
+// 实例化ACRequest对象。参数$subDomain是要访问的服务在AbleCloud平台上所对应的子域的名字。没有固定子域时可使用空字符串。
+$request = new ACRequest($serviceName, $methodName, $serviceVersion, $subDomain);
 // 设置参数：通过addParameter方法添加的参数，将以查询字符串的方式置于访问远程服务的URL中传递给远程服务。
 $request->addParameter($key, $value);
 // 设置参数：通过setPayloadAsJSON/setPayloadAsStream方法设置的数据是HTTP请求的Body。
@@ -634,32 +681,33 @@ $response = ACClient::sendToService($request);
 
 ##向设备发送消息##
 
-PHP SDK中的类ACDeviceService定义了方法sendToDevice用于向设备发送指令。该方法的使用示例如下：
+PHP SDK中的类ACBindMgr定义了方法sendToDevice用于向设备发送指令。该方法的使用示例如下：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 向设备发送消息
+// 参数$subDomain是目标设备在AbleCloud平台上所属子域的名字。
 // 参数$messageCode是整数，表示发送给设备的消息的码。
 // 参数$message是拟发送给设备的二进制数据。
 // 参数'weixin'用于表示用户用来控制设备的终端工具是微信。
 // 参数值'6.2.1'描述的是微信的版本信息。
-$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message, 'weixin', '6.2.1');
+$response = $bindMgr->sendToDevice($user, $deviceId, $subDomain, $messageCode, $message, 'weixin', '6.2.1');
 // 其它处理逻辑
 ```
-上例中，调用方法sendToDevice时使用的第五个参数用于表示调用本方法时用户所使用的终端工具的名字。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。
+上例中，调用方法sendToDevice时使用的第六及第七个参数分别用于表示调用本方法时用户所使用的终端工具的名字及版本。如'weixin'表示用户使用的是微信终端；而第六个参数是指该工具的版本信息。
 
 此外，也可通过ACContext来设置用户使用的终端工具的信息。如下例：
 ```php
-// 实例化ACDeviceService对象
-$deviceService = ACClient::getDeviceService();
+// 实例化ACBindMgr对象
+$bindMgr = ACClient::getBindMgr();
 // 通过ACContext设置终端工具的信息
-$context = $deviceService->getContext();
+$context = $bindMgr->getContext();
 $context->setHandset('weixin', '6.2.1', '', 'android');
-// 向设备发送消息：省略第五个参数。
-$response = $deviceService->sendToDevice($user, $deviceId, $messageCode, $message);
+// 向设备发送消息：省略最后两个参数。
+$response = $bindMgr->sendToDevice($user, $deviceId, $subDomain, $messageCode, $message);
 ```
 
-**注：**ACDeviceService::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
+**注：**ACBindMgr::sendToService暂时仅支持向设备发送二进制格式的数据。尚不支持JSON及KLV格式的数据。
 
 
 ##设备和微信消息同步
@@ -685,14 +733,14 @@ AbleCloud支持设备的定时任务，比如每天的固定时间向设备发�
 ##添加定时任务##
 
 ```php
-// 实例化ACTimerTaskService对象
-$timerTaskService = ACClient::getTimerTaskService();
+// 实例化ACTimerTaskMgr对象
+$timerTaskMgr = ACClient::getTimerTaskMgr();
 // 配置定时任务
 $task = new ACTimerTask();
 // 设置$task的属性
 // ......
 // 向云端添加任务
-$timerTaskService->addTask($task, $user);
+$timerTaskMgr->addTask($task, $user);
 ```
 
 上述例子中，ACTimerTask对象就用与设置任务的相关属性：执行任务的时间规则、任务执行时要发给设备的指令，定义任务的用户以及执行任务的设备。ACTimerTask的详细说明请参考[Reference-微信客户端开发参考](../reference/wechat.md)中的“AbleCloud定时任务”。
@@ -701,51 +749,51 @@ $timerTaskService->addTask($task, $user);
 
 ```php
 // 查询已配置的定时任务的列表
-$tasks = $timerTaskService->listTasks($user, $deviceId);
+$tasks = $timerTaskMgr->listTasks($user, $deviceId);
 ```
 
 ##启动定时任务##
 
 ```php
 // 查询已配置的定时任务的列表，从中找到要启动的定时任务，记录其ID。
-$tasks = $timerTaskService->listTasks($user, $deviceId);
+$tasks = $timerTaskMgr->listTasks($user, $deviceId);
 // 找到要启动的任务的ID，记为$taskId。
 // 启动该任务
-$timerTaskService->startTask($user, $deviceId, $taskId);
+$timerTaskMgr->startTask($user, $deviceId, $taskId);
 ```
 
 ##停止定时任务##
 
 ```php
 // 查询已配置的定时任务的列表，从中找到要停止的的定时任务，记录其ID。
-$tasks = $timerTaskService->listTasks($user, $deviceId);
+$tasks = $timerTaskMgr->listTasks($user, $deviceId);
 // 找到要停止的任务的ID，记为$taskId。
 // 停止该任务
-$timerTaskService->stopTask($user, $deviceId, $taskId);
+$timerTaskMgr->stopTask($user, $deviceId, $taskId);
 ```
 
 ##修改定时任务##
 
 ```php
 // 查询已配置的定时任务的列表，从中找到要修改的的定时任务，记录其ID。
-$tasks = $timerTaskService->listTasks($user, $deviceId);
+$tasks = $timerTaskMgr->listTasks($user, $deviceId);
 // 找到要修改的任务的ID，记为$taskId。
 // 配置该任务的新属性
 $task = new ACTimerTask();
 // 修改$task对象的属性值
 // ......
 // 修改任务
-$timerTaskService->modifyTask($taskId, $task, $user);
+$timerTaskMgr->modifyTask($taskId, $task, $user);
 ```
 
 ##删除定时任务##
 
 ```php
 // 查询已配置的定时任务的列表，从中找到要删除的的定时任务，记录其ID。
-$tasks = $timerTaskService->listTasks($user, $deviceId);
+$tasks = $timerTaskMgr->listTasks($user, $deviceId);
 // 找到要删除的任务的ID，记为$taskId。
 // 删除该任务
-$timerTaskService->deleteTask($user, $deviceId, $taskId);
+$timerTaskMgr->deleteTask($user, $deviceId, $taskId);
 ```
 
 #OTA#
@@ -762,10 +810,10 @@ AbleCloud支持灵活的设备固件升级策略，开发者可以登录管理�
 检查针对某个设备（WiFi设备）是否存在可升级的固件版本。
 
 ```php
-// 实例化ACOtaService
-$otaService = ACClient::getOtaService();
-// 检查更新
-$otaVersion = $otaService->checkUpdate($user, $deviceId);
+// 实例化ACOtaMgr
+$otaMgr = ACClient::getOtaMgr();
+// 检查更新。参数$subDomain是设备在AbleCloud平台上所属子域的名字。
+$otaVersion = $otaMgr->checkUpdate($user, $deviceId, $subDomain);
 $needUpdate = $otaVersion->canUpdate();
 // $needUpdate为TRUE时表示云端发布了新版本的固件，可以执行升级。
 ```
@@ -775,12 +823,12 @@ $needUpdate = $otaVersion->canUpdate();
 经过前述步骤查询得到可升级的固件版本时，用户可以选择是否升级。确认升级的示例代码如下：
 ```php
 // 将指定设备的固件升级为查询得到的新版本
-$otaService->confirmUpdate($user, $deviceId, $otaVersion->getNewVersion());
+$otaMgr->confirmUpdate($user, $deviceId, $subDomain, $otaVersion->getNewVersion());
 ```
 
 #数据存储#
 
-ACStoreService提供了访问AbleCloud数据存储服务的接口。下例是使用ACStoreService::scan方法查询数据记录的示例：
+ACStore提供了访问AbleCloud数据存储服务的接口。下例是使用ACStore::scan方法查询数据记录的示例：
 ```php
 // 查询条件
 // 创建ACStoreScanner对象，设置查询条件。
@@ -799,10 +847,30 @@ $scanner->addOrderBy('deviceId', false);
 $scanner->groupBy('deviceId', 'status', 'time');
 $scanner->limit(100);
 $scanner->avg('status');
-// 实例化ACStoreService对象，执行查询。
-$storeService = ACClient::getStoreService();
-$storeIter = $storeService->scan($scanner);
+// 实例化ACStore对象，执行查询。
+$store = ACClient::getStore();
+$storeIter = $store->scan($scanner);
 $rows = $storeIter->next();     // $rows即是查询结果。
+```
+
+ACStoreScanner采用了Fluent模式的接口设计规范，上例也可采用如下的等价的方式实现：
+```php
+$filter1 = new ACStoreFilter('time', ACStoreFilter::$GreaterOrEqual, 12345670);
+$filter2 = new ACStoreFilter('time', ACStoreFilter::$Less, 12345679);
+// 创建ACStoreScanner对象，并设置查询条件。
+// 参数$datasetName是要查熏的数据集的名字。
+// 第二个参数是以键值对数组（关联数组）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+$scanner = $store->scanExt($datasetName, array('deviceId' => 1));
+$rows = $scanner->select('deviceId', 'status')
+    ->whereExt($filter1)
+    ->andWhere($filter2)
+    ->addOrderBy('time', true)
+    ->addOrderBy('deviceId', false)
+    ->groupBy('deviceId', 'status', 'time')
+    ->limit(100)
+    ->avg('status')
+    ->execute();
+// $rows即是查询结果。
 ```
 
 #消息推送#

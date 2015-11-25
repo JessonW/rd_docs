@@ -25,6 +25,8 @@ pages:
     - 设备-安卓系统: reference/device_android.md
 #    - 设备-linux系统: reference/device_linux.md
     - 云端服务: reference/cloud.md
+    - PHP SDK: reference/php.md
+    - Java SDK: reference/java.md
     - Error Code: reference/error_code.md
 - Q&A: QandA.md
 

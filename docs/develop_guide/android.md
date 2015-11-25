@@ -1,4 +1,4 @@
-#安卓客户端开发指导
+ #安卓客户端开发指导
 
 #开发环境配置
 ##SDK发布库
@@ -797,9 +797,9 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
      * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
      */
     @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        LightMsg lightMsg = (LightMsg) msg.getContent();
-        return new byte[lightMsg.getLedOnOff, 0, 0, 0];
+    public byte[] marshal(ACDeviceMsg deviceMsg) throws Exception {
+        LightMsg lightMsg = (LightMsg) deviceMsg.getContent();
+        return lightMsg.getLedOnOff();
     }
 
     /**
@@ -831,15 +831,15 @@ public class LightMsg {
         this.ledOnOff = ledOnOff;
     }
 
-    public byte getLedOnOff() {
-        return ledOnOff;
+    public byte[] getLedOnOff() {
+        return new byte[]{ledOnOff, 0, 0, 0};
     }
 }
 
 ```
 ```java
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON)), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte resp = (byte) deviceMsg.getContent();
@@ -1071,7 +1071,7 @@ public void getDeviceList() {
 
         @Override
         public void error(ACException e) {
-            //网络错误且之前从来没有获取过设备列表时返回
+            //云端获取错误时返回，一般情况下不返回
         }
     });
 }
@@ -1154,28 +1154,28 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
     @Override
     public byte[] marshal(ACDeviceMsg msg) throws Exception {
-         return (byte[]) msg.getContent();
+        return (byte[]) msg.getContent();
     }
 
     @Override
     public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-         //跟定时任务无关
-         return null;
+        //跟定时任务无关
+        return null;
     }
 });
 ```
 
 ```java
 //若为二进制或json格式，则msg需要先经过序列化器进行序列化
-timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new VoidCallback() {
+timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback<ACTimerTask>() {
      @Override
-     public void success() {
-          //成功添加定时任务，创建后默认为开启状态
+     public void success(ACTimerTask task) {
+         //成功添加定时任务，创建后默认为开启状态
      }
 
      @Override
      public void error(ACException e) {
-          //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数类型错误，请仔细阅读注意事项
+         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数类型错误，请仔细阅读注意事项
      }
 });
 ```
@@ -1203,12 +1203,12 @@ timerMgr.openTask(deviceId, taskId, new VoidCallback() {
 timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
-          //关闭定时任务
+         //关闭定时任务
      }
 
      @Override
      public void error(ACException e) {
-          //参数无误下一般为网络错误
+         //参数无误下一般为网络错误
      }
 });
 ```
@@ -1218,12 +1218,12 @@ timerMgr.closeTask(deviceId, taskId, new VoidCallback() {
 timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
      @Override
      public void success() {
-          //删除定时任务
+         //删除定时任务
      }
 
      @Override
      public void error(ACException e) {
-          //参数无误下一般为网络错误
+         //参数无误下一般为网络错误
      }
 });
 ```
@@ -1233,15 +1233,15 @@ timerMgr.deleteTask(deviceId, taskId, new VoidCallback() {
 timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
      @Override
      public void success(List<ACTimerTask> timerTasks) {
-          //通过logcat查看获取到的定时任务列表进行显示或下一步操作
-          for (ACTimerTask timerTask : timerTasks){
-              LogUtil.i("TAG", timerTask.toString());
-          }
+         //通过logcat查看获取到的定时任务列表进行显示或下一步操作
+         for (ACTimerTask timerTask : timerTasks){
+             LogUtil.i("TAG", timerTask.toString());
+         }
      }
 
      @Override
      public void error(ACException e) {
-          //参数无误下一般为网络错误
+         //参数无误下一般为网络错误
      }
 });
 ```
