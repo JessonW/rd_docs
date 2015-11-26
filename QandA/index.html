@@ -498,9 +498,23 @@
 <p>安卓设备已经支持，Linux设备正在内侧中</p>
 <h1 id="app">APP开发相关</h1>
 <h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
-<h4 id="androiduidtoken">问：Android端.uid和token怎么获取与保存？</h4>
+<h4 id="androiduidtoken">问：Android端uid和token怎么获取与保存？</h4>
 <p>PreferencesUtils.putLong(AC.context, ACConfiguration.KEY_USERID, uid);</p>
 <p>PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);</p>
+<h4 id="iosuidtoken">问：iOS端uid和token怎么获取与保存？</h4>
+<p>@interface ACKeyChain : NSObject</p>
+<p>/<strong><em>  保存用户ID </em></strong> /
++ (void)saveUserId:(NSNumber <em>)userId;
+/<strong><em>  获取用户ID </em></strong> /
++ (NSNumber </em>)getUserId;
+/<strong><em>  删除当前用户的id </em></strong> /
++ (void)removeUserId;</p>
+<p>/<strong><em>  保存以后 Token </em></strong> /
++ (void)saveToken:(NSString <em>)token;
+/<strong><em>  获取用户 Token </em></strong> /
++ (NSString </em>)getToken;
+/<strong><em>  删除当前用户的token </em></strong> /
++ (void)removeToken;</p>
 <h4 id="app_1">问：APP提示签名失败是什么原因？</h4>
 <p>(1)APP的本地时间不正确，导致签名超时。</p>
 <p>(2)用户未登录。</p>
