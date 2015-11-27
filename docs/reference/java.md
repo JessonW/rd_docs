@@ -1,8 +1,131 @@
-#简介#
+#简介
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
 下文是Java SDK (v1.1.x)的API说明。
+
+#配置信息
+本SDK定义的配置信息如下：
+```java
+/**
+ * AbleCloud Java API配置信息。
+ * @details ACConfig是一个抽象类。开发者应依据具体应用场景的需求，提供本抽象类的实现。
+ */
+public abstract class ACConfig {
+    public static final String TEST_MODE	   = "test";		/// 运行模式：测试模式。
+    public static final String PRODUCTION_MODE = "production";	/// 运行模式：生产模式。
+
+	/// @name 需要重载的抽象方法。
+	//@{
+	/**
+	 * 取开发者在AbleCloud平台上的帐号的ID（可登录AbleCloud管理控制台查看）。
+	 * @return 返回开发者帐号的ID。
+	 */
+    public abstract long getDeveloperId();
+
+	/**
+	 * 取开发者在AbleCloud平台上对应的主域的名字（可登录AbleCloud管理控制台查看）。
+	 * @return 开发者的主域的名字。
+	 */
+    public abstract String getMajorDomain();
+
+	/**
+	 * 取开发者密钥对中的Access Key（可登录AbleCloud管理控制台查看）。
+	 * @return 开发者密钥对中的Access Key。
+	 */
+    public abstract String getAuthAccessKey();
+
+	/**
+	 * 取开发者密钥对中的Secret Key（可登录AbleCloud管理控制台查看）。
+	 * @return 开发者密钥对总的Secret Key。
+	 */
+    public abstract String getAuthSecretKey();
+    
+    /**
+     * 取运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
+     * @return 返回运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
+     */
+    public abstract String getMode();
+    //@}
+
+	// 下列方法均有默认实现，开发者可选择性地重载。
+	
+    /**
+     * 取服务所关联的子域的名字。
+     * @return 缺省情况下返回空字符串。
+     */
+    public String getSubDomain();
+
+    /**
+     * 设置AbleCloud云端服务的入口地址。
+     * @param addrs 可以用英语逗号（,）分隔多个地址。如："192.168.0.1:5000"，或者"192.168.0.1:5000,192.168.0.2:5000"，
+     *              或者"http://192.168.0.1:5000"，或者"http://192.168.0.1:5000,https://192.168.0.2:5000"，或者"192.168.0.1:5000,https://192.168.0.2:5000"。
+     *              如果地址中没有指定协议（http或者https），则使用http协议。
+     */
+    public void setRouterAddr(String addrs);
+
+    /**
+     * 取AbleCloud云端服务的入口地址。
+     * @return 返回的地址的格式是：http://host:port 或 https://host:port。
+     */
+    public String getRouterAddr();
+
+    /**
+     * 设置代理服务的入口地址。
+     * @param addrs 可以用英语逗号（,）分隔多个地址。如："192.168.0.1:5000"，或者"192.168.0.1:5000,192.168.0.2:5000"，
+     *              或者"http://192.168.0.1:5000"，或者"http://192.168.0.1:5000,https://192.168.0.2:5000"，或者"192.168.0.1:5000,https://192.168.0.2:5000"。
+     *              如果地址中没有指定协议（http或者https），则使用http协议。
+     */
+    public void setProxyAddr(String addrs);
+
+    /**
+     * 取代理服务的入口地址。
+     * @return 返回的地址的格式是：http://host:port 或 https://host:port。
+     */
+    public String getProxyAddr();
+
+    public int getAuthTimeout();
+
+    public int getClientTimeout();
+
+	/// @name AbleCloud云端服务的名字及版本信息。
+	//@{
+    public String getAccountServiceName();
+
+    public int getAccountServiceVersion();
+
+    public String getBindServiceName();
+
+    public int getBindServiceVersion();
+
+    public String getStoreServiceName();
+
+    public int getStoreServiceVersion();
+
+    public String getInformServiceName();
+
+    public int getInformServcieVersion();
+
+    public String getBlobStoreServiceName();
+
+    public int getBlobStoreServcieVersion();
+
+    public String getTimerTaskServiceName();
+
+    public int getTimerTaskServcieVersion();
+
+    public String getJDServiceName();
+
+    public int getJDServiceVersion();
+
+    public String getSNServiceName();
+
+    public int getSNServiceVersion();
+    //@}
+}
+```
+ACConfig是抽象类，要求开发者在实际应用中提供关于ACConfig的具体实现。
+如，针对AbleCloud云端服务（UDS）以及微信公众号功能等场景，AbleCloud提供的相应SDK中均实现了ACConfig定义的方法。
 
 #基础数据结构
 
@@ -328,11 +451,11 @@ public abstract class AC {
     /**
      * 往某一服务发送命令/消息
      *
-     * @param subDomain 该服务所在产品名
-     * @param name      服务名
-     * @param version   服务版本
-     * @param req       具体的消息内容
-     * @return 服务端相应的消息
+     * @param subDomain 要访问的服务的子域名。为null或空字符串时，表示访问主域级别的UDS；否则表示访问对应子域级别的UDS。
+     * @param name      服务名。
+     * @param version   服务版本：主版本号。
+     * @param req       具体的消息内容。
+     * @return 服务端响应的消息。
      * @throws Exception
      */
     public abstract ACMsg sendToService(String subDomain, String name, int version, ACMsg req) throws Exception;
@@ -343,7 +466,7 @@ public abstract class AC {
      * @param context          设备的上下文，其中uid字段为系统填充
      * @param physicalDeviceId 设备的物理id
      * @param req              请求消息体(Stream数组)
-     * @return 服务端相应的消息
+     * @return 服务端响应的消息
      * @throws Exception
      */
     public abstract ACMsg sendToJDService(ACContext context, String physicalDeviceId, List<ACJDMsg> req) throws Exception;
@@ -354,7 +477,7 @@ public abstract class AC {
      * @param context          设备的上下文，其中uid字段为系统填充
      * @param physicalDeviceId 设备的物理id
      * @param req              请求消息体(Stream数组)
-     * @return 服务端相应的消息
+     * @return 服务端响应的消息
      * @throws Exception
      */
     public abstract ACMsg sendToSNService(ACContext context, String physicalDeviceId, List<ACSNMsg> req) throws Exception;
