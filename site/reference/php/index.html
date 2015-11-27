@@ -897,7 +897,7 @@ class ACRequest {
      * @param $serviceName 字符串。是拟访问的远程服务的名字。
      * @param $methodName 字符串。是拟访问的远程服务的方法的名字。
      * @param $serviceVersion 整数。是拟访问的远程服务的主版本号。
-     * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串。
+     * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串，表示访问主域级别的服务。不为空字符串时，表示访问该子域所对应的服务。
      */
     function __construct($serviceName, $methodName, $serviceVersion, $subDomain = '');
 
