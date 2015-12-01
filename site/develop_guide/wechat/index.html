@@ -717,7 +717,9 @@ $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, $subDomain, FALSE);
 <p>处理事件"event"-"subscribe"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// $xmlMsg是微信推送的完整XML消息内容。
+// $unionId是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+$user = $wxBridge-&gt;onEventSubscribe($xmlMsg, $unionId);
 // 其它处理逻辑
 </code></pre>
 
@@ -792,7 +794,9 @@ $qrCode = $wxBridge-&gt;getDeviceQRCode($physicalId, $subDomain, FALSE);
 <p>处理事件"event"-"subscribe"：</p>
 <pre><code class="php">// 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$user = $wxBridge-&gt;onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// $xmlMsg是微信推送的完整XML消息内容。
+// $unionId是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+$user = $wxBridge-&gt;onEventSubscribe($xmlMsg, $unionId);
 // 其它处理逻辑
 </code></pre>
 

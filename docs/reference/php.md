@@ -58,9 +58,10 @@ class ACBridgeWeChat {
     /**
      * 微信推送消息：MsgType为"event"，Event为"subscribe"时的响应函数：将微信用户注册为开发者所提供服务的用户。
      * @param $xmlMsg 微信推送的原始XML消息内容。
+     * @param $unionId 字符串。是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
      * @return 操作成功时返回ACUser对象，表示新注册的用户信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function onEventSubscribe($xmlMsg);
+    public function onEventSubscribe($xmlMsg, $unionId = '');
     
     /**
      * 微信推送消息：MsgType为"event"，Event为"unsubscribe"时的响应函数：在AbleCloud平台中解除该用户与所有设备的绑定关系。
@@ -367,7 +368,7 @@ class ACRequest {
      * @param $serviceName 字符串。是拟访问的远程服务的名字。
      * @param $methodName 字符串。是拟访问的远程服务的方法的名字。
      * @param $serviceVersion 整数。是拟访问的远程服务的主版本号。
-     * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串。
+     * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串，表示访问主域级别的服务。不为空字符串时，表示访问该子域所对应的服务。
      */
     function __construct($serviceName, $methodName, $serviceVersion, $subDomain = '');
     
@@ -756,17 +757,19 @@ class ACAccountMgr extends ACService {
      * 使用第三方帐号注册用户。
      * @param $openId 第三方帐号的OpenID。
      * @param $provider 第三方帐号的来源。如"weixin"。
+     * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
      * @return 注册成功后返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function registerByOpenId($openId, $provider);
+    public function registerByOpenId($openId, $provider, $unionId = '');
     
     /**
      * 按OpenID和帐号来源取用户的信息。
      * @param $openId 用户的OpenID。
      * @param $provider 用户的来源。如"weixin"等。
+     * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。
      * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function getUserByOpenId($openId, $provider);
+    public function getUserByOpenId($openId, $provider, $unionId = '');
     
     /**
      * 获取用户在第三方平台上的OpenID。
@@ -897,7 +900,7 @@ class ACDevice {
      * @param $status 整数，状态码。
      * @param $subDomain 字符串，是设备所属的子域的名字。
      */
-    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain);
+    function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain = '');
     
     public function getId();
     
