@@ -30,19 +30,17 @@ Xcode下直接**Command + R**运行。
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
 ```objectivec
-//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
-[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId Region:REGIONAL_CHINA];
+// MajorDomain:主域名  majorDomainId:主域ID
+[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId ];
 ```
 开发阶段，请初始化**测试环境**
 ```objectivec
 //开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
 [ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
-//设置开发环境
-[ACloudLib setMode:TEST_MODE];
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setMode:PRODUCTION_MODE];
+[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
 ```
 
 #帐号管理
