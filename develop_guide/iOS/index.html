@@ -485,20 +485,42 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </ol>
 <h4 id="_3">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化</p>
+建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化</p>
 <pre><code class="objectivec">//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
 [ACloudLib setMajorDomain:@&quot;主域名&quot; majorDomainId:majorDomainId Region:REGIONAL_CHINA];
 </code></pre>
 
 <p>开发阶段，请初始化<strong>测试环境</strong></p>
-<pre><code class="objectivec">//设置开发环境
+<pre><code class="objectivec">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+//开发环境:{TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区}
+[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
+=======
+//设置开发环境
 [ACloudLib setMode:TEST_MODE];
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; bdd31d8c44c7f11c879c122f0b60cbd2157c5938
 </code></pre>
 
 <p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
 <pre><code class="objectivec">[ACloudLib setMode:PRODUCTION_MODE];
 </code></pre>
 
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<p>=======</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>bdd31d8c44c7f11c879c122f0b60cbd2157c5938</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h1 id="_4">帐号管理</h1>
 <p>功能介绍参考： <a href="../../features/functions/#_1">功能说明-功能介绍-帐号管理</a></p>
 <p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
