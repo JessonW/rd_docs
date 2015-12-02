@@ -5,7 +5,10 @@
 本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。
 
 ##UDS发布说明
-开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的java版本服务开发框架一致，如下所示。
+在AbleCloud管理控制台中，开发者可创建**产品（或子域）级别**的UDS，也可以创建**主域级别**的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（或子域）级别的UDS来处理。
+其它请求（包括设备或其它客户端发起的）可由请求发起方选择由产品（或子域）级别或者主域级别的UDS来处理：请求中指定了子域名字时表示由对应产品（或子域）级别的UDS处理；请求中不包含子域名子（或子域名字为空）时表示由主域级别的UDS处理。
+
+开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的Java版本服务开发框架一致，如下所示。
 ```java
 /config
 	/cloudservice-conf.xml
@@ -23,7 +26,7 @@ start.cmd
 
 ><font color=red>注意事项：</font>
 
->1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。根据AbleCloud的发行状态，各jar包的版本号可能不同。
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.1.0.jar`和`ac-java-api-1.0.0.jar`。根据SDK的发行状态，各jar包的版本号可能不同。
 
 >1. 开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
 
@@ -1092,7 +1095,10 @@ Long speed = ao.get("speed");
 ```
 ##Scan
 由于是分区数据集，在Scan时需要传入分区键值对，这里是`deviceId`及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如`ac.store("test_data", context).scan()...`
-><font color=red>务必注意</font>：存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+
+><font color=red>务必注意</font>：
+1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
+2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
 
 ###示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列
 ```java
@@ -1203,6 +1209,9 @@ ac.store("test_data", context).scan("deviceId", "12345")
                     .execute();
 ```
 ##FullScan
+
+<font color= "red">注意：</font>fullscan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
+
 分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
 同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。
 ```java
@@ -1252,6 +1261,8 @@ ac.store("test_data", context).batchDelete("deviceId", "12345")
 ```
 ##SimpleFullScan和Scan
 **基于SimpleFullScan和Scan的全表分页浏览**
+
+<font color= "red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。
 
 全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。
 
@@ -1313,9 +1324,10 @@ UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的�
 ```java
 @Test
 public void testGet() {
+	ACHttpClient client = null;
     try {
         //获取访问外网的ACHttpClient客户端
-        ACHttpClient client = ac.getHttpClient("http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC");
+        client = ac.getHttpClient("http://apis.baidu.com/apistore/aqiservice/aqi?city=%E5%8C%97%E4%BA%AC");
         //默认为GET方法
         client.setRequestMethod("GET");
         //默认超时时间为5000
@@ -1328,9 +1340,11 @@ public void testGet() {
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
-            client.disconnect();
         }
+        client.disconnect();
     } catch (IOException e) {
+    	if (client != null)
+    		client.disconnect();
         fail(e.toString());
     }
 }
@@ -1339,10 +1353,11 @@ public void testGet() {
 ```java
 @Test
 public void testPost() {
+	ACHttpClient client = null;
     try {
         String body = "fromdevice=pc&clientip=10.10.10.0&detecttype=LocateRecognize&languagetype=CHN_ENG&imagetype=1&image=/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDABMNDxEPDBMREBEWFRMXHTAfHRsbHTsqLSMwRj5KSUU+RENNV29eTVJpU0NEYYRiaXN3fX59S12Jkoh5kW96fXj/2wBDARUWFh0ZHTkfHzl4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHj/wAARCAAfACEDAREAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDBQb/xAAjEAACAgICAgEFAAAAAAAAAAABAgADBBESIRMxBSIyQXGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APawEBAQEBAgy8i8ZTVV3UY6V1eU2XoWDDZB19S646Gz39w9fkKsW1r8Wm2yo1PYis1be0JG9H9QNYCAgc35Cl3yuVuJZl0cB41rZQa32dt2y6OuOiOxo61vsLcVblxaVyXD3hFFjL6La7I/sDWAgICAgICB/9k=";
         //获取访问外网的ACHttpClient客户端
-        ACHttpClient client = ac.getHttpClient("http://apis.baidu.com/apistore/idlocr/ocr");
+        client = ac.getHttpClient("http://apis.baidu.com/apistore/idlocr/ocr");
         //默认为GET方法
         client.setRequestMethod("POST");
         //默认超时时间为5000
@@ -1354,13 +1369,15 @@ public void testPost() {
         client.connect();
         //设置访问外网消息体
         client.setEntity(body.getBytes("UTF-8"));
-        //AbleCloud签名认证失败
+        //获取服务器返回的数据
         if (client.getResponseCode() == HttpURLConnection.HTTP_OK) {
             assertEquals(client.getResponseMessage(), "OK");
             //通过getData()或getInputStream()获取response,不能同时一起调用
-            client.disconnect();
         }
+        client.disconnect();
     } catch (IOException e) {
+    	if (client != null)
+            client.disconnect();
         e.printStackTrace();
     }
 }

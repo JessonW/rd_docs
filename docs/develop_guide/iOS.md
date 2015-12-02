@@ -30,20 +30,28 @@ Xcode下直接**Command + R**运行。
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
 ```objectivec
-//设置主域名和主域ID
-[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId];
+//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
+[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId Region:REGIONAL_CHINA];
 ```
 开发阶段，请初始化**测试环境**
 ```objectivec
+<<<<<<< HEAD
 //开发环境:{TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区}
 [ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
+=======
+//设置开发环境
+[ACloudLib setMode:TEST_MODE];
+>>>>>>> bdd31d8c44c7f11c879c122f0b60cbd2157c5938
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
-[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
+[ACloudLib setMode:PRODUCTION_MODE];
 ```
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> bdd31d8c44c7f11c879c122f0b60cbd2157c5938
 
 #帐号管理
 
@@ -52,7 +60,6 @@ Xcode下直接**Command + R**运行。
 该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。
 
 ##一、普通帐号注册
-功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
 ![account_register](../pic/develop_guide/account_register.png)
 
@@ -964,8 +971,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 
 ![OTA](../pic/develop_guide/OTA.png)
-
-功能介绍参见[功能说明-OTA](../introduction.md#ota)。
 
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
 

@@ -378,16 +378,16 @@ public class ACPushTable {
 ```
 
 ####ACFileInfo
-说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
+说明：文件管理中获取下载url或上传文件时用来表示文件信息，定义如下：
 ```java
 public class ACFileInfo {
     //自定义文件目录，如ota
     private String bucket;
     //文件名
     private String filename;
-    //上传文件数据
+    //上传文件二进制流数据，用于小文件上传，如拍照后头像直接上传
     private byte[] data;
-    //上传文件的File对象
+    //上传文件的File对象，用于大文件上传，从内存卡读取文件
     private File file;
     //权限管理
     private ACACL acl;
@@ -396,6 +396,7 @@ public class ACFileInfo {
     }
 }
 ```
+>data与file二选其一上传数据，一同赋值情况下，以data为准
 
 ####ACDeviceFind
 说明：用来获取局域网本地设备，定义如下：
@@ -487,6 +488,7 @@ public class AC {
 	/**
      * 设备方案
      */
+    public static final int DEVICE_ANDROID = -1;
     public static final int DEVICE_MTK = 0;
     public static final int DEVICE_HF = 1;
     public static final int DEVICE_MX = 2;
@@ -551,6 +553,16 @@ public class AC {
      * @return	帐号管理器
      */
     public static ACAccountMgr accountMgr() {}
+
+    /**
+     * 获取设备激活器，用于获取激活的设备
+     * 此方法用于无需配网的设备，如安卓设备等，调用startAbleLink时SSID与Password传空即可
+     *
+     * @return 设备激活器
+     */
+    public static ACDeviceActivator deviceActivator() {
+        return new ACDeviceActivator();
+    }
     
 	/**
      * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
@@ -1448,7 +1460,7 @@ public interface ACTimerMgr {
      * @param msg         具体的消息内容
      * @param callback    返回结果的监听回调
      */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, VoidCallback callback);
+    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, PayloadCallback<ACTimerTask> callback);
 
     /**
      * 修改定时任务
@@ -2090,7 +2102,7 @@ public interface ACAccountMgr {
 
 ##2、设备管理
 
-```
+```java
 public interface ACBindMgr {
 
     /**
@@ -2100,7 +2112,7 @@ public interface ACBindMgr {
      */
     public void listDevices(PayloadCallback<List<ACUserDevice>> callback);
 
-     /**
+    /**
      * 获取接入设备的所有用户列表
      *
      * @param subDomain 子域名，如djj（豆浆机）
@@ -2205,7 +2217,7 @@ public interface ACBindMgr {
      */
 public void changeName(String subDomain, long deviceId, String name, VoidCallback callback);
 
-/**
+    /**
      * 设置设备自定义扩展属性
      *
      * @param deviceId      设备逻辑id
@@ -2227,37 +2239,18 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
    
 ##3、OTA
 
-
 ```java
 public interface ACOTAMgr {
 
     /**
-     * 查询蓝牙设备OTA发布版本
+     * 检查蓝牙设备OTA发布版本
+     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据oldVersion与newVersion是否相等判断有无更新
      *
      * @param subDomain 子域名，如djj（豆浆机）
+     * @param checkInfo 设备与OTA信息
      * @param callback  返回结果的监听回调
      */
-    public void bluetoothVersion(String subDomain, PayloadCallback<ACOTAUpgradeInfo> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件meta信息列表
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param version   蓝牙设备OTA版本
-     * @param callback  返回结果的监听回调
-     */
-    public void listFiles(String subDomain, String version, PayloadCallback<List<ACOTAFileMeta>> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param type      升级文件类型
-     * @param checksum  升级文件校验和
-     * @param version   升级文件版本号
-     * @param callback  返回结果的监听回调
-     */
-    public void bluetoothFile(String subDomain, int type, int checksum, String version, PayloadCallback<byte[]> callback);
+    public void checkBluetoothUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback<ACOTAUpgradeInfo> callback);
 }
 ```
 
@@ -2267,8 +2260,9 @@ public interface ACOTAMgr {
 
 ##5、和云端通信
 
-```
+```java
 public class AC {
+
     /**
      * 往某一服务发送命令/消息
      *
@@ -2340,9 +2334,12 @@ public interface ACFileMgr {
      */
     public void cancelUpload(ACFileInfo fileInfo);
 }
+```
 另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
+```java
 public class ACACL {
-   /**
+
+    /**
      * 设置全局可读访问权限，不设置则默认为所有人可读
      *
      * @param allow 是否全局可读
