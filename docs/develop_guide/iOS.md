@@ -35,23 +35,15 @@ Xcode下直接**Command + R**运行。
 ```
 开发阶段，请初始化**测试环境**
 ```objectivec
-<<<<<<< HEAD
-//开发环境:{TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区}
+//开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
 [ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
-=======
 //设置开发环境
 [ACloudLib setMode:TEST_MODE];
->>>>>>> bdd31d8c44c7f11c879c122f0b60cbd2157c5938
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
 ```objectivec
 [ACloudLib setMode:PRODUCTION_MODE];
 ```
-<<<<<<< HEAD
-
-
-=======
->>>>>>> bdd31d8c44c7f11c879c122f0b60cbd2157c5938
 
 #帐号管理
 
