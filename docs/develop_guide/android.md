@@ -2,7 +2,7 @@
 
 #开发环境配置
 ##SDK发布库
-ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.1.zip)
+ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.6.zip)
 
 
 ><font color="red">注意:</font>
@@ -24,7 +24,6 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
-**国内环境**
 开发阶段，请初始化**测试环境**
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
@@ -33,15 +32,16 @@ AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
-**国外环境**
-开发阶段，请初始化**测试环境**
+另外，若需要设置特殊的地域环境，则需调用
 ```java
-AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+/**
+ * 设置地域环境
+ *
+ * @param regional 地域 默认为AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA
+ */
+AC.setRegional(AC.REGIONAL_EAST_CHINA);
 ```
-在完成测试阶段之后，需要迁移到**正式环境**下
-```java
-AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
-```
+
 #帐号管理
 
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)

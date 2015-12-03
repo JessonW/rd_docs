@@ -288,7 +288,9 @@ ACBridgeWeChat::getDeviceQRCode是以JSON格式的字符串将第三方的数据
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// $xmlMsg是微信推送的完整XML消息内容。
+// $unionId是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+$user = $wxBridge->onEventSubscribe($xmlMsg, $unionId);
 // 其它处理逻辑
 ```
 方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，在AbleCloud平台上将该用户登记为开发者所提供服务的使用者。
@@ -385,7 +387,9 @@ $qrCode = $wxBridge->getDeviceQRCode($physicalId, $subDomain, FALSE);
 ```php
 // 实例化ACBridgeWeChat对象
 $wxBridge = new ACBridgeWeChat($accessToken, $jsTicket);
-$user = $wxBridge->onEventSubscribe($xmlMsg);  // $xmlMsg是微信推送的完整XML消息内容。
+// $xmlMsg是微信推送的完整XML消息内容。
+// $unionId是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+$user = $wxBridge->onEventSubscribe($xmlMsg, $unionId);
 // 其它处理逻辑
 ```
 方法ACBridgeWeChat::onEventSubscribe实现的主要功能是识别用户的OpenID，，在AbleCloud平台上将该用户登记为开发者的用户。

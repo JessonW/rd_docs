@@ -488,6 +488,7 @@ public class AC {
 	/**
      * 设备方案
      */
+    public static final int DEVICE_ANDROID = -1;
     public static final int DEVICE_MTK = 0;
     public static final int DEVICE_HF = 1;
     public static final int DEVICE_MX = 2;
@@ -552,6 +553,16 @@ public class AC {
      * @return	帐号管理器
      */
     public static ACAccountMgr accountMgr() {}
+
+    /**
+     * 获取设备激活器，用于获取激活的设备
+     * 此方法用于无需配网的设备，如安卓设备等，调用startAbleLink时SSID与Password传空即可
+     *
+     * @return 设备激活器
+     */
+    public static ACDeviceActivator deviceActivator() {
+        return new ACDeviceActivator();
+    }
     
 	/**
      * 获取设备激活器，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等

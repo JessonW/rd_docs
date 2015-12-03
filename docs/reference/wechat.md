@@ -66,9 +66,10 @@ class ACBridgeWeChat {
     /**
      * 微信推送消息：MsgType为"event"，Event为"subscribe"时的响应函数：将微信用户注册为开发者所提供服务的用户。
      * @param $xmlMsg 微信推送的原始XML消息内容。
+     * @param $unionId 字符串。是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
      * @return 操作成功时返回ACUser对象，表示新注册的用户信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function onEventSubscribe($xmlMsg);
+    public function onEventSubscribe($xmlMsg, $unionId = '');
     
     /**
      * 微信推送消息：MsgType为"event"，Event为"unsubscribe"时的响应函数：在AbleCloud平台中解除该用户与所有设备的绑定关系。
@@ -209,8 +210,9 @@ public class ACWeChatConfig extends ACConfig {
      * @param accessKey   开发者在AbleCloud平台上可用的密钥对中的Access Key。
      * @param secretKey   开发者在AbleCloud平台上可用的密钥对中的Secret Key。
      * @param routerUrl   AbleCloud云端服务的入口地址，如：http://test.ablecloud.cn:5000。
+     * @param runtimeMode 运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
      */
-    public ACWeChatConfig(String majorDomain, long developerId, String accessKey, String secretKey, String routerUrl);
+    public ACWeChatConfig(String majorDomain, long developerId, String accessKey, String secretKey, String routerUrl, String runtimeMode);
     
     /**
      * 取开发者帐号ID。
@@ -237,18 +239,10 @@ public class ACWeChatConfig extends ACConfig {
     public String getAuthSecretKey();
     
     /**
-     * 设置AbleCloud云端服务的入口地址。
-     * @param addrs 可以用英语逗号（,）分隔多个地址。如："192.168.0.1:5000"，或者"192.168.0.1:5000,192.168.0.2:5000"，
-     *              或者"http://192.168.0.1:5000"，或者"http://192.168.0.1:5000,https://192.168.0.2:5000"，或者"192.168.0.1:5000,https://192.168.0.2:5000"。
-     *              如果地址中没有指定协议（http或者https），则使用http协议。
+     * 取运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
+     * @return 返回运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
      */
-    public void setRouterAddr(String addrs);
-    
-    /**
-     * 取AbleCloud云端服务的入口地址。
-     * @return 返回的地址的格式是：http://host:port 或 https://host:port。
-     */
-    public String getRouterAddr();
+    public String getMode();
 }
 ```
 
@@ -302,10 +296,11 @@ public class ACBridgeWeChat {
     /**
      * 微信推送消息：MsgType为"event"，Event为"subscribe"时的响应函数：将微信用户注册为开发者所提供服务的用户。
      * @param fromUserName  微信推送的原始XML消息中子元素<FromUserName>的内容。
+     * @param unionId       对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
      * @return              操作成功时返回ACAccount对象，表示新注册的用户信息。
      * @throws Exception
      */
-    public ACAccount onEventSubscribe(String fromUserName) throws Exception;
+    public ACAccount onEventSubscribe(String fromUserName, String unionId) throws Exception;
     
     /**
      * 微信推送消息：MsgType为"event"，Event为"unsubscribe"时的响应函数：在AbleCloud平台中解除该用户与所有设备的绑定关系。

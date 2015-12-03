@@ -378,7 +378,7 @@ ACloudLib主要负责设置相关参数，如服务器地址（测试环境为te
 
 /**
  * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
- * @param deviceType 设备wifi模块类型
+ * @param wifiLinkerName 设备wifi模块类型
  * @return	设备激活器
  */
 ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@"wifi模块"];
