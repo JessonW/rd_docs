@@ -36,7 +36,7 @@ AbleCloud云平台的接入流程如下图所示
 
 产品开发完成，在test.ablecloud.cn的管理后台点击申请发布。AbleCloud后台将test环境的配置迁移到www.ablecloud.cn环境。
 
-开发者再在www环境进行相关配置后产品正式长线。
+开发者再在www环境进行相关配置后产品正式上线。
 
 
 

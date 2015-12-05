@@ -1464,9 +1464,6 @@ AC.findLocalDevice(1000, new PayloadCallback&lt;List&lt;ACDeviceFind&gt;&gt;() {
 <p><strong>"once":</strong>单次循环</p>
 </li>
 <li>
-<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
-</li>
-<li>
 <p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>
 </li>
 <li>
@@ -1498,8 +1495,8 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 });
 </code></pre>
 
-<pre><code class="java">//若为二进制或json格式，则msg需要先经过序列化器进行序列化
-timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback&lt;ACTimerTask&gt;() {
+<pre><code class="java">//msg为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback&lt;ACTimerTask&gt;() {
      @Override
      public void success(ACTimerTask task) {
          //成功添加定时任务，创建后默认为开启状态
