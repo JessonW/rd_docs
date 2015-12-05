@@ -469,7 +469,7 @@
 <p>#安卓客户端开发指导</p>
 <h1 id="_1">开发环境配置</h1>
 <h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.0.1.zip"><code>ac-service-android.jar</code></a></p>
+<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.0.6.zip"><code>ac-service-android.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
 <p>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下;若使用庆科MX模块，则需要添加MX文件夹下的jar包到libs目录下；其他模块由sdk内部集成</p>
@@ -487,8 +487,7 @@
 <h2 id="_3">应用程序初始化</h2>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承<code>Application</code>类，并且在<code>onCreate()</code>方法中调用此方法来进行初始化</p>
-<p><strong>国内环境</strong>
-开发阶段，请初始化<strong>测试环境</strong></p>
+<p>开发阶段，请初始化<strong>测试环境</strong></p>
 <pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 </code></pre>
 
@@ -496,13 +495,13 @@
 <pre><code class="java">AC.init(this, MajorDomain, MajorDomainId);
 </code></pre>
 
-<p><strong>国外环境</strong>
-开发阶段，请初始化<strong>测试环境</strong></p>
-<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
-</code></pre>
-
-<p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
-<pre><code class="java">AC.init(this, MajorDomain, MajorDomainId, AC.PRODUCTION_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
+<p>另外，若需要设置特殊的地域环境，则需调用</p>
+<pre><code class="java">/**
+ * 设置地域环境
+ *
+ * @param regional 地域 默认为AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA
+ */
+AC.setRegional(AC.REGIONAL_EAST_CHINA);
 </code></pre>
 
 <h1 id="_4">帐号管理</h1>

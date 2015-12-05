@@ -1136,8 +1136,6 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 
 >+ **"once":**单次循环
 
->+ **"min":**在每分钟的**`ss`**时间点循环执行
-
 >+ **"hour":**在每小时的**`mm:ss`**时间点循环执行
 
 >+ **"day":**在每天的**`HH:mm:ss`**时间点循环执行
@@ -1166,8 +1164,8 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```
 
 ```java
-//若为二进制或json格式，则msg需要先经过序列化器进行序列化
-timerMgr.addTask(deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback<ACTimerTask>() {
+//msg为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback<ACTimerTask>() {
      @Override
      public void success(ACTimerTask task) {
          //成功添加定时任务，创建后默认为开启状态

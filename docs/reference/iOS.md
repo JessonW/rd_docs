@@ -960,8 +960,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 
 >+ **"once":**单次循环
 
->+ **"min":**在每分钟的**`ss`**时间点循环执行
-
 >+ **"hour":**在每小时的**`mm:ss`**时间点循环执行
 
 >+ **"day":**在每天的**`HH:mm:ss`**时间点循环执行
@@ -982,7 +980,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
  * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1006,7 +1003,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
  * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1031,7 +1027,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param taskId      任务id
  * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1057,7 +1052,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param taskId      任务id
  * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
