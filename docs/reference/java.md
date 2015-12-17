@@ -2020,8 +2020,7 @@ public class ACTimerTask {
      * 设置任务的定时规则。
      *
      * @param timeCycle 任务的周期执行规则。
-     *                  once - 单次执行任务；
-     *                  min  - 每隔一分钟执行一次；
+     *                  once - 单次执行任务；；
      *                  hour - 每隔一小时执行一次；
      *                  day  - 每隔一天执行一次；
      *                  month - 每隔一个月执行一次；

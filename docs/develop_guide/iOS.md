@@ -863,8 +863,6 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 
 >+ **"once":**单次循环
 
->+ **"min":**在每分钟的**`ss`**时间点循环执行
-
 >+ **"hour":**在每小时的**`mm:ss`**时间点循环执行
 
 >+ **"day":**在每天的**`HH:mm:ss`**时间点循环执行
@@ -921,7 +919,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 
 ```
 
-
 ####删除定时任务
 ```objectivec
 [timerMgr deleteTaskWithDeviceId:self.upDeivceId taskId:ac.taskId callback:^(NSError *error){
@@ -932,7 +929,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
           }
 }];
 ```
-
 
 ####获取定时任务列表
 ```objectivec
@@ -948,8 +944,6 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
            }
 }];
 ```
-
-
 
 
 

@@ -1428,8 +1428,6 @@ public interface ACOTAMgr {
 
 >+ **"once":**单次循环
 
->+ **"min":**在每分钟的**`ss`**时间点循环执行
-
 >+ **"hour":**在每小时的**`mm:ss`**时间点循环执行
 
 >+ **"day":**在每天的**`HH:mm:ss`**时间点循环执行
@@ -1447,10 +1445,10 @@ public interface ACTimerMgr {
     /**
      * 创建定时任务
      *
+     * @param opType      定时任务类型，云端定时/设备定时，设备定时需要设备在线才能添加成功，云端定时无此限制
      * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
      * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
      * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
      *                    按小时重复：hour
      *                    按天重复：day
      *                    按月重复：month
@@ -1460,7 +1458,7 @@ public interface ACTimerMgr {
      * @param msg         具体的消息内容
      * @param callback    返回结果的监听回调
      */
-    public void addTask(long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, PayloadCallback<ACTimerTask> callback);
+    public void addTask(ACTimerTask.OP_TYPE opType, long deviceId, String timePoint, String timeCycle, String description, ACDeviceMsg msg, PayloadCallback<ACTimerTask> callback);
 
     /**
      * 修改定时任务
@@ -1469,7 +1467,6 @@ public interface ACTimerMgr {
      * @param taskId      任务id
      * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
      * @param timeCycle   单次定时任务：once
-     *                    循环定时任务：按分重复：min
      *                    按小时重复：hour
      *                    按天重复：day
      *                    按月重复：month
