@@ -1504,6 +1504,25 @@ public abstract class ACStore {
         public void execute() throws Exception;
     }
 
+    // 批量更新数据
+    public interface BatchUpdate {
+        // 设置第一个用于更新的条件过滤器，不允许重复调用
+        public BatchUpdate where(ACFilter filter);
+        // 追加设置一个条件过滤器，与之前过滤器的关系是“且”，必须在where之后调用
+        // 注意在追加过滤器时，and的优先级高于or
+        public BatchUpdate and(ACFilter filter);
+        // 追加设置一个条件过滤器，与之前过滤器的关系是“或”，必须在where之后调用
+        public BatchUpdate or(ACFilter filter);
+        // 将某一列设置为一个值，key为列名，value的类型与列的类型要匹配
+        public BatchUpdate set(String key, Object value);
+        // 将某一列加上一个值，key为列名，value的类型与列的类型要匹配，仅支持整数和符点数
+        public BatchUpdate inc(String key, Object value);
+        // 将某一列减去一个值，key为列名，value的类型与列的类型要匹配，仅支持整数和符点数
+        public BatchUpdate dec(String key, Object value);
+        // 该接口最终从ablecloud的存储服务中更新数据
+        public void execute() throws Exception;
+    }
+
     // 替换数据，和update的区别是，update只能更改已经存在的attributes，而
     // replace可以设置全新的attributes
     public interface Replace {
