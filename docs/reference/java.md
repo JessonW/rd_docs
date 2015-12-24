@@ -1859,8 +1859,30 @@ public class ACNotification {
 
     // 用户自定义数据
     private Map<String, String> userData;
+    
+    // 本地化自定义格式（用于多地域、多国语言推送功能）
+    private String locKey;
 
-    // 默认值
+    // 本地化自定义参数（用于多地域、多国语言推送功能）
+    private List<String> locArgs;
+
+    // 初始化
+    public ACNotification() {
+        this.displayType = NOTIFICATION;
+        this.title = "";
+        this.content = "";
+        this.vibrate = true;
+        this.lights = true;
+        this.sound = true;
+        this.openType = GO_APP;
+        this.url = "";
+        this.activity = "";
+        this.userData = new HashMap();
+        this.locKey = "";
+        this.locArgs = new ArrayList();
+    }
+    
+    // 初始化
     public ACNotification(String title, String content) {
         this.displayType = NOTIFICATION;
         this.title = title;
@@ -1872,10 +1894,34 @@ public class ACNotification {
         this.url = "";
         this.activity = "";
         this.userData = new HashMap();
+        this.locKey = "";
+        this.locArgs = new ArrayList();
     }
 ```
 ><font color=red>注意：</font>`title`跟`content`为必填项，其它为可选项。
 
+
+#短信服务接口
+该服务用于向当前注册用户发送短信消息。
+##获取方式
+```java
+ACSmsMgr smsMgr = ac.smsMgr(ac.newContext());
+```
+><font color="red">注意</font>：此处使用开发者上下文，即`ac.newContext()`。
+
+##接口说明
+```java
+public interface ACSmsMgr {
+    /**
+     * 向注册用户发送短信通知
+     * @param userList 用户Id列表, 每次最多发送给50名用户
+     * @param templateId 模版Id
+     * @param content 短信内容: 用于替换模板中{数字}，若有多个替换内容，用英文逗号隔开即可
+     * @throws Exception
+     */
+    public void sendSmsByUserList(List<Long> userList, int templateId, String content) throws Exception;
+}
+```
 
 #定时服务接口
 该服务用于定时向设备下发消息。
