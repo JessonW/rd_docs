@@ -960,6 +960,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 ## <span class="skip">||SKIP||</span>
 
 
+##普通设备OTA
 ![OTA](../pic/develop_guide/OTA.png)
 
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
@@ -974,7 +975,7 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 ```objectivec
 [ACOTAManager checkUpdateWithSubDomain:subDomain deviceId:deviceId callback:^(ACOTAUpgradeInfo *upgradeInfo, NSError *error) {
          if(error){
-          //返回失败信息，根据error做不同的提示或者处理
+          //返回失败信息，根据error.code做不同的提示或者处理
           }else{
            /*
             *ACOTAUpgradeInfo *upgradeInfo = [[ACOTAUpgradeInfo alloc] init];
@@ -989,12 +990,72 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
 ```objectivec
 [ACOTAManager confirmUpdateWithSubDomain:subDomain deviceId:deviceId newVersion:newVersion callback:^(NSError *error) {
           if(error){
-          //返回失败信息，根据error做不同的提示或者处理
+          //返回失败信息，根据error.code做不同的提示或者处理
           }else{
           //确认升级
          }
 }];
 ```
+##蓝牙设备OTA
+
+####一、获取OTA管理器对象
+```objectivec
+@interface ACOTAManager : NSObject
+```
+
+####二、查询OTA新版本信息
+```objectivec
+// 初当前设备的版本号ACOtaCheckInfo信息,version为蓝牙设备当前版本
+ACOTACheckInfo *checkInfo = [[ACOTACheckInfo alloc] init];
+checkInfo.physicalDeviceId = @"设备物理ID";
+checkInfo.version = @"蓝牙设备当前版本";
+[ACOTAManager checkBluetoothUpdateWithSubDomain:subDomain CheckInfo:checkInfo Callback:^(ACOTAUpgradeInfo *upgrateInfo, NSError *error) {
+    if (!error) {
+        if ([upgrateInfo isUpdate]) {
+             if (upgrateInfo.otaMode == 0) {
+              //静默升级
+              } else if（upgrateInfo.otaMode == 1） {
+              //用户确认升级
+              } else {
+              //强制升级
+              }
+        } else {
+        //没有可升级的新版本
+        }
+    } else {
+    //查询失败
+    }
+}];
+
+```
+
+####下载OTA文件
+```objectivec
+//获取文件管理器对象
+ACFileManager *fileMgr = [[ACFileManager alloc] init];
+
+//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件；ExpireTime:0代表url有效期为永久有效
+[fileMgr getDownloadUrlWithfile:[upgrateInfo.file objectAtIndex:0] ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error) {
+                 if (!error) {
+                          [fileMgr downFileWithsession:urlString callBack:^(float progress, NSError *error) {
+                                       if (!error) {
+                                          //下载进度
+                                        } else {
+                                         //下载失败，建议清理掉当前下载的不完整文件
+                                        }
+                                     } CompleteCallback:^(NSString *filePath) {
+                                       if (filePath) {
+                                        //下载成功文件所在沙盒路径
+                                        //下载成功，可以进行设备ota升级
+                                        //另升级成功后，建议在此清理已完成升级的版本文件
+                                    }
+                          }];
+                  } else {
+                  //获取URL失败，请查看error信息
+                  }
+}];
+```
+
 
 #推送
 
