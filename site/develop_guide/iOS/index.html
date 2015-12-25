@@ -485,18 +485,18 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </ol>
 <h4 id="_3">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化</p>
-<pre><code class="objectivec">//设置主域名和主域ID，REGIONAL_CHINA为国内环境，REGIONAL_SOUTHEAST_ASIA为东南亚环境
-[ACloudLib setMajorDomain:@&quot;主域名&quot; majorDomainId:majorDomainId Region:REGIONAL_CHINA];
+建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化</p>
+<pre><code class="objectivec">// MajorDomain:主域名  majorDomainId:主域ID
+[ACloudLib setMajorDomain:@&quot;主域名&quot; majorDomainId:majorDomainId ];
 </code></pre>
 
 <p>开发阶段，请初始化<strong>测试环境</strong></p>
-<pre><code class="objectivec">//设置开发环境
-[ACloudLib setMode:TEST_MODE];
+<pre><code class="objectivec">//开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
+[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
 </code></pre>
 
 <p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
-<pre><code class="objectivec">[ACloudLib setMode:PRODUCTION_MODE];
+<pre><code class="objectivec">[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
 </code></pre>
 
 <h1 id="_4">帐号管理</h1>
@@ -1202,9 +1202,6 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
-</li>
-<li>
-<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
 </li>
 <li>
 <p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>

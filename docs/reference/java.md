@@ -1504,6 +1504,25 @@ public abstract class ACStore {
         public void execute() throws Exception;
     }
 
+    // 批量更新数据
+    public interface BatchUpdate {
+        // 设置第一个用于更新的条件过滤器，不允许重复调用
+        public BatchUpdate where(ACFilter filter);
+        // 追加设置一个条件过滤器，与之前过滤器的关系是“且”，必须在where之后调用
+        // 注意在追加过滤器时，and的优先级高于or
+        public BatchUpdate and(ACFilter filter);
+        // 追加设置一个条件过滤器，与之前过滤器的关系是“或”，必须在where之后调用
+        public BatchUpdate or(ACFilter filter);
+        // 将某一列设置为一个值，key为列名，value的类型与列的类型要匹配
+        public BatchUpdate set(String key, Object value);
+        // 将某一列加上一个值，key为列名，value的类型与列的类型要匹配，仅支持整数和符点数
+        public BatchUpdate inc(String key, Object value);
+        // 将某一列减去一个值，key为列名，value的类型与列的类型要匹配，仅支持整数和符点数
+        public BatchUpdate dec(String key, Object value);
+        // 该接口最终从ablecloud的存储服务中更新数据
+        public void execute() throws Exception;
+    }
+
     // 替换数据，和update的区别是，update只能更改已经存在的attributes，而
     // replace可以设置全新的attributes
     public interface Replace {
@@ -1840,8 +1859,30 @@ public class ACNotification {
 
     // 用户自定义数据
     private Map<String, String> userData;
+    
+    // 本地化自定义格式（用于多地域、多国语言推送功能）
+    private String locKey;
 
-    // 默认值
+    // 本地化自定义参数（用于多地域、多国语言推送功能）
+    private List<String> locArgs;
+
+    // 初始化
+    public ACNotification() {
+        this.displayType = NOTIFICATION;
+        this.title = "";
+        this.content = "";
+        this.vibrate = true;
+        this.lights = true;
+        this.sound = true;
+        this.openType = GO_APP;
+        this.url = "";
+        this.activity = "";
+        this.userData = new HashMap();
+        this.locKey = "";
+        this.locArgs = new ArrayList();
+    }
+    
+    // 初始化
     public ACNotification(String title, String content) {
         this.displayType = NOTIFICATION;
         this.title = title;
@@ -1853,10 +1894,34 @@ public class ACNotification {
         this.url = "";
         this.activity = "";
         this.userData = new HashMap();
+        this.locKey = "";
+        this.locArgs = new ArrayList();
     }
 ```
 ><font color=red>注意：</font>`title`跟`content`为必填项，其它为可选项。
 
+
+#短信服务接口
+该服务用于向当前注册用户发送短信消息。
+##获取方式
+```java
+ACSmsMgr smsMgr = ac.smsMgr(ac.newContext());
+```
+><font color="red">注意</font>：此处使用开发者上下文，即`ac.newContext()`。
+
+##接口说明
+```java
+public interface ACSmsMgr {
+    /**
+     * 向注册用户发送短信通知
+     * @param userList 用户Id列表, 每次最多发送给50名用户
+     * @param templateId 模版Id
+     * @param content 短信内容: 用于替换模板中{数字}，若有多个替换内容，用英文逗号隔开即可
+     * @throws Exception
+     */
+    public void sendSmsByUserList(List<Long> userList, int templateId, String content) throws Exception;
+}
+```
 
 #定时服务接口
 该服务用于定时向设备下发消息。
@@ -2020,8 +2085,7 @@ public class ACTimerTask {
      * 设置任务的定时规则。
      *
      * @param timeCycle 任务的周期执行规则。
-     *                  once - 单次执行任务；
-     *                  min  - 每隔一分钟执行一次；
+     *                  once - 单次执行任务；；
      *                  hour - 每隔一小时执行一次；
      *                  day  - 每隔一天执行一次；
      *                  month - 每隔一个月执行一次；

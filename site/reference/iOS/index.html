@@ -788,7 +788,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 
 /**
  * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
- * @param deviceType 设备wifi模块类型
+ * @param wifiLinkerName 设备wifi模块类型
  * @return  设备激活器
  */
 ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@&quot;wifi模块&quot;];
@@ -1363,9 +1363,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <p><strong>"once":</strong>单次循环</p>
 </li>
 <li>
-<p><strong>"min":</strong>在每分钟的<strong><code>ss</code></strong>时间点循环执行</p>
-</li>
-<li>
 <p><strong>"hour":</strong>在每小时的<strong><code>mm:ss</code></strong>时间点循环执行</p>
 </li>
 <li>
@@ -1391,7 +1388,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
  * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1415,7 +1411,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
  * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1440,7 +1435,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  * @param taskId      任务id
  * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
@@ -1466,7 +1460,6 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  * @param taskId      任务id
  * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
  * @param timeCycle   单次定时任务：once
- *                    循环定时任务：按分重复：min
  *                    按小时重复：hour
  *                    按天重复：day
  *                    按月重复：month
