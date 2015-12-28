@@ -544,7 +544,7 @@ public class DemoService extends ACService {
         */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
-           ACDeviceMsg deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg);
+           ACDeviceMsg deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg, req.getContext().getUserId());
             // 获取控制开关结果【二进制通讯格式】
             byte result = (Byte) deviceRespMsg.getContent();
             /*
