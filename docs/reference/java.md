@@ -2285,7 +2285,7 @@ public class ACSigner {
      * @param subDomain   子域名
      * @param method      接口方法名(即ACMsg里对应的name)
      * @param timestamp   当前时间，单位秒
-     * @param timeout     签名有效期，单位毫秒
+     * @param timeout     签名有效期，单位秒
      * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,
