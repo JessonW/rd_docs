@@ -2249,7 +2249,7 @@ public class ACTimerTask {
      * 检查定时任务是使用云端定时还是使用设备端定时。
      * @return 返回0表示设备使用云端定时，返回1表示设备使用设备端定时。
      */
-    public void getTaskFlag() {
+    public long getTaskFlag() {
         if (this.taskFlag != 0)
             return 1;
         else
