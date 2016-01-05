@@ -1793,7 +1793,7 @@ public interface ACPushMgr {
  * @param timeout	发现本地设备的超时时间，单位毫秒
  * @param callback	返回结果的监听回调，返回设备列表
  */
-public static void findLocalDevice(int timeout, PaylodCallback<List<ACDevice>> callback) {}
+public static void findLocalDevice(int timeout, PaylodCallback<List<ACDeviceFind>> callback) {}
 ```
 **<font color="red">注</font>：具体使用步骤见[开发指导-->局域网通信](http://shumonluo.github.io/rd_docs/develop_guide/android/#_28)**
 

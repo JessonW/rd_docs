@@ -1052,7 +1052,7 @@ pushMgr.unwatch(table, new VoidCallback() {
 
 功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
 
-获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
+获取设备列表（在网络环境差或者没有外网的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
 ```java
 //获取设备列表
 public void getDeviceList() {
@@ -1076,36 +1076,65 @@ public void getDeviceList() {
     });
 }
 ```
-><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s，可以通过修改AC.FIND_DEVICE_DEFAULT_TIMEOUT时间从而提高获取局域网设备的准确性），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s，可以根据实际情况设置AC.INIT_APP_DEFAULT_TIMEOUT的值，建议为闪屏页的时间），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
 
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化并更新UI局域网状态
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换手机WiFi，或者设备掉线时，直连的状态需要发生改变，所以建议在设备页通过定时器定时更新局域网状态，具体可参照`ac-service-android-demo`的实现
 ```java
-//监听网络变化
-ACNetworkChangeReceiver.addEventHandler(new NetEventHandler() {
-    @Override
-    public void onNetChange() {
-        //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
-        getDeviceList();
-    }
-});
-```
-此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
-```java
-//当设备掉线或网络环境不稳定导致获取局域网显示状态不准确时，需要手动更新局域网状态；1000为发现的超时时间，单位毫秒
-AC.findLocalDevice(1000, new PayloadCallback<List<ACDeviceFind>>() {
-    @Override
-    public void success(List<ACDeviceFind> acDeviceFin****ds) {
-        //发现局域网设备，根据ACDeviceFind更新局域网在线状态或者重新获取设备列表
-        getDeviceList();
-    }
+public void refreshDeviceStatus() {
+    //更新局域网在线状态
+    AC.findLocalDevice(AC.FIND_DEVICE_DEFAULT_TIMEOUT, new PayloadCallback<List<ACDeviceFind>>() {
+        @Override
+        public void success(List<ACDeviceFind> deviceFinds) {
+            boolean isRefresh = false;
+            for (ACUserDevice device : adapter.deviceList) {
+                boolean isLocalOnline = false;
+                for (ACDeviceFind deviceFind : deviceFinds) {
+                    if (device.getPhysicalDeviceId().equals(deviceFind.getPhysicalDeviceId())) {
+                        isLocalOnline = true;
+                    }
+                }
+                if (isLocalOnline) {
+                    if (device.getStatus() == ACUserDevice.OFFLINE) {
+                        device.setStatus(ACUserDevice.LOCAL_ONLINE);
+                        isRefresh = true;
+                    } else if (device.getStatus() == ACUserDevice.NETWORK_ONLINE) {
+                        device.setStatus(ACUserDevice.BOTH_ONLINE);
+                        isRefresh = true;
+                    }
+                } else {
+                    if (device.getStatus() == ACUserDevice.LOCAL_ONLINE) {
+                        device.setStatus(ACUserDevice.OFFLINE);
+                        isRefresh = true;
+                    } else if (device.getStatus() == ACUserDevice.BOTH_ONLINE) {
+                        device.setStatus(ACUserDevice.NETWORK_ONLINE);
+                        isRefresh = true;
+                    }
+                }
+            }
+            if (isRefresh)
+                adapter.notifyDataSetChanged();
+        }
 
-    @Override
-    public void error(ACException e) {
-        //没有局域网设备，更新局域网在线状态或者重新获取设备列表
-        getDeviceList();
-    }
-});
+        @Override
+        public void error(ACException e) {
+            boolean isRefresh = false;
+            for (ACUserDevice device : adapter.deviceList) {
+                if (device.getStatus() == ACUserDevice.LOCAL_ONLINE) {
+                    device.setStatus(ACUserDevice.OFFLINE);
+                    isRefresh = true;
+                } else if (device.getStatus() == ACUserDevice.BOTH_ONLINE) {
+                    device.setStatus(ACUserDevice.NETWORK_ONLINE);
+                    isRefresh = true;
+                }
+            }
+            if (isRefresh)
+                adapter.notifyDataSetChanged();
+        }
+    });
+}
 ```
+><font color=red>注意</font>：使用定时器时需要使用handler将以上此方法post到主线程处理
+
 最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
 
 
