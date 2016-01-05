@@ -539,6 +539,19 @@ public class AC {
     								 ACMsg req, final PaylodCallback<ACMsg> callback) {}
 
     /**
+     * 往某一服务发送命令/消息(匿名访问)
+     *
+     * @param subDomain	服务所属子域名
+     * @param name    	服务名
+     * @param version 	服务版本
+     * @param req     	具体的消息内容
+     *
+     * @return 返回结果的监听回调，返回服务端的响应消息
+     */
+    public static void sendToServiceWithoutSign(String subDomain, String name, int version,
+    								 ACMsg req, final PaylodCallback<ACMsg> callback) {}
+
+    /**
  	 * 本地设备发现，通过广播方式和本局域网内的智能设备交互，并获取设备的相关信息返回。
  	 *
  	 * @param timeout	发现本地设备的超时时间，单位毫秒
