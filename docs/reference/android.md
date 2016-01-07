@@ -443,6 +443,31 @@ public class ACOTAUpgradeInfo {
 }
 ```
 
+####ACDeviceActive
+说明：用来获取OTA升级状态信息，定义如下：
+```java
+public class ACDeviceActive {
+    //设备物理ID
+    private String physicalDeviceId;
+    //设备版本号
+    private String deviceVersion;
+    //设备MAC地址
+    private String mac;
+    //设备通信模组版本，对于蓝牙设备和安卓设备，非必填
+    private String moduleVersion;
+    //设备地理位置信息，纬度，如果有设备定位需求
+    private Double latitude;
+    //设备地理位置信息，经度，如果有设备定位需求
+    private Double longitude;
+
+    public ACDeviceActive(String physicalDeviceId, String deviceVersion,String mac) {
+        this.physicalDeviceId = physicalDeviceId;
+        this.deviceVersion = deviceVersion;
+        this.mac = mac;
+    }
+}
+```
+
 ####ACException
 说明：用来表示所有错误信息，定义如下：
 ```java
@@ -2109,8 +2134,23 @@ public interface ACAccountMgr {
     public void getUserProfile(PayloadCallback<ACObject> callback);
 }
 ```
+##2、设备激活
 
-##2、设备管理
+```java
+public interface ACDeviceMgr {
+
+    /**
+     * 设备激活,如蓝牙设备每次连接到app时需要调用此接口
+     *
+     * @param subDomain    子域名，如djj（豆浆机）
+     * @param deviceActive 激活设备信息
+     * @param callback     返回结果的监听回调
+     */
+    public void activateDevice(String subDomain, ACDeviceActive deviceActive, VoidCallback callback);
+}
+```
+
+##3、设备管理
 
 ```java
 public interface ACBindMgr {
@@ -2247,7 +2287,7 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 }
 ```  
    
-##3、OTA
+##4、OTA
 
 ```java
 public interface ACOTAMgr {
@@ -2264,11 +2304,11 @@ public interface ACOTAMgr {
 }
 ```
 
-##4、消息推送
+##5、消息推送
 
 参考[开发指导-安卓-推送](../develop_guide/android/#_34)
 
-##5、和云端通信
+##6、和云端通信
 
 ```java
 public class AC {
@@ -2288,7 +2328,7 @@ public class AC {
 }
 ```
 
-##6、文件存储
+##7、文件存储
 文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 
