@@ -27,6 +27,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (NSArray *)getArray:(NSString *)name;
 - (BOOL)getBool:(NSString *)name;
 - (long)getLong:(NSString *)name;
+- (long long)getLongLong:(NSString *)name;
 - (NSInteger)getInteger:(NSString *)name;
 - (float)getFloat:(NSString *)name;
 - (double)getDouble:(NSString *)name;
@@ -42,6 +43,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)put:(NSString *)name value:(id)value;
 - (void)putBool:(NSString *)name value:(BOOL)value;
 - (void)putLong:(NSString *)name value:(long)value;
+- (void)putLongLong:(NSString *)name value:(long long)value;
 - (void)putInteger:(NSString *)name value:(NSInteger)value;
 - (void)putFloat:(NSString *)name value:(float)value;
 - (void)putDouble:(NSString *)name value:(double)value;
