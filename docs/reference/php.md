@@ -1885,6 +1885,7 @@ class ACTimerTask {
     public $deviceId;       // 整数，表示该任务要操作的设备的逻辑ID。
     public $messageCode;    // 整数，表示执行该任务时，要发送给设备的消息码。
     public $message;        // 以string对象存储的，将于执行该任务时发送给设备的二进制数据。
+    public $taskFlag;       // 整数，标记是使用云端定时还是使用设备端定时：0-云端定时（任务由云端定时器驱动）；1-设备端定时（任务由设备端的定时器驱动）。
 
     // 由云端分配的参数
     public $taskId;         // 整数，表示任务的ID。该ID由云端分配。

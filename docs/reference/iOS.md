@@ -1158,7 +1158,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 
 ```
 **<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
-###文件存储
+##文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 ```c
 /**
