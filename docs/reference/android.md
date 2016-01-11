@@ -619,6 +619,17 @@ public class AC {
     public static ACBindMgr bindMgr() {}
 
     /**
+     * 获取设备激活相关管理器。
+     *
+     * @return 设备管理器
+     */
+    public static ACDeviceMgr deviceMgr() {
+        if (deviceMgr == null)
+            deviceMgr = new ACDeviceManager();
+        return deviceMgr;
+    }
+
+    /**
      * 获取分组管理器
      * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
      *
@@ -2149,6 +2160,7 @@ public interface ACDeviceMgr {
     public void activateDevice(String subDomain, ACDeviceActive deviceActive, VoidCallback callback);
 }
 ```
+> 通过`AC.deviceMgr()`获取设备管理器
 
 ##3、设备管理
 
