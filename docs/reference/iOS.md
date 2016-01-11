@@ -301,8 +301,11 @@ ACDeviceMsg定义如下：
 @property (retain,nonatomic) ACACL  * acl;
 //文件存储的空间；自定义文件目录，如ota
 @property (copy,nonatomic) NSString * bucket;
-//文件是否公开 ———— 两个选择  私有文件类型private  公开文件类型public
-//@property (copy,nonatomic) NSString * bucketType;
+//crc校验使用
+@property (nonatomic,unsafe_unretained) NSInteger checksum;
+
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
+
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 
@@ -528,16 +531,26 @@ import "ACAccountManager.h"
 + (void)logout;
 
 /**
- *  三方注册
- */
+* 绑定第三方账号
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)registerWithOpenId:(NSString *)openId
                   provider:(NSString *)provider
                accessToken:(NSString *)accessToken
                   callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
- *  三方登陆
- */
+* 第三方账号登录
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)loginWithOpenId:(NSString *)openId
                provider:(NSString *)provider
             accessToken:(NSString *)accessToken
@@ -1185,7 +1198,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param payloadCallback    返回进度的监听回调
  * @param voidCallback    返回结果的监听回调
  */
--(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(NSString * key,float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
+-(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
 
 /**
  * //取消上传
