@@ -27,6 +27,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (NSArray *)getArray:(NSString *)name;
 - (BOOL)getBool:(NSString *)name;
 - (long)getLong:(NSString *)name;
+- (long long)getLongLong:(NSString *)name;
 - (NSInteger)getInteger:(NSString *)name;
 - (float)getFloat:(NSString *)name;
 - (double)getDouble:(NSString *)name;
@@ -42,6 +43,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)put:(NSString *)name value:(id)value;
 - (void)putBool:(NSString *)name value:(BOOL)value;
 - (void)putLong:(NSString *)name value:(long)value;
+- (void)putLongLong:(NSString *)name value:(long long)value;
 - (void)putInteger:(NSString *)name value:(NSInteger)value;
 - (void)putFloat:(NSString *)name value:(float)value;
 - (void)putDouble:(NSString *)name value:(double)value;
@@ -299,8 +301,11 @@ ACDeviceMsg定义如下：
 @property (retain,nonatomic) ACACL  * acl;
 //文件存储的空间；自定义文件目录，如ota
 @property (copy,nonatomic) NSString * bucket;
-//文件是否公开 ———— 两个选择  私有文件类型private  公开文件类型public
-//@property (copy,nonatomic) NSString * bucketType;
+//crc校验使用
+@property (nonatomic,unsafe_unretained) NSInteger checksum;
+
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
+
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 
@@ -526,16 +531,26 @@ import "ACAccountManager.h"
 + (void)logout;
 
 /**
- *  三方注册
- */
+* 绑定第三方账号
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)registerWithOpenId:(NSString *)openId
                   provider:(NSString *)provider
                accessToken:(NSString *)accessToken
                   callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
- *  三方登陆
- */
+* 第三方账号登录
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)loginWithOpenId:(NSString *)openId
                provider:(NSString *)provider
             accessToken:(NSString *)accessToken
@@ -1152,7 +1167,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 *  @param subDomainId 子域id
 *  @param callback    返回结果的回调
 */
--(void)findLocalDeviceTimeout:(NSInteger )timeout SudDomainId:(NSInteger)subDomainId callback:(void(^)(NSArray * deviceList,NSError * error))callback;
+-(void)findDeviceTimeout:(NSInteger )timeout SudDomainId:(NSInteger)subDomainId callback:(void(^)(NSArray * deviceList,NSError * error))callback;
 
 ```
 **<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
@@ -1183,7 +1198,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param payloadCallback    返回进度的监听回调
  * @param voidCallback    返回结果的监听回调
  */
--(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(NSString * key,float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
+-(void)uploadFileWithfileInfo:(ACFileInfo *)fileInfo progressCallback:(void(^)(float progress))progressCallback  voidCallback:(void(^)(ACMsg *responseObject,NSError * error))voidCallback;
 
 /**
  * //取消上传
@@ -1372,8 +1387,23 @@ import "ACAccountManager.h"
  */
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
 ```
+##2、设备激活
 
-##2、设备管理
+```objectc
+@interface ACDeviceManager : NSObject
+
+/**
+* 设备激活,如蓝牙设备每次连接到app时需要调用此接口
+*
+* @param subDomain    子域名，如djj（豆浆机）
+* @param deviceActive 激活设备信息
+* @param callback     返回结果的监听回调
+*/
++ (void)activateDeviceWithSubDomain:(NSString *)subDomain  DeviceActive:(ACDeviceActive *)deviceActive Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
+}
+```
+
+##3、设备管理
 
 ```c
 /**
@@ -1526,7 +1556,7 @@ import "ACAccountManager.h"
                               callback:(void (^) (ACObject*profile, NSError *error))callback;
 ```  
 
-##3、OTA
+##4、OTA
 
 
 ```c
@@ -1554,11 +1584,11 @@ import "ACAccountManager.h"
                           callback:(void (^)(NSData *fileData, NSError *error))callback;
 ```
 
-##4、消息推送
+##5、消息推送
 
 参考[开发指导-IOS-推送](../develop_guide/ios/#_34)
 
-##5、和云端通信
+##6、和云端通信
 ACServiceClient通信器
 
 ```c

@@ -804,9 +804,9 @@ table.primaryKey =primaryKey;
 
 }];
 ```
-><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s），用户可在自定义设置超时的timeout(建议为闪屏页的时间)，所以建议在启动app到打开设备列表页面之间根据实际情况增加一个闪屏页面。
 
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以需要监听网络环境变化，所以建议在设备页通过定时器定时更新局域网状态。
 ```objectivec
 [ACBindManager networkChangeHanderCallback:^(NSError *error) {
          if (!error) {
@@ -1218,10 +1218,14 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 //文件访问权限 如果不设置 则默认
 @property (retain,nonatomic) ACACL  * acl;
 
+//crc校验使用
+@property (nonatomic,unsafe_unretained) NSInteger checksum;
+
 //文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
 @property (copy,nonatomic) NSString * bucket;
 
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket Checksum:(NSInteger)checksum;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 ```
 ####2)、上传
@@ -1230,7 +1234,7 @@ ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@"3.jpg" bucket:@"jpg"]
 fileInfo.filePath = [self getPath];
 fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];
-[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)｛
+[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(float progress)｛
      if(error){
       //支持断点续传，所以此处若发生网络错误，会在网络恢复之后继续上传
      }else{
