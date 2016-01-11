@@ -388,6 +388,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_16">适用蓝牙的接口<span class="main-set parent__16">+</span></a>
@@ -398,23 +402,27 @@
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#2">2、设备管理</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#2">2、设备激活</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#3ota">3、OTA</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#3">3、设备管理</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#4">4、消息推送</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#4ota">4、OTA</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#5">5、和云端通信</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#5">5、消息推送</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#6">6、文件存储</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#6">6、和云端通信</a></li>
+            
+        
+            
+            <li class="sub parent__16" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
     
@@ -858,6 +866,30 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     }
 
     //getter
+}
+</code></pre>
+
+<h4 id="acdeviceactive">ACDeviceActive</h4>
+<p>说明：用来获取OTA升级状态信息，定义如下：</p>
+<pre><code class="java">public class ACDeviceActive {
+    //设备物理ID
+    private String physicalDeviceId;
+    //设备版本号
+    private String deviceVersion;
+    //设备MAC地址
+    private String mac;
+    //设备通信模组版本，对于蓝牙设备和安卓设备，非必填
+    private String moduleVersion;
+    //设备地理位置信息，纬度，如果有设备定位需求
+    private Double latitude;
+    //设备地理位置信息，经度，如果有设备定位需求
+    private Double longitude;
+
+    public ACDeviceActive(String physicalDeviceId, String deviceVersion,String mac) {
+        this.physicalDeviceId = physicalDeviceId;
+        this.deviceVersion = deviceVersion;
+        this.mac = mac;
+    }
 }
 </code></pre>
 
@@ -2504,7 +2536,21 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 }
 </code></pre>
 
-<h2 id="2">2、设备管理</h2>
+<h2 id="2">2、设备激活</h2>
+<pre><code class="java">public interface ACDeviceMgr {
+
+    /**
+     * 设备激活,如蓝牙设备每次连接到app时需要调用此接口
+     *
+     * @param subDomain    子域名，如djj（豆浆机）
+     * @param deviceActive 激活设备信息
+     * @param callback     返回结果的监听回调
+     */
+    public void activateDevice(String subDomain, ACDeviceActive deviceActive, VoidCallback callback);
+}
+</code></pre>
+
+<h2 id="3">3、设备管理</h2>
 <pre><code class="java">public interface ACBindMgr {
 
     /**
@@ -2639,7 +2685,7 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 }
 </code></pre>
 
-<h2 id="3ota">3、OTA</h2>
+<h2 id="4ota">4、OTA</h2>
 <pre><code class="java">public interface ACOTAMgr {
 
     /**
@@ -2654,9 +2700,9 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 }
 </code></pre>
 
-<h2 id="4">4、消息推送</h2>
+<h2 id="5">5、消息推送</h2>
 <p>参考<a href="../../develop_guide/android/#_34">开发指导-安卓-推送</a></p>
-<h2 id="5">5、和云端通信</h2>
+<h2 id="6">6、和云端通信</h2>
 <pre><code class="java">public class AC {
 
     /**
@@ -2674,7 +2720,7 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 }
 </code></pre>
 
-<h2 id="6">6、文件存储</h2>
+<h2 id="7">7、文件存储</h2>
 <p>文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
 <pre><code class="java">public interface ACFileMgr {
