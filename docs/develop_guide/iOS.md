@@ -1218,10 +1218,14 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 //文件访问权限 如果不设置 则默认
 @property (retain,nonatomic) ACACL  * acl;
 
+//crc校验使用
+@property (nonatomic,unsafe_unretained) NSInteger checksum;
+
 //文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
 @property (copy,nonatomic) NSString * bucket;
 
 -(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
+-(id)initWithName:(NSString *)name bucket:(NSString *)bucket Checksum:(NSInteger)checksum;
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 ```
 ####2)、上传
@@ -1230,7 +1234,7 @@ ACFileInfo * fileInfo = [[ACFileInfo alloc] initWithName:@"3.jpg" bucket:@"jpg"]
 fileInfo.filePath = [self getPath];
 fileInfo.acl = [[ACACL alloc] init];
 upManager = [[ACFileManager alloc] init];
-[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(NSString *key, float progress)｛
+[upManager uploadFileWithfileInfo:fileInfo progressCallback:^(float progress)｛
      if(error){
       //支持断点续传，所以此处若发生网络错误，会在网络恢复之后继续上传
      }else{
