@@ -623,11 +623,7 @@ public class AC {
      *
      * @return 设备管理器
      */
-    public static ACDeviceMgr deviceMgr() {
-        if (deviceMgr == null)
-            deviceMgr = new ACDeviceManager();
-        return deviceMgr;
-    }
+    public static ACDeviceMgr deviceMgr() {}
 
     /**
      * 获取分组管理器
