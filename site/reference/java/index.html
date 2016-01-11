@@ -468,17 +468,9 @@
                 
             
         
-            
-                
-            
-        
-            
-                
-            
-        
         
         <li class="main">
-            <a href="#_27">定时服务接口<span class="main-set parent__27">+</span></a>
+            <a href="#_27">短信服务接口<span class="main-set parent__27">+</span></a>
         </li>
         
             
@@ -489,12 +481,44 @@
             <li class="sub parent__27" style="display: none;"><a href="#_29">接口说明</a></li>
             
         
+    
+        
+        
             
-            <li class="sub parent__27" style="display: none;"><a href="#_30">单元测试接口说明</a></li>
+                
             
         
             
-            <li class="sub parent__27" style="display: none;"><a href="#_31">数据结构说明</a></li>
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_30">定时服务接口<span class="main-set parent__30">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__30" style="display: none;"><a href="#_31">获取方式</a></li>
+            
+        
+            
+            <li class="sub parent__30" style="display: none;"><a href="#_32">接口说明</a></li>
+            
+        
+            
+            <li class="sub parent__30" style="display: none;"><a href="#_33">单元测试接口说明</a></li>
+            
+        
+            
+            <li class="sub parent__30" style="display: none;"><a href="#_34">数据结构说明</a></li>
             
         
     
@@ -510,15 +534,15 @@
         
         
         <li class="main">
-            <a href="#_32">测试桩<span class="main-set parent__32">+</span></a>
+            <a href="#_35">测试桩<span class="main-set parent__35">+</span></a>
         </li>
         
             
-            <li class="sub parent__32" style="display: none;"><a href="#_33">设备桩</a></li>
+            <li class="sub parent__35" style="display: none;"><a href="#_36">设备桩</a></li>
             
         
             
-            <li class="sub parent__32" style="display: none;"><a href="#_34">服务桩</a></li>
+            <li class="sub parent__35" style="display: none;"><a href="#_37">服务桩</a></li>
             
         
     
@@ -530,11 +554,11 @@
         
         
         <li class="main">
-            <a href="#_35">附录<span class="main-set parent__35">+</span></a>
+            <a href="#_38">附录<span class="main-set parent__38">+</span></a>
         </li>
         
             
-            <li class="sub parent__35" style="display: none;"><a href="#_36">签名算法</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_39">签名算法</a></li>
             
         
     
@@ -2413,7 +2437,29 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     // 用户自定义数据
     private Map&lt;String, String&gt; userData;
 
-    // 默认值
+    // 本地化自定义格式（用于多地域、多国语言推送功能）
+    private String locKey;
+
+    // 本地化自定义参数（用于多地域、多国语言推送功能）
+    private List&lt;String&gt; locArgs;
+
+    // 初始化
+    public ACNotification() {
+        this.displayType = NOTIFICATION;
+        this.title = &quot;&quot;;
+        this.content = &quot;&quot;;
+        this.vibrate = true;
+        this.lights = true;
+        this.sound = true;
+        this.openType = GO_APP;
+        this.url = &quot;&quot;;
+        this.activity = &quot;&quot;;
+        this.userData = new HashMap();
+        this.locKey = &quot;&quot;;
+        this.locArgs = new ArrayList();
+    }
+
+    // 初始化
     public ACNotification(String title, String content) {
         this.displayType = NOTIFICATION;
         this.title = title;
@@ -2425,22 +2471,46 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
         this.url = &quot;&quot;;
         this.activity = &quot;&quot;;
         this.userData = new HashMap();
+        this.locKey = &quot;&quot;;
+        this.locArgs = new ArrayList();
     }
 </code></pre>
 
 <blockquote>
 <p><font color=red>注意：</font><code>title</code>跟<code>content</code>为必填项，其它为可选项。</p>
 </blockquote>
-<h1 id="_27">定时服务接口</h1>
-<p>该服务用于定时向设备下发消息。</p>
+<h1 id="_27">短信服务接口</h1>
+<p>该服务用于向当前注册用户发送短信消息。</p>
 <h2 id="_28">获取方式</h2>
+<pre><code class="java">ACSmsMgr smsMgr = ac.smsMgr(ac.newContext());
+</code></pre>
+
+<blockquote>
+<p><font color="red">注意</font>：此处使用开发者上下文，即<code>ac.newContext()</code>。</p>
+</blockquote>
+<h2 id="_29">接口说明</h2>
+<pre><code class="java">public interface ACSmsMgr {
+    /**
+     * 向注册用户发送短信通知
+     * @param userList 用户Id列表, 每次最多发送给50名用户
+     * @param templateId 模版Id
+     * @param content 短信内容: 用于替换模板中{数字}，若有多个替换内容，用英文逗号隔开即可
+     * @throws Exception
+     */
+    public void sendSmsByUserList(List&lt;Long&gt; userList, int templateId, String content) throws Exception;
+}
+</code></pre>
+
+<h1 id="_30">定时服务接口</h1>
+<p>该服务用于定时向设备下发消息。</p>
+<h2 id="_31">获取方式</h2>
 <pre><code class="java">ACTimerTaskMgr timerMgr = ac.timerTaskMgr(ACContext context);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处应该使用用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>。</p>
 </blockquote>
-<h2 id="_29">接口说明</h2>
+<h2 id="_32">接口说明</h2>
 <pre><code class="java">public interface ACTimerTaskMgr {
 
     /**
@@ -2500,7 +2570,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h2 id="_30">单元测试接口说明</h2>
+<h2 id="_33">单元测试接口说明</h2>
 <pre><code class="java">public interface ACTimerTaskMgrForTest {
 
     /**
@@ -2512,7 +2582,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h2 id="_31">数据结构说明</h2>
+<h2 id="_34">数据结构说明</h2>
 <pre><code class="java">public class ACTimerTask {
     private String name;            // 任务的名字。
     private String description;     // 该任务的描述信息。
@@ -2521,6 +2591,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     private long userId;            // 定义该任务的用户的ID。
     private long deviceId;          // 该任务要操作的设备的逻辑ID。
     private ACDeviceMsg devMsg;     // 执行该任务时，要发送给设备的消息。
+    private long taskFlag;          // 标记是使用云端定时还是设备端定时：0 - 云端定时；1 - 设备端定时。
 
     private long taskId;            // 任务的ID。由云端分配。
     private byte status;            // 任务的状态：0 - 已停止；1 - 已启动；2 - 已冻结。
@@ -2736,17 +2807,40 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     public String getModifyTime() {
         return this.modifyTime;
     }
+
+    /**
+     * 设置是使用云端定时还是使用设备端定时。
+     * @details 云端定时表示该任务由云端的定时器驱动；设备端定时表示该任务由设备端的定时器驱动。
+     * @param taskFlag 为0时表示使用云端定时，为其它值时表示使用设备端定时。
+     */
+    public void setTaskFlag(long taskFlag) {
+        if (taskFlag != 0)
+            this.taskFlag = 1;
+        else
+            this.taskFlag = 0;
+    }
+
+    /**
+     * 检查定时任务是使用云端定时还是使用设备端定时。
+     * @return 返回0表示设备使用云端定时，返回1表示设备使用设备端定时。
+     */
+    public long getTaskFlag() {
+        if (this.taskFlag != 0)
+            return 1;
+        else
+            return 0;
+    }
 }
 </code></pre>
 
-<h1 id="_32">测试桩</h1>
+<h1 id="_35">测试桩</h1>
 <p>在开发较大型项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游服务还在开发之中。此时不能等着下游完全就绪后才开始测试。上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
 开发者基于AbleCloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此AbleCloud的服务开发框架支持两类桩：</p>
 <ul>
 <li><strong>设备桩：</strong>模拟一个智能设备，对服务发过来的命令/消息做出响应。</li>
 <li><strong>服务桩：</strong>模拟一个服务，对当前服务发过来的消息做出响应。</li>
 </ul>
-<h2 id="_33">设备桩</h2>
+<h2 id="_36">设备桩</h2>
 <p>设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2754,7 +2848,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 }
 </code></pre>
 
-<h2 id="_34">服务桩</h2>
+<h2 id="_37">服务桩</h2>
 <p>服务桩的定义和真正的服务开发类似，开发者需要实现其中的<code>handleMsg(ACMsg req, ACMsg resp)</code>接口以模拟服务提供的功能。</p>
 <pre><code class="java">public abstract class ACServiceSub {
 
@@ -2772,8 +2866,8 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 <blockquote>
 <p><font color="red"><strong>注：</strong>无论是设备桩，还是服务桩，仅在测试（<strong>test</strong>）模式生效，正式生产（<strong>production</strong>）环境无效。</font></p>
 </blockquote>
-<h1 id="_35">附录</h1>
-<h2 id="_36">签名算法</h2>
+<h1 id="_38">附录</h1>
+<h2 id="_39">签名算法</h2>
 <pre><code class="java">public class ACSigner {
     private static final Logger logger = LoggerFactory.getLogger(ACSigner.class);
     private static final String ENCODING = &quot;UTF-8&quot;;
@@ -2787,7 +2881,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
      * @param subDomain   子域名
      * @param method      接口方法名(即ACMsg里对应的name)
      * @param timestamp   当前时间，单位秒
-     * @param timeout     签名有效期，单位毫秒
+     * @param timeout     签名有效期，单位秒
      * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,

@@ -116,7 +116,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
 + **AbleCloud SDK**
 
-	下载ablecloud-framework-1.1.0.zip。
+[点此下载](https://www.ablecloud.cn/download/SDK&Demo/ablecloud-framework-1.2.0.zip) AbleCloud云端服务开发框架
 
 ####Intellij
 1. **新建工程**
@@ -541,11 +541,10 @@ public class DemoService extends ACService {
         object.put(Scheme.KEY_ACTION, deviceAction);
         ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, object);
         ACDeviceMsg deviceRespMsg;
-        ACDeviceMsg deviceRespMsg;
         */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
-            deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg);
+           ACDeviceMsg deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg, req.getContext().getUserId());
             // 获取控制开关结果【二进制通讯格式】
             byte result = (Byte) deviceRespMsg.getContent();
             /*

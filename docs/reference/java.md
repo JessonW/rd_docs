@@ -2016,6 +2016,7 @@ public class ACTimerTask {
     private long userId;            // 定义该任务的用户的ID。
     private long deviceId;          // 该任务要操作的设备的逻辑ID。
     private ACDeviceMsg devMsg;     // 执行该任务时，要发送给设备的消息。
+    private long taskFlag;          // 标记是使用云端定时还是设备端定时：0 - 云端定时；1 - 设备端定时。
 
     private long taskId;            // 任务的ID。由云端分配。
     private byte status;            // 任务的状态：0 - 已停止；1 - 已启动；2 - 已冻结。
@@ -2231,6 +2232,29 @@ public class ACTimerTask {
     public String getModifyTime() {
         return this.modifyTime;
     }
+    
+    /**
+     * 设置是使用云端定时还是使用设备端定时。
+     * @details 云端定时表示该任务由云端的定时器驱动；设备端定时表示该任务由设备端的定时器驱动。
+     * @param taskFlag 为0时表示使用云端定时，为其它值时表示使用设备端定时。
+     */
+    public void setTaskFlag(long taskFlag) {
+        if (taskFlag != 0)
+            this.taskFlag = 1;
+        else
+            this.taskFlag = 0;
+    }
+
+    /**
+     * 检查定时任务是使用云端定时还是使用设备端定时。
+     * @return 返回0表示设备使用云端定时，返回1表示设备使用设备端定时。
+     */
+    public long getTaskFlag() {
+        if (this.taskFlag != 0)
+            return 1;
+        else
+            return 0;
+    }
 }
 ```
 
@@ -2285,7 +2309,7 @@ public class ACSigner {
      * @param subDomain   子域名
      * @param method      接口方法名(即ACMsg里对应的name)
      * @param timestamp   当前时间，单位秒
-     * @param timeout     签名有效期，单位毫秒
+     * @param timeout     签名有效期，单位秒
      * @param nonce       随机16位字符串
      */
     public static String genSignString(long developerId, String majorDomain,
