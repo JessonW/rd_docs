@@ -1041,6 +1041,17 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     public static ACBindMgr bindMgr() {}
 
     /**
+     * 获取设备激活相关管理器。
+     *
+     * @return 设备管理器
+     */
+    public static ACDeviceMgr deviceMgr() {
+        if (deviceMgr == null)
+            deviceMgr = new ACDeviceManager();
+        return deviceMgr;
+    }
+
+    /**
      * 获取分组管理器
      * 可以调用前面介绍的分组管理ACGroupMgr提供的各个通用接口
      *
@@ -2550,6 +2561,9 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 }
 </code></pre>
 
+<blockquote>
+<p>通过<code>AC.deviceMgr()</code>获取设备管理器</p>
+</blockquote>
 <h2 id="3">3、设备管理</h2>
 <pre><code class="java">public interface ACBindMgr {
 
