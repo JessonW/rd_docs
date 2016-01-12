@@ -2,7 +2,7 @@
 
 #开发环境配置
 ##SDK发布库
-ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.6.zip)
+ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.8.zip)
 
 
 ><font color="red">注意:</font>
@@ -743,10 +743,10 @@ ACKLVObject req = new ACKLVObject();
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACKLVDeviceMsg(Config.LIGHT_MSGCODE, req), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(Config.LIGHT_MSGCODE, req, "open light"), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
     @Override
-    public void success(ACKLVDeviceMsg deviceMsg) {
-        ACKLVObject resp = deviceMsg.getKLVObject();
+    public void success(ACDeviceMsg deviceMsg) {
+        ACKLVObject resp = (ACKLVObject)deviceMsg.getObject();
         //发送成功并接收设备的响应消息
         boolean result = resp.get(Config.KEY_RESULT);
         if(result) {
@@ -839,7 +839,7 @@ public class LightMsg {
 ```
 ```java
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON)), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), "open light"), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte resp = (byte) deviceMsg.getContent();
@@ -904,7 +904,7 @@ bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ACObject req = new ACObject();
 req.put("switch", 1);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req, "open light"), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACObject resp = (ACObject) deviceMsg.getContent();
@@ -1193,8 +1193,8 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 ```
 
 ```java
-//msg为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
-timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, msg, new PayloadCallback<ACTimerTask>() {
+//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
      @Override
      public void success(ACTimerTask task) {
          //成功添加定时任务，创建后默认为开启状态
