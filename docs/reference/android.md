@@ -162,6 +162,7 @@ ACDeviceMsg定义如下：
 public class ACDeviceMsg {
     private int code;			// 消息码，用于区分消息类型
     private Object content;		// 设备消息的具体内容
+    private String description; // 设备描述信息
 
     public ACDeviceMsg() {}
     public ACDeviceMsg(int code, Object content) {}
@@ -171,6 +172,8 @@ public class ACDeviceMsg {
     public void setContent(Object content) {}
     public void setKLVObject(ACKLVObject object) {}
     public ACKLVObject getKLVObject() {}
+    public String getDescription() {}
+    public void setDescription(String description) {}
 }
 ```
 
@@ -617,6 +620,13 @@ public class AC {
      * @return  绑定管理器
      */
     public static ACBindMgr bindMgr() {}
+
+    /**
+     * 获取设备激活相关管理器。
+     *
+     * @return 设备管理器
+     */
+    public static ACDeviceMgr deviceMgr() {}
 
     /**
      * 获取分组管理器
@@ -2149,6 +2159,7 @@ public interface ACDeviceMgr {
     public void activateDevice(String subDomain, ACDeviceActive deviceActive, VoidCallback callback);
 }
 ```
+> 通过`AC.deviceMgr()`获取设备管理器
 
 ##3、设备管理
 

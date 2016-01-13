@@ -4,7 +4,11 @@
     
     <url>
      <loc>None/introduction/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,13 +17,21 @@
         
     <url>
      <loc>None/features/concepts/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/features/functions/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
@@ -29,37 +41,61 @@
         
     <url>
      <loc>None/develop_guide/android/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/iOS/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/wechat/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/device/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/device_android/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/develop_guide/cloud/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
@@ -69,55 +105,91 @@
         
     <url>
      <loc>None/reference/android/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/iOS/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/wechat/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/device/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/device_android/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/cloud/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/php/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/java/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reference/error_code/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
         
@@ -126,7 +198,11 @@
     
     <url>
      <loc>None/QandA/</loc>
+<<<<<<< HEAD
      <lastmod>2016-01-11</lastmod>
+=======
+     <lastmod>2016-01-12</lastmod>
+>>>>>>> cca577b8161b457a61d7183e98fcff8414b8acc4
      <changefreq>daily</changefreq>
     </url>
     

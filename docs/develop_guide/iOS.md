@@ -804,9 +804,9 @@ table.primaryKey =primaryKey;
 
 }];
 ```
-><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为1s），所以建议在启动app到打开设备列表页面之间增加一个闪屏页面。
+><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s），用户可在自定义设置超时的timeout(建议为闪屏页的时间)，所以建议在启动app到打开设备列表页面之间根据实际情况增加一个闪屏页面。
 
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，直连的状态会发生改变，所以需要监听网络环境变化。
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以需要监听网络环境变化，所以建议在设备页通过定时器定时更新局域网状态。
 ```objectivec
 [ACBindManager networkChangeHanderCallback:^(NSError *error) {
          if (!error) {

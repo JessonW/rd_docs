@@ -1167,7 +1167,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 *  @param subDomainId 子域id
 *  @param callback    返回结果的回调
 */
--(void)findLocalDeviceTimeout:(NSInteger )timeout SudDomainId:(NSInteger)subDomainId callback:(void(^)(NSArray * deviceList,NSError * error))callback;
+-(void)findDeviceTimeout:(NSInteger )timeout SudDomainId:(NSInteger)subDomainId callback:(void(^)(NSArray * deviceList,NSError * error))callback;
 
 ```
 **<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
@@ -1387,8 +1387,23 @@ import "ACAccountManager.h"
  */
 + (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
 ```
+##2、设备激活
 
-##2、设备管理
+```objectc
+@interface ACDeviceManager : NSObject
+
+/**
+* 设备激活,如蓝牙设备每次连接到app时需要调用此接口
+*
+* @param subDomain    子域名，如djj（豆浆机）
+* @param deviceActive 激活设备信息
+* @param callback     返回结果的监听回调
+*/
++ (void)activateDeviceWithSubDomain:(NSString *)subDomain  DeviceActive:(ACDeviceActive *)deviceActive Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
+}
+```
+
+##3、设备管理
 
 ```c
 /**
@@ -1541,7 +1556,7 @@ import "ACAccountManager.h"
                               callback:(void (^) (ACObject*profile, NSError *error))callback;
 ```  
 
-##3、OTA
+##4、OTA
 
 
 ```c
@@ -1569,11 +1584,11 @@ import "ACAccountManager.h"
                           callback:(void (^)(NSData *fileData, NSError *error))callback;
 ```
 
-##4、消息推送
+##5、消息推送
 
 参考[开发指导-IOS-推送](../develop_guide/ios/#_34)
 
-##5、和云端通信
+##6、和云端通信
 ACServiceClient通信器
 
 ```c
