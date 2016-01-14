@@ -924,6 +924,8 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req, "op
 ```
 
 ##二、发送消息到服务
+
+####访问普通UDS服务
 <font color="red">注意</font>：serviceName对应服务管理里UDS服务里的**服务名称**，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为**主版本号**，比如1-0-0，则version为1。
 
 ```java
@@ -933,6 +935,25 @@ req.put("deviceId", deviceId);
 req.put("startTime", 0);
 req.put("endTime", System.currentTimeMillis());
 AC.sendToService(subDomain, serviceName, serviceVersion, req, new PayloadCallback<ACMsg>() {
+    @Override
+    public void success(ACMsg resp) {
+        //发送成功并接收服务的响应消息
+    }
+
+    @Override
+    public void error(ACException e) {
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为UDS云端问题，可到AbleCloud平台查看log日志
+    }
+});
+```
+####匿名访问UDS服务
+```java
+ACMsg req = new ACMsg();
+req.setName("queryData");
+req.put("deviceId", deviceId);
+req.put("startTime", 0);
+req.put("endTime", System.currentTimeMillis());
+AC.sendToServiceWithoutSign(subDomain, serviceName, serviceVersion, req, new PayloadCallback<ACMsg>() {
     @Override
     public void success(ACMsg resp) {
         //发送成功并接收服务的响应消息
