@@ -764,7 +764,7 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 
 <blockquote>
 <p>注：只有在发现本地局域网设备在线的情况下才能进行直连控制，sdk内部自动进行判断</p>
-<p>如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
+<p>如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findDevice(具体方法在ACLoud.h文件中有声明)重新获取ACLocalDevice的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）</p>
 </blockquote>
 <h4 id="acotaupgradeinfo">ACOTAUpgradeInfo</h4>
 <p>说明：用来获取OTA升级状态信息，定义如下：</p>
@@ -1767,16 +1767,26 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 + (void)logout;
 
 /**
- *  三方注册
- */
+* 绑定第三方账号
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)registerWithOpenId:(NSString *)openId
                   provider:(NSString *)provider
                accessToken:(NSString *)accessToken
                   callback:(void (^)(ACUserInfo *user, NSError *error))callback;
 
 /**
- *  三方登陆
- */
+* 第三方账号登录
+*
+* @param provider 第三方类型（如QQ、微信、微博）
+* @param openId        通过第三方登录获取的openId
+* @param accessToken   通过第三方登录获取的accessToken
+* @param callback      返回结果的监听回调
+*/
 + (void)loginWithOpenId:(NSString *)openId
                provider:(NSString *)provider
             accessToken:(NSString *)accessToken
@@ -2003,6 +2013,17 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
  * @throws Exception
  */
 - (void)sendToService:(ACMsg *)req callback:(void (^)(ACMsg *responseObject, NSError *error))callback;
+/**
+* 往某一服务发送命令/消息(匿名)
+*
+* @param subDomain      子域
+* @param serviceName    服务名
+* @param ServiceVersion 服务版本
+* @param req            具体的消息内容
+* @callback             服务端相应的消息
+*/
++ (void)sendToServiceWithoutSignWithSubDomain:(NSString *)subDomain ServiceName:(NSString *)serviceName ServiceVersion:(NSInteger)serviceVersion  Req:(ACMsg *)req Callback:(void(^)(ACMsg * responseMsg,NSError *error))callback ;
+
 </code></pre>
 
 <h2 id="6_1">6、文件存储</h2>
