@@ -664,18 +664,27 @@ class ACService {
 class ACUser {
     /**
      * 构造函数。
-     * @param $id 用户的ID。
-     * @param $token 用户的Token。
-     * @param $name 用户的显示名。字符串。
+     * @param $id		string	用户的ID。
+     * @param $token	string	用户的Token。
+     * @param $name		string	用户的显示名。字符串。
+     * @param $refreshToken				string	用于更新用户Token的Token。
+     * @param $tokenExpiration			string	用户Token的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @param $refreshTokenExpiration	string	用户的$refreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
      */
-    function __construct($id, $token, $name = '');
+    function __construct($id, $token, $name = '', $refreshToken = '', $tokenExpiration = '', $refreshTokenExpiration = '');
     
     /**
      * 取用户的ID。
      * @return 返回用户的ID。整数。
      */
     public function getId();
-    
+
+    /**
+     * 取用户的名字。
+     * @return 返回用户的名字。
+     */
+    public function getName();
+
     /**
      * 取用户的Token。
      * @return 返回用户的Token。字符串。
@@ -683,10 +692,36 @@ class ACUser {
     public function getToken();
     
     /**
-     * 取用户的名字。
-     * @return 返回用户的名字。
+     * 取Token的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @return string	Token的过期时间。
      */
-    public function getName();
+    public function getTokenExpiration();
+
+    /**
+     * 设置用户Token。
+     * @param $token			string	用户的Token。
+     * @param $tokenExpiration	string	用户的Token的过期时间：YYYY-MM-DD hh:mm:ss。
+     */
+    public function setToken($token, $tokenExpiration);
+
+    /**
+     * 取用于更新用户Token的Token。
+     * @return string	用于更新用户Token的Token。
+     */
+    public function getRefreshToken();
+
+    /**
+     * 取RefreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @return string	RefreshToken的过期时间。
+     */
+    public function getRefreshTokenExpiration();
+
+    /**
+     * 设置用于更新Token的Token。
+     * @param $refreshToken				string	用于更新Token的Token。
+     * @param $refreshTokenExpiration	string	RefreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
+     */
+    public function setRefreshToken($refreshToken, $refreshTokenExpiration);
 }
 ```
 
@@ -798,6 +833,13 @@ class ACAccountMgr extends ACService {
      * @return 操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
      */
     public function changePhone($user, $phone, $verifyCode, $password);
+
+    /**
+     * 更新用户的Token。
+     * @param $user	ACUser	要更新其Token的用户。操作成功后直接更新该对象保存的信息。
+     * @return		bool	返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
+     */
+    public function updateUserToken($user);
     
     /// @name 用户的扩展属性
     //@{
@@ -1563,6 +1605,12 @@ class ACStoreFilter {
     public static $GreaterOrEqual = 4;    /// 大于或等于
     public static $Less           = 5;    /// 小于
     public static $LessOrEqual    = 6;    /// 小于或等于
+    public static $Like           = 7;    /// SQL: like。不区分大小写。需要显示指定通配符'%'。
+    public static $NotLike        = 8;    /// SQL: not like。不区分大小写。需要显示指定通配符'%'。
+    public static $BinaryLike     = 9;    /// SQL: binary like。区分大小写。需要显示指定通配符'%'。
+    public static $BinaryNotLike  = 10;   /// SQL: binary not like。区分大小写。需要显示指定通配符'%'。
+    public static $In             = 11;   /// SQL: in
+    public static $NotIn          = 12;   /// SQL: not in
     //@}
 
     /**
@@ -1586,6 +1634,12 @@ class ACStoreFilter {
      * @return ACStoreFitler对象，是当前关联起来的查询条件的列表中处于末尾位置的ACStoreFilter对象。
      */
     public function orFilter($filter);
+    
+    /**
+     * 生成本对象的一个拷贝：仅复制数据列名、操作符，以及目标值。
+     * @return ACStoreFilter 是本对象的拷贝。
+     */
+    public function getCopy();
 
     public $columnName;        /// 查询所依赖的数据列。
     public $operator;          /// 查询的操作符。
@@ -1650,6 +1704,12 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function select(...$columnNames);
+
+    /**
+     * 清除要查询的目标列。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearSelection();
     
     /**
      * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
@@ -1680,6 +1740,12 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function orWhere($filter);
+
+    /**
+     * 清除查询条件。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearWhere();
     
     /**
      * 增加对查询结果进行排序的列及方式。
@@ -1688,6 +1754,12 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function addOrderBy($columnName, $asc);
+
+    /**
+     * 清除排序条件。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearOrderBy();
     
     /**
      * 设置查询结果集的分组数据列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
@@ -1695,13 +1767,32 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function groupBy(...$columnNames);
-    
+
+    /**
+     * 清除分组参数。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearGroupBy();
+
+    /**
+     * 设置置扫描的offset，默认为0。
+     * @param $number 非负整数。
+     * @return 本ACStoreScanner对象。
+     */
+    public function offset($number);
+
     /**
      * 设置查询结果集的最大记录数。
      * @param $number 非负整数，指定查询结果集中的最大记录数。如果为0,表示不限制查询结果集的大小。
      * @return 本ACStoreScanner对象。
      */
     public function limit($number);
+
+    /**
+     * 清除Offset及Limit参数。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearOffsetAndLimit();
     
     /**
      * 添加聚集函数COUNT()为查询结果列。
@@ -1743,6 +1834,12 @@ class ACStoreScanner {
      *  - 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
      */
     public function execute();
+
+    /**
+     * 清除Aggregate参数。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearAggregates();
     
     /**
      * 设置访问ACStore服务的参数。
@@ -1765,6 +1862,156 @@ class ACStoreScanner {
      * @return 返回一个关联数组，代表存储服务的scanParam参数。
      */
     public function toScanParam();
+}
+```
+
+##ACStoreBatchDelete##
+
+```php
+/**
+ * AbleCloud数据存储服务的批量删除工具。
+ */
+class ACStoreBatchDelete extends ACService {
+	/**
+     * 构造函数。
+     * @param $name 数据存储服务的名字。
+	 * @param $version 数据存储服务的版本。
+	 * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $className 字符串。要操作的数据集的名字。
+     * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     */
+    function __construct($name, $version, $context, $className, $entityGroupKeyValues = NULL);
+
+    /**
+     * 取要操作的数据集的名字。
+     * @return 要操作的数据集的名字。
+     */
+    public function getClassName();
+
+    /**
+     * 设置删除条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有删除条件。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示删除条件。
+     * @return 本ACStoreBatchDelete对象。
+     */
+    public function where($filter);
+
+    /**
+     * 以逻辑“与”的关系添加一个删除条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreBatchDelete::where方法之后再调用。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的删除条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreScanner对象。
+     */
+    public function andWhere($filter);
+
+    /**
+     * 以逻辑“或”的关系添加一个删除条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreBatchDelete::where方法之后再调用。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的删除条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreScanner对象。
+     */
+    public function orWhere($filter);
+
+    /**
+     * 清除删除条件。
+     * @return 本ACStoreScanner对象。
+     */
+    public function clearWhere();
+
+    /**
+     * 执行删除操作。
+     * @return 返回TRUE或FALSE。返回FALSE表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
+##ACStoreBatchUpdate##
+
+```php
+/**
+ * AbleCloud数据存储服务的批量更新工具。
+ */
+class ACStoreBatchUpdate extends ACService {
+	/**
+     * 构造函数。
+     * @param $name 数据存储服务的名字。
+	 * @param $version 数据存储服务的版本。
+	 * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $className 字符串。要操作的数据集的名字。
+     * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     */
+    function __construct($name, $version, $context, $className, $entityGroupKeyValues = NULL);
+
+    /**
+     * 取要操作的数据集的名字。
+     * @return 要操作的数据集的名字。
+     */
+    public function getClassName();
+
+    /**
+     * 设置更新条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有删除条件。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示删除条件。
+     * @return 本ACStoreBatchDelete对象。
+     */
+    public function where($filter);
+
+    /**
+     * 以逻辑“与”的关系添加一个更新条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreBatchDelete::where方法之后再调用。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的更新条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function andWhere($filter);
+
+    /**
+     * 以逻辑“或”的关系添加一个更新条件或条件的组合。
+     * @details 该方法应该在调用了ACStoreBatchDelete::where方法之后再调用。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的更新条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function orWhere($filter);
+
+    /**
+     * 清除更新条件。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function clearWhere();
+
+    /**
+     * 将某一列设置为一个值。
+     * @param $column string 是列名。如果之前设置过该列，则之前设置的值会被覆盖。
+     * @param $value  mixed	 是值，其类型与列的类型要匹配。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function set($column, $value);
+
+    /**
+     * 将某一列加上一个值。
+     * @param $column string 是列名。如果之前设置过该列，则之前设置的值会被覆盖。
+     * @param $value  mixed	 是值，其类型与列的类型要匹配。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function inc($column, $value);
+
+    /**
+     * 将某一列减去一个值。
+     * @param $column string 是列名。如果之前设置过该列，则之前设置的值会被覆盖。
+     * @param $value  mixed	 是值，其类型与列的类型要匹配。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function dec($column, $value);
+
+    /**
+     * 清除更新值。
+     * @return 本ACStoreBatchUpdate对象。
+     */
+    public function clearColumns();
+
+    /**
+     * 执行更新操作。
+     * @return 返回TRUE或FALSE。返回FALSE表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
 }
 ```
 
@@ -1857,6 +2104,22 @@ class ACStore extends ACService {
      * @return 返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
      */
     public function scanExt($name, $entityGroupKeyValues = NULL);
+
+	/**
+	 * 批量删除数据。
+	 * @param $name 字符串。要被操作的数据集的名字。
+	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+	 * @return 返回一个ACStoreBatchDelete对象，以便于设置删除参数，执行操作。
+	 */
+	public function batchDelete($name, $entityGroupKeyValues = NULL);
+
+	/**
+	 * 批量更新数据。
+	 * @param $name 字符串。要被操作的数据集的名字。
+	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+	 * @return 返回一个ACStoreBatchUpdate对象，以便于设置更新参数，执行操作。
+	 */
+	public function batchUpdate($name, $entityGroupKeyValues = NULL);
 }
 ```
 
