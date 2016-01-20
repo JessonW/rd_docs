@@ -668,8 +668,8 @@ class ACUser {
      * @param $token	string	用户的Token。
      * @param $name		string	用户的显示名。字符串。
      * @param $refreshToken				string	用于更新用户Token的Token。
-     * @param $tokenExpiration			string	用户Token的过期时间：YYYY-MM-DD hh:mm:ss。
-     * @param $refreshTokenExpiration	string	用户的$refreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @param $tokenExpiration			string	用户Token的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
+     * @param $refreshTokenExpiration	string	用户的$refreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      */
     function __construct($id, $token, $name = '', $refreshToken = '', $tokenExpiration = '', $refreshTokenExpiration = '');
     
@@ -692,15 +692,15 @@ class ACUser {
     public function getToken();
     
     /**
-     * 取Token的过期时间：YYYY-MM-DD hh:mm:ss。
-     * @return string	Token的过期时间。
+     * 取Token的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。
+     * @return string	Token的过期时间。空字符串表示不过期。
      */
     public function getTokenExpiration();
 
     /**
      * 设置用户Token。
      * @param $token			string	用户的Token。
-     * @param $tokenExpiration	string	用户的Token的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @param $tokenExpiration	string	用户的Token的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      */
     public function setToken($token, $tokenExpiration);
 
@@ -711,15 +711,15 @@ class ACUser {
     public function getRefreshToken();
 
     /**
-     * 取RefreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
-     * @return string	RefreshToken的过期时间。
+     * 取RefreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。
+     * @return string	RefreshToken的过期时间。空字符串表示不过期。
      */
     public function getRefreshTokenExpiration();
 
     /**
      * 设置用于更新Token的Token。
      * @param $refreshToken				string	用于更新Token的Token。
-     * @param $refreshTokenExpiration	string	RefreshToken的过期时间：YYYY-MM-DD hh:mm:ss。
+     * @param $refreshTokenExpiration	string	RefreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      */
     public function setRefreshToken($refreshToken, $refreshTokenExpiration);
 }
@@ -757,25 +757,28 @@ class ACAccountMgr extends ACService {
      * @param $phone 字符串。新用户的手机号码。$email与$phone不能都为空字符串。
      * @param $password 字符串。新用户的登录密码。
      * @param $verifyCode 字符串。注册新用户时所使用的验证码。
+     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
      * @return 用户注册成功时返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function register($name, $email, $phone, $password, $verifyCode);
+    public function register($name, $email, $phone, $password, $verifyCode, $enableTokenExpiration = FALSE);
     
     /**
      * 按登录名和密码登录，取用户的信息。
      * @param $login 用户的登录名。
      * @param $password 用户登录密码。
+     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
      * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function login($login, $password);
+    public function login($login, $password, $enableTokenExpiration = FALSE);
     
     /**
      * 按登录名和密码取用户的信息。
      * @param $login 用户的登录名。
      * @param $password 用户登录密码。
+     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
      * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function getUser($login, $password);
+    public function getUser($login, $password, $enableTokenExpiration = FALSE);
     
     /**
      * 检查帐号是否已经存在。
@@ -793,18 +796,20 @@ class ACAccountMgr extends ACService {
      * @param $openId 第三方帐号的OpenID。
      * @param $provider 第三方帐号的来源。如"weixin"。
      * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
      * @return 注册成功后返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function registerByOpenId($openId, $provider, $unionId = '');
+    public function registerByOpenId($openId, $provider, $unionId = '', $enableTokenExpiration = FALSE);
     
     /**
      * 按OpenID和帐号来源取用户的信息。
      * @param $openId 用户的OpenID。
      * @param $provider 用户的来源。如"weixin"等。
      * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。
+     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
      * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
-    public function getUserByOpenId($openId, $provider, $unionId = '');
+    public function getUserByOpenId($openId, $provider, $unionId = '', $enableTokenExpiration = FALSE);
     
     /**
      * 获取用户在第三方平台上的OpenID。
