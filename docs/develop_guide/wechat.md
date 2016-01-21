@@ -32,7 +32,7 @@
 
 **设备授权**
 
-在销售或使用设备之前需要在微信硬件平台完成设备授权（请参考[微信硬件平台-设备授权](http://iot.weixin.qq.com/document-2_6.html)），也需要在AbleCloud平台完成设备入库。下图是在微信硬件平台设备授权接口的使用说明。
+在销售或使用设备之前需要在微信硬件平台完成设备授权（请参考[微信硬件平台-设备授权](http://iot.weixin.qq.com/wiki/document-2_6.html)），也需要在AbleCloud平台完成设备入库。下图是在微信硬件平台设备授权接口的使用说明。
 
 ![](../pic/develop_guide/weixin_author_device.png)
 
@@ -54,7 +54,7 @@
 
 **设备的二维码**
 
-为了方便用户绑定、使用WiFi设备，厂商需要使用“[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/document-2_5.html)”提供的接口，创建AbleCloud要求的具有长度为16个字节的物理ID的设备二维码。
+为了方便用户绑定、使用WiFi设备，厂商需要使用“[微信硬件平台-获取设备二维码](http://iot.weixin.qq.com/wiki/document-2_5.html)”提供的接口，创建AbleCloud要求的具有长度为16个字节的物理ID的设备二维码。
 
 ### (4) 配置微信公众号菜单 ###
 
