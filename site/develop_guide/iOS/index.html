@@ -1057,6 +1057,7 @@ msg.payload = [req marshal];
 </code></pre>
 
 <h2 id="_25">二、发送消息到服务</h2>
+<h4 id="uds">访问普通UDS服务</h4>
 <p><font color="red">注意</font>：serviceName对应服务管理里UDS服务里的<strong>服务名称</strong>，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为<strong>主版本号</strong>，比如1-0-0，则version为1。</p>
 <pre><code class="objectivec">ACMsg * msg = [[ACMsg alloc] init];
 msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]];
@@ -1066,7 +1067,23 @@ msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]]
 ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInfo getHost] service:[CommonInfo getServiceName] version:1];
 [serviceClient sendToService:msg callback:^(ACMsg *responseObject, NSError *error)
 {
-         callback(responseObject,error);
+            if (!error) {
+            //发送成功并接受服务的响应消息
+            } else {
+            //网络错误或其他,根据error.code作出不同提示和处理,此处一般为UDS云端问题,可到AbleCloud平台查看log日志
+            }
+}];
+</code></pre>
+
+<h4 id="uds_1">匿名访问UDS服务</h4>
+<pre><code class="objectivec">ACMsg *msg = [[ACMsg alloc]init];
+msg.name = @&quot;自定义&quot;;
++[ACServiceClient sendToServiceWithoutSignWithSubDomain:@&quot;子域&quot; ServiceName:@&quot;服务名字&quot; ServiceVersion:1 Req:req Callback:^(ACMsg *responseMsg, NSError *error) {
+            if (!error) {
+            //发送成功并接收服务的响应消息
+            } else {
+            //网络错误或其他,根据error.code作出不同提示和处理,此处一般为UDS云端问题,可到AbleCloud平台查看log日志
+            }
 }];
 </code></pre>
 
@@ -1170,18 +1187,10 @@ table.primaryKey =primaryKey;
 <blockquote>
 <p><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s），用户可在自定义设置超时的timeout(建议为闪屏页的时间)，所以建议在启动app到打开设备列表页面之间根据实际情况增加一个闪屏页面。</p>
 </blockquote>
-<p>因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以需要监听网络环境变化，所以建议在设备页通过定时器定时更新局域网状态。</p>
-<pre><code class="objectivec">[ACBindManager networkChangeHanderCallback:^(NSError *error) {
-         if (!error) {
-         //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
-
-         }
-}];
-</code></pre>
-
-<p>此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。</p>
-<pre><code class="objectivec">ACloud * cloud = [[ACloud alloc]init];
-[cloud findLocalDeviceTimeout:1000 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
+<p>因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以建议在设备页通过定时器手动定时更新局域网状态。</p>
+<pre><code class="objectivec">//手动调用局域网发现 subDomainId:子域ID(传0即可) timeout:(根据实际需求自定义设置)
+ACloud * cloud = [[ACloud alloc]init];
+[cloud findDeviceTimeout:3 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
          if (!error) {
          //发现局域网设备,根据更新局域网在线状态或者重新获取设备列表
           }else{
@@ -1190,6 +1199,10 @@ table.primaryKey =primaryKey;
 }];
 </code></pre>
 
+<blockquote>
+<p><font color=red>注意</font>：使用定时器时建议放于主线程处理
+最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
+</blockquote>
 <h1 id="_28">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>

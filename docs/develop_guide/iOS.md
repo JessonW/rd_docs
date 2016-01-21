@@ -679,7 +679,10 @@ msg.payload = [req marshal];
 
 
 ##二、发送消息到服务
+
+####访问普通UDS服务
 <font color="red">注意</font>：serviceName对应服务管理里UDS服务里的**服务名称**，务必保持一致。进入版本管理之后，查看已上线版本。serviceVersion为**主版本号**，比如1-0-0，则version为1。
+
 ```objectivec
 ACMsg * msg = [[ACMsg alloc] init];
 msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]];
@@ -689,9 +692,27 @@ msg.context = [ACContext generateContextWithSubDomain:[CommonInfo getSubDomain]]
 ACServiceClient *serviceClient = [[ACServiceClient alloc]initWithHost:[CommonInfo getHost] service:[CommonInfo getServiceName] version:1];
 [serviceClient sendToService:msg callback:^(ACMsg *responseObject, NSError *error)
 {
-         callback(responseObject,error);
+            if (!error) {
+            //发送成功并接受服务的响应消息
+            } else {
+            //网络错误或其他,根据error.code作出不同提示和处理,此处一般为UDS云端问题,可到AbleCloud平台查看log日志
+            }
 }];
 ```
+####匿名访问UDS服务
+
+```objectivec
+ACMsg *msg = [[ACMsg alloc]init];
+msg.name = @"自定义";
++[ACServiceClient sendToServiceWithoutSignWithSubDomain:@"子域" ServiceName:@"服务名字" ServiceVersion:1 Req:req Callback:^(ACMsg *responseMsg, NSError *error) {
+            if (!error) {
+            //发送成功并接收服务的响应消息
+            } else {
+            //网络错误或其他,根据error.code作出不同提示和处理,此处一般为UDS云端问题,可到AbleCloud平台查看log日志
+            }
+}];
+```
+
 ##三、实时消息
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。
@@ -806,19 +827,11 @@ table.primaryKey =primaryKey;
 ```
 ><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s），用户可在自定义设置超时的timeout(建议为闪屏页的时间)，所以建议在启动app到打开设备列表页面之间根据实际情况增加一个闪屏页面。
 
-因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以需要监听网络环境变化，所以建议在设备页通过定时器定时更新局域网状态。
+因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以建议在设备页通过定时器手动定时更新局域网状态。
 ```objectivec
-[ACBindManager networkChangeHanderCallback:^(NSError *error) {
-         if (!error) {
-         //当手机网络环境变化时，根据具体需求更新界面上的局域网状态或者不做处理或者重新获取设备列表
-         
-         }
-}];
-```
-此外，由于网络环境较差或其他原因，使得在获取直连设备时有可能会超时丢包导致更新失败，所以若需要准确实时的获取局域网状态，则需要增加手动刷新局域网状态的功能。
-```objectivec
+//手动调用局域网发现 subDomainId:子域ID(传0即可) timeout:(根据实际需求自定义设置)
 ACloud * cloud = [[ACloud alloc]init];
-[cloud findLocalDeviceTimeout:1000 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
+[cloud findDeviceTimeout:3 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
          if (!error) {
          //发现局域网设备,根据更新局域网在线状态或者重新获取设备列表
           }else{
@@ -826,6 +839,9 @@ ACloud * cloud = [[ACloud alloc]init];
           }
 }];
 ```
+><font color=red>注意</font>：使用定时器时建议放于主线程处理
+最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
+
 
 #定时任务
 

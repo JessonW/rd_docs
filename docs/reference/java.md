@@ -735,6 +735,13 @@ public interface ACAccountMgr {
      * @throws Exception
      */
     public void changePhone(long accountId, String phone, String verifyCode, String password) throws Exception;
+    
+    /**
+     * 更新用户的Token.
+     * @param account       要更新其Token的用户。操作成功时直接修改该对象保存的信息。
+     * @throws Exception
+     */
+    public void updateUserToken(ACAccount account) throws Exception;
 }
 ```
 
