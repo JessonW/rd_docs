@@ -556,7 +556,7 @@ public class AC {
     /**
      * 往某一服务发送命令/消息
      *
-     * @param subDomain	服务所属子域名
+     * @param subDomain	服务所属子域名，subDomain传空字符串时即代表往Domain级别的UDS服务发送消息
      * @param name    	服务名
      * @param version 	服务版本
      * @param req     	具体的消息内容
@@ -569,7 +569,7 @@ public class AC {
     /**
      * 往某一服务发送命令/消息(匿名访问)
      *
-     * @param subDomain	服务所属子域名
+     * @param subDomain	服务所属子域名，subDomain传空字符串时即代表往Domain级别的UDS服务发送消息
      * @param name    	服务名
      * @param version 	服务版本
      * @param req     	具体的消息内容
