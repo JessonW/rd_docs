@@ -1215,7 +1215,7 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 
 ```java
 //new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
-timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
+timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
      @Override
      public void success(ACTimerTask task) {
          //成功添加定时任务，创建后默认为开启状态

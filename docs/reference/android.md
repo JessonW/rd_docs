@@ -471,6 +471,31 @@ public class ACDeviceActive {
 }
 ```
 
+####ACDevice
+说明：获取设备激活的相关信息，定义如下：
+```java
+public class ACDevice {
+    //设备IP地址
+    private String ip;
+    //设备固件版本
+    private String deviceVersion;
+    //设备通信模组版本
+    private String moduleVersion;
+    //设备激活时间，格式yyyy-MM-dd HH:mm:ss
+    private String activeTime;
+    //设备最后上线时间，格式yyyy-MM-dd HH:mm:ss
+    private String lastOnlineTime;
+    //设备地理位置，国家
+    private String country;
+    //设备地理位置，省
+    private String province;
+    //设备地理位置，地区
+    private String city;
+
+    public ACDevice() {}
+}
+```
+
 ####ACException
 说明：用来表示所有错误信息，定义如下：
 ```java
@@ -921,6 +946,19 @@ public class ACDeviceBind {
 ```
 >通过以上`ACDeviceActivator`提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定
 
+成功激活设备之后，即可以通过调用以下接口获取设备激活相关信息，其中包括设备IP地址、设备固件版本、设备通信模组版本、设备激活时间、设备最后上线时间、设备地理位置国家/省/地区等。
+```java
+public interface ACDeviceMgr {
+    /**
+     * 设备激活查询接口
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备物理ID
+     * @param callback         返回结果的监听回调
+     */
+    public void getDeviceInfo(String subDomain, String physicalDeviceId, final PayloadCallback<ACDevice> callback);
+}
+```
 
 
 ##设备管理( 独立和网关型）
