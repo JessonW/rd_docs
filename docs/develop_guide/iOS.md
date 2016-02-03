@@ -156,101 +156,7 @@ Xcode下直接**Command + R**运行。
             }
 }];
 ```
-##Home模型
 
-功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
-
-
-创建Home，然后绑定WiFi设备的建议流程如下图：
-
-![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
-
-创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：
-
-![DM_home_gprs](../pic/develop_guide/DM_home_gprs.png)
-
-创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：
-
-![DM_home_gateway_wifi](../pic/develop_guide/DM_home_gateway_wifi.png)
-
-创建Home，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：
-
-![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
-
-
-###一、创建Home
-
- 
-####1、创建Home
-```objc
-[ACGroupManager createHomeWithName:name callback:^(ACHome *home, NSError *error) {
-        if (!error) {
-            //成功创建一个home模型
-        } else {
-            //错误处理
-        }
-    }];
-```
-
-
-####2、创建Room
-
-```objc
-    [ACGroupManager createRoomWithHomeId:homeId name:name callback:^(ACRoom *room, NSError *error) {
-        if (!error) {
-            //成功穿件一个room模型
-        } else {
-            //错误处理
-        }
-    }];
-```
-
-###二、添加或移动设备到Home里
-
-><font color="red">特别注意</font>：
-
->1、添加设备到Home的流程与独立设备和网关型设备的绑定流程相同，均要求设备是已经激活（在线）的状态。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。
-
->2、不能跨home移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
-
-####添加设备到Home里
-创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
-```objc
-    //旧设备
-    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain deviceId:deviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
-        if (!error) {
-            if (isSuccess) {
-                //添加设备成功
-            }
-        } else {
-            //错误处理
-        }
-    }];
-    //新设备
-    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain physicalDeviceId: physicalDeviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
-        if (!error) {
-            if (isSuccess) {
-                //添加设备成功
-            }
-        } else {
-            //错误处理
-        }
-    }];
-```
-
-####移动设备到Room里
-```objc
-[ACGroupManager moveDeviceToRoomWithDeviceId:devideId homeId:homeId roomId:roomId callback:^(BOOL isSuccess, NSError *error) {
-        if (!error) {
-            if (isSuccess) {
-                //移动设备成功
-            }
-        } else {
-            //错误处理
-        }
-    }];
-```
-<font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。
 
 
 ##三、添加帐号扩展属性
@@ -566,6 +472,101 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 1. 子设备subdomain填写错误
 2. 子设备和网关的连接断开了
 
+##Home模型
+
+功能介绍参见 [功能说明-功能介绍-设备管理](../features/functions.md#_2)
+
+
+创建Home，然后绑定WiFi设备的建议流程如下图：
+
+![DM_home_wifi](../pic/develop_guide/DM_home_wifi.png)
+
+创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：
+
+![DM_home_gprs](../pic/develop_guide/DM_home_gprs.png)
+
+创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：
+
+![DM_home_gateway_wifi](../pic/develop_guide/DM_home_gateway_wifi.png)
+
+创建Home，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：
+
+![DM_home_gateway_wired](../pic/develop_guide/DM_home_gateway_wired.png)
+
+
+###一、创建Home
+
+ 
+####1、创建Home
+```objc
+[ACGroupManager createHomeWithName:name callback:^(ACHome *home, NSError *error) {
+        if (!error) {
+            //成功创建一个home模型
+        } else {
+            //错误处理
+        }
+    }];
+```
+
+
+####2、创建Room
+
+```objc
+    [ACGroupManager createRoomWithHomeId:homeId name:name callback:^(ACRoom *room, NSError *error) {
+        if (!error) {
+            //成功穿件一个room模型
+        } else {
+            //错误处理
+        }
+    }];
+```
+
+###二、添加或移动设备到Home里
+
+><font color="red">特别注意</font>：
+
+>1、添加设备到Home的流程与独立设备和网关型设备的绑定流程相同，均要求设备是已经激活（在线）的状态。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。
+
+>2、不能跨home移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。
+
+####添加设备到Home里
+创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
+```objc
+    //旧设备
+    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain deviceId:deviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //添加设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+    //新设备
+    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain physicalDeviceId: physicalDeviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //添加设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+```
+
+####移动设备到Room里
+```objc
+[ACGroupManager moveDeviceToRoomWithDeviceId:devideId homeId:homeId roomId:roomId callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //移动设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+```
+<font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。
 
 ##设备扩展属性
 
