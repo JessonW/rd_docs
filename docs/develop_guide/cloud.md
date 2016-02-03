@@ -728,6 +728,8 @@ public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
 
 1. **定时规则**：定义任务的执行时间。
 
+    AbleCloud支持Crontab格式的时间定义（详见：[Crontab定时规则](../reference/cloud.md#crontab)）。
+
 1. **定时任务可执行程序**
 
 其中，定时规则是由开发者在AbleCloud控制台中创建定时任务时设置。本小结介绍的示例是开发定时任务的可执行程序。

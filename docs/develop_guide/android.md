@@ -46,6 +46,7 @@ AC.setRegional(AC.REGIONAL_EAST_CHINA);
 
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
+用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的错误码进行单独处理，返回登录页让用户重新登录。
 ##一、普通帐号注册
 
 ![account_register](../pic/develop_guide/account_register.png)
@@ -1215,7 +1216,7 @@ AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
 
 ```java
 //new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
-timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, description, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
+timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
      @Override
      public void success(ACTimerTask task) {
          //成功添加定时任务，创建后默认为开启状态
