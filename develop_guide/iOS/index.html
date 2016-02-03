@@ -264,6 +264,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_4">帐号管理<span class="main-set parent__4">+</span></a>
@@ -275,6 +279,10 @@
         
             
             <li class="sub parent__4" style="display: none;"><a href="#_8">二、第三方登录</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#home">Home模型</a></li>
             
         
             
@@ -613,6 +621,80 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 }];
 </code></pre>
 
+<h2 id="home">Home模型</h2>
+<p>功能介绍参见 <a href="../../features/functions/#_2">功能说明-功能介绍-设备管理</a></p>
+<p>创建Home，然后绑定WiFi设备的建议流程如下图：</p>
+<p><img alt="DM_home_wifi" src="../../pic/develop_guide/DM_home_wifi.png" /></p>
+<p>创建Home，然后绑定以太网或者GPRS设备的建议流程如下图：</p>
+<p><img alt="DM_home_gprs" src="../../pic/develop_guide/DM_home_gprs.png" /></p>
+<p>创建Home，然后绑定WiFi网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
+<p><img alt="DM_home_gateway_wifi" src="../../pic/develop_guide/DM_home_gateway_wifi.png" /></p>
+<p>创建Home，然后绑定以太网网关，再向网关添加Zigbee子设备的建议流程如下图：</p>
+<p><img alt="DM_home_gateway_wired" src="../../pic/develop_guide/DM_home_gateway_wired.png" /></p>
+<h3 id="home_1">一、创建Home</h3>
+<h4 id="1home">1、创建Home</h4>
+<pre><code class="objc">[ACGroupManager createHomeWithName:name callback:^(ACHome *home, NSError *error) {
+        if (!error) {
+            //成功创建一个home模型
+        } else {
+            //错误处理
+        }
+    }];
+</code></pre>
+
+<h4 id="2room">2、创建Room</h4>
+<pre><code class="objc">    [ACGroupManager createRoomWithHomeId:homeId name:name callback:^(ACRoom *room, NSError *error) {
+        if (!error) {
+            //成功穿件一个room模型
+        } else {
+            //错误处理
+        }
+    }];
+</code></pre>
+
+<h3 id="home_2">二、添加或移动设备到Home里</h3>
+<blockquote>
+<p><font color="red">特别注意</font>：</p>
+<p>1、添加设备到Home的流程与独立设备和网关型设备的绑定流程相同，均要求设备是已经激活（在线）的状态。建议独立设备在激活设备之后通过addDeviceToHome直接添加设备到home里；GPRS设备或以太网网关则直接使用addDeviceToHome添加设备。</p>
+<p>2、不能跨home移动设备。比如独立设备要移到room里，则需要先把它移动到home，再移动到room，不允许直接移动设备到room里。</p>
+</blockquote>
+<h4 id="home_3">添加设备到Home里</h4>
+<p>创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。</p>
+<pre><code class="objc">    //旧设备
+    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain deviceId:deviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //添加设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+    //新设备
+    [ACGroupManager addDeviceToHomeWithSubDomain:subDomain physicalDeviceId: physicalDeviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //添加设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+</code></pre>
+
+<h4 id="room">移动设备到Room里</h4>
+<pre><code class="objc">[ACGroupManager moveDeviceToRoomWithDeviceId:devideId homeId:homeId roomId:roomId callback:^(BOOL isSuccess, NSError *error) {
+        if (!error) {
+            if (isSuccess) {
+                //移动设备成功
+            }
+        } else {
+            //错误处理
+        }
+    }];
+</code></pre>
+
+<p><font color-"red">注:</font>若出现错误，请检查该Room和Deivce是否在同一Home下。</p>
 <h2 id="_9">三、添加帐号扩展属性</h2>
 <p>使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性</p>
 <h4 id="1_2">1、使用类</h4>
@@ -665,7 +747,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 
 <blockquote>
 <p><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>。</p>
+目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>、<code>esptouch</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="objectivec">NSString * ssid = [ACWifilinkManager getCurrentSSID];
@@ -798,7 +880,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <p><font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>。</p>
+目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>、<code>esptouch</code>。</p>
 <h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
 <pre><code class="objectivec">NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
 </code></pre>
