@@ -212,121 +212,81 @@
     
         
         
-            
-        
         
         <li class="main active">
-            <a href="#_1">云平台功能相关</a>
+            <a href="#ablecloud">AbleCloud 常见问题解决方法</a>
         </li>
         
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#1-app">1. APP开发<span class="main-set parent_1-app">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_1-app" style="display: none;"><a href="#11-sdk">1.1   SDK配置</a></li>
+            
+        
+            
+            <li class="sub parent_1-app" style="display: none;"><a href="#12">1.2   基础框架</a></li>
             
         
     
         
         
             
+                
+            
+        
+            
+                
+            
         
         
         <li class="main">
-            <a href="#app">APP开发相关</a>
+            <a href="#2-uds">2. UDS、后台服务、云对接开发<span class="main-set parent_2-uds">+</span></a>
         </li>
         
+            
+            <li class="sub parent_2-uds" style="display: none;"><a href="#21">2.1   基础框架</a></li>
+            
+        
+            
+            <li class="sub parent_2-uds" style="display: none;"><a href="#22">2.2   消息推送</a></li>
             
         
     
         
         
             
-        
-        
-        <li class="main">
-            <a href="#_2">设备联网相关</a>
-        </li>
-        
+                
             
         
-    
-        
-        
+            
+                
             
         
         
         <li class="main">
-            <a href="#_4">设备管理/使用相关</a>
+            <a href="#3">3. 设备端开发<span class="main-set parent_3">+</span></a>
         </li>
         
             
-        
-    
-        
-        
+            <li class="sub parent_3" style="display: none;"><a href="#31">3.1   联网模块</a></li>
             
         
-        
-        <li class="main">
-            <a href="#home">Home模型相关</a>
-        </li>
-        
             
-        
-    
-        
-        
-            
-        
-        
-        <li class="main">
-            <a href="#ota">OTA相关</a>
-        </li>
-        
-            
-        
-    
-        
-        
-            
-        
-        
-        <li class="main">
-            <a href="#_8">云端服务相关</a>
-        </li>
-        
-            
-        
-    
-        
-        
-            
-        
-        
-        <li class="main">
-            <a href="#_9">微信相关</a>
-        </li>
-        
-            
-        
-    
-        
-        
-            
-        
-        
-        <li class="main">
-            <a href="#_10">管理后台使用相关</a>
-        </li>
-        
-            
-        
-    
-        
-        
-            
-        
-        
-        <li class="main">
-            <a href="#_12">设备生产相关</a>
-        </li>
-        
+            <li class="sub parent_3" style="display: none;"><a href="#32-mcu">3.2   MCU</a></li>
             
         
     
@@ -334,12 +294,98 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">云平台功能相关</h1>
-<h2 id="skip"><span class="skip">||SKIP||</span></h2>
-<h4 id="ablecloud">问：AbleCloud现在支持模块类型有哪些？</h4>
-<p>答：网关型设备、wifi设备、蜂窝网络设备、以太网设备</p>
-<h4 id="ablecloudwifi">问：AbleCloud现在支持WIFI模块有哪些？</h4>
-<p>答：</p>
+<h1 id="ablecloud">AbleCloud 常见问题解决方法</h1>
+<h1 id="1-app">1. APP开发</h1>
+<h2 id="11-sdk">1.1   SDK配置</h2>
+<h3 id="111-androiduidtoken">1.1.1    Android端uid和token怎么获取与保存？</h3>
+<pre><code class="java">PreferencesUtils.putLong(AC.context, ACConfiguration.KEY_USERID, uid); 
+
+PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
+</code></pre>
+
+<h3 id="112-iosuidtoken">1.1.2    iOS端uid和token怎么获取与保存？</h3>
+<pre><code class="objectivec">@interface ACKeyChain : NSObject 
+    /*** 保存用户ID ***/ 
+    (void)saveUserId:(NSNumber *)userId;
+
+    /*** 获取用户ID ***/
+    (NSNumber *)getUserId; 
+
+    /*** 删除当前用户的id ***/ 
+    (void)removeUserId; 
+
+    /*** 保存以后 Token ***/ 
+    (void)saveToken:(NSString *)token; 
+
+    /*** 获取用户 Token ***/ 
+    (NSString *)getToken; 
+
+    /*** 删除当前用户的token ***/ 
+    (void)removeToken; 
+</code></pre>
+
+<h2 id="12">1.2   基础框架</h2>
+<h3 id="121-app">1.2.1 APP提示签名失败是什么原因？</h3>
+<ol>
+<li>APP的本地时间不正确，导致签名超时，服务器是UTC时间。</li>
+<li>用户未登录</li>
+</ol>
+<h3 id="123">1.2.3 推送失败可能的原因是什么？</h3>
+<ol>
+<li>在AbleCloud平台配置的IOS证书，一定要和APP中打包的一样，否则会导致推送成功，但是APP收不到消息。</li>
+<li>请检查在AbleCloud平台配置的KEY是否和友盟申请的一致。</li>
+<li>通过友盟平台以Alias的方式推送APP能收到，但通过AbleCloud推送APP不能收到，请判断一下Alias是否和AbleCloud的UID相同。</li>
+<li>IOS开发期间只能通过开发证书测试，切勿用生产证书的AD-HOC模式测试。</li>
+<li>有问题可以通过查看inform和router模块的日志进一步查询问题。</li>
+<li>4003 iOS推送错误，没有有效的iOS设备。</li>
+</ol>
+<p>意思是没有找到与UID对应的设备，可能的原因如下：
+<em> a.这个UID无效
+</em> b.设备对应的证书有问题
+<em> c.友盟上传的证书有问题
+</em> d.AbleCloud配置的KEY存在问题。</p>
+<h1 id="2-uds">2. UDS、后台服务、云对接开发</h1>
+<h2 id="21">2.1   基础框架</h2>
+<h3 id="211-udsdockerlog">2.1.1    UDS重启崩溃，如何查看docker中的LOG。</h3>
+<p>在任意路径下输入docker ps –a（目前测试环境有3台机器，UDS随机运行在其中一台，需要一台台看，UDS具体运行在哪一台），出现下图LOG</p>
+<p><img alt="log1" src="../pic/QandA/log1.png" /></p>
+<p>第一个红框为容器的ID，需要进入容器中才能看到UDS运行的LOG。</p>
+<p>第二个红框为退出的时间，只能查看在10秒以内退出容器LOG，超过10秒容器自动销毁，所以输入速度一定要很快。如果发现退出时间已经超过4秒了，那么基本可以放弃查询，继续运行docker ps –a命令，直到找到退出时间在3秒以内的记录。</p>
+<p>第三个红框中的209为domainID，217为subdomainID。</p>
+<p>接着输入命令：docker logs 18f3c3599d7e（这条指令需要在8秒内执行完，因为第二个红框显示已经在2秒前退出了）</p>
+<p>18f3c3599d7e就是第一个红框的容器ID。下图为查询到的LOG。</p>
+<p><img alt="log2" src="../pic/QandA/log2.png" /></p>
+<p>docker inspect 18f3c3599d7e（容器ID），这条命令是查看UDS所在容器的一些启动参数，最后面是UDS的存储路径和控制台显示的LOG的路径。</p>
+<h2 id="22">2.2   消息推送</h2>
+<h3 id="221">2.2.1    多国语言推送实现</h3>
+<p>需求：用户在不同地区（国家）使用时，推送能够按照用户手机配置的语言来显示内容。</p>
+<p>实现方案：</p>
+<ul>
+<li>
+<p>iOS系统：提供loc-key/loc-args参数来实现多语言消息模版功能</p>
+<p>基本原理：app本身知道当前手机设置的语言类型，app接收到推送后，根据在app中内置的模版变量来显示对应的内容</p>
+<p>限制：因苹果apns提供来多语言方案，ios推送消息不支持app接收到消息进行解析后再显示，而是将接收到的消息直接显示。</p>
+</li>
+<li>
+<p>安卓系统：没有限制，loc-key放到userData自定义字段中即可，目前实现成类似ios的方案，在app中内置变量模版</p>
+</li>
+<li>
+<p>uds接口： 在Notification结构中增加setLocKey和putLocArgs方法，设置模版变量</p>
+</li>
+<li>
+<p>后台接口：之前实现的ios推送限制了只能发送content内容，现增加支持loc-key/loc-args参数的json结构，发送给友盟推送。</p>
+</li>
+</ul>
+<h3 id="222">2.2.2    推送流程</h3>
+<ol>
+<li>在友盟平台添加应用，然后获得相应的KEY</li>
+<li>通过友盟平台进行推送测试，查看APP能否收到。</li>
+<li>然后在AbleCloud平台进行配置，之后在通过友盟平台用Alias的方式推送测试。</li>
+<li>上述步骤通过，接着可以在AbleCloud平台进行推送测试。</li>
+</ol>
+<h1 id="3">3. 设备端开发</h1>
+<h2 id="31">3.1   联网模块</h2>
+<h4 id="311-ablecloudwifi">3.1.1 AbleCloud支持的WiFi模块有哪些？</h4>
 <p>对于市面上常见的WiFi模块，AbleCloud都进行了适配，已经完成适配的WiFi模块见下表：</p>
 <table>
 <thead>
@@ -497,141 +543,123 @@
 </tr>
 </tbody>
 </table>
-<p>对于AbleCloud还没有进行适配的模块，AbleCloud提供上层交互所需要的SDK，厂商自己将下层驱动更改一下即可完成适配工作。</p>
-<p>对于蜂窝网络和以太网设备，AbleCloud同样提供开发需要的SDk，厂商只需要更改和设备相关的下层驱动 即可完成适配。</p>
-<p>对于安装Android、Linux、Windows、Mico操作系统的设备，AbleCloud已完成操作系统的适配。</p>
-<h4 id="ablecloudandroidlinux">问：AbleCloud支持ANDROID和LINUX操作系统设备吗？</h4>
-<p>安卓设备已经支持，Linux设备正在内侧中</p>
-<h1 id="app">APP开发相关</h1>
-<h2 id="skip_1"><span class="skip">||SKIP||</span></h2>
-<h4 id="androiduidtoken">问：Android端uid和token怎么获取与保存？</h4>
-<pre><code>PreferencesUtils.putLong(AC.context, ACConfiguration.KEY_USERID, uid);
-
-PreferencesUtils.putString(AC.context, ACConfiguration.KEY_TOKEN, token);
-</code></pre>
-
-<h4 id="iosuidtoken">问：iOS端uid和token怎么获取与保存？</h4>
-<pre><code>@interface ACKeyChain : NSObject
-
-/*** 保存用户ID ***/
-(void)saveUserId:(NSNumber *)userId;
-/***  获取用户ID ***/
-(NSNumber *)getUserId;
-/***  删除当前用户的id ***/
-(void)removeUserId;
-
-/***  保存以后 Token ***/
-(void)saveToken:(NSString *)token;
-/***  获取用户 Token ***/
-(NSString *)getToken;
-/***  删除当前用户的token ***/
-(void)removeToken;
-</code></pre>
-
-<h4 id="app_1">问：APP提示签名失败是什么原因？</h4>
-<p>(1)APP的本地时间不正确，导致签名超时。</p>
-<p>(2)用户未登录。</p>
-<h1 id="_2">设备联网相关</h1>
-<h2 id="skip_2"><span class="skip">||SKIP||</span></h2>
-<h4 id="wifi">问：wifi模块怎么连接云端？</h4>
-<p>答：如果使用的Wi-Fi模块是上述WIFI模块，我们会提供上述WIFI模块的固件，烧写固件后则可正常接入AbleCloud。如果使用自选的WIFI模块，可以联系我们BD，签署相关协议后，可获得相关文档和参考代码资源。</p>
-<h4 id="_3">问：设备不能接入云端怎么处理？</h4>
-<p>答：设备不能接入云端有以下几种情况：</p>
-<p>(1)设备物理的ID重复。一个domain下的设备物理ID不能重复，如果使用相同的物理ID但是subDomain不同，云端会认为设备信息有无，拒绝接入。</p>
-<p>(2)如果设备采用加密通信，可能是设备密钥不匹配或者设备没有入库，云端不清楚设备的公钥，无法加密。</p>
-<p>(3)网络原因.请确保网络稳定可靠。</p>
-<h1 id="_4">设备管理/使用相关</h1>
-<h2 id="skip_3"><span class="skip">||SKIP||</span></h2>
-<h4 id="appuds">问：APP/UDS显示控制设备失败怎么处理？</h4>
+<h4 id="312-wifi">3.1.2   定位wifi不同问题的一般步骤</h4>
+<ol>
+<li>一台和设备链接到的同一个路由器的PC机，进入控制台，ping一下www.ablecloud.cn，如果不行的话，就是表明网络有问题。</li>
+<li>登录路由器后台，看一下对应设备是否已经接入路由器上，并且ping 一下对应IP地址，ping xxx -t，运行一段时间，看看有没有掉线情况。表明模块链接路由器不稳定，需要检查路由器配置。</li>
+<li>下载并打开wireshark软件，选择连接到路由器的网卡启动抓包，在Filter上输入udp.port==7689，然后重启设备。等待一段时间，看看是否有抓到对应的报文。如果没有的话，表明是没有连上云端。</li>
+</ol>
+<h2 id="32-mcu">3.2   MCU</h2>
+<h3 id="321">3.2.1    设备接入云端的流程</h3>
+<ol>
+<li>设备向redirect申请gateway接入点信息，申请成功后，redirect记录设备的接入点，设备使用该接入点接入gateway。设备不是每次都请求redirect，当请求一次之后，设备会保存得到的gateway节点，下次就直接通过这个节点连接云端了，然后进行四次握手流程。可以参考联网模块代码中的PCT_Run函数，进一步理解设备连接云的过程。</li>
+<li>设备与gateway进行四次握手，在握手过程中，向gateway提供其domain, subDomain, deviceId, MCU版本信息，wifi版本信息以及之后通信的AES密钥，如果设备使用加密通信的话。</li>
+<li>设备完成和云端的四次握手后，正是接入gateway，在用户绑定次设备之后，可以对设备进行控制，设备也可以主动上报。如果设备没有被绑定，主动上报是会报错的。</li>
+</ol>
+<p><strong>期间可能出现错误有：</strong></p>
+<p>（1）握手失败</p>
+<p><code>read handShake_(1/3) failed:err[read tcp 222.131.152.125:4481: connection reset by peer]</code></p>
+<p>这个问题的原因是设备端wifi的问题，设备端主动断开与云端建立的TCP链路，一般设备侧发生在初期。</p>
+<p><code>[266:530:0000C893465004F1 handShake] device not valid: dest[222.131.152.125:4481]</code></p>
+<p>这个问题的原因是设备端采用加密通信，云端获取设备的公钥失败，失败的原因可能是设备没有入库（统一入库/批量入库）。</p>
+<p>（2）设备信息加入管理列表失败</p>
+<p><code>[83:85:02860000000085A7] insert the device connection failed:addr[112.17.236.115:51230], err[entry exist]</code></p>
+<p><code>[83:85:02860000000085A7] force kill the old device connection:addr[112.17.236.115:51226]</code></p>
+<p>这个问题的原因是设备端异常断开（一般开发者采用断电的方式），云端不能立即检测到设备已经断开连接，这样设备管理列表中仍然有该设备的记录（云端检测到设备断开后，会将设备信息从管理列表中删除），当设备再次接入时，因为管理列表中有设备的信息，产生冲突。云端的策略是删除原来的记录，将新的设备信息加入队列。</p>
+<h3 id="322">3.2.2    设备不能接入云端怎么处理</h3>
+<p>通过查询gateway模块的LOG，看下设备处于第几次握手失败，如果没有成功建立四次握手，需要同步查看设备的串口LOG，看下为什么握手失败。
+设备不能接入云端有以下几种情况：</p>
+<ol>
+<li>设备物理的ID重复。一个domain下的设备物理ID不能重复，如果使用相同的物理ID但是subDomain不同，云端会认为设备信息有无，拒绝接入。</li>
+<li>如果设备采用加密通信，可能是设备密钥不匹配或者设备没有入库，云端不清楚设备的公钥，无法加密。</li>
+<li>网络原因.请确保网络稳定可靠。</li>
+<li>需要检查连接的是正式环境还是测试环境。</li>
+</ol>
+<h3 id="323">3.2.3    设备的控制流程</h3>
+<p><strong>Step1</strong>
+App/UDS 向设备发送【control】请求，其中携带了messageCode和消息内容，控制指令和响应指令的消息号必须大于64且小于200。</p>
+<p><strong>Step2</strong>
+Gateway 查询设备是否在线，如果不在线，直接回复error，如果在线，则透传消息给设备。</p>
+<p><strong>Step3</strong>
+Gateway根据请求中携带的messageCode组建一个message，如果请求中还携带sub device的信息（domain, subDomain, devieId），那么message中需要有opt项。否则就没有opt项。</p>
+<p><strong>Step4</strong>
+Gateway顺序产生一个msgId(0~255)，对于同一个设备，control消息的msgId顺序增加。只有当gateway接收到前一个消息的empty消息，才会发送下一个消息。Empty消息有超时机制，当empty超时后，gateway认为当前链路不可靠，主动断开与设备的连接。</p>
+<p><strong>Step 5</strong>
+Control消息的响应到达gateway后，gateway需要匹配响应消息中的msgId与请求中的msgId是否一致，如果不一致，则报错。请求的响应消息超时也会报错。
+期间可能出现错误有：</p>
+<p>（1）设备不在线</p>
+<p><code>the device not online:global[83:85:02860000000085A7]</code></p>
+<p>（2）控制请求的响应超时</p>
+<p><code>request timeout and not find the old request msgId:globalId[18:274:0001999999999262], mid[81]</code></p>
+<p><code>[83:85:028600000000850B]wait the current response failed:code[203], mid[5], timeout[5000000000], err[device response timeout]</code></p>
+<p><code>[83:85:02860000000085A7 control]request deivce failed:reqCode[68], err[device response timeout]</code></p>
+<p>（3）设备已经接收到了控制请求，但是控制指令执行失败（具体原因需要设备侧查看），所以主动返回error。</p>
+<p><code>[345:352:0000000000000004]check device result response failed: code[16], timeout[5000000000]</code></p>
+<p><code>[262:431:1111111111111111 control]request deivce failed:reqCode[80], err[invalid result]</code></p>
+<h3 id="324">3.2.4    设备的上报流程</h3>
+<p>设备主动上报，gateway根据其domain,subDomain,deviceId向设备管理系统请求设备逻辑ID，如果请求失败，则认为当前设备未绑定，直接丢弃消息。
+如果获得设备逻辑ID，那么将消息负载以payload的形式向router发送，由router提交给UDS处理。其中上报的消息号必须大于等于200。
+期间可能出现错误有：</p>
+<p><code>[526:531:00007CC70924C96E device report] get device logical id failed:globalId[526:531:00007CC70924C96E], err[device not exist]</code></p>
+<p>这个问题是因为设备没有被绑定，因此获取设备的逻辑ID失败</p>
+<p><code>[304:327:000008D833F57741 device report]send report to router failed:code[204], globalId[304:327:000008D833F57741], err[Post http://10.136.0.58:5000/X-Zc-Device-Report/v1/deviceReport?deviceId=81&amp;messageCode=204&amp;physicalDeviceId=000008D833F57741&amp;protocol=other: net/http: timeout awaiting response headers]</code></p>
+<p>设备上报由gateway先发送到router，由router反向代理发送到对应的UDS，具体的错误由UDS日志辅助定位</p>
+<p><code>[83:85:028600000000850B device report]send report to router failed:code[203], globalId[83:85:028600000000850B], err[wrong resp payload format]</code></p>
+<p>这个问题一般是UDS处理请求遇到了异常。</p>
+<h3 id="325-ota">3.2.5    设备OTA流程</h3>
+<p><strong>Step1</strong></p>
+<p>Ota-scheduler向gateway请求OTA任务列表，gateway将当前设备的版本与发布版本进行对比，只要版本不一致，就认为需要升级。</p>
+<p><strong>Step2</strong></p>
+<p>Ota-scheduler向gateway请求startOTA，gateway开始设备OTA升级，升级过程中出现错误，中断升级流程。等待下次OTA升级调度。</p>
+<h3 id="326">3.2.6    控制设备失败怎么处理</h3>
+<p>通过查询gateway模块的LOG，看下控制的流程是不是正确。</p>
 <p>控制设备失败可能的原因有：</p>
-<p>(1)控制频率太高，设备响应不及时导致请求超时。设备能力有限，如果控制频率较高时可能会出现设备响应不及时的问题。</p>
-<p>(2)设备MCU异常导致设备无法响应控制请求命令。</p>
-<p>(3)设备Wifi模块与MCU之间通信异常。</p>
-<p>(4)设备不在线。</p>
-<p>(5)设备已经被管理解绑，分享设备的用户与设备的绑定关系自动解除，没有权限控制设备。</p>
-<p>(6)控制设备的message code的范围是64~200，云端会检查message code，不符合要求的请求消息会返回错误，开发者可以根据返回的错误信息及时发现问题。</p>
-<h4 id="_5">问：为什么用户会绑定设备失败？</h4>
-<p>答：用户不能绑定设备的原因有以下几种可能：</p>
-<p>（1）设备不在线，设备绑定时要求设备必须在线.</p>
-<p>（2）设备被其他用户绑定过了，云端不允许多人绑定同一个设备，用户可通过分享的方式获得对设备的控制权。</p>
-<p>（3）绑定过程中云端与设备交换token时，设备未响应导致绑定失败。</p>
-<h4 id="_6">问：为什么用户会解绑设备失败？</h4>
-<p>用户解绑设备失败可能的原因有：</p>
-<p>(1)设备已经被管理员解绑了，提示用户要解绑的设备不存在。</p>
-<p>(2)设备自己强制解除与所有用户的绑定关系（应用场景：恢复出厂设置，或者设备变更拥有者），导致原绑定的用户不能解绑成功。</p>
-<p>(3)网络原因设备已经解绑成功，但是APP解绑请求超时，用户认为解绑失败，重复发起解绑操作。</p>
-<h1 id="home">Home模型相关</h1>
-<h2 id="skip_4"><span class="skip">||SKIP||</span></h2>
-<h4 id="home_1">问：网关类设备的子设备如何加入home中？</h4>
-<p>网关类设备的子设备比较特殊，只能使用addSubDevice方法加入网关，当网关在home中时，子设备自动加入home中，网关移出home后，子设备自动移出home，当网关移入home后，子设备默认也移入home，需要用户自行将设备移入指定的room。子设备单独移出home也只能通过deleteSubDevice方法将其从网关中移出，云端自动将其从home中移出。</p>
-<h4 id="homeroomunbind">问：加入home或者room的设备，可以调用unbind方法解绑吗？</h4>
-<p>当设备在home模型中的时候，不可以调用unbind方法解绑设备，需要调用deleteDeviceFromHome方法将设备解绑</p>
-<h4 id="homehomehome">问：在设备加入home前，分享给某用户，当设备加入home后，该分享用户是否也加入了home？</h4>
-<p>在设备加入home前的分享关系在设备加入home后保持不变，分享用户可以单独解绑设备。如果用户被邀请加入该home，那么该用户对home中所有的设备用户控制权，包括之前分享给他的设备。</p>
-<h1 id="ota">OTA相关</h1>
-<h2 id="skip_5"><span class="skip">||SKIP||</span></h2>
-<h4 id="hf-lpb100">问：HF-LPB100如何升级？</h4>
-<p>1.下载适用于汉枫wifi模块（LPB-100）的AbleCloud联网固件：LPBS2W_UPGARDE.bin。
-2.配置WIFI模块，使其联网：</p>
-<p>①安装Android手机APP端，注册一个用户，然后登录。</p>
-<p>②点击添加新设备，输入WIFI的密码，接着把汉枫模块上电，然后按下Reload键（第4个），接着在APP端点击开始连接，当汉枫模块的Ready和Link指示灯常亮，已联网。</p>
-<p>③ 访问路由器，通过汉枫wifi模块的MAC地址，查询到分配给它的IP地址。</p>
-<p>④在浏览器中输入获取到的IP地址，会弹出如下的界面，然后输入用户名和密码，默认的都为：admin</p>
-<p>⑤然后点击软件升级，选择刚刚下载的BIN文件，再点击开始升级。</p>
-<h4 id="_7">问：如果在设备升级过程中突然遭遇断电或者断网，那么设备再次接入云端后，云端是否会继续向该设备发起升级？</h4>
-<p>答：当在升级过程中出现异常导致升级失败，在本次升级过程中，只要设备在线，就会再次向该设备重新发起OTA升级。</p>
-<h4 id="ota_1">问：为什么会创建OTA失败？</h4>
-<p>(1)这是因为新创建的OTA与之前存在的OTA基本信息重复。OTA的基本信息有：产品渠道，产品批次，OTA版本号，OTA类型。</p>
-<p>(2)OTA文件较大，在网络不稳定的时候出现文件上传失败导致创建OTA失败。</p>
-<h4 id="ota_2">为什么会发布OTA失败？</h4>
-<p>这是因为存在未停止发布的OTA版本的升级范围与当前要发布的OTA版本的升级范围有交集。这种情况下可以停止之前发布的OTA版本或者修改将要发布的OTA版本的升级范围直到没有交叉覆盖的时候才能发布成功。举例来说，如果有一个已经发布的版本0-0-1，产品渠道指定为“京东”，如果要发布一个新的OTA版本0-0-2，产品渠道也指定为“京东”，那么这种情况先，0-0-2的版本在0-0-1停止发布之前发布会失败。</p>
-<h1 id="_8">云端服务相关</h1>
-<h2 id="skip_6"><span class="skip">||SKIP||</span></h2>
-<h4 id="udsnull">问：UDS返回查询结果为NULL是怎么回事？</h4>
-<p>答:H5中获取的时间单位是秒，我们需要的是毫秒。</p>
-<h4 id="uds">问：UDS服务不能上线是怎么回事？</h4>
-<p>答：配置文件中没有Service的name和classname</p>
-<h4 id="subdomain">问：报错subdomain不存在怎么处理？</h4>
-<p>答：请看DeveloperID填写是否错误</p>
-<h4 id="uds_1">问：UDS收不到设备的消息上报怎么处理？</h4>
-<p>出现这种情况的可能原因有：</p>
-<p>(1)设备未被用户绑定。云端不允许未绑定的设备进行设备上报。(大部分是这种场景)</p>
-<p>(2)设备上报使用的messagecode不应小于200.ablecloud规定200~255之间的message code用于设备上报。</p>
-<h1 id="_9">微信相关</h1>
-<h2 id="skip_7"><span class="skip">||SKIP||</span></h2>
-<h4 id="1makeqrcodeservice-not-available">1.makeQRCode方法，会报service not available的错误</h4>
-<p>解决方法：
-针对service not available的问题，可以检查一下ac.js文件里面第47附近的acServiceDevice的值，以及配置文件config.properties里第17行附近的device_service的值。这两个配置项的值应该都是zc-bind。</p>
-<h4 id="2acjsacconfigwxopenidacmajordomainacsubdomainurlhtmlurl">2.在ac.js中，ac.config方法获取wxOpenid、acMajordomain和acsubdomain这三个参数都是从URL中获取的，只是不是意味着html的URL中必须要带有这三个参数</h4>
-<p>Ac.js支持通过url及cookie两种方式获取参数。如果用 /weixin/oauth2 做完了网页授权，那这个框架会自动在cookie里加上这三个参数，开发者就不用关心了。如果是其它途径加载的网页，那开发者要么用url传参，要么用cookie传参</p>
-<h4 id="3jsdeviceid">3.在js中获取deviceid的值</h4>
-<p>这个值需要在HTML中通过URL传入，再次需要保证HTML页面已经在微信授权过。</p>
-<h4 id="4">4.设备现在出现了故障，需要向微信客户端及时报警！这种消息通过什么接口直接发给客户端？</h4>
-<p>（1）设备向我们的服务器上报数据，在UDS里接收到警报消息，然后由UDS推送消息给微信公众号服务器，最后公众号服务器推消息给微信客户端</p>
-<p>（2）另外一种方法，要求设备自己向微信公众号服务器发起HTTP请求，报告消息，然后公众号服务器推消息给微信客户端</p>
-<h1 id="_10">管理后台使用相关</h1>
-<h2 id="skip_8"><span class="skip">||SKIP||</span></h2>
-<h4 id="_11">问：设备已经从云端下线后为什么管理后台仍然显示设备在线？</h4>
-<p>答：这是因为设备与云端采用TCP通信协议，如果设备下线时主动释放链路，那么云端可以立即检测到设备下线；当设备是异常掉电等场景导致设备不能主动断开连接的时候云端需要依赖设备与云端的心跳检测机制去检测设备是否在线，所以存在一定的延时。</p>
-<h1 id="_12">设备生产相关</h1>
-<h2 id="skip_9"><span class="skip">||SKIP||</span></h2>
-<h4 id="1">1.设备端如何从测试环境迁移正式环境?</h4>
-<p>答：对于已经再测试服务器调试的版本，需要修改AC_ConfigWifi函数内容
-将</p>
-<pre><code> struConfig.u16Port = AC_HTONS(9100); 
- memcpy(struConfig.u8CloudAddr, "test.ablecloud.cn", AC_CLOUD_ADDR_MAX_LEN);
-</code></pre>
-<p>修改为</p>
-<pre><code> struConfig.u16Port = AC_HTONS(9100); 
- memcpy(struConfig.u8CloudAddr, "device.ablecloud.cn", AC_CLOUD_ADDR_MAX_LEN);
-</code></pre>
-<p>打开加密开关</p>
-<pre><code> struConfig.u32SecSwitch = AC_HTONL(1);       //Sec data switch, 1:open, 0:close, 2:close RSA, default 1
-</code></pre>
-<p>待连上云端之后可以将AC_ConfigWifi调用出注释掉，对于新烧写硬件直接将AC_ConfigWifi注释掉即可，再将ac_cfg.h文件中DEFAULT_IOT_PRIVATE_KEY修改为ablecloud后台分配的设备私钥</p>
-<p>APP端、管理后台、设备端、微信端等详细操作步骤详见<a href="https://www.ablecloud.cn/download/%E4%BA%A7%E5%93%81%E4%B8%8A%E7%BA%BF%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E.pdf">产品上线操作说明</a></p>
-<h4 id="hf-lpb100_1">问：HF-LPB100的针脚定义是什么？</h4>
-<p>答：http://gb.hi-flying.com/products_detail/&amp;productId=68f4fd7b-39f8-4995-93ab-53193ac5cf22&amp;comp_stats=comp-FrontProducts_list01-111.html</p></div>
+<ol>
+<li>控制频率太高，设备响应不及时导致请求超时。设备能力有限，如果控制频率较高时可能会出现设备响应不及时的问题。</li>
+<li>设备MCU异常导致设备无法响应控制请求命令。</li>
+<li>设备Wifi模块与MCU之间通信异常。</li>
+<li>设备不在线。</li>
+<li>设备已经被管理解绑，分享设备的用户与设备的绑定关系自动解除，没有权限控制设备。</li>
+<li>控制设备的message code的范围是64~200，云端会检查message code，不符合要求的请求消息会返回错误，开发者可以根据返回的错误信息及时发现问题。</li>
+</ol>
+<h3 id="327">3.2.7    为什么用户会绑定设备失败</h3>
+<p>通过查询bind模块的LOG，分析具体的问题。</p>
+<p>用户不能绑定设备的原因有以下几种可能：</p>
+<ol>
+<li>设备不在线，设备绑定时要求设备必须在线.</li>
+<li>设备被其他用户绑定过了，云端不允许多人绑定同一个设备，用户可通过分享的方式获得对设备的控制权。</li>
+<li>绑定过程中云端与设备交换token时，设备未响应导致绑定失败。</li>
+<li>设备的domain和subdomain信息有误。</li>
+<li>电源供电是否正常，建议更换电源。</li>
+<li>确保设备的天线正常。</li>
+<li>确保网络环境不是公共环境。</li>
+<li>绑定过程中云端与设备交换token时，设备未响应导致绑定失败。</li>
+</ol>
+<h3 id="328">3.2.8    设备无法激活</h3>
+<ol>
+<li>确认WIFI密码是否输入正确。</li>
+<li>确认路由器的广播功能有没有被禁用。</li>
+<li>domain信息是否正确。</li>
+<li>设备的秘钥可能存在问题。</li>
+</ol>
+<h3 id="329">3.2.9    无法添加子设备</h3>
+<ol>
+<li>网关可能掉线。</li>
+<li>子设备已经被其他人绑定。</li>
+<li>子设备subdomain填写错误。 </li>
+<li>子设备和网关的连接断开了。</li>
+</ol>
+<h3 id="3210">3.2.10   为什么用户会解绑设备失败</h3>
+<p>用户解绑设备失败可能的原因有：
+1. 设备已经被管理员解绑了，提示用户要解绑的设备不存在。
+2. 设备自己强制解除与所有用户的绑定关系（应用场景：恢复出厂设置，或者设备变更拥有者），导致原绑定的用户不能解绑成功。
+3. 网络原因设备已经解绑成功，但是APP解绑请求超时，用户认为解绑失败，重复发起解绑操作。</p>
+<h3 id="3211">3.2.11   为什么设备上报失败</h3>
+<ol>
+<li>设备没有被用户绑定。</li>
+<li>设备与云端断开连接。</li>
+<li>MCU和联网模块之间连接是否正常。</li>
+</ol></div>
             
         </div>
 
