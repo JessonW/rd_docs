@@ -514,7 +514,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 ```objc
     [ACGroupManager createRoomWithHomeId:homeId name:name callback:^(ACRoom *room, NSError *error) {
         if (!error) {
-            //成功穿件一个room模型
+            //成功创建一个room模型
         } else {
             //错误处理
         }

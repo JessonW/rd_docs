@@ -258,11 +258,11 @@ ACDeviceMsg定义如下：
 ####ACHome
 说明：家庭模型，用来表示一个家庭的信息，定义如下：
 ```objc
-//房间的Id
+//家庭的Id
 @property (nonatomic, assign) NSInteger homeId;
-//home管理员的Id
+//家庭管理员的Id
 @property (nonatomic, assign) NSInteger owner;
-//home名字
+//家庭名字
 @property (nonatomic, copy) NSString *name;
 ```
 
