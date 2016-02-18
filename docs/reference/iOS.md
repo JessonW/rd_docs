@@ -640,7 +640,7 @@ ablecloud提供了激活器供你使用，定义如下：
  */
 + (void)getDeviceInfoWithSubDomain:(NSString *)subDomain
                   physicalDeviceId:(NSString *)physicalDeviceId
-                          Callback:(void(^)(ACDevice *device , NSError *error))callback;
+                          Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
 ```
 
 ##设备管理( 独立和网关型）
@@ -1965,3 +1965,4 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 >+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
 >+ **调试阶段，可通过返回的ACMsg 调用- (NSInteger)getErrCode;
 和- (NSString *)getErrMsg;获取错误信息。**
+
