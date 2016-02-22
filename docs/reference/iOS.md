@@ -470,7 +470,8 @@ import "ACAccountManager.h"
 @interface ACAccountManager : NSObject
 
 /**
- *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * 发送验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * @param account  手机号/邮箱
  * @param template 短信内容模板
  * @param callback 返回结果的监听回调
  */
