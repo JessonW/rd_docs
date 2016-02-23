@@ -900,7 +900,8 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 <pre><code class="c">@interface ACAccountManager : NSObject
 
 /**
- *  发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * 发送验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+ * @param account  手机号/邮箱
  * @param template 短信内容模板
  * @param callback 返回结果的监听回调
  */
@@ -1064,6 +1065,20 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 <blockquote>
 <p>通过以上<code>ACWifiLinkManager</code>提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定</p>
 </blockquote>
+<p>成功激活设备之后，即可以通过调用以下接口获取设备激活相关信息，其中包括设备IP地址、设备固件版本、设备通信模组版本、设备激活时间、设备最后上线时间、设备地理位置国家/省/地区等。</p>
+<pre><code class="objc">@interface ACDeviceManager : NSObject
+/**
+ * 设备激活查询接口
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备物理ID
+ * @param callback         返回结果的监听回调
+ */
++ (void)getDeviceInfoWithSubDomain:(NSString *)subDomain
+                  physicalDeviceId:(NSString *)physicalDeviceId
+                          Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
+</code></pre>
+
 <h2 id="_8">设备管理( 独立和网关型）</h2>
 <p>将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。</p>
 <pre><code class="c">/**
