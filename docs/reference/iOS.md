@@ -15,6 +15,7 @@ SDK即Software Develop Kit，开发者将基本对象结构基于此，快速的
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
 ####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
+
 ```c
 @interface ACObject : NSObject
 
