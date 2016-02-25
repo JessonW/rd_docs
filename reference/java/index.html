@@ -2011,6 +2011,10 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
     // 向查询过滤器中添加小于等于表达式
     public ACFilter whereLessThanOrEqualTo(String key, Object value);
     // 向查询过滤器中添加LIKE表达式(不区分大小写)
+    // value的类型必须是String类型，格式和mysql一致，尽量使用前缀匹配，否则可能造成索引失效
+    // 匹配以abcd为前缀的值: &quot;abcd%&quot;
+    // 匹配以abcd为后缀的值: &quot;%abcd&quot;
+    // 任意位置匹配: &quot;%abcd%&quot;
     public ACFilter whereLike(String key, Object value);
     // 向查询过滤器中添加NOT LIKE表达式(不区分大小写)
     public ACFilter whereNotLike(String key, Object value);
