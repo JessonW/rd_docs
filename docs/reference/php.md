@@ -876,6 +876,14 @@ class ACAccountMgr extends ACService {
      * @return 操作成功时返回一个由键值对组成的关联数组，表示该用户的扩展属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
      */
     public function getUserProfile($user);
+
+    /**
+     * 获取用户的全部属性：包括基础属性及扩展属性。
+     * @param $uid		int		表示要获取其属性的用户的ID。参数$uid和$account至少需提供一个。
+     * @param $account	string	表示要获取其属性的用户的帐号名：Email地址或者电话。参数$uid和$account至少需提供一个。
+     * @return			array|NULL	操作成功时返回一个由键值对组成的关联数组，表示该用户的属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
+     */
+    public function getUserWholeProfile($uid = 0, $account = '');
     //@}
     
     /**
