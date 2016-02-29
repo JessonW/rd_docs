@@ -787,6 +787,20 @@ class ACAccountMgr extends ACService {
      * 返回值为FALSE时，应该调用getLastError()方法获取错误信息，并检查其errCode值：errCode为0时，表示操作成功；否则表示操作失败。
      */
     public function checkAccountExist($login);
+
+    /**
+     * 检查用户的总数。
+     * @return int	返回用户总数。返回值小于0时表示操作失败，可调用getLastError()方法获取错误消息。
+     */
+    public function getAccountCount();
+
+    /**
+     * 查询用户列表。
+     * @param $offset	int	查询的记录偏移量。取值应该为非负整数。
+     * @param $limit	int	限制本次调用查询的记录的最大数目。取值范围是闭区间[1, 100]。
+     * @return			array	成功时返回ACUser对象的数组。失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
+     */
+    public function listAllAccounts($offset, $limit);
     //@}
     
     /// @name 第三方平台用户
@@ -1725,7 +1739,7 @@ class ACStoreScanner {
     
     /**
      * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
-     * @param $filter ACStoreFilter对象，表示查询条件。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示查询条件。如果是ACStoreFilter对象，将先生成一个组合条件，并将该对象放置在组合条件中，然后再设置为过滤条件。
      * @return 本ACStoreScanner对象。
      */
     public function whereExt($filter);
@@ -1733,7 +1747,7 @@ class ACStoreScanner {
     /**
      * 以逻辑“与”的关系添加一个查询条件或条件的组合。
      * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
-     * @param $filter ACStoreFilter对象，表示新添加的查询条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的查询条件或条件的组合。如果是ACStoreFilter，那该条件将会被添加至已存在的第一个组合条件中；如果是组合条件，则组合条件将会跟已存在的组合条件并列组合起来。
      * @return 本ACStoreScanner对象。
      */
     public function andWhere($filter);
@@ -1741,7 +1755,7 @@ class ACStoreScanner {
     /**
      * 以逻辑“或”的关系添加一个查询条件或条件的组合。
      * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
-     * @param $filter ACStoreFilter对象，表示新添加的查询条件或条件的组合。如果是组合条件，则组合条件将会被括号组合在一起。
+     * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示新添加的查询条件或条件的组合。如果是ACStoreFilter，那该条件将会被添加至已存在的第一个组合条件中；如果是组合条件，则组合条件将会跟已存在的组合条件并列组合起来。
      * @return 本ACStoreScanner对象。
      */
     public function orWhere($filter);
@@ -1788,7 +1802,7 @@ class ACStoreScanner {
 
     /**
      * 设置查询结果集的最大记录数。
-     * @param $number 非负整数，指定查询结果集中的最大记录数。如果为0,表示不限制查询结果集的大小。
+     * @param $number 非负整数，指定查询结果集中的最大记录数。其取值范围限制为闭区间[0, 1000]。如果为0（缺省值），其效果等于取值为1000。
      * @return 本ACStoreScanner对象。
      */
     public function limit($number);
