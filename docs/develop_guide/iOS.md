@@ -1365,6 +1365,28 @@ upManager = [[ACFileManager alloc] init];
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 #用户意见反馈
+AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
+##一 导入头文件
+
+```objc
+#import "ACFeedBackManager.h"
+```
+##二 代码示例
+
+```objc
+    ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@"subDomain" type:@"type"];
+    //这里的键值对需要跟自己在后台定义的一致
+    [feedback addFeedBackWithKey:@"key1" value:@"value1"];
+    [feedback addFeedBackWithKey:@"key2" value:@"value2"];
+    
+    [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        //提交成功
+    }];
+```
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
