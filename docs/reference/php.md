@@ -1575,9 +1575,9 @@ class ACStoreComplicatedFilter {
     
     /**
      * 将一个简单查询条件ACStoreFilter链接至本对象所包含的简单查询条件链表的末尾。
-     * @param $filter ACStoreFilter对象，表示要被连接的查询条件。
-     * @param $logicalAnd 为true时，表示以逻辑“与”的关系连接$filter，否则表示以逻辑“或”的关系连接$filter。目前仅支持逻辑“与”的连接关系。
-     * @return 本ACStoreComplicatedFilter对象。
+     * @param $filter     ACStoreFilter ACStoreFilter对象，表示要被连接的查询条件。
+     * @param $logicalAnd bool          为true时，表示以逻辑“与”的关系连接$filter，否则表示以逻辑“或”的关系连接$filter。
+     * @return            ACStoreComplicatedFilter 本ACStoreComplicatedFilter对象。
      */
     public function appendFilter($filter, $logicalAnd = true);
     
