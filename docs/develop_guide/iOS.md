@@ -1363,6 +1363,7 @@ upManager = [[ACFileManager alloc] init];
 */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
+#用户意见反馈
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
