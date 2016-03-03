@@ -874,6 +874,7 @@ public interface ACAccountMgr {
     public void getUserProfile(PayloadCallback<ACObject> callback);
 }
 ```
+<font color="red">注意：</font>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的错误码进行单独处理，返回登录页让用户重新登录。
 
 ##设备激活
 
@@ -2491,3 +2492,4 @@ public class ACACL {
 
 >+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
 >+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**
+
