@@ -1895,7 +1895,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 
 #用户意见反馈
-
+AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)

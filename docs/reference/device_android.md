@@ -7,6 +7,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
  
 ####开发环境设置
 以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
+
 ```java
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -335,5 +336,7 @@ public interface ACGatewayHandler {
     public void evictSubDevice(ACSubDevice subDevice) throws Exception;
 }
 ```
+
+
 
 
