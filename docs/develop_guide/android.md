@@ -1,8 +1,8 @@
- #安卓客户端开发指导
+#安卓客户端开发指导
 
 #开发环境配置
 ##SDK发布库
-ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.8.zip)
+ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.0.9.zip)
 
 
 ><font color="red">注意:</font>
@@ -13,6 +13,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 
 ##开发环境设置
 以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
+
 ```java
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -20,6 +21,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 ```
+
 ##应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
@@ -1900,3 +1902,5 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
 >+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
 >+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**
+
+
