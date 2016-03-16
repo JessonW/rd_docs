@@ -815,6 +815,8 @@ msg.name = @"自定义";
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。
 
+注:使用前先导入`libicucore.tbd`系统库
+
 
 ![cloud_syn](../pic/develop_guide/cloud_syn.png)
 
@@ -1366,6 +1368,9 @@ upManager = [[ACFileManager alloc] init];
 ```
 #用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
+使用意见反馈前,需要先在控制台设置对应的参数
+![cloud_syn_1](../pic/develop_guide/submitConfig.png)
+
 ##一 导入头文件
 
 ```objc
