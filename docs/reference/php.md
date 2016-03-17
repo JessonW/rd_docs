@@ -2329,7 +2329,7 @@ class ACQEAggFilters {
 ##ACQECount##
 ```php
 /**
- * AbleCloud数据分析服务的Count方法。
+ * * AbleCloud数据分析服务的数据查询类方法的基类。
  */
 class ACQECount extends ACQEReadInterface {
     /**
