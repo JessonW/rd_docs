@@ -270,11 +270,11 @@
         </li>
         
             
-            <li class="sub parent_demo" style="display: none;"><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
+            <li class="sub parent_demo" style="display: none;"><a href="#2">2、使用二进制消息格式进行通讯</a></li>
             
         
             
-            <li class="sub parent_demo" style="display: none;"><a href="#2">2、使用二进制消息格式进行通讯</a></li>
+            <li class="sub parent_demo" style="display: none;"><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
             
         
             
@@ -303,45 +303,38 @@
 </code></pre>
 
 <h4 id="_4">应用程序初始化</h4>
-<p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。</p>
-<blockquote>
-<p>具体步骤:在启动App的<code>MainActivity</code>的<code>onCreate()</code>方法中调用此方法来进行初始化。</p>
-</blockquote>
-<p>开发阶段，请初始化测试环境</p>
+<p>在你的<code>AndroidManifest.xml</code>文件里的<code>&lt;application&gt;</code>标签里添加</p>
+<pre><code class="xml">&lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;主域&quot; --&gt;
+&lt;meta-data android:name=&quot;major-domain&quot; android:value=&quot;ablecloud&quot;/&gt;
+&lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;主域ID&quot; --&gt;
+&lt;meta-data android:name=&quot;major-domain-id&quot; android:value=&quot;3&quot;/&gt;
+&lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;产品列表-&gt;子域&quot;.注意,若subDomain为数字,则需在数字前面加\0 --&gt;
+&lt;meta-data android:name=&quot;sub-domain&quot; android:value=&quot;test&quot;/&gt;
+&lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;产品列表-&gt;子域ID&quot; --&gt;
+&lt;meta-data android:name=&quot;sub-domain-id&quot; android:value=&quot;6&quot;/&gt;
+
+&lt;!-- [Optional] 环境设置,默认值为0(0正式环境 1测试环境) --&gt;
+&lt;meta-data android:name=&quot;mode&quot; android:value=&quot;1&quot;/&gt;
+&lt;!-- [Optional] 地域设置,默认值为0(0北京地区 1东南亚地区 2华东地区) --&gt;
+&lt;meta-data android:name=&quot;region&quot; android:value=&quot;0&quot;/&gt;
+&lt;!-- [Optional] 设备私钥,正式环境下为必填项,对应&quot;产品管理-&gt;产品列表-&gt;点击管理-&gt;设备密钥-&gt;私钥&quot; 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件--&gt;
+&lt;meta-data android:name=&quot;secret-key&quot; android:value=&quot;bd0d6a5c4aeddc963351d855e63f7241b6ac72338c0a44285fdfe478cfd2b2c3e1313de686db997d8c13d0bc629a8109d6ea780d8e0f5a45c024a254702da46bdcd95f1cc36b80a7c905f1f39f3c698921b0354b62a6536f35944881d5e7c1ab30c3722a6b9f1a86b911e44ba618add9&quot;/&gt;
+&lt;!-- [Optional] 设备版本,格式为&quot;1-0-0&quot;,不设置情况下默认值为&quot;1-0-0&quot; --&gt;
+&lt;meta-data android:name=&quot;version&quot; android:value=&quot;1-0-0&quot;/&gt;
+</code></pre>
+
+<p>另外在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。 继承Application类或者主Activity的onCreate()方法中调用此方法来进行初始化</p>
 <pre><code class="java">/**
-     * 请在主Activity的onCreate()中初始化安卓设备信息并开始连云操作
-     *
-     * @param mContext         获取Context实例
-     * @param MajorDomainId    AbleCloud domainId，可到AbleCloud平台工程管理查看
-     * @param SubDomainId      AbleCloud subDomainId，可到AbleCloud平台工程管理查看
-     * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
-     * @param secretKey        AbleCloud设备密钥，在产品管理中--&gt;管理--&gt;设备密钥，若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并把上传文件
-     * @param version          AbleCloud设备版本，格式为&quot;1-0-0&quot;;在初始化一个OTA版本后，若需要进行OTA升级，需要在设备管理中--         &gt;OTA--&gt;新建OTA版本把新的apk文件上传
-     * @param mode             AC.TEST_MODE,当迁移到正式环境后使用AC.PRODUCTION_MODE，默认使用AC.PRODUCTION_MODE
-     * @param regional         AbleCloud地域设置，AC.REGIONAL_CHINA代表中国地域，AC.REGIONAL_SOUTHEAST_ASIA代表东南亚地域，默认使用中国地域
-     */
-AC.init(Context Context, long MajorDomainId, long SubDomainId, String PhysicalDeviceId, String SecretKey, String Version, int Mode, int Regional);
-</code></pre>
-
-<p><strong>国内地域</strong>
-测试环境</p>
-<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE);
-</code></pre>
-
-<p>在完成测试阶段之后，需要迁移到正式环境下。</p>
-<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version);
-</code></pre>
-
-<p><strong>国外地域</strong></p>
-<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.TEST_MODE, AC.REGIONAL_SOUTHEAST_ASIA);
-</code></pre>
-
-<p>在完成测试阶段之后，需要迁移到正式环境下。</p>
-<pre><code class="java">AC.init(this, MajorDomainId, SubDomainId, SecretKey, Version, AC.PRODUCTION_MODE, AC.REGIONAL_CHINA);
+ * 请在Application/主Activity的onCreate()中初始化设备物理ID并开始连云操作
+ *
+ * @param mContext         Context实例
+ * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+ */
+AC.init(Context Context, String PhysicalDeviceId);
 </code></pre>
 
 <blockquote>
-<p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>16字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>并补0或其他将长度拼至16字节；可通过AbleCloud后台查看<strong>在线设备</strong>查看设备物理ID。</p>
+<p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>16字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>并补0或其他将长度拼至16字节；可通过AbleCloud控制台查看<strong>在线设备</strong>查看对应设备的物理ID。</p>
 </blockquote>
 <h1 id="demo">Demo</h1>
 <p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里以下的配置项。</p>
@@ -352,6 +345,71 @@ public static final String SECRETKEY;
 </code></pre>
 
 <p>下面以开关灯为例，简要介绍与安卓设备通讯的例子：</p>
+<h4 id="2">2、使用二进制消息格式进行通讯</h4>
+<p>以开关灯为例，协议如下：</p>
+<pre><code>//请求数据包
+{ 68 ：[
+     //关灯(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //开灯(二进制流，由厂商自己解析)   
+     { 1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+     //失败(二进制流，由厂商自己解析)
+     { 0 , 0 , 0 , 0 },
+     //成功(二进制流，由厂商自己解析)        
+     { 1 , 0 , 0 , 0 }
+]}
+</code></pre>
+
+<pre><code class="java">private static final int OFF = 0;
+private static final int ON = 1;
+
+AC.handleMsg(new ACMsgHandler() {
+    @Override
+    public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
+        switch (reqMsg.getMsgCode()) {
+            case Config.CODE_SWITCH_REQ:
+                //请求消息体
+                byte[] payload = reqMsg.getPayload();
+                if (payload[0] == ON) {
+                    if (Light.turnLightOn()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //开灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //开灯失败
+                } else {
+                    if (Light.turnLightOff()) {
+                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //关灯成功
+                    } else
+                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //关灯失败
+                }
+                respMsg.setMsgCode(Config.CODE_SWITCH_RESP);
+                break;
+        }
+    }
+});
+</code></pre>
+
+<p>数据上报：</p>
+<pre><code class="java">/**
+ * 上报数据到AbleCloud云端
+ *
+ * @param status 开关状态，1代表开，0代表关
+ * @param type   开关类型，0代表app控制，1代表本机控制
+ */
+public void reportLight(int status, int type) {
+    ACDeviceMsg req = new ACDeviceMsg();
+    req.setMsgCode(Config.CODE_REPORT);
+    req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
+    //把数据真正上报给云端
+    AC.reportDeviceMsg(req);
+}
+</code></pre>
+
+<blockquote>
+<p><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。</p>
+</blockquote>
 <h4 id="1klv">1、使用KLV消息格式进行通讯</h4>
 <p><strong>在新建产品的时候选择KLV通讯协议，并填写数据点与数据包</strong>。
 以开关灯为例,协议如下：</p>
@@ -425,71 +483,6 @@ public void reportLight(int status, int type) {
     object.put(Config.KEY_SWITCH, (byte) status);
     object.put(Config.KEY_TYPE, (byte) type);
     req.setKLVObject(object);
-    //把数据真正上报给云端
-    AC.reportDeviceMsg(req);
-}
-</code></pre>
-
-<blockquote>
-<p><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。</p>
-</blockquote>
-<h4 id="2">2、使用二进制消息格式进行通讯</h4>
-<p>以开关灯为例，协议如下：</p>
-<pre><code>//请求数据包
-{ 68 ：[
-     //关灯(二进制流，由厂商自己解析)
-     { 0 , 0 , 0 , 0 },
-     //开灯(二进制流，由厂商自己解析)   
-     { 1 , 0 , 0 , 0 }
-]}
-//响应数据包  
-{ 102 ：[
-     //失败(二进制流，由厂商自己解析)
-     { 0 , 0 , 0 , 0 },
-     //成功(二进制流，由厂商自己解析)        
-     { 1 , 0 , 0 , 0 }
-]}
-</code></pre>
-
-<pre><code class="java">private static final int OFF = 0;
-private static final int ON = 1;
-
-AC.handleMsg(new ACMsgHandler() {
-    @Override
-    public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
-        switch (reqMsg.getMsgCode()) {
-            case Config.CODE_SWITCH_REQ:
-                //请求消息体
-                byte[] payload = reqMsg.getPayload();
-                if (payload[0] == ON) {
-                    if (Light.turnLightOn()) {
-                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //开灯成功
-                    } else
-                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //开灯失败
-                } else {
-                    if (Light.turnLightOff()) {
-                        respMsg.setPayload(new byte[]{1, 0, 0, 0});    //关灯成功
-                    } else
-                        respMsg.setPayload(new byte[]{0, 0, 0, 0});    //关灯失败
-                }
-                respMsg.setMsgCode(Config.CODE_SWITCH_RESP);
-                break;
-        }
-    }
-});
-</code></pre>
-
-<p>数据上报：</p>
-<pre><code class="java">/**
- * 上报数据到AbleCloud云端
- *
- * @param status 开关状态，1代表开，0代表关
- * @param type   开关类型，0代表app控制，1代表本机控制
- */
-public void reportLight(int status, int type) {
-    ACDeviceMsg req = new ACDeviceMsg();
-    req.setMsgCode(Config.CODE_REPORT);
-    req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
     //把数据真正上报给云端
     AC.reportDeviceMsg(req);
 }
