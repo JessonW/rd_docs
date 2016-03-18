@@ -2520,58 +2520,58 @@ abstract class ACQEReadInterface extends ACService {
 
     /**
      * 设置拟操作的数据集的名字。是必要参数。
-     * @param $name     string      拟操作的数据集的名字。
-     * @return          ACQECount   返回本对象。
+     * @param $name     string  拟操作的数据集的名字。
+     * @return          ACQEReadInterface   返回本对象。
      */
     public function collection($name);
 
     /**
      * 设置数分分析的时间段。是必要参数。
-     * @param $frame    ACQETimeframe   时间段对象。
-     * @return          ACQECount       返回本对象。
+     * @param $frame    ACQETimeframe       时间段对象。
+     * @return          ACQEReadInterface   返回本对象。
      */
     public function timeframe($frame);
 
     /**
      * 设置分析的时间间隔参数。可选参数。
      * @param $interval ACQETimeInterval    时间间隔对象。
-     * @return          ACQECount           返回本对象。
+     * @return          ACQEReadInterface   返回本对象。
      */
     public function timeInterval($interval);
 
     /**
      * 设置object_filters参数。可选参数。
-     * @param $aggFilters   ACQEAggFilters  查询条件。
-     * @return              ACQECount       返回本对象。
+     * @param $aggFilters   ACQEAggFilters      查询条件。
+     * @return              ACQEReadInterface   返回本对象。
      */
     public function objectFilters($aggFilters);
 
     /**
      * 设置filters参数。可选参数。
-     * @param $aggFilters   ACQEAggFilters  查询条件。
-     * @return              ACQECountUnique 返回本对象。
+     * @param $aggFilters   ACQEAggFilters      查询条件。
+     * @return              ACQEReadInterface   返回本对象。
      */
     public function filters($aggFilters);
 
     /**
      * 设置group_by参数。可选参数。
-     * @param $properties   array       指定group_by所依赖的属性列（可以是多个），以及每个属性列的性质，如：array(array('province', 'actor'), array('gender', 'female'))。
+     * @param $properties   array   指定group_by所依赖的属性列（可以是多个），以及每个属性列的性质，如：array(array('province', 'actor'), array('gender', 'collection'))。
      * 参数$properties是一个数组，数组的每个元素是一个由两个字符串组成的数组。由这两个字符串组成的数组可描述一个属性列：
-     * 第一个字符串是属性列的名字；第二个字符串标记属性列的性质——actor，object或者event。
-     * @return              ACQECount   返回本对象。
+     * 第一个字符串是属性列的名字；第二个字符串标记属性列的性质——actor，object，phone或者collection（缺省值）。
+     * @return              ACQEReadInterface   返回本对象。
      */
     public function groupBy($properties);
 
     /**
      * 设置order_by参数。可选参数。
-     * @param $property string  用来排序的属性列的名字。符号“#”表示依据聚合函数的结果排序。
-     * @param $ascend   bool    为TRUE时表示按升序排序，否则表示按降序排序。
-     * @return          ACQECount   返回本对象。
+     * @param $property string              用来排序的属性列的名字。符号“#”表示依据聚合函数的结果排序。
+     * @param $ascend   bool                为TRUE时表示按升序排序，否则表示按降序排序。
+     * @return          ACQEReadInterface   返回本对象。
      */
     public function orderBy($property, $ascend);
 
     /**
-     * 执行AC-QueryEngine::count查询。
+     * 执行数据分析查询。
      * @return array|bool   返回服务端返回的结果。返回结果为数组时表示访问成功。
      * 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
      */
@@ -2583,7 +2583,7 @@ abstract class ACQEReadInterface extends ACService {
 
 ```php
 /**
- * AC-QueryEngine的时间段参数。可以是绝对时间，或者是相对时间。
+ * AbleCloud数据分析服务的时间段参数。可以是绝对时间，或者是相对时间。
  */
 class ACQETimeframe {
     /// @name 时间单位
