@@ -1257,17 +1257,18 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 >3、上传下载支持断点续传功能
 
+>4、如果编译报错,尝试在项目中加入`libz.tbd`、`MobileCoreServices.framework`、`SystemConfiguration.framework`.
 
 
 ##一、获取文件管理器
 ```objectivec
-ACFileManager * fileManager =[[ACFileManager alloc] init];
+ACFileManager *fileManager = [[ACFileManager alloc] init];
 ```
 ##二、下载文件
 ###1、获取下载url
 ```objectivec
 //0代表URL链接的有效时间为长期有效
-[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
+[fileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
            //获取URL失败，根据error作出不同的处理
@@ -1368,8 +1369,8 @@ upManager = [[ACFileManager alloc] init];
 ```
 #用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
-使用意见反馈前,需要先在控制台设置对应的参数
-![cloud_syn_1](../pic/develop_guide/submitConfig.png)
+使用意见反馈前,需要先在控制台设置反馈项参数
+![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
 ##一 导入头文件
 
@@ -1381,8 +1382,10 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 ```objc
     ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@"subDomain" type:@"type"];
     //这里的键值对需要跟自己在后台定义的一致
-    [feedback addFeedBackWithKey:@"key1" value:@"value1"];
-    [feedback addFeedBackWithKey:@"key2" value:@"value2"];
+    [feedback addFeedBackWithKey:@"description" value:@"descriptionValue"];
+    [feedback addFeedBackWithKey:@"telephoneNumber" value:@"130xxxxxxxx"];
+    //上传照片前, 需先把图片存储到云端, 获取 url 地址, 作为参数
+    [feedback addFeedBackPictureWithKey:@"pictures" value:@"http://www.xxx.com/image.png"];
     
     [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
         if (error) {
