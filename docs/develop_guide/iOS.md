@@ -1372,20 +1372,55 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 使用意见反馈前,需要先在控制台设置反馈项参数
 ![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
-##一 导入头文件
 
-```objc
-#import "ACFeedBackManager.h"
-```
+##一 建议的开发流程
+参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+如果需要上传图片资源, 请按下以下顺序调用接口
+原理如下:
+1. 将要反馈的文件/图片信息上传到云端
+2. 上传成功后根据上传信息获取云端下载的urlString(带过期时间, 由开发者自定义)
+3. 将获取到的URLString作为参数填入意见反馈接口对应的value位置
+
+
 ##二 代码示例
 
 ```objc
+//1. 设置要上传的fileInfo
+    ACFileManager *manager = [[ACFileManager alloc] init];
+    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:<#fileName#> bucket:<#bucket#> CheckSum:<#CheckSum#>];
+    //开发者自行选择以下两种方式
+    //大文件, 提供filePath, 支持断线续传
+    fileInfo.filePath = [[NSBundle mainBundle] pathForResource:@"xxx.jpg" ofType:nil];
+    //小文件, 提供data, 不支持短线续传
+    fileInfo.data = <#data#>;
+
+//2. 调用上传接口
+    [manager uploadFileWithfileInfo:fileInfo progressCallback:^(float progress) {
+        NSLog(@"%f", progress);
+    } voidCallback:^(ACMsg *responseObject, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@"%@", responseObject.getObjectData);
+    }];
+    
+//3. 获取上传信息的url (注: 过期时间为url的过期时间, 而不是文件的过期时间)
+    [manager getDownloadUrlWithfile:fileInfo ExpireTime:<#ExpireTime#> payloadCallback:^(NSString *urlString, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@"%@", urlString);
+    }];
+    
+//4. 调用submitFeedback接口
     ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@"subDomain" type:@"type"];
     //这里的键值对需要跟自己在后台定义的一致
     [feedback addFeedBackWithKey:@"description" value:@"descriptionValue"];
     [feedback addFeedBackWithKey:@"telephoneNumber" value:@"130xxxxxxxx"];
-    //上传照片前, 需先把图片存储到云端, 获取 url 地址, 作为参数
-    [feedback addFeedBackPictureWithKey:@"pictures" value:@"http://www.xxx.com/image.png"];
+    //将上面获取到的 urlString放到对应的value
+    [feedback addFeedBackPictureWithKey:@"pictures" value:<#urlString#>];
     
     [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
         if (error) {
@@ -1394,8 +1429,8 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
         }
         //提交成功
     }];
-```
 
+```
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 
