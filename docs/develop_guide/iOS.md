@@ -1394,13 +1394,19 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 
 
 ##一 建议的开发流程
-参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. 
+
 如果需要上传图片资源, 请按下以下顺序调用接口
-原理如下:
+
+流程如下:
+
 1. 初始化`ACFileInfo`，设置图片上传到云端的目录`bucket`、文件名`name`、文件等
+
 2. 根据`ACFileInfo`将要反馈的图片信息上传到云端
+
 3. 上传成功后根据`ACFileInfo`获取图片下载的urlString
-4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置
+
+4. 将反馈信息和第三步获取到的URLString作为参数填入意见反馈接口对应的value位置
 
 
 ##二 代码示例
@@ -1424,7 +1430,7 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
             //错误处理
             return;
         }
-        NSLog(@"%@", responseObject.getObjectData);
+        NSLog(@"%@", responseObject.name);
     }];
 ```
 ####3. 获取上传的图片的url
