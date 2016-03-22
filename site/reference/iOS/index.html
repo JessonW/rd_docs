@@ -388,14 +388,6 @@
                 
             
         
-            
-                
-            
-        
-            
-                
-            
-        
         
         <li class="main">
             <a href="#_16">适用蓝牙的接口<span class="main-set parent__16">+</span></a>
@@ -426,19 +418,11 @@
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#6_1">6、文件存储</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#_19">一、获取文件管理器</a></li>
-            
-        
-            
-            <li class="sub parent__16" style="display: none;"><a href="#_20">二、下载文件</a></li>
-            
-        
-            
-            <li class="sub parent__16" style="display: none;"><a href="#_21">三、上传文件</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
             
         
     
@@ -657,6 +641,29 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 @property(nonatomic,copy) NSString *phone;
 // 电子邮件地址
 @property(nonatomic,copy) NSString *email;
+</code></pre>
+
+<h4 id="acfeedback">ACFeedback</h4>
+<p>说明：用来表示用户意见反馈的信息，定义如下：</p>
+<pre><code class="objc">@interface ACFeedBack : NSObject
+//可以为空,也可以指定subDomain产品
+@property (nonatomic, copy) NSString *subDomain;
+//预留字段, 可传nil
+@property (nonatomic, copy) NSString *type;
+//开发者自定义的扩展信息，与前端定义的字段一致
+@property (nonatomic, strong) ACObject *extend;
+
+//对应AbleCloud控制台反馈项设定的key与value值
+- (void)addFeedBackWithKey:(NSString *)key value:(NSString *)value;
+- 
+/**
+* 添加图片下载地址的url
+*
+* @param key   对应为AbleCloud控制台反馈项设定的key值
+* @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
+*/
+- (void)addFeedBackPictureWithKey:(NSString *)key value:(NSString *)value;
+
 </code></pre>
 
 <h4 id="acuserdevice">ACUserDevice</h4>
@@ -2266,14 +2273,14 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 
 </code></pre>
 
-<h2 id="6_1">6、文件存储</h2>
+<h2 id="7">7、文件存储</h2>
 <p>文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：</p>
-<h2 id="_19">一、获取文件管理器</h2>
+<h3 id="_19">一、获取文件管理器</h3>
 <pre><code class="c">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
-<h2 id="_20">二、下载文件</h2>
+<h3 id="_20">二、下载文件</h3>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code>/**
  * //获取下载URL
@@ -2294,7 +2301,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 </code></pre>
 
-<h2 id="_21">三、上传文件</h2>
+<h3 id="_21">三、上传文件</h3>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
 <pre><code class="c">@interface ACACL : NSObject
 </code></pre>
@@ -2363,6 +2370,15 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
  * @param fileInfo      文件信息
  */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
+</code></pre>
+
+<h2 id="8">8、用户意见反馈</h2>
+<pre><code class="objc">
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>

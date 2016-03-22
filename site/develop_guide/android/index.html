@@ -390,11 +390,11 @@
         </li>
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#ota_1">普通设备OTA</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#wifiota">普通WIFI设备OTA</a></li>
             
         
             
-            <li class="sub parent_ota" style="display: none;"><a href="#ota_3">蓝牙设备OTA</a></li>
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_2">蓝牙设备OTA</a></li>
             
         
     
@@ -464,10 +464,26 @@
     
         
         
+            
+                
+            
+        
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_47">用户意见反馈</a>
+            <a href="#_47">用户意见反馈<span class="main-set parent__47">+</span></a>
         </li>
+        
+            
+            <li class="sub parent__47" style="display: none;"><a href="#_48">一 建议的开发流程</a></li>
+            
+        
+            
+            <li class="sub parent__47" style="display: none;"><a href="#_49">二 代码示例</a></li>
+            
         
     
         
@@ -522,7 +538,7 @@ AC.setRegional(AC.REGIONAL_EAST_CHINA);
 
 <h1 id="_5">帐号管理</h1>
 <p>功能介绍参考： <a href="../../features/functions/#_1">功能说明-功能介绍-帐号管理</a></p>
-<p>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的错误码进行单独处理，返回登录页让用户重新登录。</p>
+<p>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的token过期错误码进行单独处理，返回登录页让用户重新登录。</p>
 <h2 id="_6">一、普通帐号注册</h2>
 <p><img alt="account_register" src="../../pic/develop_guide/account_register.png" /></p>
 <h3 id="_7">获取账号管理对象</h3>
@@ -1639,23 +1655,21 @@ timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle
 
 <h1 id="ota">OTA</h1>
 <p>功能介绍参见 <a href="../../features/functions/#ota">功能说明-功能介绍-OTA</a></p>
-<h2 id="ota_1">普通设备OTA</h2>
+<h2 id="wifiota">普通WIFI设备OTA</h2>
 <p><img alt="OTA" src="../../pic/develop_guide/OTA.png" /></p>
 <p>若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。</p>
-<h4 id="ota_2">一、获取OTA管理器对象</h4>
+<h4 id="ota_1">一、获取OTA管理器对象</h4>
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
 <h4 id="_37">二、检查升级</h4>
 <p>检查设备是否有新的OTA版本，同时获取升级日志。</p>
-<pre><code class="java">otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
+<pre><code class="java">long deviceId = 1;   //设备逻辑id
+int otaType = 1;      //升级类型，1为系统MCU升级
+otaMgr.checkUpdate(subDomain, new ACOTACheckInfo(deviceId, otaType), new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
     public void success(ACOTAUpgradeInfo info) {
-        /**
-         * 通过判断info.getOldVersion()和info.getNewVersion()是否相等判断是否有新版本更新
-         * 
-         * info.getOldVersion为老版本，info.getNewVersion为新版本，info.getUpgradeLog为升级日志
-         */
+        //通过判断info.isUpdate()判断是否有新版本更新
     }
     @Override
     public void error(ACException e) {
@@ -1665,7 +1679,7 @@ timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle
 </code></pre>
 
 <h4 id="_38">三、确认升级</h4>
-<pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
+<pre><code class="java">otaMgr.confirmUpdate(subDomain,deviceId, newVersion, otaType, new VoidCallback() {
     @Override
     public void success() {
         //确认升级     
@@ -1677,14 +1691,14 @@ timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle
 });
 </code></pre>
 
-<h2 id="ota_3">蓝牙设备OTA</h2>
-<h4 id="ota_4">一、获取OTA管理器对象</h4>
+<h2 id="ota_2">蓝牙设备OTA</h2>
+<h4 id="ota_3">一、获取OTA管理器对象</h4>
 <pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
 </code></pre>
 
-<h4 id="ota_5">二、查询OTA新版本信息</h4>
-<pre><code class="java">// 初当前设备的版本号ACOtaCheckInfo信息,version为蓝牙设备当前版本
-otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
+<h4 id="ota_4">二、查询OTA新版本信息</h4>
+<pre><code class="java">// 初始化当前设备的版本号等ACOtaCheckInfo信息,version为蓝牙设备当前版本
+otaMgr.checkUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
     @Override
     public void success(ACOTAUpgradeInfo upgradeInfo) {
         if(!upgradeInfo.isUpdate()){
@@ -1694,9 +1708,9 @@ otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, vers
         //获取升级类型
         if (upgradeInfo.getOtaMode() == 0) {
             //静默升级
-        }else if(upgradeInfo.getOtaMode() == 1){
+        } else if(upgradeInfo.getOtaMode() == 1){
             //用户确认升级
-        }else {
+        } else {
             //强制升级
         }
     }
@@ -1708,38 +1722,31 @@ otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, vers
 });
 </code></pre>
 
-<h4 id="ota_6">下载OTA文件</h4>
-<pre><code class="java">//获取文件管理器对象
-ACFileMgr fileMgr = AC.fileMgr();
-//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件；0代表url有效期为永久有效
-fileMgr.getDownloadUrl(upgradeInfo.getFiles().get(0), 0, new PayloadCallback&lt;String&gt;() {
+<h4 id="ota_5">三、下载OTA文件</h4>
+<pre><code class="java">//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件
+String url = upgradeInfo.getFiles().get(0).getDownloadUrl();
+String checksum = upgradeInfo.getFiles().get(0).getCheckSum();
+ACUtils.createSDDir(&quot;ota_download_path&quot;);
+File file = null;
+try {
+    //建议首先执行垃圾文件清理工作，防止磁盘写满升级失败，同时也防止异常情况下下载文件不完整被使用 
+    file = ACUtils.createSDFile(&quot;ota_download_path/file_name&quot;);
+} catch (IOException e) {
+}
+AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
     @Override
-    public void success(String url) {
-        ACUtils.createSDDir(&quot;ota_download_path&quot;);
-        File file = null;
-        try { 
-            file = ACUtils.createSDFile(&quot;ota_download_path/file_name&quot;);
-        } catch (IOException e) {
-        }
-        fileMgr.downloadFile(file, url, new ProgressCallback() {
-            @Override
-            public void progress(double progress) {}
-            }, new VoidCallback() {
-            @Override
-            public void success() {
-                //下载成功，可以进行设备ota升级
-                //另升级成功后，建议在此清理已完成升级的版本文件
-            }
-
-        @Override
-        public void error(ACException e) {
-            //下载失败，建议清理掉当前下载的不完整文件
-        }
-    });
+    public void progress(double progress) {
+        //下载进度更新
+    }, new VoidCallback() {
+    @Override
+    public void success() {
+        //下载成功，建议调用otaMediaDone()接口通知云端下载文件成功，用于日志追踪
+        //同时进行设备ota升级，另升级成功后，建议在此清理已完成升级的版本文件
+    }
 
     @Override
     public void error(ACException e) {
-        //获取url失败
+        //下载失败，建议清理掉当前下载的不完整文件
     }
 });
 </code></pre>
@@ -2083,7 +2090,8 @@ try {
      file = ACUtils.createSDFile(&quot;myDir/&quot; + name);
 } catch (IOException e) {
 }
-fileMgr.downloadFile(file, url, new ProgressCallback() {
+//0代表不校验checksum
+fileMgr.downloadFile(file, url, 0, new ProgressCallback() {
     @Override
     public void progress(double progress) {
          //用于显示进度条，百分比，如99.99；如果没有显示进度条的需求则传null
@@ -2102,7 +2110,8 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 </code></pre>
 
 <h4 id="2_9">2)、下载文件到内存，比如头像下载</h4>
-<pre><code class="java">fileMgr.downloadFile(url, new ProgressCallback() {
+<pre><code class="java">//0代表不校验checksum
+fileMgr.downloadFile(url, 0, new ProgressCallback() {
     @Override
     public void progress(double progress) {
          //用于显示进度条，百分比，如99.99；此处一般为小文件下载，所以不需要显示进度条的时候传null
@@ -2138,7 +2147,8 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 <h3 id="2_10">2、上传文件</h3>
 <h4 id="1sdcard_1">1)、上传sdcard文件</h4>
-<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //设置上传文件的sdcard路径
@@ -2162,7 +2172,8 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h4 id="2_11">2)、上传小文件，比如头像</h4>
-<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
 //比如头像比特流数组
@@ -2186,6 +2197,72 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </code></pre>
 
 <h1 id="_47">用户意见反馈</h1>
+<p>AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
+使用意见反馈前,需要先在控制台设置反馈项参数
+<img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
+<h2 id="_48">一 建议的开发流程</h2>
+<p>参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+如果需要上传图片资源, 请按下以下顺序调用接口
+原理如下:
+1. 初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等
+2. 根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端
+3. 上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString
+4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+<h2 id="_49">二 代码示例</h2>
+<h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
+<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+//开发者自行选择以下两种上传方式
+//从内存里读取图片流
+fileInfo.setData(photoBytes);
+//从sdcard读取图片流
+fileInfo.setFile(new File(Environment.getExternalStorageDirectory() + &quot;/myDir/&quot; + name));
+</code></pre>
+
+<h4 id="2_12">2. 调用上传接口</h4>
+<pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
+fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
+    @Override
+    public void success() {
+        //上传成功
+    }
+
+    @Override
+    public void error(ACException e) {
+        //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
+    }
+});
+</code></pre>
+
+<h4 id="3-url">3. 获取上传的图片的url</h4>
+<pre><code class="java">    //建议ExpireTime=0，url永久有效
+    fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
+    @Override
+    public void success(String url) {
+         //成功获取文件url
+    }
+
+    @Override
+    public void error(ACException e) {
+         //没有权限或其他网络错误
+    }
+});
+</code></pre>
+
+<h4 id="4_5">4. 提交用户反馈信息</h4>
+<pre><code class="java">ACFeedback feedback = new ACFeedback();                         feedback.addFeedback(&quot;description&quot;, description);                                feedback.addFeedback(&quot;telephoneNumber&quot;, phone);                                feedback.addFeedbackPicture(&quot;pictures&quot;, url);                               AC.feedbackMgr().submitFeedback(feedback, new VoidCallback() {
+    @Override
+    public void success(){                                 
+        //成功提交用户反馈信息
+    }
+
+    @Override
+    public void error(ACException e) {
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照AbleCloud控制台填写的key与value类型
+    }
+});
+</code></pre>
+
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p>
 <blockquote>
