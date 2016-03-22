@@ -1420,7 +1420,7 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 ```
 ####4. 提交用户反馈信息
 ```objc  
-    ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@"subDomain" type:@"type"];
+    ACFeedBack *feedback = [[ACFeedBack alloc] init];
     //这里的键值对需要跟自己在后台定义的一致
     [feedback addFeedBackWithKey:@"description" value:@"descriptionValue"];
     [feedback addFeedBackWithKey:@"telephoneNumber" value:@"130xxxxxxxx"];
