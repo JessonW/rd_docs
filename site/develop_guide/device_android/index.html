@@ -266,19 +266,83 @@
         
         
         <li class="main">
-            <a href="#demo">Demo<span class="main-set parent_demo">+</span></a>
+            <a href="#_5">安卓设备的控制与数据上报<span class="main-set parent__5">+</span></a>
         </li>
         
             
-            <li class="sub parent_demo" style="display: none;"><a href="#2">2、使用二进制消息格式进行通讯</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#1">1、使用二进制消息格式进行通讯</a></li>
             
         
             
-            <li class="sub parent_demo" style="display: none;"><a href="#1klv">1、使用KLV消息格式进行通讯</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#2klv">2、使用KLV消息格式进行通讯</a></li>
             
         
             
-            <li class="sub parent_demo" style="display: none;"><a href="#3json">3、使用JSON消息格式进行通讯</a></li>
+            <li class="sub parent__5" style="display: none;"><a href="#3json">3、使用JSON消息格式进行通讯</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ota">安卓设备OTA<span class="main-set parent_ota">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_1">一、获取OTA管理器对象</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_2">二、轮询OTA新版本信息</a></li>
+            
+        
+            
+            <li class="sub parent_ota" style="display: none;"><a href="#ota_3">下载OTA文件</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_6">文件存储<span class="main-set parent__6">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_7">一、获取文件管理器</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_8">二、下载文件</a></li>
+            
+        
+            
+            <li class="sub parent__6" style="display: none;"><a href="#_9">三、上传文件</a></li>
             
         
     
@@ -291,7 +355,7 @@
 <h4 id="sdk">SDK发布库</h4>
 <p>AbleCloud发布的安卓设备SDK为<code>ac_device_android.jar</code>，除此之外，还需要导入<code>libDevice-Service.so</code>文件（可根据不同cpu做不同选择）</p>
 <blockquote>
-<p><strong>具体步骤</strong>:把文件拷入你自己的工程的libs目录下并设置依赖。</p>
+<p><strong>具体步骤</strong>:把文件拷入你自己的工程的libs目录下并设置依赖</p>
 </blockquote>
 <h4 id="_3">开发环境设置</h4>
 <p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
@@ -304,6 +368,15 @@
 
 <h4 id="_4">应用程序初始化</h4>
 <p>在你的<code>AndroidManifest.xml</code>文件里的<code>&lt;application&gt;</code>标签里添加</p>
+<pre><code class="xml">&lt;receiver android:name=&quot;com.accloud.clientservice.ACNetworkChangeReceiver&quot;
+          android:label=&quot;NetworkConnection&quot;&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name=&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre>
+
+<p>及配置信息如下</p>
 <pre><code class="xml">&lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;主域&quot; --&gt;
 &lt;meta-data android:name=&quot;major-domain&quot; android:value=&quot;ablecloud&quot;/&gt;
 &lt;!-- [Required] 进入AbleCloud管理控制台,对应&quot;产品管理-&gt;主域ID&quot; --&gt;
@@ -319,7 +392,7 @@
 &lt;meta-data android:name=&quot;region&quot; android:value=&quot;0&quot;/&gt;
 &lt;!-- [Optional] 设备私钥,正式环境下为必填项,对应&quot;产品管理-&gt;产品列表-&gt;点击管理-&gt;设备密钥-&gt;私钥&quot; 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件--&gt;
 &lt;meta-data android:name=&quot;secret-key&quot; android:value=&quot;bd0d6a5c4aeddc963351d855e63f7241b6ac72338c0a44285fdfe478cfd2b2c3e1313de686db997d8c13d0bc629a8109d6ea780d8e0f5a45c024a254702da46bdcd95f1cc36b80a7c905f1f39f3c698921b0354b62a6536f35944881d5e7c1ab30c3722a6b9f1a86b911e44ba618add9&quot;/&gt;
-&lt;!-- [Optional] 设备版本,格式为&quot;1-0-0&quot;,不设置情况下默认值为&quot;1-0-0&quot; --&gt;
+&lt;!-- [Optional] 设备版本,格式为&quot;1-0-0&quot;,不设置情况下默认值为&quot;1-0-0&quot;,也可通过ACConfig进行设置 --&gt;
 &lt;meta-data android:name=&quot;version&quot; android:value=&quot;1-0-0&quot;/&gt;
 </code></pre>
 
@@ -336,16 +409,9 @@ AC.init(Context Context, String PhysicalDeviceId);
 <blockquote>
 <p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>16字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>并补0或其他将长度拼至16字节；可通过AbleCloud控制台查看<strong>在线设备</strong>查看对应设备的物理ID。</p>
 </blockquote>
-<h1 id="demo">Demo</h1>
-<p>AbleCloud提供的Demo使用的是AbleCloud的测试Domain等信息。开发自己的工程时，请修改Demo里<code>com.accloud.ac_device_android_demo.config.Config.java</code>文件里以下的配置项。</p>
-<pre><code class="java">public static final long DOMAINID;
-public static final long SUBDOMAINID;
-public static final String VERSION;
-public static final String SECRETKEY;
-</code></pre>
-
-<p>下面以开关灯为例，简要介绍与安卓设备通讯的例子：</p>
-<h4 id="2">2、使用二进制消息格式进行通讯</h4>
+<h1 id="_5">安卓设备的控制与数据上报</h1>
+<p>下面以开关灯为例，通过二进制、klv、json三种格式简要介绍与安卓设备通讯的例子。注意实际开发请只选择以下其中一种消息格式。</p>
+<h4 id="1">1、使用二进制消息格式进行通讯</h4>
 <p>以开关灯为例，协议如下：</p>
 <pre><code>//请求数据包
 { 68 ：[
@@ -363,14 +429,17 @@ public static final String SECRETKEY;
 ]}
 </code></pre>
 
-<pre><code class="java">private static final int OFF = 0;
+<pre><code class="java">private static final int CODE_SWITCH_REQ = 68;
+private static final int CODE_SWITCH_RESP = 102;
+
+private static final int OFF = 0;
 private static final int ON = 1;
 
 AC.handleMsg(new ACMsgHandler() {
     @Override
     public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
         switch (reqMsg.getMsgCode()) {
-            case Config.CODE_SWITCH_REQ:
+            case CODE_SWITCH_REQ:
                 //请求消息体
                 byte[] payload = reqMsg.getPayload();
                 if (payload[0] == ON) {
@@ -384,7 +453,7 @@ AC.handleMsg(new ACMsgHandler() {
                     } else
                         respMsg.setPayload(new byte[]{0, 0, 0, 0});    //关灯失败
                 }
-                respMsg.setMsgCode(Config.CODE_SWITCH_RESP);
+                respMsg.setMsgCode(CODE_SWITCH_RESP);
                 break;
         }
     }
@@ -392,7 +461,9 @@ AC.handleMsg(new ACMsgHandler() {
 </code></pre>
 
 <p>数据上报：</p>
-<pre><code class="java">/**
+<pre><code class="java">private static final int CODE_REPORT = 203;
+
+/**
  * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
@@ -400,7 +471,7 @@ AC.handleMsg(new ACMsgHandler() {
  */
 public void reportLight(int status, int type) {
     ACDeviceMsg req = new ACDeviceMsg();
-    req.setMsgCode(Config.CODE_REPORT);
+    req.setMsgCode(CODE_REPORT);
     req.setPayload(new byte[]{(byte) status, (byte) type, 0, 0});
     //把数据真正上报给云端
     AC.reportDeviceMsg(req);
@@ -410,8 +481,8 @@ public void reportLight(int status, int type) {
 <blockquote>
 <p><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。</p>
 </blockquote>
-<h4 id="1klv">1、使用KLV消息格式进行通讯</h4>
-<p><strong>在新建产品的时候选择KLV通讯协议，并填写数据点与数据包</strong>。
+<h4 id="2klv">2、使用KLV消息格式进行通讯</h4>
+<p><strong>在AbleCloud控制台新建产品的时候选择KLV通讯协议，并填写数据点与数据包</strong>。
 以开关灯为例,协议如下：</p>
 <pre><code>//请求数据包
 { 68 ：[
@@ -421,17 +492,22 @@ public void reportLight(int status, int type) {
      //开灯      
      { 1 : 1 }
 ]}
-//响应数据包  
-{ 60 ：[
-     //数据点[key：value(int8)]
-     //失败
-     { 1 : false },
-     //成功      
-     { 1 : true }
-]}
+//响应数据包--KLV格式的resp不需要设置msgCode 
+{
+    //数据点[key：value(int8)]
+    //失败
+    { 1 : false },
+    //成功      
+    { 1 : true }
+}
 </code></pre>
 
-<pre><code class="java">private static final int OFF = 0;
+<pre><code class="java">private static final int CODE_KLV = 69;
+
+private static final int KEY_SWITCH = 1;
+private static final int KEY_TYPE = 2;
+
+private static final int OFF = 0;
 private static final int ON = 1;
 
 AC.handleMsg(new ACMsgHandler() {
@@ -439,27 +515,27 @@ AC.handleMsg(new ACMsgHandler() {
     public void handleMsg(ACDeviceMsg reqMsg, ACDeviceMsg respMsg) {
          //KLV格式的resp不需要设置msgCode
          switch (reqMsg.getMsgCode()) {
-            case Config.CODE_KLV:
+            case CODE_KLV:
                 //请求消息体
                 ACKLVObject req = reqMsg.getKLVObject();
                 //请求操作类型，关灯或开灯
-                int value = req.get(Config.KEY_SWITCH);
+                int value = req.get(KEY_SWITCH);
                 //响应消息体
                 ACKLVObject resp = new ACKLVObject();
                 if (value == ON) {
                     if (Light.turnLightOn()) {
-                        resp.put(Config.KEY_SWITCH, true);    //开灯成功
+                        resp.put(KEY_SWITCH, true);    //开灯成功
                         respMsg.setKLVObject(resp);
                     } else {
-                        resp.put(Config.KEY_SWITCH, false);   //开灯失败
+                        resp.put(KEY_SWITCH, false);   //开灯失败
                         respMsg.setKLVObject(resp);
                     }
                 } else if (value == OFF) {
                     if (Light.turnLightOff()) {
-                        resp.put(Config.KEY_SWITCH, true);    //关灯成功
+                        resp.put(KEY_SWITCH, true);    //关灯成功
                         respMsg.setKLVObject(resp);
                     } else {
-                        resp.put(Config.KEY_SWITCH, false);   //关灯失败
+                        resp.put(KEY_SWITCH, false);   //关灯失败
                         respMsg.setKLVObject(resp);
                     }
                 }
@@ -470,7 +546,9 @@ AC.handleMsg(new ACMsgHandler() {
 </code></pre>
 
 <p>数据上报：</p>
-<pre><code class="java">/**
+<pre><code class="java">private static final int CODE_REPORT = 203;
+
+/**
  * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
@@ -478,10 +556,10 @@ AC.handleMsg(new ACMsgHandler() {
  */
 public void reportLight(int status, int type) {
     ACDeviceMsg req = new ACDeviceMsg();
-    req.setMsgCode(Config.CODE_REPORT);
+    req.setMsgCode(CODE_REPORT);
     ACKLVObject object = new ACKLVObject();
-    object.put(Config.KEY_SWITCH, (byte) status);
-    object.put(Config.KEY_TYPE, (byte) type);
+    object.put(KEY_SWITCH, (byte) status);
+    object.put(KEY_TYPE, (byte) type);
     req.setKLVObject(object);
     //把数据真正上报给云端
     AC.reportDeviceMsg(req);
@@ -500,8 +578,8 @@ public void reportLight(int status, int type) {
      //开灯
      {&quot;switch&quot;, 1}
 ]}
-//响应数据包  
-{ 102 ：[
+//响应数据包--JSON格式的resp不需要设置msgCode
+{ 
      //失败
      {&quot;result&quot;, false},
      //成功   
@@ -509,7 +587,9 @@ public void reportLight(int status, int type) {
 ]}
 </code></pre>
 
-<pre><code class="java">private static final int OFF = 0;
+<pre><code class="java">private static final int CODE_JSON = 70;
+
+private static final int OFF = 0;
 private static final int ON = 1;
 
 AC.handleMsg(new ACMsgHandler() {
@@ -517,7 +597,7 @@ AC.handleMsg(new ACMsgHandler() {
     public void handleMsg(ACDeviceMsg req, ACDeviceMsg resp) {
         //JSON格式的resp不需要设置msgCode
         switch (reqMsg.getMsgCode()) {
-            case Config.CODE_JSON:
+            case CODE_JSON:
                 //请求消息体
                 JSONObject req = new JSONObject(reqMsg.getJsonPayload());
                 //请求操作类型，关灯或开灯
@@ -547,7 +627,9 @@ AC.handleMsg(new ACMsgHandler() {
 });
 </code></pre>
 
-<pre><code class="java">/**
+<pre><code class="java">private static final int CODE_REPORT = 203;
+
+/**
  * 上报数据到AbleCloud云端
  *
  * @param status 开关状态，1代表开，0代表关
@@ -555,7 +637,7 @@ AC.handleMsg(new ACMsgHandler() {
  */
 public void reportLight(int status, int type) {
     ACDeviceMsg req = new ACDeviceMsg();
-    req.setMsgCode(Config.CODE_REPORT);
+    req.setMsgCode(CODE_REPORT);
     JSONObject jsonObject = new JSONObject();
     try {
         jsonObject.put(&quot;status&quot;, status);
@@ -571,7 +653,187 @@ public void reportLight(int status, int type) {
 
 <blockquote>
 <p><font color=red>注意</font>：msgCode从64-200范围代表控制查询及响应，200-255范围代表消息主动上报，其他范围为AbleCloud内部使用，不允许重复定义。</p>
-</blockquote></div>
+</blockquote>
+<h1 id="ota">安卓设备OTA</h1>
+<h4 id="ota_1">一、获取OTA管理器对象</h4>
+<pre><code class="java">ACOTAMgr otaMgr = AC.otaMgr();
+</code></pre>
+
+<h4 id="ota_2">二、轮询OTA新版本信息</h4>
+<pre><code class="java">// 初始化当前设备的版本号otaCheckInfo信息,30为检查的时间间隔，单位为分钟
+otaMgr.startCheckUpdate(null, 30, new PayloadCallback&lt;ACOTAUpgradeInfo&gt;() {
+    @Override
+    public void success(ACOTAUpgradeInfo upgradeInfo) {
+        //获取升级类型
+        if (upgradeInfo.getOtaMode() == 0) {
+            //静默升级
+        }else if(upgradeInfo.getOtaMode() == 1){
+            //用户确认升级
+        }else {
+            //强制升级
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+        //轮询新版本，并不会走到这里   
+    }
+});
+</code></pre>
+
+<h4 id="ota_3">下载OTA文件</h4>
+<pre><code class="java">//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件
+String url = upgradeInfo.getFiles().get(0).getDownloadUrl();
+String checksum = upgradeInfo.getFiles().get(0).getCheckSum();
+ACUtils.createSDDir(&quot;ota_download_path&quot;);
+File file = null;
+try {
+    //建议首先执行垃圾文件清理工作，防止磁盘写满升级失败，同时也防止异常情况下下载文件不完整被使用 
+    file = ACUtils.createSDFile(&quot;ota_download_path/file_name&quot;);
+} catch (IOException e) {
+}
+AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+        //下载进度更新
+    }, new VoidCallback() {
+    @Override
+    public void success() {
+        //下载成功，建议调用otaMediaDone()接口通知云端下载文件成功，用于日志追踪
+        //同时进行设备ota升级，另升级成功后，建议在此清理已完成升级的版本文件
+    }
+
+    @Override
+    public void error(ACException e) {
+        //下载失败，建议清理掉当前下载的不完整文件
+    }
+});
+</code></pre>
+
+<h1 id="_6">文件存储</h1>
+<blockquote>
+<p><font color="red">注意</font>：</p>
+<p>1、下载文件到sdcard或者从sdcard上传文件到云端需要在 <strong>application</strong> 标签下增加如下权限</p>
+<p><code>&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;</code></p>
+<p>2、使用文件存储需导入jar包<code>android-async-http-1.4.8</code>和<code>qiniu-android-sdk-7.0.7</code>到libs目录下</p>
+<p>3、上传下载支持断点续传功能</p>
+</blockquote>
+<h2 id="_7">一、获取文件管理器</h2>
+<pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
+</code></pre>
+
+<h2 id="_8">二、下载文件</h2>
+<h3 id="1url">1、获取下载url</h3>
+<pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+//0代表url链接有效时间为长期有效
+fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
+    @Override
+    public void success(String url) {
+         //成功获取文件url
+    }
+
+    @Override
+    public void error(ACException e) {
+         //没有权限或其他网络错误
+    }
+});
+</code></pre>
+
+<h3 id="2url">2、根据url下载文件</h3>
+<h4 id="1sdcard">1)、下载文件到sdcard</h4>
+<pre><code class="java">ACUtils.createSDDir(&quot;myDir&quot;);
+File file = null;
+try {
+     file = ACUtils.createSDFile(&quot;myDir/&quot; + name);
+} catch (IOException e) {
+}
+//0代表不校验checksum
+fileMgr.downloadFile(file, url, 0, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+         //用于显示进度条，百分比，如99.99；如果没有显示进度条的需求则传null
+    }
+}, new VoidCallback() {
+    @Override
+    public void success() {
+        //下载成功
+    }
+
+    @Override
+    public void error(ACException e) {
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
+    }
+});
+</code></pre>
+
+<h4 id="2">2)、下载文件到内存，比如头像下载</h4>
+<pre><code class="java">//0代表不校验checksum
+fileMgr.downloadFile(url, 0, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+         //用于显示进度条，百分比，如99.99；此处一般为小文件下载，所以不需要显示进度条的时候传null
+    }
+}, new PayloadCallback&lt;byte[]&gt;() {
+    @Override
+    public void success(byte[] bytes) {
+         //下载成功
+    }
+
+    @Override
+    public void error(ACException e) {
+         //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续下载
+    }
+});
+</code></pre>
+
+<h2 id="_9">三、上传文件</h2>
+<h4 id="1sdcard_1">1)、上传sdcard文件</h4>
+<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+//设置上传文件的sdcard路径
+fileInfo.setFile(new File(Environment.getExternalStorageDirectory() + &quot;/myDir/&quot; + name));
+fileMgr.uploadFile(fileInfo, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+        //用于显示进度条，百分比，如99.99；如果没有显示进度条的需求则传null
+    }
+}, new VoidCallback() {
+    @Override
+    public void success() {
+        //上传成功
+    }
+
+    @Override
+    public void error(ACException e) {
+        //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
+    }
+});
+</code></pre>
+
+<h4 id="2_1">2)、上传小文件，比如头像</h4>
+<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+//设置acl
+fileInfo.setACL(acl);
+//比如头像比特流数组
+fileInfo.setData(bytes);
+fileMgr.uploadFile(fileInfo, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+        //用于显示进度条，百分比，如99.99；此处一般为小文件上传，所以不需要显示进度条的时候传null
+    }
+}, new VoidCallback() {
+    @Override
+    public void success() {
+        //上传成功
+    }
+
+    @Override
+    public void error(ACException e) {
+        //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
+    }
+});
+</code></pre></div>
             
         </div>
 
