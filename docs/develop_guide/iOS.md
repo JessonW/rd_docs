@@ -27,13 +27,20 @@
 Xcode下直接**Command + R**运行。
 
 ><font color="brown">**注：**</font>
+
 >1. 如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+
 >2. 模拟器要导入`SystemConfiguration`库
+
 >3. 导入`libicucore.tbd`
+
 >4. SDK中集成`.framework`形式的`AFNetworking3.0.4`包, 开发者可根据自己需求选择删除`AFNetworking.framework`, 然后使用`cocoapods`等工具导入Github上源码.
+
 >5. 如果选择使用`AFNetworking.framework`, 由于`AFNetworking`自身打包的bug,需添加如下操作, 否则运行崩溃.
 
 ![account_register](../pic/develop_guide/AFN.png)
+
+
 
 ####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
