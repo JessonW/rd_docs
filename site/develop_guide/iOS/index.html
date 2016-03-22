@@ -482,7 +482,7 @@
         </li>
         
             
-            <li class="sub parent__46" style="display: none;"><a href="#_47">一 导入头文件</a></li>
+            <li class="sub parent__46" style="display: none;"><a href="#_47">一 建议的开发流程</a></li>
             
         
             
@@ -526,16 +526,28 @@
 完成上述步骤后，我们将在工程视图里面看到该目录。
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。</li>
 <li><strong>本地运行</strong>
-Xcode下直接<strong>Command + R</strong>运行。<blockquote>
-<p><font color="brown"><strong>注：</strong></font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
-</blockquote>
-</li>
+Xcode下直接<strong>Command + R</strong>运行。</li>
 </ol>
+<blockquote>
+<p><font color="brown"><strong>注：</strong></font>
+1. 如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+2. 模拟器要导入<code>SystemConfiguration</code>库
+3. 导入<code>libicucore.tbd</code>
+4. SDK中集成<code>.framework</code>形式的<code>AFNetworking3.0.4</code>包, 开发者可根据自己需求选择删除<code>AFNetworking.framework</code>, 然后使用<code>cocoapods</code>等工具导入Github上源码.
+5. 如果选择使用<code>AFNetworking.framework</code>, 由于<code>AFNetworking</code>自身打包的bug,需添加如下操作, 否则运行崩溃.</p>
+</blockquote>
+<p><img alt="account_register" src="../../pic/develop_guide/AFN.png" /></p>
 <h4 id="_3">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化</p>
-<pre><code class="objectivec">// MajorDomain:主域名  majorDomainId:主域ID
-[ACloudLib setMajorDomain:@&quot;主域名&quot; majorDomainId:majorDomainId ];
+建议在APP启动方法<code>didFinishLaunchingWithOptions:</code>中调用此方法来进行初始化</p>
+<pre><code class="objc">
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    [ACloudLib setMajorDomain:&lt;#主域名#&gt; majorDomainId:&lt;#主域ID#&gt;];
+
+    return YES;
+}
+
 </code></pre>
 
 <p>开发阶段，请初始化<strong>测试环境</strong></p>
@@ -1573,15 +1585,16 @@ ACFileManager *fileMgr = [[ACFileManager alloc] init];
 <p>1、iOS权限原因，下载文件上传文件的操作只能在本应用的沙盒中操作</p>
 <p>2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现</p>
 <p>3、上传下载支持断点续传功能</p>
+<p>4、如果编译报错,尝试在项目中加入<code>libz.tbd</code>、<code>MobileCoreServices.framework</code>、<code>SystemConfiguration.framework</code>.</p>
 </blockquote>
 <h2 id="_43">一、获取文件管理器</h2>
-<pre><code class="objectivec">ACFileManager * fileManager =[[ACFileManager alloc] init];
+<pre><code class="objectivec">ACFileManager *fileManager = [[ACFileManager alloc] init];
 </code></pre>
 
 <h2 id="_44">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="objectivec">//0代表URL链接的有效时间为长期有效
-[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
+[fileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
            //获取URL失败，根据error作出不同的处理
@@ -1681,17 +1694,57 @@ upManager = [[ACFileManager alloc] init];
 
 <h1 id="_46">用户意见反馈</h1>
 <p>AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
-使用意见反馈前,需要先在控制台设置对应的参数
-<img alt="cloud_syn_1" src="../../pic/develop_guide/submitConfig.png" /></p>
-<h2 id="_47">一 导入头文件</h2>
-<pre><code class="objc">#import &quot;ACFeedBackManager.h&quot;
+使用意见反馈前,需要先在控制台设置反馈项参数
+<img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
+<h2 id="_47">一 建议的开发流程</h2>
+<p>参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+如果需要上传图片资源, 请按下以下顺序调用接口
+原理如下:
+1. 初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等
+2. 根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端
+3. 上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString
+4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+<h2 id="_48">二 代码示例</h2>
+<h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
+<pre><code class="objc">    ACFileManager *manager = [[ACFileManager alloc] init];
+    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:&lt;#fileName#&gt; bucket:&lt;#bucket#&gt; CheckSum:0];
+    //开发者自行选择以下两种上传方式
+    //大文件, 提供filePath, 支持断点续传
+    fileInfo.filePath = [[NSBundle mainBundle] pathForResource:@&quot;xxx.jpg&quot; ofType:nil];
+    //小文件, 提供data, 不支持断点续传
+    fileInfo.data = &lt;#data#&gt;;
 </code></pre>
 
-<h2 id="_48">二 代码示例</h2>
-<pre><code class="objc">    ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@&quot;subDomain&quot; type:@&quot;type&quot;];
+<h4 id="2_12">2. 调用上传接口</h4>
+<pre><code class="objc">    [manager uploadFileWithfileInfo:fileInfo progressCallback:^(float progress) {
+        NSLog(@&quot;%f&quot;, progress);
+    } voidCallback:^(ACMsg *responseObject, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@&quot;%@&quot;, responseObject.getObjectData);
+    }];
+</code></pre>
+
+<h4 id="3-url">3. 获取上传的图片的url</h4>
+<pre><code class="objc">    //建议ExpireTime=0，url永久有效
+    [manager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@&quot;%@&quot;, urlString);
+    }];
+</code></pre>
+
+<h4 id="4_5">4. 提交用户反馈信息</h4>
+<pre><code class="objc">    ACFeedBack *feedback = [[ACFeedBack alloc] init];
     //这里的键值对需要跟自己在后台定义的一致
-    [feedback addFeedBackWithKey:@&quot;key1&quot; value:@&quot;value1&quot;];
-    [feedback addFeedBackWithKey:@&quot;key2&quot; value:@&quot;value2&quot;];
+    [feedback addFeedBackWithKey:@&quot;description&quot; value:@&quot;descriptionValue&quot;];
+    [feedback addFeedBackWithKey:@&quot;telephoneNumber&quot; value:@&quot;130xxxxxxxx&quot;];
+    //将上面获取到的 urlString放到对应的value
+    [feedback addFeedBackPictureWithKey:@&quot;pictures&quot; value:&lt;#urlString#&gt;];
 
     [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
         if (error) {

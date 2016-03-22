@@ -190,6 +190,7 @@ ACDeviceMsg定义如下：
 
 
 
+
 ####ACKLVObject
 <font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。
 
@@ -211,7 +212,30 @@ ACDeviceMsg定义如下：
 // 电子邮件地址
 @property(nonatomic,copy) NSString *email;
 ```
+####ACFeedback
+说明：用来表示用户意见反馈的信息，定义如下：
 
+```objc
+@interface ACFeedBack : NSObject
+//可以为空,也可以指定subDomain产品
+@property (nonatomic, copy) NSString *subDomain;
+//预留字段, 可传nil
+@property (nonatomic, copy) NSString *type;
+//开发者自定义的扩展信息，与前端定义的字段一致
+@property (nonatomic, strong) ACObject *extend;
+
+//对应AbleCloud控制台反馈项设定的key与value值
+- (void)addFeedBackWithKey:(NSString *)key value:(NSString *)value;
+- 
+/**
+* 添加图片下载地址的url
+*
+* @param key   对应为AbleCloud控制台反馈项设定的key值
+* @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
+*/
+- (void)addFeedBackPictureWithKey:(NSString *)key value:(NSString *)value;
+
+```
 
 ####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
@@ -1864,16 +1888,16 @@ ACServiceClient通信器
 
 ```
 
-##6、文件存储
+##7、文件存储
 文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：
 
 
-##一、获取文件管理器
+###一、获取文件管理器
 ``` c
 ACFileManager * fileManager =[[ACFileManager alloc] init];
 ```
-##二、下载文件
+###二、下载文件
 ###1、获取下载url
 ```
 /**
@@ -1895,7 +1919,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 ```
 
-##三、上传文件
+###三、上传文件
 
 ###1、设置上传文件的权限管理类－－ACACL
 ```c
@@ -1969,6 +1993,15 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 
+##8、用户意见反馈
+```objc
+
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
+```
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 
