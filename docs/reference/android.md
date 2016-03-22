@@ -15,6 +15,7 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
 ####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
+
 ```java
 public class ACObject {
     private HashMap<String, Object> data = new HashMap<String, Object>();
@@ -58,6 +59,7 @@ public class ACObject {
 
 ####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
+
 ```java
 public class ACMsg extends ACObject {
     private String name;
@@ -158,6 +160,7 @@ public class ACMsg extends ACObject {
 >KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
 
 ACDeviceMsg定义如下：
+
 ```java
 public class ACDeviceMsg {
     private int code;			// 消息码，用于区分消息类型
@@ -181,6 +184,7 @@ public class ACDeviceMsg {
 
 ####ACDeviceMsgMarshaller
 设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：
+
 ```java
 public interface ACDeviceMsgMarshaller {
     /**
@@ -214,6 +218,7 @@ public interface ACDeviceMsgMarshaller {
 
 ####ACAccount
 用来表示AbleCloud的一个注册帐号信息，定义如下：
+
 ```java
 public class ACUserInfo {
     private long userId;  //用户id
@@ -227,9 +232,10 @@ public class ACUserInfo {
 
 ####ACOpenIdInfo
 用来表示AbleCloud的一个第三方登录信息，定义如下：
+
 ```java
 public class ACOpenIdInfo {
-    //第三方登录类型，通过ACThirdPlatform.QQ|SINA|WEIXIN|JINDONG|OTHER区分
+    //第三方登录类型，通过ACThirdPlatform.QQ|SINA|WEIXIN|JINDONG|FACEBOOK|TWITTER|INSTAGRAM|OTHER区分
     private ACThirdPlatform thirdPlatform; 
     //从第三方登录后获取的openId，微博为id
     private String openId;   
@@ -242,6 +248,7 @@ public class ACOpenIdInfo {
 
 ####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
+
 ```java
 public class ACUserDevice {
     //设备逻辑ID
@@ -273,6 +280,7 @@ public class ACUserDevice {
 
 ####ACDeviceUser
 设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：
+
 ```java
 public class ACDeviceUser {
     //用户ID
@@ -296,6 +304,7 @@ public class ACDeviceUser {
 
 ####ACHome
 说明：分组模型下，Home模型定义如下：
+
 ```java
 public class ACHome {
     private long homeId;
@@ -310,6 +319,7 @@ public class ACHome {
 
 ####ACRoom
 说明：分组模型下，Room模型定义如下：
+
 ```java
 public class ACRoom {
     private long homeId;
@@ -325,6 +335,7 @@ public class ACRoom {
 
 ####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
+
 ```java
 public class ACTimerTask {
     //创建任务ID
@@ -358,6 +369,7 @@ public class ACTimerTask {
 
 ####ACPushTable
 说明：用来表示订阅的数据集实时消息内容，定义如下：
+
 ```java
 public class ACPushTable {
     public static final int OPTYPE_CREATE = 1;
@@ -382,6 +394,7 @@ public class ACPushTable {
 
 ####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示文件信息，定义如下：
+
 ```java
 public class ACFileInfo {
     //自定义文件目录，如ota
@@ -403,6 +416,7 @@ public class ACFileInfo {
 
 ####ACDeviceFind
 说明：用来获取局域网本地设备，定义如下：
+
 ```java
 public class ACDeviceFind {
     private String ip;
@@ -417,37 +431,84 @@ public class ACDeviceFind {
 
 >如果出现丢包导致局域网状态不准确情况下，需要手动刷新局域网状态并进行控制，则需要调用findLocalDevice重新获取ACDeviceFind的列表（不需要做任何处理，sdk自动会记住局域网在线设备列表），这时只需要更新页面上显示的局域网在线状态即可（当前设备列表只需要匹配到physicalDeviceId相等即说明该设备本地局域网在线，或者重新listDeviceWithStatus获取设备列表）
 
-####ACOTAUpgradeInfo
+####ACOTACheckInfo
 说明：用来获取OTA升级状态信息，定义如下：
+
 ```java
-public class ACOTAUpgradeInfo {
-    //当前版本号
-    private String oldVersion;
-    //升级版本号
-    private String newVersion;
-    //升级日志
-    private String upgradeLog;
+public class ACOTACheckInfo {
+    //设备逻辑ID
+    private long deviceId;
+    //设备物理ID
+    private String physicalDeviceId;
+    //设备原版本
+    private String version;
+    //设备升级类型 1系统MCU升级 2WiFi通信模组升级
+    private int otaType;
+    //设备渠道
+    private String channel;
+    //设备批次
+    private String batch;
 
-    //蓝牙OTA升级
-    public ACOTAUpgradeInfo(String newVersion, String upgradeLog) {
-        this.newVersion = newVersion;
-        this.upgradeLog = upgradeLog;
-        this.oldVersion = "you should get it from bluetooth";
-    }
+    /**
+     * 蓝牙设备OTA检测升级
+     *
+     * @param physicalDeviceId 设备物理ID
+     * @param version          设备原版本
+     */
+    public ACOTACheckInfo(String physicalDeviceId, String version) {}
 
-    //WiFi OTA升级
-    public ACOTAUpgradeInfo(String oldVersion, String newVersion, String upgradeLog) {
-        this.oldVersion = oldVersion;
-        this.newVersion = newVersion;
-        this.upgradeLog = upgradeLog;
-    }
-
-    //getter
+    /**
+     * 普通wifi设备OTA检测升级
+     *
+     * @param deviceId 设备逻辑ID
+     * @param otaType  设备升级类型,1系统MCU升级 2WiFi通信模组升级
+     */
+    public ACOTACheckInfo(long deviceId, int otaType) {}
 }
 ```
+####ACOTAUpgradeInfo
+说明：OTA升级信息，定义如下：
 
+```java
+public class ACOTAUpgradeInfo {
+    //是否有OTA升级
+    private boolean isUpdate;
+    //原版本号
+    private String currentVersion;
+    //升级版本号
+    private String targetVersion;
+    //升级方式 0：静默升级（默认）1：用户确认升级 2：强制升级
+    private int otaMode;
+    //升级日志
+    private String upgradeLog;
+    //升级状态 0未下载 1文件下载成功 2升级完成
+    private int status;
+    //OTA文件名列表
+    private List<ACOTAFileInfo> files;
+    
+    public ACOTAUpgradeInfo(String currentVersion, String targetVersion, int otaMode, String upgradeLog, int status, List<ACOTAFileInfo> files) {}
+}
+```
+####ACOTAFileInfo
+说明：OTA升级新文件信息，定义如下：
+
+```java
+public class ACOTAFileInfo {
+    //文件名
+    private String name;
+    //文件类型
+    private int type;
+    //文件校验和
+    private int checksum;
+    //文件下载路径
+    private String downloadUrl;
+
+    public ACOTAFileInfo(String name, int type, int checksum, String downloadUrl){}
+}
+```
 ####ACDeviceActive
 说明：用来获取OTA升级状态信息，定义如下：
+
 ```java
 public class ACDeviceActive {
     //设备物理ID
@@ -463,16 +524,13 @@ public class ACDeviceActive {
     //设备地理位置信息，经度，如果有设备定位需求
     private Double longitude;
 
-    public ACDeviceActive(String physicalDeviceId, String deviceVersion,String mac) {
-        this.physicalDeviceId = physicalDeviceId;
-        this.deviceVersion = deviceVersion;
-        this.mac = mac;
-    }
+    public ACDeviceActive(String physicalDeviceId, String deviceVersion,String mac) {}
 }
 ```
 
 ####ACDevice
 说明：获取设备激活的相关信息，定义如下：
+
 ```java
 public class ACDevice {
     //设备IP地址
@@ -498,6 +556,7 @@ public class ACDevice {
 
 ####ACException
 说明：用来表示所有错误信息，定义如下：
+
 ```java
 public class ACException extends Exception {
     private int errorCode;
@@ -526,6 +585,7 @@ public class ACException extends Exception {
 
 ##AC
 SDK里所有接口均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：
+
 ```java
 public class AC {
     public static Context context;
@@ -728,18 +788,18 @@ public class AC {
 public interface ACAccountMgr {
 
     /**
-     * 发送短信验证码
+     * 发送验证码
      *
-     * @param account  手机号码/邮箱 (有关规定每天向同一个手机号发送的短信数量有严格限制)
+     * @param account  用户电话或email任选其一
      * @param template 短信内容模板
      * @param callback 返回结果的监听回调
      */
     public void sendVerifyCode(String account, int template, VoidCallback callback);
 
     /**
-     * 验证验证码是否有效
+     * 验证验证码
      *
-     * @param account    手机号码
+     * @param account    用户电话或email任选其一
      * @param verifyCode 验证码
      * @param callback   返回结果的监听回调
      */
@@ -749,9 +809,9 @@ public interface ACAccountMgr {
      * 注册一个新用户
      *
      * @param email      用户邮箱，与phone任选其一，或都提供
-     * @param phone      手机号码，或email任选其一，或都提供
+     * @param phone      用户电话，或email任选其一，或都提供
      * @param password   用户密码
-     * @param name       用户昵称，不唯一，不同用户的昵称可重复
+     * @param name       名字
      * @param verifyCode 验证码
      * @param callback   返回结果的监听回调
      */
@@ -766,7 +826,6 @@ public interface ACAccountMgr {
      */
     public void login(String account, String password, PayloadCallback<ACUserInfo> callback);
 
-
     /**
      * 检查账号是否存在
      *
@@ -779,11 +838,21 @@ public interface ACAccountMgr {
      * 修改手机号
      *
      * @param phone      新手机号
-     * @param password   旧密码
+     * @param password   密码
      * @param verifyCode 验证码
      * @param callback   返回结果的监听回调
      */
     public void changePhone(String phone, String password, String verifyCode, VoidCallback callback);
+
+    /**
+     * 修改邮箱
+     *
+     * @param email      新邮箱地址
+     * @param password   密码
+     * @param verifyCode 验证码
+     * @param callback   返回结果的监听回调
+     */
+    public void changeEmail(String email, String password, String verifyCode, final VoidCallback callback);
 
     /**
      * 修改名字
@@ -812,19 +881,9 @@ public interface ACAccountMgr {
     public void resetPassword(String account, String pswd, String verifyCode, PayloadCallback<ACUserInfo> callback);
 
     /**
-     * 是否登录
-     */
-    public boolean isLogin();
-
-    /**
-     * 注销
-     */
-    public void logout();
-
-    /**
      * 第三方账号登录
      *
-     * @param thirdPlatform 第三方类型（如QQ、微信、微博）
+     * @param thirdPlatform 第三方类型（如QQ、微信、微博、FaceBook等）
      * @param openId        通过第三方登录获取的openId
      * @param accessToken   通过第三方登录获取的accessToken
      * @param callback      返回结果的监听回调
@@ -834,7 +893,7 @@ public interface ACAccountMgr {
     /**
      * 绑定第三方账号
      *
-     * @param thirdPlatform 第三方类型（如QQ、微信、微博）
+     * @param thirdPlatform 第三方类型（如QQ、微信、微博、FaceBook等）
      * @param openId        通过第三方登录获取的openId
      * @param accessToken   通过第三方登录获取的accessToken
      * @param callback      返回结果的监听回调
@@ -845,7 +904,7 @@ public interface ACAccountMgr {
      * 第三方账号登录状态下绑定用户信息
      *
      * @param email      用户邮箱，与phone任选其一，或都提供
-     * @param phone      用户手机号码，或email任选其一，或都提供
+     * @param phone      用户电话，或email任选其一，或都提供
      * @param password   用户密码
      * @param nickName   名字
      * @param verifyCode 验证码
@@ -856,10 +915,10 @@ public interface ACAccountMgr {
     /**
      * 列举所有的第三方登录信息
      *
-     * @param callback   返回结果的监听回调
+     * @param callback 返回结果的监听回调
      */
     public void listAllOpenIds(PayloadCallback<List<ACOpenIdInfo>> callback);
-    
+
     /**
      * 设置用户自定义扩展属性
      *
@@ -872,9 +931,20 @@ public interface ACAccountMgr {
      * 获取用户自定义扩展属性
      */
     public void getUserProfile(PayloadCallback<ACObject> callback);
+
+
+    /**
+     * 是否登录
+     */
+    public boolean isLogin();
+
+    /**
+     * 注销
+     */
+    public void logout();
 }
 ```
-<font color="red">注意：</font>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的错误码进行单独处理，返回登录页让用户重新登录。
+<font color="red">注意：</font>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的token过期错误码进行单独处理，返回登录页让用户重新登录。
 
 ##设备激活
 
@@ -967,17 +1037,27 @@ public interface ACDeviceMgr {
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
 ```java
-public interface ACBindMgr {
+package com.accloud.service;
 
+import com.accloud.cloudservice.PayloadCallback;
+import com.accloud.cloudservice.VoidCallback;
+
+import java.util.List;
+
+/**
+ * Created by Xuri on 2015/3/30.
+ */
+public interface ACBindMgr {
     /**
-     * 从云端获取所有设备列表并保存到本地缓存中
+     * 从云端获取所有设备列表(sdk会自动保存列表到本地缓存中)
      *
      * @param callback 返回结果的监听回调
      */
     public void listDevices(PayloadCallback<List<ACUserDevice>> callback);
 
     /**
-     * 从云端获取所有设备列表和设备状态并保存到本地缓存中（如果只是简单的设备管理请使用上面更轻便的接口）
+     * 从云端获取所有设备列表和设备状态(sdk会自动保存列表到本地缓存中)
+     * 如果只是简单的设备管理请使用listDevices更轻便的接口
      * 如果从云端获取失败会直接从本地缓存中获取设备列表和本地局域网状态
      *
      * @param callback 返回结果的监听回调，只会回调success
@@ -1094,10 +1174,26 @@ public interface ACBindMgr {
      *
      * @param subDomain        子域名，如djj（豆浆机）
      * @param deviceId         设备id（这里的id，是调用list接口返回的id，不是制造商提供的id），不提供时传0
-     * @param physicalDeviceId 设备id（制造商提供的），不提供时传“”
+     * @param physicalDeviceId 设备物理id（制造商提供的）
      * @param callback         返回结果的监听回调
      */
     public void isDeviceOnline(String subDomain, long deviceId, String physicalDeviceId, PayloadCallback<Boolean> callback);
+
+    /**
+     * 查询设备是否局域网在线（deviceId与physicalDeviceId两个参数至少提供其一，两者都提供以physicalDeviceId为准）
+     *
+     * @param physicalDeviceId 设备物理id（制造商提供的）
+     */
+    public boolean isDeviceLocalOnline(String physicalDeviceId);
+
+    /**
+     * 查询设备是否被绑定
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备id（制造商提供的），不提供时传“”
+     * @param callback         返回结果的监听回调
+     */
+    public void isDeviceBound(String subDomain, String physicalDeviceId, PayloadCallback<Boolean> callback);
 
     /**
      * 绑定网关
@@ -1169,10 +1265,10 @@ public interface ACBindMgr {
      *
      * @param subDomain       子域名，如djj（豆浆机）
      * @param gatewayDeviceId 网关逻辑id
-     * @param time            开启时间
+     * @param timeout         开启时间
      * @param callback        返回结果的监听回调
      */
-    public void openGatewayMatch(String subDomain, long gatewayDeviceId, int time, VoidCallback callback);
+    public void openGatewayMatch(String subDomain, long gatewayDeviceId, int timeout, VoidCallback callback);
 
     /**
      * 关闭网关接入
@@ -1243,6 +1339,7 @@ public interface ACBindMgr {
      * @param callback  返回结果的监听回调
      */
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback<ACDeviceMsg> callback);
+}
 ```
 
 
@@ -1454,50 +1551,24 @@ public interface ACGroupMgr {
 public interface ACOTAMgr {
 
     /**
-     * 检查设备版本及更新日志
+     * 检查设备OTA发布版本
+     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
      *
      * @param subDomain 子域名，如djj（豆浆机）
-     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param checkInfo 设备与OTA信息
      * @param callback  返回结果的监听回调
      */
-    public void checkUpdate(String subDomain, long deviceId, PayloadCallback<ACOTAUpgradeInfo> callback);
+    public void checkUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback<ACOTAUpgradeInfo> callback);
 
     /**
      * 确认OTA升级
      *
-     * @param subDomain  子域名，如djj（豆浆机）
-     * @param newVersion 升级文件版本号
-     * @param callback   返回结果的监听回调
+     * @param subDomain     子域名，如djj（豆浆机）
+     * @param targetVersion 升级文件版本号
+     * @param otaType       升级类型,1系统MCU升级 2WiFi通信模组升级
+     * @param callback      返回结果的监听回调
      */
-    public void confirmUpdate(String subDomain, long deviceId, String newVersion, VoidCallback callback);
-
-    /**
-     * 查询蓝牙设备OTA发布版本
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param callback  返回结果的监听回调
-     */
-    public void bluetoothVersion(String subDomain, PayloadCallback<ACOTAUpgradeInfo> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件meta信息列表
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param version   蓝牙设备OTA版本
-     * @param callback  返回结果的监听回调
-     */
-    public void listFiles(String subDomain, String version, PayloadCallback<List<ACOTAFileMeta>> callback);
-
-    /**
-     * 获取蓝牙设备OTA文件
-     *
-     * @param subDomain 子域名，如djj（豆浆机）
-     * @param type      升级文件类型
-     * @param checksum  升级文件校验和
-     * @param version   升级文件版本号
-     * @param callback  返回结果的监听回调
-     */
-    public void bluetoothFile(String subDomain, int type, int checksum, String version, PayloadCallback<byte[]> callback);
+    public void confirmUpdate(String subDomain, long deviceId, String targetVersion, int otaType, VoidCallback callback);
 }
 ```
 >**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
@@ -2133,7 +2204,7 @@ public interface ACAccountMgr {
     /**
      * 第三方账号登录
      *
-     * @param thirdPlatform 第三方类型（如QQ、微信、微博）
+     * @param thirdPlatform 第三方类型（如QQ、微信、微博、FaceBook等）
      * @param openId        通过第三方登录获取的openId
      * @param accessToken   通过第三方登录获取的accessToken
      * @param callback      返回结果的监听回调
@@ -2143,7 +2214,7 @@ public interface ACAccountMgr {
     /**
      * 绑定第三方账号
      *
-     * @param thirdPlatform 第三方类型（如QQ、微信、微博）
+     * @param thirdPlatform 第三方类型（如QQ、微信、微博、FaceBook等）
      * @param openId        通过第三方登录获取的openId
      * @param accessToken   通过第三方登录获取的accessToken
      * @param callback      返回结果的监听回调
@@ -2183,6 +2254,8 @@ public interface ACAccountMgr {
     public void getUserProfile(PayloadCallback<ACObject> callback);
 }
 ```
+<font color="red">注意：</font>用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的token过期错误码进行单独处理，返回登录页让用户重新登录。
+
 ##2、设备激活
 
 ```java
@@ -2343,14 +2416,26 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 public interface ACOTAMgr {
 
     /**
-     * 检查蓝牙设备OTA发布版本
-     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据oldVersion与newVersion是否相等判断有无更新
+     * 检查设备OTA发布版本
+     * 不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
      *
      * @param subDomain 子域名，如djj（豆浆机）
      * @param checkInfo 设备与OTA信息
      * @param callback  返回结果的监听回调
      */
-    public void checkBluetoothUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback<ACOTAUpgradeInfo> callback);
+    public void checkUpdate(String subDomain, ACOTACheckInfo checkInfo, PayloadCallback<ACOTAUpgradeInfo> callback);
+
+    /**
+     * OTA文件下载成功后,建议开发者调用此接口通知云端下载文件成功
+     * 此接口只用于AbleCloud控制台OTA日志追踪
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备物理ID
+     * @param currentVersion   设备当前版本号
+     * @param targetVersion    下载的版本号
+     * @param callback         返回结果的监听回调
+     */
+    public void otaMediaDone(String subDomain, String physicalDeviceId, String currentVersion, String targetVersion, VoidCallback callback);
 }
 ```
 
@@ -2379,8 +2464,7 @@ public class AC {
 ```
 
 ##7、文件存储
-文件存储
-如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
+如果需要使用文件上传下载管理服务(如OTA，头像管理，录音文件等)，在SDK端提供了相应的接口，首先需要获取定时管理器`AC.fileMgr()`,具体接口定义如下：
 
 ```java
 public interface ACFileMgr {
@@ -2393,23 +2477,25 @@ public interface ACFileMgr {
     public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback<String> callback);
 
     /**
-     * 下载文件到内存里,适合小文件下载
+     * 下载文件到内存里,适合小文件下载（如头像下载）
      *
      * @param url              文件下载的url
+     * @param checksum         文件校验和,除OTA升级外一般情况下不需要检查校验和(0代表不检查crc)
      * @param progressCallback 下载进度回调，百分比，不需要时传null
      * @param callback         下载结果回调
      */
-    public void downloadFile(String url, ProgressCallback progressCallback, PayloadCallback<byte[]> callback);
+    public void downloadFile(String url, int checksum, ProgressCallback progressCallback, PayloadCallback<byte[]> callback);
 
     /**
      * 下载文件到本地sdcard，适合大文件下载,支持断点续传
      *
      * @param file             文件下载的路径File对象
      * @param url              文件下载的url
-     * @param progressCallback 下载进度回调，百分比，不需要时传null
+     * @param checksum         文件校验和,除OTA升级外一般情况下不需要检查校验和(0代表不检查crc)
+     * @param progressCallback 下载进度回调,百分比,不需要时传null
      * @param callback         下载结果回调
      */
-    public void downloadFile(File file, String url, ProgressCallback progressCallback, VoidCallback callback);
+    public void downloadFile(File file, String url, int checksum, ProgressCallback progressCallback, VoidCallback callback);
 
     /**
      * 取消下载

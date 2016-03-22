@@ -336,6 +336,15 @@ public abstract class ACService {
     public abstract void handleMsg(ACMsg req, ACMsg resp) throws Exception;
 
     /**
+     * 处理匿名请求
+     *
+     * @param req  请求消息体
+     * @param resp 响应消息体
+     * @throws Exception
+     */
+    public void handleAnonymousMsg(ACMsg req, ACMsg resp) throws Exception {}
+    
+    /**
      * 处理Device-->Service之间的交互消息
      * 如果服务不处理和设备之间的交互消息，则无须重载该方法。
      *
@@ -681,3 +690,5 @@ API说明请参考[Java SDK开发参考](./java.md)。
 
 #Error Code
 参考[Reference-Error Code](../reference/error_code.md)。
+
+

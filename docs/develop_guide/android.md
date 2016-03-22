@@ -48,7 +48,7 @@ AC.setRegional(AC.REGIONAL_EAST_CHINA);
 
 功能介绍参考： [功能说明-功能介绍-帐号管理](../features/functions.md#_1)
 
-用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的错误码进行单独处理，返回登录页让用户重新登录。
+用户调用登录接口成功之后，会在app本地存储一个token，下次启动app时即默认app已经登录，无需再进行登录，从v1.09版本之后，这个token具有有效期，在长期未使用app的情况下会过期，这个时候需要进行重新登录处理，所以建议在主页获取设备列表的错误回调里对3516的token过期错误码进行单独处理，返回登录页让用户重新登录。
 ##一、普通帐号注册
 
 ![account_register](../pic/develop_guide/account_register.png)
@@ -1303,7 +1303,7 @@ timerMgr.listTasks(deviceId, new PayloadCallback<List<ACTimerTask>>(){
 
 功能介绍参见 [功能说明-功能介绍-OTA](../features/functions.md#ota)
 
-##普通设备OTA
+##普通WIFI设备OTA
 ![OTA](../pic/develop_guide/OTA.png)
 
 若使用场景为开启APP之后自动检测升级，建议把检测升级过程放在application里，并维护一个deviceId和ACOTAUpgradeInfo的映射关系，通过static修饰放到内存里，在进入OTA升级页面后可以直接取出来显示。如想实现用户取消升级之后不再提示功能，则可以自己维护一个变量记录。
@@ -1316,15 +1316,14 @@ ACOTAMgr otaMgr = AC.otaMgr();
 
 ####二、检查升级
 检查设备是否有新的OTA版本，同时获取升级日志。
+
 ```java
-otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() {
+long deviceId = 1;   //设备逻辑id
+int otaType = 1;      //升级类型，1为系统MCU升级
+otaMgr.checkUpdate(subDomain, new ACOTACheckInfo(deviceId, otaType), new PayloadCallback<ACOTAUpgradeInfo>() {
     @Override
     public void success(ACOTAUpgradeInfo info) {
-        /**
-         * 通过判断info.getOldVersion()和info.getNewVersion()是否相等判断是否有新版本更新
-         * 
-         * info.getOldVersion为老版本，info.getNewVersion为新版本，info.getUpgradeLog为升级日志
-         */
+        //通过判断info.isUpdate()判断是否有新版本更新
     }
     @Override
     public void error(ACException e) {
@@ -1335,7 +1334,7 @@ otaMgr.checkUpdate(subDomain, deviceId, new PayloadCallback<ACOTAUpgradeInfo>() 
 
 ####三、确认升级
 ```java
-otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
+otaMgr.confirmUpdate(subDomain,deviceId, newVersion, otaType, new VoidCallback() {
     @Override
     public void success() {
         //确认升级     
@@ -1350,14 +1349,16 @@ otaMgr.confirmUpdate(subDomain,deviceId, newVersion, new VoidCallback() {
 ##蓝牙设备OTA
 
 ####一、获取OTA管理器对象
+
 ```java
 ACOTAMgr otaMgr = AC.otaMgr();
 ```
 
 ####二、查询OTA新版本信息
+
 ```java
-// 初当前设备的版本号ACOtaCheckInfo信息,version为蓝牙设备当前版本
-otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback<ACOTAUpgradeInfo>() {
+// 初始化当前设备的版本号等ACOtaCheckInfo信息,version为蓝牙设备当前版本
+otaMgr.checkUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, version), new PayloadCallback<ACOTAUpgradeInfo>() {
     @Override
     public void success(ACOTAUpgradeInfo upgradeInfo) {
         if(!upgradeInfo.isUpdate()){
@@ -1367,9 +1368,9 @@ otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, vers
         //获取升级类型
         if (upgradeInfo.getOtaMode() == 0) {
             //静默升级
-        }else if(upgradeInfo.getOtaMode() == 1){
+        } else if(upgradeInfo.getOtaMode() == 1){
             //用户确认升级
-        }else {
+        } else {
             //强制升级
         }
     }
@@ -1381,39 +1382,33 @@ otaMgr.checkBluetoothUpdate(subDomain, new ACOTACheckInfo(physicalDeviceId, vers
 });
 ```
 
-####下载OTA文件
-```java
-//获取文件管理器对象
-ACFileMgr fileMgr = AC.fileMgr();
-//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件；0代表url有效期为永久有效
-fileMgr.getDownloadUrl(upgradeInfo.getFiles().get(0), 0, new PayloadCallback<String>() {
-    @Override
-    public void success(String url) {
-        ACUtils.createSDDir("ota_download_path");
-        File file = null;
-        try { 
-            file = ACUtils.createSDFile("ota_download_path/file_name");
-        } catch (IOException e) {
-        }
-        fileMgr.downloadFile(file, url, new ProgressCallback() {
-            @Override
-            public void progress(double progress) {}
-            }, new VoidCallback() {
-            @Override
-            public void success() {
-                //下载成功，可以进行设备ota升级
-                //另升级成功后，建议在此清理已完成升级的版本文件
-            }
+####三、下载OTA文件
 
-        @Override
-        public void error(ACException e) {
-            //下载失败，建议清理掉当前下载的不完整文件
-        }
-    });
+```java
+//upgradeInfo由上面接口获得；一般只有一个升级文件，所以取列表第一个文件
+String url = upgradeInfo.getFiles().get(0).getDownloadUrl();
+String checksum = upgradeInfo.getFiles().get(0).getCheckSum();
+ACUtils.createSDDir("ota_download_path");
+File file = null;
+try {
+    //建议首先执行垃圾文件清理工作，防止磁盘写满升级失败，同时也防止异常情况下下载文件不完整被使用 
+    file = ACUtils.createSDFile("ota_download_path/file_name");
+} catch (IOException e) {
+}
+AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
+    @Override
+    public void progress(double progress) {
+        //下载进度更新
+    }, new VoidCallback() {
+    @Override
+    public void success() {
+        //下载成功，建议调用otaMediaDone()接口通知云端下载文件成功，用于日志追踪
+        //同时进行设备ota升级，另升级成功后，建议在此清理已完成升级的版本文件
+    }
 
     @Override
     public void error(ACException e) {
-        //获取url失败
+        //下载失败，建议清理掉当前下载的不完整文件
     }
 });
 ```
@@ -1788,7 +1783,8 @@ try {
      file = ACUtils.createSDFile("myDir/" + name);
 } catch (IOException e) {
 }
-fileMgr.downloadFile(file, url, new ProgressCallback() {
+//0代表不校验checksum
+fileMgr.downloadFile(file, url, 0, new ProgressCallback() {
     @Override
     public void progress(double progress) {
          //用于显示进度条，百分比，如99.99；如果没有显示进度条的需求则传null
@@ -1808,7 +1804,8 @@ fileMgr.downloadFile(file, url, new ProgressCallback() {
 
 ####2)、下载文件到内存，比如头像下载
 ```java
-fileMgr.downloadFile(url, new ProgressCallback() {
+//0代表不校验checksum
+fileMgr.downloadFile(url, 0, new ProgressCallback() {
     @Override
     public void progress(double progress) {
          //用于显示进度条，百分比，如99.99；此处一般为小文件下载，所以不需要显示进度条的时候传null
@@ -1847,6 +1844,7 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 ###2、上传文件
 ####1)、上传sdcard文件
 ```java
+//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
@@ -1871,6 +1869,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 ```
 ####2)、上传小文件，比如头像
 ```java
+//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
 fileInfo.setACL(acl);
