@@ -11,6 +11,7 @@
 下载ablecloud开发框架并解压
 
 ####Xcode
+
 1. **新建工程**
 选择新建iOS Application，根据需要选择，建议选择Single View Application。
 点击**Next**进入下一个页面，根据情况填写Product Name/Organization Name/Organization Identifier等信息。
@@ -24,21 +25,40 @@
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
 3. **本地运行**
 Xcode下直接**Command + R**运行。
-><font color="brown">**注：**</font>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+
+><font color="brown">**注：**</font>
+>1. 如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
+>2. 模拟器要导入`SystemConfiguration`库
+>3. 导入`libicucore.tbd`
+>4. SDK中集成`.framework`形式的`AFNetworking3.0.4`包, 开发者可根据自己需求选择删除`AFNetworking.framework`, 然后使用`cocoapods`等工具导入Github上源码.
+>5. 如果选择使用`AFNetworking.framework`, 由于`AFNetworking`自身打包的bug,需添加如下操作, 否则运行崩溃.
+
+![account_register](../pic/develop_guide/AFN.png)
 
 ####应用程序初始化
 在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
-建议在APP启动方法‘didFinishLaunch’中调用此方法来进行初始化
-```objectivec
-// MajorDomain:主域名  majorDomainId:主域ID
-[ACloudLib setMajorDomain:@"主域名" majorDomainId:majorDomainId ];
+建议在APP启动方法`didFinishLaunchingWithOptions:`中调用此方法来进行初始化
+
+```objc
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [ACloudLib setMajorDomain:<#主域名#> majorDomainId:<#主域ID#>];
+    
+    return YES;
+}
+
 ```
+
 开发阶段，请初始化**测试环境**
+
 ```objectivec
 //开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
 [ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
 ```
+
 在完成测试阶段之后，需要迁移到**正式环境**下
+
 ```objectivec
 [ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
 ```
