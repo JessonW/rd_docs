@@ -1895,7 +1895,76 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 
 #用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
+使用意见反馈前,需要先在控制台设置反馈项参数
+![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
+
+##一 建议的开发流程
+参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+如果需要上传图片资源, 请按下以下顺序调用接口
+原理如下:
+1. 初始化`ACFileInfo`，设置图片上传到云端的目录`bucket`、文件名`name`、文件等
+2. 根据`ACFileInfo`将要反馈的图片信息上传到云端
+3. 上传成功后根据`ACFileInfo`获取图片下载的urlString
+4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置
+
+
+##二 代码示例
+
+####1. 设置要上传图片的fileInfo
+```java
+//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
+ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+//开发者自行选择以下两种上传方式
+//从内存里读取图片流
+fileInfo.setData(photoBytes);
+//从sdcard读取图片流
+fileInfo.setFile(new File(Environment.getExternalStorageDirectory() + "/myDir/" + name));
+```
+####2. 调用上传接口
+```java
+ACFileMgr fileMgr = AC.fileMgr();
+fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
+    @Override
+    public void success() {
+        //上传成功
+    }
+
+    @Override
+    public void error(ACException e) {
+        //支持断点续传，所以此处无网络错误，在恢复网络连接之后会继续上传
+    }
+});
+```
+####3. 获取上传的图片的url
+```java
+    //建议ExpireTime=0，url永久有效
+    fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
+    @Override
+    public void success(String url) {
+         //成功获取文件url
+    }
+
+    @Override
+    public void error(ACException e) {
+         //没有权限或其他网络错误
+    }
+});
+```
+####4. 提交用户反馈信息
+```java  
+ACFeedback feedback = new ACFeedback();                         feedback.addFeedback("description", description);                                feedback.addFeedback("telephoneNumber", phone);                                feedback.addFeedbackPicture("pictures", url);                               AC.feedbackMgr().submitFeedback(feedback, new VoidCallback() {
+    @Override
+    public void success(){                                 
+        //成功提交用户反馈信息
+    }
+
+    @Override
+    public void error(ACException e) {
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照AbleCloud控制台填写的key与value类型
+    }
+});
+```
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 

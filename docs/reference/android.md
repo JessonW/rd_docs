@@ -554,6 +554,36 @@ public class ACDevice {
 }
 ```
 
+####ACFeedback
+说明：用来表示用户意见反馈的信息，定义如下：
+```java
+public class ACFeedback {
+    //可以为空,也可以指定subDomain产品
+    private String subDomain;
+    //预留字段，可以为空
+    private String type;
+    //开发者自定义的扩展信息，与前端定义的字段一致
+    private ACObject extend;
+
+    public ACFeedback() {}
+
+    //对应AbleCloud控制台反馈项设定的key与value值
+    public void addFeedback(String key, Object value) {
+        this.extend.put(key, value);
+    }
+
+    /**
+     * 添加图片下载地址的url
+     *
+     * @param key   对应为AbleCloud控制台反馈项设定的key值
+     * @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
+     */
+    public void addFeedbackPicture(String key, String value) {
+        extend.add(key, value);
+    }
+}
+```
+
 ####ACException
 说明：用来表示所有错误信息，定义如下：
 
@@ -2570,6 +2600,20 @@ public class ACACL {
      * @param userId 被设置用户Id
      */
     public void unsetUserDeny(OpType opType, long userId);
+}
+```
+##8、用户意见反馈
+
+```java
+public interface ACFeedbackMgr {
+
+    /**
+     * 提交用户反馈信息
+     *
+     * @param feedback 用户自定义的反馈信息
+     * @param callback 返回结果的监听回调
+     */
+    public void submitFeedback(ACFeedback feedback, VoidCallback callback);
 }
 ```
 
