@@ -468,10 +468,26 @@
     
         
         
+            
+                
+            
+        
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_46">用户意见反馈</a>
+            <a href="#_46">用户意见反馈<span class="main-set parent__46">+</span></a>
         </li>
+        
+            
+            <li class="sub parent__46" style="display: none;"><a href="#_47">一 导入头文件</a></li>
+            
+        
+            
+            <li class="sub parent__46" style="display: none;"><a href="#_48">二 代码示例</a></li>
+            
         
     
         
@@ -636,7 +652,8 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 </code></pre>
 
 <h4 id="2_2">2、设置用户自定义扩展属性</h4>
-<pre><code class="objectivec">/**
+<pre><code class="objectivec">
+/**
 * 修改帐号扩展属性
 *注意此处put进去的key与value类型需要跟平台添加的附加属  性一致
 *如：ACObject * profile = [[ACObject alloc]init];
@@ -681,7 +698,7 @@ Xcode下直接<strong>Command + R</strong>运行。<blockquote>
 
 <blockquote>
 <p><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>、<code>esptouch</code>。</p>
+目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>、<code>esptouch</code>、<code>realtek</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="objectivec">NSString * ssid = [ACWifilinkManager getCurrentSSID];
@@ -1179,6 +1196,7 @@ msg.name = @&quot;自定义&quot;;
 
 <h2 id="_26">三、实时消息</h2>
 <p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。</p>
+<p>注:使用前先导入<code>libicucore.tbd</code>系统库</p>
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <h4 id="1_8">1、获取实时消息管理器</h4>
 <pre><code class="c">#import &quot;ACPushManager.h&quot;
@@ -1662,6 +1680,28 @@ upManager = [[ACFileManager alloc] init];
 </code></pre>
 
 <h1 id="_46">用户意见反馈</h1>
+<p>AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
+使用意见反馈前,需要先在控制台设置对应的参数
+<img alt="cloud_syn_1" src="../../pic/develop_guide/submitConfig.png" /></p>
+<h2 id="_47">一 导入头文件</h2>
+<pre><code class="objc">#import &quot;ACFeedBackManager.h&quot;
+</code></pre>
+
+<h2 id="_48">二 代码示例</h2>
+<pre><code class="objc">    ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@&quot;subDomain&quot; type:@&quot;type&quot;];
+    //这里的键值对需要跟自己在后台定义的一致
+    [feedback addFeedBackWithKey:@&quot;key1&quot; value:@&quot;value1&quot;];
+    [feedback addFeedBackWithKey:@&quot;key2&quot; value:@&quot;value2&quot;];
+
+    [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        //提交成功
+    }];
+</code></pre>
+
 <h1 id="error-code">Error Code</h1>
 <p>参考<a href="../../reference/error_code/">reference-Error Code</a></p>
 <blockquote>

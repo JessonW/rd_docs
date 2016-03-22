@@ -225,7 +225,7 @@ Ablecloud提供了ACWifiLinkManager类激活器供你使用
 ```
 
 ><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`、`esptouch`。
+目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`、`esptouch`、`realtek`。
 
 ####2.获取WiFi SSID
 ```objectivec
@@ -815,6 +815,8 @@ msg.name = @"自定义";
 
 实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。
 
+注:使用前先导入`libicucore.tbd`系统库
+
 
 ![cloud_syn](../pic/develop_guide/cloud_syn.png)
 
@@ -1255,17 +1257,18 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 >3、上传下载支持断点续传功能
 
+>4、如果编译报错,尝试在项目中加入`libz.tbd`、`MobileCoreServices.framework`、`SystemConfiguration.framework`.
 
 
 ##一、获取文件管理器
 ```objectivec
-ACFileManager * fileManager =[[ACFileManager alloc] init];
+ACFileManager *fileManager = [[ACFileManager alloc] init];
 ```
 ##二、下载文件
 ###1、获取下载url
 ```objectivec
 //0代表URL链接的有效时间为长期有效
-[ACFileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
+[fileManager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error)
 {
           if(error ){
            //获取URL失败，根据error作出不同的处理
@@ -1366,18 +1369,58 @@ upManager = [[ACFileManager alloc] init];
 ```
 #用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
-##一 导入头文件
+使用意见反馈前,需要先在控制台设置反馈项参数
+![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
-```objc
-#import "ACFeedBackManager.h"
-```
+
+##一 建议的开发流程
+参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
+如果需要上传图片资源, 请按下以下顺序调用接口
+原理如下:
+1. 将要反馈的文件/图片信息上传到云端
+2. 上传成功后根据上传信息获取云端下载的urlString(带过期时间, 由开发者自定义)
+3. 将获取到的URLString作为参数填入意见反馈接口对应的value位置
+
+
 ##二 代码示例
 
 ```objc
+//1. 设置要上传的fileInfo
+    ACFileManager *manager = [[ACFileManager alloc] init];
+    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:<#fileName#> bucket:<#bucket#> CheckSum:<#CheckSum#>];
+    //开发者自行选择以下两种方式
+    //大文件, 提供filePath, 支持断线续传
+    fileInfo.filePath = [[NSBundle mainBundle] pathForResource:@"xxx.jpg" ofType:nil];
+    //小文件, 提供data, 不支持短线续传
+    fileInfo.data = <#data#>;
+
+//2. 调用上传接口
+    [manager uploadFileWithfileInfo:fileInfo progressCallback:^(float progress) {
+        NSLog(@"%f", progress);
+    } voidCallback:^(ACMsg *responseObject, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@"%@", responseObject.getObjectData);
+    }];
+    
+//3. 获取上传信息的url (注: 过期时间为url的过期时间, 而不是文件的过期时间)
+    [manager getDownloadUrlWithfile:fileInfo ExpireTime:<#ExpireTime#> payloadCallback:^(NSString *urlString, NSError *error) {
+        if (error) {
+            //错误处理
+            return;
+        }
+        NSLog(@"%@", urlString);
+    }];
+    
+//4. 调用submitFeedback接口
     ACFeedBack *feedback = [[ACFeedBack alloc] initWithSubDomain:@"subDomain" type:@"type"];
     //这里的键值对需要跟自己在后台定义的一致
-    [feedback addFeedBackWithKey:@"key1" value:@"value1"];
-    [feedback addFeedBackWithKey:@"key2" value:@"value2"];
+    [feedback addFeedBackWithKey:@"description" value:@"descriptionValue"];
+    [feedback addFeedBackWithKey:@"telephoneNumber" value:@"130xxxxxxxx"];
+    //将上面获取到的 urlString放到对应的value
+    [feedback addFeedBackPictureWithKey:@"pictures" value:<#urlString#>];
     
     [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
         if (error) {
@@ -1386,8 +1429,8 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
         }
         //提交成功
     }];
-```
 
+```
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 

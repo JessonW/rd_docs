@@ -522,6 +522,14 @@ import "ACAccountManager.h"
            password:(NSString *)password
          verifyCode:(NSString *)verifyCode
            callback:(void(^)(NSError *error)) callback;
+           
+/**
+ *  更换邮箱
+ */
++ (void)changeEmail:(NSString *)email
+           password:(NSString *)password
+         verifyCode:(NSString *)verifyCode
+           callback:(void(^)(NSError *error)) callback;
 
 /**
  * 修改昵称
