@@ -300,6 +300,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#sdk">SDK接口列表<span class="main-set parent_sdk">+</span></a>
@@ -350,7 +354,11 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_13">桩模块</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_13">用户意见反馈</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
             
         
     
@@ -390,39 +398,39 @@
         
         
         <li class="main">
-            <a href="#_16">适用蓝牙的接口<span class="main-set parent__16">+</span></a>
+            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
         </li>
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#2">2、设备激活</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备激活</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#3">3、设备管理</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#3">3、设备管理</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#4ota">4、OTA</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#4ota">4、OTA</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#5">5、消息推送</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#5">5、消息推送</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#6">6、和云端通信</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#6">6、和云端通信</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#7">7、文件存储</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
             
         
     
@@ -1876,9 +1884,18 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <blockquote>
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 </blockquote>
-<h2 id="_13">桩模块</h2>
+<h2 id="_13">用户意见反馈</h2>
+<pre><code class="objc">
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
+</code></pre>
+
+<h2 id="_14">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_14">设备桩</h4>
+<h4 id="_15">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
 <pre><code class="c">@protocol ACDeviceStubDelegate &lt;NSObject&gt;
 
@@ -1897,7 +1914,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h4 id="_15">服务桩</h4>
+<h4 id="_16">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：</p>
 <pre><code class="c">@protocol ACServiceStubDelegate &lt;NSObject&gt;
 
@@ -1915,7 +1932,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h1 id="_16">适用蓝牙的接口</h1>
+<h1 id="_17">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
@@ -1923,11 +1940,11 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <h2 id="1">1、帐号管理</h2>
 <p>用户帐号管理
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
-<h4 id="_17">引入头文件</h4>
+<h4 id="_18">引入头文件</h4>
 <pre><code class="c">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
-<h4 id="_18">接口说明</h4>
+<h4 id="_19">接口说明</h4>
 <pre><code class="c">@interface ACAccountManager : NSObject
 
 /**
@@ -2276,11 +2293,11 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <h2 id="7">7、文件存储</h2>
 <p>文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：</p>
-<h3 id="_19">一、获取文件管理器</h3>
+<h3 id="_20">一、获取文件管理器</h3>
 <pre><code class="c">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
-<h3 id="_20">二、下载文件</h3>
+<h3 id="_21">二、下载文件</h3>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code>/**
  * //获取下载URL
@@ -2301,7 +2318,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 </code></pre>
 
-<h3 id="_21">三、上传文件</h3>
+<h3 id="_22">三、上传文件</h3>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
 <pre><code class="c">@interface ACACL : NSObject
 </code></pre>
