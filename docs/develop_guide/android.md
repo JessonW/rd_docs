@@ -7,9 +7,7 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 
 ><font color="red">注意:</font>
 
->1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下;若使用庆科MX模块，则需要添加MX文件夹下的jar包到libs目录下；其他模块由sdk内部集成
-
->2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下
+>`ac-service-android-release`文件夹下有6个子目录，分别为不同模块功能的sdk（非必需项），开发者可根据需求导入对应的sdk，其中包括**推送模块sdk**、**文件管理模块sdk**、**音视频模块sdk**、**MTK配网sdk**、**MX庆科配网sdk**、**Realtek配网sdk**
 
 ##开发环境设置
 以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的`<manifest>`标签里添加
