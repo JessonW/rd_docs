@@ -43,7 +43,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 
 <!-- [Optional] 环境设置,默认值为0(0正式环境 1测试环境) -->
 <meta-data android:name="mode" android:value="1"/>
-<!-- [Optional] 地域设置,默认值为0(0北京地区 1东南亚地区 2华东地区) -->
+<!-- [Optional] 地域设置,默认值为0(0北京地区 1东南亚地区 2华东地区 3北美地区 4中欧地区) -->
 <meta-data android:name="region" android:value="0"/>
 <!-- [Optional] 设备版本,格式为"1-0-0",不设置情况下默认值为"1-0-0",也可通过ACConfig进行设置 -->
 <meta-data android:name="version" android:value="1-0-0"/>
