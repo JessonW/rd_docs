@@ -27,19 +27,22 @@ ablcloud发布的android端SDK为[`ac-service-android.jar`](https://www.ableclou
 继承`Application`类，并且在`onCreate()`方法中调用此方法来进行初始化
 
 开发阶段，请初始化**测试环境**
+
 ```java
 AC.init(this, MajorDomain, MajorDomainId, AC.TEST_MODE);
 ```
 在完成测试阶段之后，需要迁移到**正式环境**下
+
 ```java
 AC.init(this, MajorDomain, MajorDomainId);
 ```
 另外，若需要设置特殊的地域环境，则需调用
+
 ```java
 /**
  * 设置地域环境
  *
- * @param regional 地域 默认为AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA
+ * @param regional 地域 默认为北京地区AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA;中欧地区为REGIONAL_NORTH_AMERICA;北美地区为AC.REGIONAL_NORTH_AMERICA
  */
 AC.setRegional(AC.REGIONAL_EAST_CHINA);
 ```

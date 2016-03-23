@@ -529,12 +529,24 @@
 Xcode下直接<strong>Command + R</strong>运行。</li>
 </ol>
 <blockquote>
-<p><font color="brown"><strong>注：</strong></font>
-1. 如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
-2. 模拟器要导入<code>SystemConfiguration</code>库
-3. 导入<code>libicucore.tbd</code>
-4. SDK中集成<code>.framework</code>形式的<code>AFNetworking3.0.4</code>包, 开发者可根据自己需求选择删除<code>AFNetworking.framework</code>, 然后使用<code>cocoapods</code>等工具导入Github上源码.
-5. 如果选择使用<code>AFNetworking.framework</code>, 由于<code>AFNetworking</code>自身打包的bug,需添加如下操作, 否则运行崩溃.</p>
+<p><font color="brown"><strong>注：</strong></font></p>
+<ol>
+<li>
+<p>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
+</li>
+<li>
+<p>模拟器要导入<code>SystemConfiguration</code>库</p>
+</li>
+<li>
+<p>导入<code>libicucore.tbd</code></p>
+</li>
+<li>
+<p>SDK中集成<code>.framework</code>形式的<code>AFNetworking3.0.4</code>包, 开发者可根据自己需求选择删除<code>AFNetworking.framework</code>, 然后使用<code>cocoapods</code>等工具导入Github上源码.</p>
+</li>
+<li>
+<p>如果选择使用<code>AFNetworking.framework</code>, 由于<code>AFNetworking</code>自身打包的bug,需添加如下操作, 否则运行崩溃.</p>
+</li>
+</ol>
 </blockquote>
 <p><img alt="account_register" src="../../pic/develop_guide/AFN.png" /></p>
 <h4 id="_3">应用程序初始化</h4>
@@ -1697,13 +1709,23 @@ upManager = [[ACFileManager alloc] init];
 使用意见反馈前,需要先在控制台设置反馈项参数
 <img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
 <h2 id="_47">一 建议的开发流程</h2>
-<p>参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
-如果需要上传图片资源, 请按下以下顺序调用接口
-原理如下:
-1. 初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等
-2. 根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端
-3. 上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString
-4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+<p>参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. </p>
+<p>如果需要上传图片资源, 请按下以下顺序调用接口</p>
+<p>流程如下:</p>
+<ol>
+<li>
+<p>初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等</p>
+</li>
+<li>
+<p>根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端</p>
+</li>
+<li>
+<p>上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString</p>
+</li>
+<li>
+<p>将反馈信息和第三步获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+</li>
+</ol>
 <h2 id="_48">二 代码示例</h2>
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
 <pre><code class="objc">    ACFileManager *manager = [[ACFileManager alloc] init];
@@ -1723,7 +1745,7 @@ upManager = [[ACFileManager alloc] init];
             //错误处理
             return;
         }
-        NSLog(@&quot;%@&quot;, responseObject.getObjectData);
+        NSLog(@&quot;%@&quot;, responseObject.name);
     }];
 </code></pre>
 

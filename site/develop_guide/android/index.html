@@ -501,7 +501,7 @@
 <h1 id="_1">安卓客户端开发指导</h1>
 <h1 id="_2">开发环境配置</h1>
 <h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.0.9.zip"><code>ac-service-android.jar</code></a></p>
+<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.1.0.zip"><code>ac-service-android.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
 <p>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下;若使用庆科MX模块，则需要添加MX文件夹下的jar包到libs目录下；其他模块由sdk内部集成</p>
@@ -2201,13 +2201,23 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 使用意见反馈前,需要先在控制台设置反馈项参数
 <img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
 <h2 id="_48">一 建议的开发流程</h2>
-<p>参考以下代码示例, 如果不需要穿上图片等资源, 只需要调用第四步. 
-如果需要上传图片资源, 请按下以下顺序调用接口
-原理如下:
-1. 初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等
-2. 根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端
-3. 上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString
-4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+<p>参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. </p>
+<p>如果需要上传图片资源, 请按下以下顺序调用接口</p>
+<p>原理如下:</p>
+<ol>
+<li>
+<p>初始化<code>ACFileInfo</code>，设置图片上传到云端的目录<code>bucket</code>、文件名<code>name</code>、文件等</p>
+</li>
+<li>
+<p>根据<code>ACFileInfo</code>将要反馈的图片信息上传到云端</p>
+</li>
+<li>
+<p>上传成功后根据<code>ACFileInfo</code>获取图片下载的urlString</p>
+</li>
+<li>
+<p>将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
+</li>
+</ol>
 <h2 id="_49">二 代码示例</h2>
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
 <pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
@@ -2250,7 +2260,11 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 </code></pre>
 
 <h4 id="4_5">4. 提交用户反馈信息</h4>
-<pre><code class="java">ACFeedback feedback = new ACFeedback();                         feedback.addFeedback(&quot;description&quot;, description);                                feedback.addFeedback(&quot;telephoneNumber&quot;, phone);                                feedback.addFeedbackPicture(&quot;pictures&quot;, url);                               AC.feedbackMgr().submitFeedback(feedback, new VoidCallback() {
+<pre><code class="java">ACFeedback feedback = new ACFeedback();
+feedback.addFeedback(&quot;description&quot;, description);                  
+feedback.addFeedback(&quot;telephoneNumber&quot;, phone);                             
+feedback.addFeedbackPicture(&quot;pictures&quot;, url);             
+AC.feedbackMgr().submitFeedback(feedback, new VoidCallback(){
     @Override
     public void success(){                                 
         //成功提交用户反馈信息
