@@ -38,7 +38,7 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 <meta-data android:name="sub-domain" android:value="demo"/>
 <!-- [Required] 进入AbleCloud管理控制台,对应"产品管理->产品列表->子域ID" -->
 <meta-data android:name="sub-domain-id" android:value="4"/>
-<!-- [Required] 设备私钥,正式环境下为必填项,对应"产品管理->产品列表->点击管理->设备密钥->私钥" 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件-->
+<!-- [Required] 设备私钥,对应"产品管理->产品列表->点击管理->设备密钥->私钥" 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件-->
 <meta-data android:name="secret-key" android:value="BEADD508A1A0AC77523FA741DD1FF754D5BBBDFC93A32619A77A5B510D3C7F65C65323EEB6951129B79E70E4DE514E49F6217BA4CA80891048114C3EE856183D9F86C8E47F6130C909B61CC13C42D261809C4C6476A0257EC979A872B2AAD22D6821AFB64E1EAB246AB4D7008821CA4E"/>
 
 <!-- [Optional] 环境设置,默认值为0(0正式环境 1测试环境) -->
