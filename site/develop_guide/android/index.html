@@ -504,8 +504,7 @@
 <p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.1.0.zip"><code>ac-service-android.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
-<p>1、若您设备的wifi模块为MTK，则需要添加MTK文件夹下的文件到libs目录下;若使用庆科MX模块，则需要添加MX文件夹下的jar包到libs目录下；其他模块由sdk内部集成</p>
-<p>2、若需要使用友盟的推送服务，则需要添加Umeng文件夹下的文件到libs目录下</p>
+<p><code>ac-service-android-release</code>文件夹下有6个子目录，分别为不同模块功能的sdk（非必需项），开发者可根据需求导入对应的sdk，其中包括<strong>推送模块sdk</strong>、<strong>文件管理模块sdk</strong>、<strong>音视频模块sdk</strong>、<strong>MTK配网sdk</strong>、<strong>MX庆科配网sdk</strong>、<strong>Realtek配网sdk</strong></p>
 </blockquote>
 <h2 id="_3">开发环境设置</h2>
 <p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
@@ -531,7 +530,7 @@
 <pre><code class="java">/**
  * 设置地域环境
  *
- * @param regional 地域 默认为AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA
+ * @param regional 地域 默认为北京地区AC.REGIONAL_CHINA；华东地区为AC.REGIONAL_EAST_CHINA；东南亚地区为AC.REGIONAL_EAST_CHINA;中欧地区为REGIONAL_NORTH_AMERICA;北美地区为AC.REGIONAL_NORTH_AMERICA
  */
 AC.setRegional(AC.REGIONAL_EAST_CHINA);
 </code></pre>
