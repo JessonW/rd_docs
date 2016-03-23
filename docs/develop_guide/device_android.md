@@ -35,16 +35,16 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 <!-- [Required] 进入AbleCloud管理控制台,对应"产品管理->主域ID" -->
 <meta-data android:name="major-domain-id" android:value="3"/>
 <!-- [Required] 进入AbleCloud管理控制台,对应"产品管理->产品列表->子域".注意,若subDomain为数字,则需在数字前面加\0 -->
-<meta-data android:name="sub-domain" android:value="test"/>
+<meta-data android:name="sub-domain" android:value="demo"/>
 <!-- [Required] 进入AbleCloud管理控制台,对应"产品管理->产品列表->子域ID" -->
-<meta-data android:name="sub-domain-id" android:value="6"/>
+<meta-data android:name="sub-domain-id" android:value="4"/>
+<!-- [Required] 设备私钥,正式环境下为必填项,对应"产品管理->产品列表->点击管理->设备密钥->私钥" 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件-->
+<meta-data android:name="secret-key" android:value="BEADD508A1A0AC77523FA741DD1FF754D5BBBDFC93A32619A77A5B510D3C7F65C65323EEB6951129B79E70E4DE514E49F6217BA4CA80891048114C3EE856183D9F86C8E47F6130C909B61CC13C42D261809C4C6476A0257EC979A872B2AAD22D6821AFB64E1EAB246AB4D7008821CA4E"/>
 
 <!-- [Optional] 环境设置,默认值为0(0正式环境 1测试环境) -->
 <meta-data android:name="mode" android:value="1"/>
 <!-- [Optional] 地域设置,默认值为0(0北京地区 1东南亚地区 2华东地区) -->
 <meta-data android:name="region" android:value="0"/>
-<!-- [Optional] 设备私钥,正式环境下为必填项,对应"产品管理->产品列表->点击管理->设备密钥->私钥" 若使用AbleCloud默认分配的密钥对，则填写默认密钥里的私钥，如选择设备独立密钥入库，则需要使用密钥生成工具自己生成公私钥并上传文件-->
-<meta-data android:name="secret-key" android:value="bd0d6a5c4aeddc963351d855e63f7241b6ac72338c0a44285fdfe478cfd2b2c3e1313de686db997d8c13d0bc629a8109d6ea780d8e0f5a45c024a254702da46bdcd95f1cc36b80a7c905f1f39f3c698921b0354b62a6536f35944881d5e7c1ab30c3722a6b9f1a86b911e44ba618add9"/>
 <!-- [Optional] 设备版本,格式为"1-0-0",不设置情况下默认值为"1-0-0",也可通过ACConfig进行设置 -->
 <meta-data android:name="version" android:value="1-0-0"/>
 ```
@@ -386,7 +386,7 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 > <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 > ```
 
->2、使用文件存储需导入jar包`android-async-http-1.4.8`和`qiniu-android-sdk-7.0.7`到libs目录下
+>2、使用文件存储需导入**[option]文件管理模块sdk**到libs目录下
 
 >3、上传下载支持断点续传功能
 
