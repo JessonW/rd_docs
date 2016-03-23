@@ -383,16 +383,41 @@ ACDeviceMsg定义如下：
 
 ####ACOTAUpgradeInfo
 说明：用来获取OTA升级状态信息，定义如下：
-```c
+
+```objc
+
+typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
+    ACOTAUpgradeInfoStatusUnDownload = 0,   //未下载
+    ACOTAUpgradeInfoStatusDownloadSucceed,  //下载未升级
+    ACOTAUpgradeInfoStatusUpdateSucceed     //升级完成
+};
+
+//  OTA基本信息
+@class ACOTAFileMeta;
+@interface ACOTAUpgradeInfo : NSObject
+
 // 原版本
 @property(nonatomic,copy) NSString *oldVersion;
 // 新版本
 @property(nonatomic,copy) NSString *upgradeVersion;
-// 升级描述
+//file信息
+@property(nonatomic,strong) NSArray *file;
+//设备目标版本
+@property (nonatomic, copy) NSString *targetVersion;
+//ACOTAMode
+@property (nonatomic, assign) NSInteger otaMode;
+//升级描述
 @property(nonatomic,copy) NSString *upgradeLog;
+//当前升级状态
+@property (nonatomic, assign) ACOTAUpgradeInfoStatus status;
+//是否需要升级
+@property (nonatomic, assign) BOOL update;
+
+@property (nonatomic, strong) ACOTAFileMeta *meta;
+
+-(BOOL)isUpdate;
 
 ```
-
 
 
 
@@ -1193,30 +1218,49 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 ##OTA
 除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：
 
+```objc
+@interface ACOTAManager : NSObject
 
-```c
-//检查设备是否有新的OTA版本，同时获取升级日志。
+///  检查OTA版本
+///  不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
+///
+///  @param subDomain 子域
+///  @param checkInfo 检查信息, 如果是蓝牙设备,使用physicalDeviceId, 如果是非蓝牙设备, 使用deviceId
+///  @param callback  检查信息的回调
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-                        deviceId:(NSInteger)deviceId
-                        callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-//确认升级
+                    OTACheckInfo:(ACOTACheckInfo *)checkInfo
+                        callback:(void (^)(ACOTAUpgradeInfo *checkInfo, NSError *error))callback;
+
+///  确认升级
+///  非蓝牙设备需要在获得OTA版本以后通知云端确认升级, 蓝牙设备不需要调用该接口
+///
+///  @param subDomain  子域
+///  @param deviceId   设备逻辑id
+///  @param newVersion 设备目标版本
+///  @param callback   回调函数
 + (void)confirmUpdateWithSubDomain:(NSString *)subDomain
                           deviceId:(NSInteger)deviceId
                         newVersion:(NSString *)newVersion
                           callback:(void (^)(NSError *error))callback;
-//查询蓝牙设备OTA发布版本
-+ (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-// 获取蓝牙设备OTA文件meta信息列表
-+ (void)listFilesWithSubDomain:(NSString *)subDomain
-                       version:(NSString *)version
-                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
-//获取蓝牙设备OTA文件
-+ (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-                              type:(NSInteger)type
-                          checksum:(NSInteger)checksum
-                           version:(NSString *)version
-                          callback:(void (^)(NSData *fileData, NSError *error))callback;
+
+/**
+ * 蓝牙设备OTA文件下载成功后,建议开发者调用此接口通知云端下载文件成功(蓝牙设备调用接口)
+ * 此接口只用于AbleCloud控制台OTA日志追踪
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备物理ID
+ * @param currentVersion   设备当前版本号
+ * @param targetVersion    下载的版本号
+ * @param callback         返回结果的监听回调
+ */
++ (void)otaMediaDoneWithSubDomain:(NSString *)subDomain
+                 PhysicalDeviceId:(NSString *)physicalDeviceId
+                   currentVersion:(NSString *)currentVersion
+                    targetVersion:(NSString *)targetVersion
+                          otaType:(NSInteger)otaType
+                         callback:(void(^)(NSError *error))callback;
+
+@end
 ```
 >**<font color="red">注</font>：具体使用步骤见开发指导-->OTA**
 
@@ -1838,29 +1882,38 @@ import "ACAccountManager.h"
 ##4、OTA
 
 
-```c
-//检查设备是否有新的OTA版本，同时获取升级日志。
+```objc
+@interface ACOTAManager : NSObject
+
+///  检查OTA版本
+///  不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
+///
+///  @param subDomain 子域
+///  @param checkInfo 检查信息, 如果是蓝牙设备,使用physicalDeviceId, 如果是非蓝牙设备, 使用deviceId
+///  @param callback  检查信息的回调
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-                        deviceId:(NSInteger)deviceId
-                         callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-//确认升级
-+ (void)confirmUpdateWithSubDomain:(NSString *)subDomain
-                          deviceId:(NSInteger)deviceId
-                         newVersion:(NSString *)newVersion
-                           callback:(void (^)(NSError *error))callback;
-//查询蓝牙设备OTA发布版本
-+ (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-// 获取蓝牙设备OTA文件meta信息列表
-+ (void)listFilesWithSubDomain:(NSString *)subDomain
-                       version:(NSString *)version
-                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
-//获取蓝牙设备OTA文件
-+ (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-                              type:(NSInteger)type
-                          checksum:(NSInteger)checksum
-                           version:(NSString *)version
-                          callback:(void (^)(NSData *fileData, NSError *error))callback;
+                    OTACheckInfo:(ACOTACheckInfo *)checkInfo
+                        callback:(void (^)(ACOTAUpgradeInfo *checkInfo, NSError *error))callback;
+
+/**
+ * 蓝牙设备OTA文件下载成功后,建议开发者调用此接口通知云端下载文件成功(蓝牙设备调用接口)
+ * 此接口只用于AbleCloud控制台OTA日志追踪
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备物理ID
+ * @param currentVersion   设备当前版本号
+ * @param targetVersion    下载的版本号
+ * @param callback         返回结果的监听回调
+ */
++ (void)otaMediaDoneWithSubDomain:(NSString *)subDomain
+                 PhysicalDeviceId:(NSString *)physicalDeviceId
+                   currentVersion:(NSString *)currentVersion
+                    targetVersion:(NSString *)targetVersion
+                          otaType:(NSInteger)otaType
+                         callback:(void(^)(NSError *error))callback;
+
+@end
+
 ```
 
 ##5、消息推送
