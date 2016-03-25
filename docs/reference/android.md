@@ -202,8 +202,6 @@ public class ACDeviceMsg {
 
     public ACDeviceMsg() {}
 
-    public ACDeviceMsg(int code) {}
-
     public ACDeviceMsg(int code, byte[] content) {}
 
     public ACDeviceMsg(int code, byte[] content, String description) {}
@@ -211,6 +209,22 @@ public class ACDeviceMsg {
     public ACDeviceMsg(int code, ACKLVObject object) {}
 
     public ACDeviceMsg(int code, ACKLVObject object, String description) {}
+    
+    public int getCode() {}
+
+    public void setCode(int code) {}
+
+    public byte[] getContent() {}
+
+    public void setContent(byte[] content) {}
+
+    public ACKLVObject getKLVObject() {}
+
+    public void setKLVObject(ACKLVObject object) {}
+
+    public String getDescription() {}
+
+    public void setDescription(String description) {}
 }
 ```
 
