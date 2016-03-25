@@ -8,8 +8,8 @@ SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本
 
 首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了两种格式的消息：
 
-+ **ACMsg：**APP与service之间的交互消息。
-+ **ACDeviceMsg：**APP与device之间的交互消息，使用二进制或json通讯协议。
++ **ACMsg：**APP与SERVICE服务之间的交互消息。
++ **ACDeviceMsg：**APP与DEVICE设备之间的交互消息。
 
 ##ACMsg 
 介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject
@@ -35,12 +35,43 @@ public class ACObject {
      */
     public ACObject add(String key, Object value) {}
 
-    /**
+    //**
      * 获取一个参数值
-     * @param key	参数名
-     * @return		参数值
+     *
+     * @param key 参数名
+     * @return 参数值;如果不存在该参数值,返回null
      */
     public <T> T get(String key) {}
+
+    /**
+     * @return 返回能被转化为Integer类型的值, 否则返回0
+     */
+    public int getInt(String key) {}
+
+    /**
+     * @return 返回能被转化为Long类型的值, 否则返回0L
+     */
+    public long getLong(String key) {}
+
+    /**
+     * @return 返回能被转化为Float类型的值, 否则返回0F
+     */
+    public float getFloat(String key) {}
+
+    /**
+     * @return 返回能被转化为Double类型的值, 否则返回0D
+     */
+    public double getDouble(String key) {}
+
+    /**
+     * @return 返回能被转化为Boolean类型的值, 否则返回false
+     */
+    public boolean getBoolean(String key) {}
+
+    /**
+     * @return 返回能被转化为String类型的字符串, 否则返回""
+     */
+    public String getString(String key) {}
 
     /**
      * 检查某一key是否存在
@@ -154,66 +185,39 @@ public class ACMsg extends ACObject {
 ##ACDeviceMsg
 ####ACDeviceMsg
 该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
->+ **二进制/json**
->在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
->+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
+ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
 
 ACDeviceMsg定义如下：
 
 ```java
 public class ACDeviceMsg {
-    private int code;			// 消息码，用于区分消息类型
-    private Object content;		// 设备消息的具体内容
-    private String description; // 设备描述信息
+    //消息码，用于区分消息类型
+    private int code;
+    //设备消息的具体内容,使用二进制与json格式
+    private byte[] content;
+    //设备消息的具体内容,使用klv通讯格式
+    private ACKLVObject klvObject;
+    //设备描述信息
+    private String description;
 
     public ACDeviceMsg() {}
-    public ACDeviceMsg(int code, Object content) {}
-    public int getCode() {}
-    public void setCode(int code) {}
-    public Object getContent() {}
-    public void setContent(Object content) {}
-    public void setKLVObject(ACKLVObject object) {}
-    public ACKLVObject getKLVObject() {}
-    public String getDescription() {}
-    public void setDescription(String description) {}
-}
-```
 
-<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
+    public ACDeviceMsg(int code) {}
 
-####ACDeviceMsgMarshaller
-设备消息的序列化/反序列化器，用于解释ACDeviceMsg的内容，其定义如下：
+    public ACDeviceMsg(int code, byte[] content) {}
 
-```java
-public interface ACDeviceMsgMarshaller {
-    /**
-     * 因为与设备的通讯以二进制流的形式进行，所以需要全局设置一个序列化与反序列化器
-     * 序列化器
-     *
-     * @param deviceMsg 对应sendToDeviceWithOption里的deviceMsg参数，
-     * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
-     */
-    public byte[] marshal(ACDeviceMsg deviceMsg) throws Exception;
+    public ACDeviceMsg(int code, byte[] content, String description) {}
 
-    /**
-     * 反序列化器
-     *
-     * @param msgCode 开发商基于AbleCloud框架自定义的协议，此处为与设备通讯的msgCode
-     * @param payload 此处为接收到设备响应的原始byte数组，设备返回数据后先经过这里进行反序列化
-     * @return 反序列化后返回ACDeviceMsg对象，此处对应sendToDeviceWithOption里callback的success回调
-     */
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception;
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 }
 ```
 
 ####ACKLVObject
-<font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。
+<font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里不做具体介绍。
 
-
-#SDK接口列表
-
-##基本对象结构
+#基本数据结构
 这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。
 
 ####ACAccount
@@ -556,6 +560,7 @@ public class ACDevice {
 
 ####ACFeedback
 说明：用来表示用户意见反馈的信息，定义如下：
+
 ```java
 public class ACFeedback {
     //可以为空,也可以指定subDomain产品
@@ -600,9 +605,7 @@ public class ACException extends Exception {
     public static int INVALID_PARAMETERS = 1991;
     public static int NO_LOGIN = 1992;
     public static int TIMEOUT = 1993;
-    public static int MARSHALLER_EMPTY = 1994;
     public static int MARSHAL_ERROR = 1995;
-    public static int UNMARSHAL_ERROR = 1996;
     public static int WRONG_PAYLOAD_FORMAT = 1997;
     public static int INTERNET_ERROR = 1998;
     public static int INTERNAL_ERROR = 1999;
@@ -612,6 +615,7 @@ public class ACException extends Exception {
 }
 ```
 
+#SDK接口列表
 
 ##AC
 SDK里所有接口均可通过AC来获取，简而言之，AC可以认为是SDK的框架，通过AC，开发者可以根据需要获取一系列服务、功能的接口，这些功能包括设备激活、云端服务、测试桩等。AC的定义如下：
@@ -991,6 +995,7 @@ public interface ACAccountMgr {
 >3. 设备连接成功后，调用设备管理器中的绑定接口完成设备的绑定。至此，一台新设备就联网、连云完成，可由相关的成员控制了。
 
 ablecloud提供了激活器供你使用，定义如下：
+
 ```java
 public class ACDeviceActivator {
 	/**
@@ -1030,6 +1035,7 @@ public class ACDeviceActivator {
 }
 ```
 设备激活成功之后返回的信息，定义如下：
+
 ```java
 public class ACDeviceBind {
     //subDomainId可以用来区分不同产品类型
@@ -1048,6 +1054,7 @@ public class ACDeviceBind {
 >通过以上`ACDeviceActivator`提供的接口，使一台设备连上wifi，我们认为已经将设备激活了。但是只是激活设备还不够，用户控制设备前需要对设备进行绑定
 
 成功激活设备之后，即可以通过调用以下接口获取设备激活相关信息，其中包括设备IP地址、设备固件版本、设备通信模组版本、设备激活时间、设备最后上线时间、设备地理位置国家/省/地区等。
+
 ```java
 public interface ACDeviceMgr {
     /**
@@ -1067,16 +1074,6 @@ public interface ACDeviceMgr {
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
 ```java
-package com.accloud.service;
-
-import com.accloud.cloudservice.PayloadCallback;
-import com.accloud.cloudservice.VoidCallback;
-
-import java.util.List;
-
-/**
- * Created by Xuri on 2015/3/30.
- */
 public interface ACBindMgr {
     /**
      * 从云端获取所有设备列表(sdk会自动保存列表到本地缓存中)
@@ -1337,18 +1334,6 @@ public interface ACBindMgr {
     public void getDeviceProfile(String subDomain, long deviceId, PayloadCallback<ACObject> callback);
 
     /**
-     * 设置设备消息序列化/反序列化器
-     *
-     * @param marshaller 开发者自定义的ACDeviceMarshaller
-     */
-    public void setDeviceMsgMarshaller(ACDeviceMsgMarshaller marshaller);
-
-    /**
-     * 获取设备消息序列化/反序列化器
-     */
-    public ACDeviceMsgMarshaller getDeviceMsgMarshaller();
-
-    /**
      * 为便于测试，开发者可实现一个设备的桩
      *
      * @param stub
@@ -1375,6 +1360,7 @@ public interface ACBindMgr {
 
 ##Home模型
 除了绑定控制设备之外，你可能需要对设备进行合理的分组管理，AbleCloud提供的Home模型可以满足大部分复杂的模型场景。
+
 ```java
 public interface ACGroupMgr {
 
@@ -1576,7 +1562,6 @@ public interface ACGroupMgr {
 ##OTA
 除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：
 
-
 ```java
 public interface ACOTAMgr {
 
@@ -1627,6 +1612,7 @@ public interface ACOTAMgr {
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周日，周五重复，则表示为"week[0,5]")
 
 接口定义如下：
+
 ```java
 public interface ACTimerMgr {
 
@@ -1944,6 +1930,7 @@ public interface ACNotificationMgr {
 
 ##实时消息同步
 AbleCloud提供了实时消息能够让你实时接收并且查看设备上的数据，在SDK端提供相应的接口定义如下：
+
 ```java
 public interface ACPushMgr {
 
@@ -2111,6 +2098,7 @@ public interface ACFeedbackMgr {
 为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。
 ####设备桩
 设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：
+
 ```java
 public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2120,6 +2108,7 @@ public abstract  class ACDeviceStub {
 
 ####服务桩
 服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，其定义如下：
+
 ```java
 public abstract class ACService {
     /**
