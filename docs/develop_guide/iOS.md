@@ -252,7 +252,7 @@ Ablecloud提供了ACWifiLinkManager类激活器供你使用
 ```
 
 ><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`、`esptouch`、`realtek`。
+目前支持的开发板有`smartlink(汉枫)`、`oneshot(联胜德)`、`easyconfig(RAK)`、`easylink(庆科)`、`smartconfig(MTK)`、`esptouch(乐鑫)`、`realtek(瑞昱)`。
 
 ####2.获取WiFi SSID
 ```objectivec
@@ -633,6 +633,102 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 **说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
 ##一、发送消息到设备
+
+###二进制格式
+
+**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
+
+【数据包】
+![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
+
+**例如**：以开关设备为例,协议如下:
+
+```objectivec
+//请求数据包
+{ 68 ：[
+//开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+{ 0/1 , 0 , 0 , 0 }
+]}
+//响应数据包  
+{ 102 ：[
+//结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+{ 0/1 , 0 , 0 , 0 }
+]}
+
+```
+截取开灯代码，如下:
+####1、设置序列化器
+```objectivec
+//反序列化
++ (instancetype)unmarshalWithData:(NSData *)data;
+//序列化
+- (NSData *)marshal;
+```
+####2、发送到设备
+```objectivec
+/**
+*  网络连接操作灯
+*/
+//LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+     if(!error){
+     //开灯成功
+     }else{
+     //开灯失败
+     }
+
+}];
+```
+###json格式
+
+**在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
+
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![json_datapoint](../pic/develop_guide/cloud_communication_json.png)
+
+【数据包】
+![json_datapackage](../pic/develop_guide/cloud_communication_json_pkg.png)
+
+
+**例如**：以开关设备为例,协议如下:
+```objectivec
+//请求数据包
+{ 70 ：[
+//开关灯，其中0代表关灯，1代表开灯
+{"switch", 0/1}
+]}
+//响应数据包  
+{ 102 ：[
+//结果，其中false代表失败，1代表成功
+{"result", false/true}
+]}
+```
+####1、设置序列化器
+```objective
+ACObject * req = [[ACObject alloc]init];
+[req marshal];
+```
+####2、发送到设备
+此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
+```objective
+[req putInteger:@"switch" value:1];
+ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
+msg.msgCode = 68;
+msg.payload = [req marshal];
+//LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+          if(!error){
+          //开灯成功
+          }else{
+          //开灯失败
+          }
+
+}];
+
+```
+
 ###KLV格式
 
 KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
@@ -707,100 +803,7 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 - (NSDictionary *)getObjectData;
 - (void)setObjectData:(NSDictionary *)data;
 ```
-###二进制格式
 
-**在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
-
-【数据包】
-![binary_datapackage](../pic/develop_guide/cloud_communication_binary_pkg.png)
-
-**例如**：以开关设备为例,协议如下:
-
-```objectivec
-//请求数据包
-{ 68 ：[
-//开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
-{ 0/1 , 0 , 0 , 0 }
-]}
-//响应数据包  
-{ 102 ：[
-//结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
-{ 0/1 , 0 , 0 , 0 }
-]}
-
-```
-截取开灯代码，如下:
-####1、设置序列化器
-```objectivec
-//反序列化
-+ (instancetype)unmarshalWithData:(NSData *)data;
-//序列化
-- (NSData *)marshal;
-```
-####2、发送到设备
-```objectivec
-/**
-*  网络连接操作灯
-*/
-//LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
-[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-     if(!error){
-     //开灯成功
-     }else{
-     //开灯失败
-     }
-
-}];
-```
-###3、json格式
-
-**在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
-
-这里创建的数据点和数据包如下所示：
-
-【数据点】
-![json_datapoint](../pic/develop_guide/cloud_communication_json.png)
-
-【数据包】
-![json_datapackage](../pic/develop_guide/cloud_communication_json_pkg.png)
-
-
-**例如**：以开关设备为例,协议如下:
-```objectivec
-//请求数据包
-{ 70 ：[
-//开关灯，其中0代表关灯，1代表开灯
-{"switch", 0/1}
-]}
-//响应数据包  
-{ 102 ：[
-//结果，其中false代表失败，1代表成功
-{"result", false/true}
-]}
-```
-####1、设置序列化器
-```objective
-ACObject * req = [[ACObject alloc]init];
-[req marshal];
-```
-####2、发送到设备
-此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
-```objective
-[req putInteger:@"switch" value:1];
-ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
-msg.msgCode = 68;
-msg.payload = [req marshal];
-//LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-          if(!error){
-          //开灯成功
-          }else{
-          //开灯失败
-          }
-
-}];
-
-```
 
 
 ##二、发送消息到服务
