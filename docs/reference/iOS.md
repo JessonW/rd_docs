@@ -90,6 +90,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 
 ####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
+
 ```c
 @interface ACMsg : ACObject
 
@@ -134,6 +135,7 @@ extern NSString *const ACMsgErrMSG;
 ```
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
+
 ```c
 
 @interface ACContext : NSObject

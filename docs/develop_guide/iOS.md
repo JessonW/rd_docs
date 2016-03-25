@@ -693,6 +693,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 
 **例如**：以开关设备为例,协议如下:
+
 ```objectivec
 //请求数据包
 { 70 ：[
@@ -706,12 +707,14 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 ]}
 ```
 ####1、设置序列化器
+
 ```objective
 ACObject * req = [[ACObject alloc]init];
 [req marshal];
 ```
 ####2、发送到设备
 此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
+
 ```objective
 [req putInteger:@"switch" value:1];
 ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
@@ -744,6 +747,7 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 
 
 **例如**：以开关设备为例,协议如下:
+
 ```objectivec
 //请求数据包
 { 69 ：[
@@ -756,9 +760,10 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 { 1 : false/true }
 ]}
 ```
-定义如下:
-```objectivec
 
+定义如下:
+
+```objc
 
 @interface ACKLVObject : NSObject
 
