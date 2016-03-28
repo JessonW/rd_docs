@@ -300,6 +300,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#sdk">SDK接口列表<span class="main-set parent_sdk">+</span></a>
@@ -350,7 +354,11 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_13">桩模块</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_13">用户意见反馈</a></li>
+            
+        
+            
+            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
             
         
     
@@ -388,57 +396,41 @@
                 
             
         
-            
-                
-            
-        
-            
-                
-            
-        
         
         <li class="main">
-            <a href="#_16">适用蓝牙的接口<span class="main-set parent__16">+</span></a>
+            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
         </li>
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#2">2、设备激活</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备激活</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#3">3、设备管理</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#3">3、设备管理</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#4ota">4、OTA</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#4ota">4、OTA</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#5">5、消息推送</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#5">5、消息推送</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#6">6、和云端通信</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#6">6、和云端通信</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#6_1">6、文件存储</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
             
-            <li class="sub parent__16" style="display: none;"><a href="#_19">一、获取文件管理器</a></li>
-            
-        
-            
-            <li class="sub parent__16" style="display: none;"><a href="#_20">二、下载文件</a></li>
-            
-        
-            
-            <li class="sub parent__16" style="display: none;"><a href="#_21">三、上传文件</a></li>
+            <li class="sub parent__17" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
             
         
     
@@ -620,24 +612,28 @@ extern NSString *const ACMsgErrMSG;
 <blockquote>
 <ul>
 <li><strong>二进制/json</strong>
-在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。</li>
+在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传。</li>
 <li><strong>KLV</strong>
-KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。</li>
+KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
+KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a>。</li>
 </ul>
 </blockquote>
-<p>KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a>。</p>
 <p>ACDeviceMsg定义如下：</p>
-<pre><code class="c">@property (nonatomic, assign) NSInteger msgId;
+<pre><code class="objc">@property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
 @property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong) NSArray *optArray;
-//反序列化
+@property (nonatomic, copy) NSString *description;
+//KLV协议时使用
+@property (nonatomic, strong, readonly) ACKLVObject *KLVObject;
+
+//KLV协议时使用
+- (id)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
+- (ACKLVObject *)getKLVObject;
+
 + (instancetype)unmarshalWithData:(NSData *)data;
-+ //反序列化WithAESKey
 + (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-//序列化
 - (NSData *)marshal;
-//序列化withAES Key
 - (NSData *)marshalWithAESKey:(NSData *)AESKey;
 </code></pre>
 
@@ -657,6 +653,29 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 @property(nonatomic,copy) NSString *phone;
 // 电子邮件地址
 @property(nonatomic,copy) NSString *email;
+</code></pre>
+
+<h4 id="acfeedback">ACFeedback</h4>
+<p>说明：用来表示用户意见反馈的信息，定义如下：</p>
+<pre><code class="objc">@interface ACFeedBack : NSObject
+//可以为空,也可以指定subDomain产品
+@property (nonatomic, copy) NSString *subDomain;
+//预留字段, 可传nil
+@property (nonatomic, copy) NSString *type;
+//开发者自定义的扩展信息，与前端定义的字段一致
+@property (nonatomic, strong) ACObject *extend;
+
+//对应AbleCloud控制台反馈项设定的key与value值
+- (void)addFeedBackWithKey:(NSString *)key value:(NSString *)value;
+- 
+/**
+* 添加图片下载地址的url
+*
+* @param key   对应为AbleCloud控制台反馈项设定的key值
+* @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
+*/
+- (void)addFeedBackPictureWithKey:(NSString *)key value:(NSString *)value;
+
 </code></pre>
 
 <h4 id="acuserdevice">ACUserDevice</h4>
@@ -798,12 +817,37 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
 </blockquote>
 <h4 id="acotaupgradeinfo">ACOTAUpgradeInfo</h4>
 <p>说明：用来获取OTA升级状态信息，定义如下：</p>
-<pre><code class="c">// 原版本
+<pre><code class="objc">
+typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
+    ACOTAUpgradeInfoStatusUnDownload = 0,   //未下载
+    ACOTAUpgradeInfoStatusDownloadSucceed,  //下载未升级
+    ACOTAUpgradeInfoStatusUpdateSucceed     //升级完成
+};
+
+//  OTA基本信息
+@class ACOTAFileMeta;
+@interface ACOTAUpgradeInfo : NSObject
+
+// 原版本
 @property(nonatomic,copy) NSString *oldVersion;
 // 新版本
 @property(nonatomic,copy) NSString *upgradeVersion;
-// 升级描述
+//file信息
+@property(nonatomic,strong) NSArray *file;
+//设备目标版本
+@property (nonatomic, copy) NSString *targetVersion;
+//ACOTAMode
+@property (nonatomic, assign) NSInteger otaMode;
+//升级描述
 @property(nonatomic,copy) NSString *upgradeLog;
+//当前升级状态
+@property (nonatomic, assign) ACOTAUpgradeInfoStatus status;
+//是否需要升级
+@property (nonatomic, assign) BOOL update;
+
+@property (nonatomic, strong) ACOTAFileMeta *meta;
+
+-(BOOL)isUpdate;
 
 </code></pre>
 
@@ -948,6 +992,14 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
  *  更换手机号
  */
 + (void)changePhone:(NSString *)phone
+           password:(NSString *)password
+         verifyCode:(NSString *)verifyCode
+           callback:(void(^)(NSError *error)) callback;
+
+/**
+ *  更换邮箱
+ */
++ (void)changeEmail:(NSString *)email
            password:(NSString *)password
          verifyCode:(NSString *)verifyCode
            callback:(void(^)(NSError *error)) callback;
@@ -1588,28 +1640,48 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 <h2 id="ota">OTA</h2>
 <p>除了以上对设备的绑定控制以及管理之外，你可能还需要对设备OTA进行升级，接口定义如下：</p>
-<pre><code class="c">//检查设备是否有新的OTA版本，同时获取升级日志。
+<pre><code class="objc">@interface ACOTAManager : NSObject
+
+///  检查OTA版本
+///  不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
+///
+///  @param subDomain 子域
+///  @param checkInfo 检查信息, 如果是蓝牙设备,使用physicalDeviceId, 如果是非蓝牙设备, 使用deviceId
+///  @param callback  检查信息的回调
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-                        deviceId:(NSInteger)deviceId
-                        callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-//确认升级
+                    OTACheckInfo:(ACOTACheckInfo *)checkInfo
+                        callback:(void (^)(ACOTAUpgradeInfo *checkInfo, NSError *error))callback;
+
+///  确认升级
+///  非蓝牙设备需要在获得OTA版本以后通知云端确认升级, 蓝牙设备不需要调用该接口
+///
+///  @param subDomain  子域
+///  @param deviceId   设备逻辑id
+///  @param newVersion 设备目标版本
+///  @param callback   回调函数
 + (void)confirmUpdateWithSubDomain:(NSString *)subDomain
                           deviceId:(NSInteger)deviceId
                         newVersion:(NSString *)newVersion
                           callback:(void (^)(NSError *error))callback;
-//查询蓝牙设备OTA发布版本
-+ (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-// 获取蓝牙设备OTA文件meta信息列表
-+ (void)listFilesWithSubDomain:(NSString *)subDomain
-                       version:(NSString *)version
-                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
-//获取蓝牙设备OTA文件
-+ (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-                              type:(NSInteger)type
-                          checksum:(NSInteger)checksum
-                           version:(NSString *)version
-                          callback:(void (^)(NSData *fileData, NSError *error))callback;
+
+/**
+ * 蓝牙设备OTA文件下载成功后,建议开发者调用此接口通知云端下载文件成功(蓝牙设备调用接口)
+ * 此接口只用于AbleCloud控制台OTA日志追踪
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备物理ID
+ * @param currentVersion   设备当前版本号
+ * @param targetVersion    下载的版本号
+ * @param callback         返回结果的监听回调
+ */
++ (void)otaMediaDoneWithSubDomain:(NSString *)subDomain
+                 PhysicalDeviceId:(NSString *)physicalDeviceId
+                   currentVersion:(NSString *)currentVersion
+                    targetVersion:(NSString *)targetVersion
+                          otaType:(NSInteger)otaType
+                         callback:(void(^)(NSError *error))callback;
+
+@end
 </code></pre>
 
 <blockquote>
@@ -1664,31 +1736,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
                        name:(NSString *)name
                   timePoint:(NSString *)timePoint
                   timeCycle:(NSString *)timeCycle
-                description:(NSString *)description
                   deviceMsg:(ACDeviceMsg *)deviceMsg
-                   callback:(void (^)(NSError *error))callback;
-
-/**
- * 创建定时任务(使用KLV模型)
- *
- * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
- * @param timeCycle   单次定时任务：once
- *                    按小时重复：hour
- *                    按天重复：day
- *                    按月重复：month
- *                    按年复复：year
- *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
- * @param description 自定义的任务描述
- * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
- * @param callback    返回结果的监听回调
- */
-- (void)addTaskWithDeviceId:(NSInteger)deviceId
-                       name:(NSString *)name
-                  timePoint:(NSString *)timePoint
-                  timeCycle:(NSString *)timeCycle
-                description:(NSString *)description
-               KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
                    callback:(void (^)(NSError *error))callback;
 
 /**
@@ -1712,33 +1760,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
                           name:(NSString *)name
                      timePoint:(NSString *)timePoint
                      timeCycle:(NSString *)timeCycle
-                   description:(NSString *)description
                      deviceMsg:(ACDeviceMsg *)deviceMsg
-                      callback:(void (^)(NSError *error))callback;
-
-/**
- * 修改定时任务(使用KLV模型)
- *
- * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param taskId      任务id
- * @param timePoint   任务时间点，时间格式为：&quot;yyyy-MM-dd HH:mm:ss&quot;,比如2015-08-08 16:39:03
- * @param timeCycle   单次定时任务：once
- *                    按小时重复：hour
- *                    按天重复：day
- *                    按月重复：month
- *                    按年复复：year
- *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
- * @param description 自定义的任务描述
- * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
- * @param callback    返回结果的监听回调
- */
-- (void)modifyTaskWithDeviceId:(NSInteger)deviceId
-                        taskId:(NSInteger)taskId
-                          name:(NSString *)name
-                     timePoint:(NSString *)timePoint
-                     timeCycle:(NSString *)timeCycle
-                   description:(NSString *)description
-                  KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
                       callback:(void (^)(NSError *error))callback;
 
 /**
@@ -1861,9 +1883,18 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <blockquote>
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 </blockquote>
-<h2 id="_13">桩模块</h2>
+<h2 id="_13">用户意见反馈</h2>
+<pre><code class="objc">
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
+</code></pre>
+
+<h2 id="_14">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_14">设备桩</h4>
+<h4 id="_15">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
 <pre><code class="c">@protocol ACDeviceStubDelegate &lt;NSObject&gt;
 
@@ -1882,7 +1913,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h4 id="_15">服务桩</h4>
+<h4 id="_16">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：</p>
 <pre><code class="c">@protocol ACServiceStubDelegate &lt;NSObject&gt;
 
@@ -1900,7 +1931,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h1 id="_16">适用蓝牙的接口</h1>
+<h1 id="_17">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
@@ -1908,11 +1939,11 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <h2 id="1">1、帐号管理</h2>
 <p>用户帐号管理
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
-<h4 id="_17">引入头文件</h4>
+<h4 id="_18">引入头文件</h4>
 <pre><code class="c">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
-<h4 id="_18">接口说明</h4>
+<h4 id="_19">接口说明</h4>
 <pre><code class="c">@interface ACAccountManager : NSObject
 
 /**
@@ -2202,28 +2233,37 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h2 id="4ota">4、OTA</h2>
-<pre><code class="c">//检查设备是否有新的OTA版本，同时获取升级日志。
+<pre><code class="objc">@interface ACOTAManager : NSObject
+
+///  检查OTA版本
+///  不管有无新版本，都会回调ACOTAUpgradeInfo，根据isUpdate()判断有无OTA更新
+///
+///  @param subDomain 子域
+///  @param checkInfo 检查信息, 如果是蓝牙设备,使用physicalDeviceId, 如果是非蓝牙设备, 使用deviceId
+///  @param callback  检查信息的回调
 + (void)checkUpdateWithSubDomain:(NSString *)subDomain
-                        deviceId:(NSInteger)deviceId
-                         callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-//确认升级
-+ (void)confirmUpdateWithSubDomain:(NSString *)subDomain
-                          deviceId:(NSInteger)deviceId
-                         newVersion:(NSString *)newVersion
-                           callback:(void (^)(NSError *error))callback;
-//查询蓝牙设备OTA发布版本
-+ (void)bluetoothVersionWithSubDomain:(NSString *)subDomain
-                             callback:(void (^)(ACOTAUpgradeInfo *upgradeInfo, NSError *error))callback;
-// 获取蓝牙设备OTA文件meta信息列表
-+ (void)listFilesWithSubDomain:(NSString *)subDomain
-                       version:(NSString *)version
-                      callback:(void (^)(NSArray *fileMetaArray, NSError *error))callback;
-//获取蓝牙设备OTA文件
-+ (void)bluetoothFileWithSubDomain:(NSString *)subDomain
-                              type:(NSInteger)type
-                          checksum:(NSInteger)checksum
-                           version:(NSString *)version
-                          callback:(void (^)(NSData *fileData, NSError *error))callback;
+                    OTACheckInfo:(ACOTACheckInfo *)checkInfo
+                        callback:(void (^)(ACOTAUpgradeInfo *checkInfo, NSError *error))callback;
+
+/**
+ * 蓝牙设备OTA文件下载成功后,建议开发者调用此接口通知云端下载文件成功(蓝牙设备调用接口)
+ * 此接口只用于AbleCloud控制台OTA日志追踪
+ *
+ * @param subDomain        子域名，如djj（豆浆机）
+ * @param physicalDeviceId 设备物理ID
+ * @param currentVersion   设备当前版本号
+ * @param targetVersion    下载的版本号
+ * @param callback         返回结果的监听回调
+ */
++ (void)otaMediaDoneWithSubDomain:(NSString *)subDomain
+                 PhysicalDeviceId:(NSString *)physicalDeviceId
+                   currentVersion:(NSString *)currentVersion
+                    targetVersion:(NSString *)targetVersion
+                          otaType:(NSInteger)otaType
+                         callback:(void(^)(NSError *error))callback;
+
+@end
+
 </code></pre>
 
 <h2 id="5">5、消息推送</h2>
@@ -2258,14 +2298,14 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 
 </code></pre>
 
-<h2 id="6_1">6、文件存储</h2>
+<h2 id="7">7、文件存储</h2>
 <p>文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：</p>
-<h2 id="_19">一、获取文件管理器</h2>
+<h3 id="_20">一、获取文件管理器</h3>
 <pre><code class="c">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
-<h2 id="_20">二、下载文件</h2>
+<h3 id="_21">二、下载文件</h3>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code>/**
  * //获取下载URL
@@ -2286,7 +2326,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 </code></pre>
 
-<h2 id="_21">三、上传文件</h2>
+<h3 id="_22">三、上传文件</h3>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
 <pre><code class="c">@interface ACACL : NSObject
 </code></pre>
@@ -2355,6 +2395,15 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
  * @param fileInfo      文件信息
  */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
+</code></pre>
+
+<h2 id="8">8、用户意见反馈</h2>
+<pre><code class="objc">
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
