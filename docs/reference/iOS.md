@@ -92,29 +92,58 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
 
 ```c
+//
+//  ACMsg.h
+//  ACloudLib
+//
+//  Created by zhourx5211 on 12/10/14.
+//  Copyright (c) 2014 zcloud. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "ACObject.h"
+#import "ACContext.h"
+
 @interface ACMsg : ACObject
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) ACContext *context;
 @property (nonatomic, strong) NSString *payloadFormat;
 @property (nonatomic, assign) NSUInteger payloadSize;
-@property (nonatomic, strong, readonly) NSData *payload;
+@property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong, readonly) NSData *streamPayload;
 
 /**
- * 设置流式负载，主要用于较大二进制数据传输，如上传文件等。
+ *  生成带签名信息的ACMsg实例,默认`subDomain`为`nil`
+ */
++ (instancetype)msgWithName:(NSString *)name;
+
+/**
+ *  生成带签名信息的ACMsg实例, subDomain需要自己传入
+ */
++ (instancetype)msgWithName:(NSString *)name subDomain:(NSString *)subDomain;
+
+/**
+ * 设置二进制负载
+ * 通过put/add方式设置的负载要么框架将其序列化为json，
+ * 要么解析后作为url的参数传输。
+ * 通过该函数可以设置额外的负载数据。
+ * @param payload
+ * @param format
+ */
+- (void)setPayload:(NSData *)payload format:(NSString *)format;
+/**
+ * 设置流式负载，主要用于较大的数据传输，如上传文件等。
  * @param payload   负载内容
  * @param size      负载大小
  */
 - (void)setStreamPayload:(NSData *)streamPayload size:(NSInteger)size;
-
 /**
  * 设置错误信息。在服务端处理错误时，需要显示的调用该结果设置错误信息
  * @param errCode   错误码
  * @param errMsg    错误信息
  */
 - (void)setErr:(NSInteger)errCode errMsg:(NSString *)errMsg;
-
 /**
  * 判断服务端响应的处理结果是否有错
  * @return  YES-处理有错，NO-处理成功
@@ -130,6 +159,9 @@ extern NSString *const ACMsgStreamPayload;
 extern NSString *const ACMsgMsgNameHeader;
 extern NSString *const ACMsgAckMSG;
 extern NSString *const ACMsgErrMSG;
+
+@end
+
 
 @end
 ```
@@ -206,6 +238,7 @@ ACDeviceMsg定义如下：
 
 ####ACUserInfo
 用来表示AbleCloud的一个注册帐号信息，定义如下：
+
 ```c
 // 用户ID
 @property(nonatomic,assign) NSInteger userId;
@@ -243,6 +276,7 @@ ACDeviceMsg定义如下：
 
 ####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
+
 ```c
 //设备逻辑ID
 @property(nonatomic,assign) NSInteger deviceId;
@@ -265,6 +299,7 @@ ACDeviceMsg定义如下：
 ```
 ####ACBindUser
 设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：
+
 ```c
 //用户ID
 @property(nonatomic,assign) NSInteger userId;
@@ -286,6 +321,7 @@ ACDeviceMsg定义如下：
 
 ####ACHome
 说明：家庭模型，用来表示一个家庭的信息，定义如下：
+
 ```objc
 //家庭的Id
 @property (nonatomic, assign) NSInteger homeId;
@@ -297,6 +333,7 @@ ACDeviceMsg定义如下：
 
 ####ACRoom
 说明：房间模型，用来表示一个家庭下不同的房间信息，定义如下：
+
 ```objc
 //房间所属的家庭Id
 @property (nonatomic, assign) NSInteger homeId;
@@ -310,6 +347,7 @@ ACDeviceMsg定义如下：
 
 ####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
+
 ```c
 @property (assign, nonatomic) NSInteger taskId;
 //任务的类型（onceTask）
@@ -340,6 +378,7 @@ ACDeviceMsg定义如下：
 
 ####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
+
 ```c
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
@@ -364,6 +403,7 @@ ACDeviceMsg定义如下：
 
 ####ACFindDevicesManager
 说明：用来获取局域网本地设备，定义如下：
+
 ```c
 @protocol ACFindDevicesDelegate <NSObject>
 
@@ -428,6 +468,7 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 ##ACloudLib
 
 ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。
+
 ```c
 @interface ACloudLib : NSObject
 
@@ -657,6 +698,8 @@ import "ACAccountManager.h"
 
 当一款智能设备上市，交付到终端用户时，虽然是智能设备，但是目前大多数智能设备并没有键盘、屏幕等UI（用户界面），那么如何让一台新设备连上网络呢，这里就要用到设备激活功能。新设备激活的大致流程如下：
 
+>1. 模拟器不能使用, 请在真机下进行调试
+
 >1. 调用激活器的以下接口，将wifi的ssid，密码广播给设备；
 
 >+ 通过扫码方式获取设备物理Id(每一台设备厂商都会给它分配一个设备号，AbleCloud称为设备的物理id)，通过此物理ID激活并绑定指定的设备
@@ -668,6 +711,7 @@ import "ACAccountManager.h"
 >3. 设备连接成功后，调用设备管理器中的绑定接口完成设备的绑定。至此，一台新设备就联网、连云完成，可由相关的成员控制了。
 
 ablecloud提供了激活器供你使用，定义如下：
+
 ```c
 @interface ACWifiLinkManager : NSObject
 
@@ -711,6 +755,25 @@ ablecloud提供了激活器供你使用，定义如下：
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
 ```c
+//
+//  ACBindManager.h
+//  AbleCloudLib
+//
+//  Created by OK on 15/3/24.
+//  Copyright (c) 2015年 ACloud. All rights reserved.
+//
+
+
+#import <Foundation/Foundation.h>
+
+#define BIND_SERVICE @"zc-bind"
+
+@class ACDeviceMsg, ACMsg, ACUserDevice, ACObject;
+@interface ACBindManager : NSObject
+
+@property (nonatomic, strong) NSArray *cahceArray;
+
+#pragma mark 设备权限管理
 /**
  *  获取设备列表,不包含设备状态信息
  *  
@@ -724,6 +787,7 @@ ablecloud提供了激活器供你使用，定义如下：
  *  @param callback     数组：devices保存的对象是ACUserDevice的对象
  */
 + (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
+
 /**
  *  获取用户列表
  *
@@ -747,6 +811,21 @@ ablecloud提供了激活器供你使用，定义如下：
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
+ * 修改设备扩展属性
+ */
++ (void) setDeviceProfileWithSubDomain:(NSString *)subDomain
+                              deviceId:(NSInteger)deviceId
+                               profile:(ACObject *)profile
+                              callback:(void (^) (NSError *error))callback;
+
+/**
+ * 获取设备扩展属性
+ */
++ (void) getDeviceProfileWithSubDomain:(NSString*)subDomain
+                              deviceId:(NSInteger)deviceId
+                              callback:(void (^) (ACObject*profile, NSError *error))callback;
+
+/**
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
@@ -757,18 +836,19 @@ ablecloud提供了激活器供你使用，定义如下：
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
                       subDomain:(NSString *)subDomain
                        deviceId:(NSInteger )deviceId
-                      callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+                       callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
- * 分享设备
+ *  根据账户绑定设备
  *
- * @param subDomain 子域名，如djj（豆浆机）
- * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param account   手机号
- * @param callback  返回结果的监听回调
+ *  @param subDomain 子域
+ *  @param deviceId  设备ID
+ *  @param phone     电话号码
  */
-public void bindDeviceWithUser(String subDomain, long deviceId, String account, VoidCallback callback);
-
++ (void)bindDeviceWithUserSubdomain:(NSString *)subDomain
+                           deviceId:(NSInteger)deviceId
+                            account:(NSString *)account
+                           callback:(void(^)(NSError *error))callback;
 /**
  *  解绑设备
  *
@@ -778,6 +858,7 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
                          deviceId:(NSInteger)deviceId
                          callback:(void(^)(NSError *error))callback;
+
 
 /**
  *  管理员取消 某个用户的绑定  （管理员接口）
@@ -792,14 +873,44 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
                              deviceId:(NSInteger)deviceId
                              callback:(void(^)(NSError *error))callback;
 
+
 /**
- * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
+ *  设备管理员权限转让 （管理员接口）
  *
- * @param subDomain 子域名，如djj（豆浆机）
- * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param callback  返回结果的监听回调
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param userId       新的管理员ID
  */
-public void getShareCode(String subDomain, long deviceId, PayloadCallback<String> callback);
++ (void)changeOwnerWithSubDomain:(NSString *)subDomain
+                        deviceId:(NSInteger)deviceId
+                          userId:(NSInteger)userId
+                        callback:(void(^)(NSError *error))callback;
+/**
+ *  更换物理设备 （管理员接口）
+ *
+ *  @param subDomain        子域名称
+ *  @param physicalDeviceId 设备物理ID
+ *  @param deviceId         设备逻辑ID
+ *  @param bindCode         绑定码(可选)
+ */
++ (void)changeDeviceWithSubDomain:(NSString *)subDomain
+                 physicalDeviceId:(NSString *)physicalDeviceId
+                         deviceId:(NSInteger)deviceId
+                         callback:(void(^)(NSError *error))callback;
+
+
+/**
+ *  修改设备名称 （管理员接口）
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param name         设备的新名称
+ */
++ (void)changNameWithSubDomain:(NSString *)subDomain
+                      deviceId:(NSInteger)deviceId
+                          name:(NSString *)name
+                      callback:(void(^)(NSError *error))callback;
+
 
 /**
  *  获取分享码  （管理员接口）
@@ -814,55 +925,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
                           timeout:(NSTimeInterval)timeout
                          callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
-/**
- *  设备管理员权限转让 （管理员接口）
- *
- *  @param subDomain    子域名称
- *  @param deviceId     设备逻辑ID
- *  @param userId       新的管理员ID
- */
-+ (void)changeOwnerWithSubDomain:(NSString *)subDomain
-                         deviceId:(NSInteger)deviceId
-                           userId:(NSInteger)userId
-                         callback:(void(^)(NSError *error))callback;
-
-/**
- *  更换物理设备 （管理员接口）
- *
- *  @param subDomain        子域名称
- *  @param physicalDeviceId 设备物理ID
- *  @param deviceId         设备逻辑ID
- *  @param bindCode         绑定码(可选)
- */
-+ (void)changeDeviceWithSubDomain:(NSString *)subDomain
-                 physicalDeviceId:(NSString *)physicalDeviceId
-                         deviceId:(NSInteger)deviceId
-                         callback:(void(^)(NSError *error))callback;
-
-/**
- *  修改设备名称 （管理员接口）
- *
- *  @param subDomain    子域名称
- *  @param deviceId     设备逻辑ID
- *  @param name         设备的新名称
- */
-+ (void)changNameWithSubDomain:(NSString *)subDomain
-                      deviceId:(NSInteger)deviceId
-                          name:(NSString *)name
-                      callback:(void(^)(NSError *error))callback;
-
-/**
- *  查询设备在线状态
- *
- *  @param subDomain        子域名称
- *  @param deviceId         设备逻辑ID
- *  @param subDomain        子域名称
- *  @param callback         online  是否在线
- */
-+ (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
-                           deviceId:(NSInteger)deviceId
-                   physicalDeviceId:(NSString *)physicalDeviceId
-                           callback:(void(^)(Boolean online,NSError *error))callback;
+#pragma mark 网关绑定
 
 /**
  * 绑定网关
@@ -921,7 +984,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  * @param callback  返回结果的监听回调
  */
 + (void)listGatewaysWithSubDomain:(NSString *)subDomain
-                        callback:(void (^)(NSArray *devices, NSError *error))callback;
+                         callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
  * 获取用户子设备列表
@@ -982,38 +1045,30 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
                    physicalDeviceId:(NSString *)physicalDeviceId
                            callback:(void (^)(NSError *error))callback;
 
-/**
- * 修改帐号扩展属性
- */
-+ (void) setUserProfile:(ACObject *)profile
-               callback:(void (^) (NSError *error))callback;
+#pragma mark 设备查询控制接口
 
 /**
- * 获取帐号扩展属性
- */
-+ (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
-
-//反序列化
-+ (instancetype)unmarshalWithData:(NSData *)data;
-+ (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-//序列化
-- (NSData *)marshal;
-//序列化withAES Key
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
-
+*  查询设备绑定状态
+*
+*  @param subDomain        子域名称
+*  @param physicalDeviceId 物理id
+*  @param callback         是否被绑定
+*/
++ (void)isDeviceBoundsWithSubDomain:(NSString *)subDomain
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void (^)(BOOL isBounded, NSError *error))callback;
 /**
- * 为便于测试，开发者可实现一个设备的桩
+ *  查询设备在线状态
  *
- * @param stub
+ *  @param subDomain        子域名称
+ *  @param deviceId         设备逻辑ID
+ *  @param subDomain        子域名称
+ *  @param callback         online  是否在线
  */
-@interface ACDeviceStub : NSObject
-
-+ (instancetype)sharedInstance;
-
-+ (void)setDeviceStub:(NSString *)subDomain delegate:(id<ACDeviceStubDelegate>)delegate;
-+ (id<ACDeviceStubDelegate>)getDeviceStubDelegate:(NSString *)subDomain;
-+ (void)removeDeviceStub:(NSString *)subDomain;
-+ (BOOL)isDeviceStub:(NSString *)subDomain;
++ (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
+                           deviceId:(NSInteger)deviceId
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void(^)(Boolean online,NSError *error))callback;
 
 /**
  *  向设备发送消息
@@ -1023,9 +1078,32 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
  *  @param msg       发送的消息
  */
 + (void)sendToDevice:(NSString *)subDomain
-             deviceId:(NSInteger)deviceId
-                  msg:(ACDeviceMsg *)msg
-             callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+            deviceId:(NSInteger)deviceId
+                 msg:(ACDeviceMsg *)msg
+            callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+/**
+ *  向设备发送消息
+ *
+ *  @param option    与设备交互的方式  1:仅通过局域网 2:仅通过云 3:通过云优先 4:通过局域网优先
+ *  @param subDomain 子域名
+ *  @param deviceId  设备逻辑ID
+ *  @param msg       发送的消息
+ *  @param callback  返回结果的监听
+ */
++(void)sendToDeviceWithOption:(int)option SubDomain:(NSString *)subDomain
+           deviceId:(NSInteger)deviceId
+                msg:(ACDeviceMsg *)msg
+           callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+/**
+ *  监听网络变化并且更新设备信息
+ *
+ *  @param timeout     超时时间
+ *  @param subDomainId 子域ID
+ *  @param callback    返回结果的回调
+ */
++(void)networkChangeHanderWithTimeout:(NSInteger)timeout SubDomainId:(NSInteger)subDomainId  Callback:(void(^)(NSArray * deviceArray,NSError *error))callback;
+
+@end
 
 ```
 
@@ -1292,6 +1370,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周日，周五重复，则表示为"week[0,5]")
 
 接口定义如下：
+
 ```c
 - (id)initWithTimeZone:(NSTimeZone *)timeZone;
 
@@ -1388,6 +1467,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 ##消息推送
 
 如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
+
 ```c
 /** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
  *@param appKey      主站生成appKey
@@ -1429,6 +1509,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 **<font color="red">注</font>：具体使用步骤见开发指导-->局域网通信**
 ##文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
+
 ```c
 /**
  * //获取下载URL
@@ -1481,6 +1562,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。
 ####设备桩
 设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：
+
 ```c
 @protocol ACDeviceStubDelegate <NSObject>
 
@@ -1501,6 +1583,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
 
 ####服务桩
 服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：
+
 ```c
 @protocol ACServiceStubDelegate <NSObject>
 
