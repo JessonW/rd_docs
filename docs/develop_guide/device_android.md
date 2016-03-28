@@ -49,11 +49,11 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 <meta-data android:name="version" android:value="1-0-0"/>
 ```
 
-另外在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。 继承Application类或者主Activity的onCreate()方法中调用此方法来进行初始化
+另外在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。 请在MainActivity的onCreate()方法中调用此方法来进行初始化
 
 ```java
 /**
- * 请在Application/主Activity的onCreate()中初始化设备物理ID并开始连云操作
+ * 请在MainActivity的onCreate()中初始化设备物理ID并开始连云操作
  *
  * @param mContext         Context实例
  * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性

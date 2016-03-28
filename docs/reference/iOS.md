@@ -90,6 +90,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 
 ####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
+
 ```c
 @interface ACMsg : ACObject
 
@@ -134,6 +135,7 @@ extern NSString *const ACMsgErrMSG;
 ```
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
+
 ```c
 
 @interface ACContext : NSObject
@@ -164,31 +166,33 @@ extern NSString *const ACMsgErrMSG;
 ####ACDeviceMsg
 该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
 >+ **二进制/json**
->在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
+>在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传。
 >+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。因此开发者不需要自己编写消息序列化/反序列化器。
-
+>KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
 KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
 
 ACDeviceMsg定义如下：
-```c
+
+```objc
 @property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
 @property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong) NSArray *optArray;
-//反序列化
+@property (nonatomic, copy) NSString *description;
+//KLV协议时使用
+@property (nonatomic, strong, readonly) ACKLVObject *KLVObject;
+
+//KLV协议时使用
+- (id)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
+- (ACKLVObject *)getKLVObject;
+
 + (instancetype)unmarshalWithData:(NSData *)data;
-+ //反序列化WithAESKey
 + (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-//序列化
 - (NSData *)marshal;
-//序列化withAES Key
 - (NSData *)marshalWithAESKey:(NSData *)AESKey;
 ```
 
 <font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
-
-
 
 
 ####ACKLVObject
@@ -1310,31 +1314,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
                        name:(NSString *)name
                   timePoint:(NSString *)timePoint
                   timeCycle:(NSString *)timeCycle
-                description:(NSString *)description
                   deviceMsg:(ACDeviceMsg *)deviceMsg
-                   callback:(void (^)(NSError *error))callback;
-
-/**
- * 创建定时任务(使用KLV模型)
- *
- * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
- * @param timeCycle   单次定时任务：once
- *                    按小时重复：hour
- *                    按天重复：day
- *                    按月重复：month
- *                    按年复复：year
- *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
- * @param description 自定义的任务描述
- * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
- * @param callback    返回结果的监听回调
- */
-- (void)addTaskWithDeviceId:(NSInteger)deviceId
-                       name:(NSString *)name
-                  timePoint:(NSString *)timePoint
-                  timeCycle:(NSString *)timeCycle
-                description:(NSString *)description
-               KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
                    callback:(void (^)(NSError *error))callback;
 
 /**
@@ -1358,33 +1338,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback<String
                           name:(NSString *)name
                      timePoint:(NSString *)timePoint
                      timeCycle:(NSString *)timeCycle
-                   description:(NSString *)description
                      deviceMsg:(ACDeviceMsg *)deviceMsg
-                      callback:(void (^)(NSError *error))callback;
-
-/**
- * 修改定时任务(使用KLV模型)
- *
- * @param deviceId    设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param taskId      任务id
- * @param timePoint   任务时间点，时间格式为："yyyy-MM-dd HH:mm:ss",比如2015-08-08 16:39:03
- * @param timeCycle   单次定时任务：once
- *                    按小时重复：hour
- *                    按天重复：day
- *                    按月重复：month
- *                    按年复复：year
- *                    星期循环任务：week[0，1，2，3，4，5，6]如周一，周五重复，则表示为week[1，5]
- * @param description 自定义的任务描述
- * @param msg         具体的消息内容(使用KLV格式，具体代表含义需到官网上定义)
- * @param callback    返回结果的监听回调
- */
-- (void)modifyTaskWithDeviceId:(NSInteger)deviceId
-                        taskId:(NSInteger)taskId
-                          name:(NSString *)name
-                     timePoint:(NSString *)timePoint
-                     timeCycle:(NSString *)timeCycle
-                   description:(NSString *)description
-                  KLVDeviceMsg:(ACKLVDeviceMsg *)KLVDeviceMsg
                       callback:(void (^)(NSError *error))callback;
 
 /**

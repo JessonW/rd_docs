@@ -252,7 +252,7 @@ Ablecloud提供了ACWifiLinkManager类激活器供你使用
 ```
 
 ><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`、`esptouch`、`realtek`。
+目前支持的开发板有`smartlink(汉枫)`、`oneshot(联胜德)`、`easyconfig(RAK)`、`easylink(庆科)`、`smartconfig(MTK)`、`esptouch(乐鑫)`、`realtek(瑞昱)`。
 
 ####2.获取WiFi SSID
 ```objectivec
@@ -633,80 +633,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 **说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
 ##一、发送消息到设备
-###KLV格式
 
-KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
-
-**在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。**
-这里创建的数据点和数据包如下所示：
-
-【数据点】
-![klv_datapoint](../pic/develop_guide/cloud_communication_klv.png)
-
-【数据包】
-![klv_datapackage](../pic/develop_guide/cloud_communication_klv_pkg.png)
-
-
-**例如**：以开关设备为例,协议如下:
-```objectivec
-//请求数据包
-{ 69 ：[
-//数据点[key：value(int8)]，其中0代表关灯，1代表开灯
-{ 1 : 0/1 }
-]}
-//响应数据包  
-{ 60 ：[
-//数据点[key：value(boolean)]，其中false为失败，true为成功
-{ 1 : false/true }
-]}
-```
-定义如下:
-```objectivec
-
-
-@interface ACKLVObject : NSObject
-
-/**
-* 获取一个参数值
-* @param name	参数名
-* @return		参数值
-*/
-- (ACKLVValue *)getValueForKey:(u_int16_t)key;
-- (NSNull *)get:(u_int16_t)key;
-- (BOOL)getBool:(u_int16_t)key;
-- (Byte)getByte:(u_int16_t)key;
-- (short)getShort:(u_int16_t)key;
-- (int)getInt:(u_int16_t)key;
-- (long)getLong:(u_int16_t)key;
-- (float)getFloat:(u_int16_t)key;
-- (double)getDouble:(u_int16_t)key;
-- (NSString *)getString:(u_int16_t)key;
-- (NSData *)getData:(u_int16_t)key;
-
-/**
-* 设置一个参数
-* @param name	参数名
-* @param value	参数值
-* @return
-*/
-- (void)put:(u_int16_t)key;
-- (void)putBool:(u_int16_t)key value:(BOOL)value;
-- (void)putByte:(u_int16_t)key value:(Byte)value;
-- (void)putShort:(u_int16_t)key value:(short)value;
-- (void)putInt:(u_int16_t)key value:(int)value;
-- (void)putLong:(u_int16_t)key value:(long)value;
-- (void)putFloat:(u_int16_t)key value:(float)value;
-- (void)putDouble:(u_int16_t)key value:(double)value;
-- (void)putString:(u_int16_t)key value:(NSString *)value;
-- (void)putData:(u_int16_t)key value:(NSData *)value;
-
-- (BOOL)contains:(u_int16_t)key;
-- (NSIndexSet *)getKeys;
-
-- (BOOL)hasObjectData;
-- (NSDictionary *)getObjectData;
-- (void)setObjectData:(NSDictionary *)data;
-```
 ###二进制格式
 
 **在新建产品的时候选择数据格式为二进制，然后在功能点里面创建了数据包**
@@ -752,7 +679,7 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 
 }];
 ```
-###3、json格式
+###json格式
 
 **在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
 
@@ -766,6 +693,7 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 
 
 **例如**：以开关设备为例,协议如下:
+
 ```objectivec
 //请求数据包
 { 70 ：[
@@ -779,12 +707,14 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ]}
 ```
 ####1、设置序列化器
+
 ```objective
 ACObject * req = [[ACObject alloc]init];
 [req marshal];
 ```
 ####2、发送到设备
 此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
+
 ```objective
 [req putInteger:@"switch" value:1];
 ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
@@ -801,6 +731,84 @@ msg.payload = [req marshal];
 }];
 
 ```
+
+###KLV格式
+
+KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
+
+**在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。**
+这里创建的数据点和数据包如下所示：
+
+【数据点】
+![klv_datapoint](../pic/develop_guide/cloud_communication_klv.png)
+
+【数据包】
+![klv_datapackage](../pic/develop_guide/cloud_communication_klv_pkg.png)
+
+
+**例如**：以开关设备为例,协议如下:
+
+```objectivec
+//请求数据包
+{ 69 ：[
+//数据点[key：value(int8)]，其中0代表关灯，1代表开灯
+{ 1 : 0/1 }
+]}
+//响应数据包  
+{ 60 ：[
+//数据点[key：value(boolean)]，其中false为失败，true为成功
+{ 1 : false/true }
+]}
+```
+
+定义如下:
+
+```objc
+
+@interface ACKLVObject : NSObject
+
+/**
+* 获取一个参数值
+* @param name	参数名
+* @return		参数值
+*/
+- (ACKLVValue *)getValueForKey:(u_int16_t)key;
+- (NSNull *)get:(u_int16_t)key;
+- (BOOL)getBool:(u_int16_t)key;
+- (Byte)getByte:(u_int16_t)key;
+- (short)getShort:(u_int16_t)key;
+- (int)getInt:(u_int16_t)key;
+- (long)getLong:(u_int16_t)key;
+- (float)getFloat:(u_int16_t)key;
+- (double)getDouble:(u_int16_t)key;
+- (NSString *)getString:(u_int16_t)key;
+- (NSData *)getData:(u_int16_t)key;
+
+/**
+* 设置一个参数
+* @param name	参数名
+* @param value	参数值
+* @return
+*/
+- (void)put:(u_int16_t)key;
+- (void)putBool:(u_int16_t)key value:(BOOL)value;
+- (void)putByte:(u_int16_t)key value:(Byte)value;
+- (void)putShort:(u_int16_t)key value:(short)value;
+- (void)putInt:(u_int16_t)key value:(int)value;
+- (void)putLong:(u_int16_t)key value:(long)value;
+- (void)putFloat:(u_int16_t)key value:(float)value;
+- (void)putDouble:(u_int16_t)key value:(double)value;
+- (void)putString:(u_int16_t)key value:(NSString *)value;
+- (void)putData:(u_int16_t)key value:(NSData *)value;
+
+- (BOOL)contains:(u_int16_t)key;
+- (NSIndexSet *)getKeys;
+
+- (BOOL)hasObjectData;
+- (NSDictionary *)getObjectData;
+- (void)setObjectData:(NSDictionary *)data;
+```
+
 
 
 ##二、发送消息到服务
