@@ -501,14 +501,14 @@
 <h1 id="_1">安卓客户端开发指导</h1>
 <h1 id="_2">开发环境配置</h1>
 <h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.1.0.zip"><code>ac-service-android.jar</code></a></p>
+<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.2.0.zip"><code>ac-service-android-1.2.0.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
 <p><code>ac-service-android-release</code>文件夹下有6个子目录，分别为不同模块功能的sdk（非必需项），开发者可根据需求导入对应的sdk，其中包括<strong>推送模块sdk</strong>、<strong>文件管理模块sdk</strong>、<strong>音视频模块sdk</strong>、<strong>MTK配网sdk</strong>、<strong>MX庆科配网sdk</strong>、<strong>Realtek配网sdk</strong></p>
 </blockquote>
 <h2 id="_3">开发环境设置</h2>
 <p>以下为 AbleCloud Android SDK 需要的所有的权限，请在你的AndroidManifest.xml文件里的<code>&lt;manifest&gt;</code>标签里添加</p>
-<pre><code class="java">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+<pre><code class="xml">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
 &lt;uses-permission android:name=&quot;android.permission.CHANGE_WIFI_STATE&quot; /&gt;
@@ -705,7 +705,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>。</p>
+目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>、<code>AC.DEVICE_TI</code>、<code>AC.DEVICE_ESP8266</code>、<code>AC.DEVICE_REALTEK</code></p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -1098,8 +1098,124 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <p>功能介绍参见 <a href="../../features/functions/#_12">功能说明-功能介绍-云端通信</a></p>
 <p><strong>说明</strong>：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。</p>
 <h2 id="_24">一、发送消息到设备</h2>
+<h3 id="_25">二进制格式</h3>
+<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建数据包</strong></p>
+<p>【数据包】
+<img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
+<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
+<pre><code>//请求数据包
+{ 68 ：
+    //开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+    [ 0/1 , 0 , 0 , 0 ]
+}
+//响应数据包  
+{ 102 ：
+    //结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+    [ 0/1 , 0 , 0 , 0 ]
+}
+</code></pre>
+
+<p>截取开灯代码，如下:</p>
+<pre><code class="java">public class LightMsg {
+    public static final int REQ_CODE = 68;
+    public static final int RESP_CODE = 102;
+
+    //0代表关，1代表开
+    public static final byte ON = 1;
+    public static final byte OFF = 0;
+
+    private byte ledOnOff;
+
+    public LightMsg(byte ledOnOff) {
+        this.ledOnOff = ledOnOff;
+    }
+
+    public byte[] getLedOnOff() {
+        return new byte[]{ledOnOff, 0, 0, 0};
+    }
+
+    public String getDescription(){
+        if(ledOnOff == OFF)
+            return &quot;close light&quot;;
+        else 
+            return &quot;open light&quot;;
+    }
+}
+
+</code></pre>
+
+<pre><code class="java">LightMsg lightMsg = new LightMsg(LightMsg.ON);
+//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription()), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+    @Override
+    public void success(ACDeviceMsg deviceMsg) {
+        byte[] resp = deviceMsg.getContent();
+        if(resp[0] == 1){
+            //开灯成功
+        } else {
+            //开灯失败
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+    }
+});
+</code></pre>
+
+<h3 id="json">json格式</h3>
+<p><strong>在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。</strong></p>
+<p>这里创建的数据点和数据包如下所示：</p>
+<p>【数据点】
+<img alt="json_datapoint" src="../../pic/develop_guide/cloud_communication_json.png" /></p>
+<p>【数据包】
+<img alt="json_datapackage" src="../../pic/develop_guide/cloud_communication_json_pkg.png" /></p>
+<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
+<pre><code>//请求数据包
+{ 70 ：
+    {
+        //开关灯，其中0代表关灯，1代表开灯
+        &quot;switch&quot; : 0/1
+    }
+}
+//响应数据包  
+{
+     //结果，其中false代表失败，1代表成功
+     &quot;result&quot; : false/true
+}
+</code></pre>
+
+<pre><code class="java">JSONObject req = new JSONObject();
+try {
+    req.put(&quot;switch&quot;, 1);
+} catch (JSONException e) {
+}
+//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toString().getBytes(), &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+    @Override
+    public void success(ACDeviceMsg deviceMsg) {
+        try {
+            JSONObject resp = new JSONObject(new String(deviceMsg.getContent()));
+        } catch (JSONException e) {
+        }
+        boolean result = resp.optBoolean(&quot;result&quot;);
+        if (result) {
+            //开灯成功
+        } else {
+            //开灯失败
+        }
+    }
+
+    @Override
+    public void error(ACException e) {
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
+    }
+});
+</code></pre>
+
 <h3 id="klv">KLV格式</h3>
-<p>KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a>。</p>
+<p>KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a></p>
 <p><strong>在新建产品的时候选择klv通讯协议，并填写功能点里的数据点与数据包。</strong>
 这里创建的数据点和数据包如下所示：</p>
 <p>【数据点】
@@ -1108,15 +1224,17 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 <img alt="klv_datapackage" src="../../pic/develop_guide/cloud_communication_klv_pkg.png" /></p>
 <p><strong>例如</strong>：以开关设备为例,协议如下:</p>
 <pre><code>//请求数据包
-{ 69 ：[
-     //数据点[key：value(int8)]，其中0代表关灯，1代表开灯
-     { 1 : 0/1 }
-]}
+{ 69 ：
+    {
+        //数据点[key：value(int8)]，其中0代表关灯，1代表开灯
+        1 : 0/1 
+    }
+}
 //响应数据包  
-{ 60 ：[
+{
      //数据点[key：value(boolean)]，其中false为失败，true为成功
-     { 1 : false/true }
-]}
+     1 : false/true 
+}
 </code></pre>
 
 <p>截取开灯代码，如下:</p>
@@ -1135,10 +1253,10 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(Config.LIGHT_MSGCODE, req, &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(69, req, &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
-        ACKLVObject resp = (ACKLVObject)deviceMsg.getObject();
+        ACKLVObject resp = deviceMsg.getKLVObject();
         //发送成功并接收设备的响应消息
         boolean result = resp.get(Config.KEY_RESULT);
         if(result) {
@@ -1150,155 +1268,7 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(Config.LIGHT
 
     @Override
     public void error(ACException e) {
-        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
-    }
-});
-</code></pre>
-
-<h3 id="_25">二进制格式</h3>
-<p><strong>在新建产品的时候选择数据格式为二进制，然后在功能点里面创建数据包</strong></p>
-<p>【数据包】
-<img alt="binary_datapackage" src="../../pic/develop_guide/cloud_communication_binary_pkg.png" /></p>
-<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
-<pre><code>//请求数据包
-{ 68 ：[
-     //开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
-     { 0/1 , 0 , 0 , 0 }
-]}
-//响应数据包  
-{ 102 ：[
-     //结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
-     { 0/1 , 0 , 0 , 0 }
-]}
-</code></pre>
-
-<p>截取开灯代码，如下:</p>
-<h4 id="1_6">1、设置序列化器</h4>
-<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    /**
-     * 因为与设备的通讯以二进制流的形式进行，所以需要全局设置一个序列化与反序列化器
-     * 序列化器
-     *
-     * @param deviceMsg 对应sendToDeviceWithOption里的deviceMsg参数，
-     * @return 调用sendToDeviceWithOption时消息需要先经过这里序列化成byte数组
-     */
-    @Override
-    public byte[] marshal(ACDeviceMsg deviceMsg) throws Exception {
-        LightMsg lightMsg = (LightMsg) deviceMsg.getContent();
-        return lightMsg.getLedOnOff();
-    }
-
-    /**
-     * 反序列化器
-     *
-     * @param msgCode 开发商基于AbleCloud框架自定义的协议，此处为与设备通讯的msgCode
-     * @param payload 此处为接收到设备响应的原始byte数组，设备返回数据后先经过这里进行反序列化
-     * @return 反序列化后返回ACDeviceMsg对象，此处对应sendToDeviceWithOption里callback的success回调
-     */
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        return new ACDeviceMsg(msgCode, payload[0]);
-    }
-});
-</code></pre>
-
-<h4 id="2_6">2、发送到设备</h4>
-<pre><code class="java">public class LightMsg {
-    public static final int REQ_CODE = 68;
-    public static final int RESP_CODE = 102;
-
-    //0代表关，1代表开
-    public static final byte ON = 1;
-    public static final byte OFF = 0;
-
-    private byte ledOnOff;
-
-    public LightMsg(byte ledOnOff) {
-        this.ledOnOff = ledOnOff;
-    }
-
-    public byte[] getLedOnOff() {
-        return new byte[]{ledOnOff, 0, 0, 0};
-    }
-}
-
-</code></pre>
-
-<pre><code class="java">//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, new LightMsg(LightMsg.ON), &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
-    @Override
-    public void success(ACDeviceMsg deviceMsg) {
-        byte resp = (byte) deviceMsg.getContent();
-        if(resp == 1){
-            //开灯成功
-        } else {
-            //开灯失败
-        }
-    }
-
-    @Override
-    public void error(ACException e) {
-        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
-    }
-});
-</code></pre>
-
-<h3 id="3json">3、json格式</h3>
-<p><strong>在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。</strong></p>
-<p>这里创建的数据点和数据包如下所示：</p>
-<p>【数据点】
-<img alt="json_datapoint" src="../../pic/develop_guide/cloud_communication_json.png" /></p>
-<p>【数据包】
-<img alt="json_datapackage" src="../../pic/develop_guide/cloud_communication_json_pkg.png" /></p>
-<p><strong>例如</strong>：以开关设备为例,协议如下:</p>
-<pre><code>//请求数据包
-{ 70 ：[
-     //开关灯，其中0代表关灯，1代表开灯
-     {&quot;switch&quot;, 0/1}
-]}
-//响应数据包  
-{ 102 ：[
-     //结果，其中false代表失败，1代表成功
-     {&quot;result&quot;, false/true}
-]}
-</code></pre>
-
-<h4 id="1_7">1、设置序列化器</h4>
-<pre><code class="java">bindMgr.setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return ACObjectMarshaller.marshal((ACObject)msg.getContent());
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        ACObject resp = new ACObject();
-        ACObjectMarshaller.unmarshal(resp, payload);
-        return new ACDeviceMsg(msgCode, resp);
-    }
-});
-</code></pre>
-
-<h4 id="2_7">2、发送到设备</h4>
-<p>此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组</p>
-<pre><code class="java">ACObject req = new ACObject();
-req.put(&quot;switch&quot;, 1);
-//AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(68, req, &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
-    @Override
-    public void success(ACDeviceMsg deviceMsg) {
-        ACObject resp = (ACObject) deviceMsg.getContent();
-        boolean result = resp.get(&quot;result&quot;);
-        if (result) {
-            //开灯成功
-        } else {
-            //开灯失败
-        }
-    }
-
-    @Override
-    public void error(ACException e) {
-        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为设备问题
+        //网络错误或其他，根据e.getErrorCode()做不同的提示或处理
     }
 });
 </code></pre>
@@ -1346,11 +1316,11 @@ AC.sendToServiceWithoutSign(subDomain, serviceName, serviceVersion, req, new Pay
 <h2 id="_27">三、实时消息</h2>
 <p>实时消息第一版的设计与store数据集直接相关，当数据表格的存储有发生变化时，如创建、更新、添加、删除操作时才会下发数据到APP。也就是说，如果要APP上实时显示数据变化，需要在管理后台创建数据集，并指定是否监控该数据集。然后写云端自定义服务，将需要实时显示的数据存储到该数据集中。这样当该数据集有变化时，APP端才能够实时显示对应的数据变化。</p>
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
-<h4 id="1_8">1、获取实时消息管理器</h4>
+<h4 id="1_6">1、获取实时消息管理器</h4>
 <pre><code class="java">pushMgr = AC.pushMgr();
 </code></pre>
 
-<h4 id="2_8">2、创建与服务器的连接</h4>
+<h4 id="2_6">2、创建与服务器的连接</h4>
 <pre><code class="java">pushMgr.connect(new VoidCallback() {
     @Override
     public void success() {
@@ -1393,10 +1363,11 @@ pushMgr.watch(table, new VoidCallback() {
 </code></pre>
 
 <h4 id="4_3">4、接收已订阅的实时数据</h4>
-<pre><code class="java">pushMgr.onReceive(new PayloadCallback&lt;ACPushReceive&gt;() {
+<pre><code class="java">//不需要在watch订阅成功后调用，且只有最后一次调用此方法能接收到数据，所以建议放在activity的onResume()里执行
+pushMgr.onReceive(new PayloadCallback&lt;ACPushReceive&gt;() {
     @Override
     public void success(ACPushReceive pushReceive) {
-        //pushReceive.getClassName() 表名
+        //pushReceive.getClassName() 表名，根据表名做不同的解析
         //pushReceive.getOpType() 接收类型，如ACPushTableOpType.CREATE
         //pushReceive.getPayload() 接收数据ACObject格式
         ACObject object = pushReceive.getPayload();
@@ -1771,7 +1742,7 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 <h2 id="_41">一、推送开发环境配置</h2>
 <p>如果想使用推送服务，需要先配置AndroidManifest.xml环境变量。</p>
 <h4 id="1manifest">1、在<code>&lt;manifest&gt;</code>标签下添加权限：</h4>
-<pre><code class="java">&lt;!-- 必选 --&gt;
+<pre><code class="xml">&lt;!-- 必选 --&gt;
 &lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;
 &lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot;/&gt;
@@ -1791,7 +1762,7 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 
 <h4 id="2application">2、在<code>&lt;application&gt;</code>标签下添加组件：</h4>
 <p><font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。</p>
-<pre><code class="java">&lt;!-- 监听通知点击或者忽略处理的广播 --&gt;
+<pre><code class="xml">&lt;!-- 监听通知点击或者忽略处理的广播 --&gt;
 &lt;receiver
     android:name=&quot;com.umeng.message.NotificationProxyBroadcastReceiver&quot;
     android:exported=&quot;false&quot; &gt;
@@ -1849,7 +1820,7 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 </code></pre>
 
 <p>可以根据需要自行设置 android:label 中的服务名 ：</p>
-<pre><code class="java">&lt;!-- Umeng的长连服务，用来建立推送的长连接的 --&gt;
+<pre><code class="xml">&lt;!-- Umeng的长连服务，用来建立推送的长连接的 --&gt;
 &lt;!-- 【应用包名】字符串需要替换成本应用的应用包名 --&gt;
 &lt;service
     android:name=&quot;com.umeng.message.UmengService&quot;
@@ -1924,7 +1895,7 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 
 <h2 id="_42">二、开启推送服务</h2>
 <p>AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的部分接口），定义如下：</p>
-<h4 id="1_9">1、获取推送管理器</h4>
+<h4 id="1_7">1、获取推送管理器</h4>
 <pre><code class="java">ACNotificationMgr notificationMgr = AC.notificationMgr();
 </code></pre>
 
@@ -2042,11 +2013,11 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 <pre><code class="java">notificationMgr.removeAlias(userId, new VoidCallback() {
     @Override
     public void success() {
-         //别名注销成功
+        //别名注销成功
     }
     @Override
     public void error(ACException e) {
-         //别名注销失败
+        //别名注销失败
     }
 });
 </code></pre>
@@ -2108,7 +2079,7 @@ fileMgr.downloadFile(file, url, 0, new ProgressCallback() {
 });
 </code></pre>
 
-<h4 id="2_9">2)、下载文件到内存，比如头像下载</h4>
+<h4 id="2_7">2)、下载文件到内存，比如头像下载</h4>
 <pre><code class="java">//0代表不校验checksum
 fileMgr.downloadFile(url, 0, new ProgressCallback() {
     @Override
@@ -2129,7 +2100,7 @@ fileMgr.downloadFile(url, 0, new ProgressCallback() {
 </code></pre>
 
 <h2 id="_46">三、上传文件</h2>
-<h3 id="1_10">1、设置上传文件的权限管理</h3>
+<h3 id="1_8">1、设置上传文件的权限管理</h3>
 <p>如果对文件的管理有权限管理方面的需求的话，则需要使用到以下接口；如不设置情况下则默认所有用户都有读取权限，只有上传者本人有修改写文件的权限。</p>
 <pre><code class="java">//acl为权限管理
 ACACL acl = new ACACL();
@@ -2144,7 +2115,7 @@ acl.setUserAccess(ACACL.OpType.WRITE, 1);
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
-<h3 id="2_10">2、上传文件</h3>
+<h3 id="2_8">2、上传文件</h3>
 <h4 id="1sdcard_1">1)、上传sdcard文件</h4>
 <pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
@@ -2170,7 +2141,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 });
 </code></pre>
 
-<h4 id="2_11">2)、上传小文件，比如头像</h4>
+<h4 id="2_9">2)、上传小文件，比如头像</h4>
 <pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然原文件会被覆盖
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
 //设置acl
@@ -2228,7 +2199,7 @@ fileInfo.setData(photoBytes);
 fileInfo.setFile(new File(Environment.getExternalStorageDirectory() + &quot;/myDir/&quot; + name));
 </code></pre>
 
-<h4 id="2_12">2. 调用上传接口</h4>
+<h4 id="2_10">2. 调用上传接口</h4>
 <pre><code class="java">ACFileMgr fileMgr = AC.fileMgr();
 fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
     @Override
