@@ -4,9 +4,9 @@
 ####系统准备
 在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。
 + **OS X**
-系统建议采用Mac OS X 10.8以上的版本
+系统建议采用Mac OS X 10.11以上的版本
 + **Xcode**
-安装Xcode，建议采用6.0以上版本
+安装Xcode，建议采用7.0以上版本
 + **ablecloud**
 下载ablecloud开发框架并解压
 
@@ -23,23 +23,9 @@
 选择AbleCloudLib的路径，勾选**Copy items if needed**，点击**Add**添加。
 完成上述步骤后，我们将在工程视图里面看到该目录。
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。
-3. **本地运行**
+3. **添加依赖库** SDK依赖`libicucore.tbd` `libresolv.tbd` `libz.tbd`, 请分别添加进自己的工程。
+4. **本地运行**
 Xcode下直接**Command + R**运行。
-
-><font color="brown">**注：**</font>
-
->1. 如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。
-
->2. 模拟器要导入`SystemConfiguration`库
-
->3. 导入`libicucore.tbd`
-
->4. SDK中集成`.framework`形式的`AFNetworking3.0.4`包, 开发者可根据自己需求选择删除`AFNetworking.framework`, 然后使用`cocoapods`等工具导入Github上源码.
-
->5. 如果选择使用`AFNetworking.framework`, 由于`AFNetworking`自身打包的bug,需添加如下操作, 否则运行崩溃.
-
-![account_register](../pic/develop_guide/AFN.png)
-
 
 
 ####应用程序初始化
@@ -58,17 +44,31 @@ Xcode下直接**Command + R**运行。
 ```
 
 开发阶段，请初始化**测试环境**
-
-```objectivec
-//开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
-[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
-```
-
 在完成测试阶段之后，需要迁移到**正式环境**下
 
 ```objectivec
-[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
+/**
+//********MODE*******
+//测试环境
+extern NSString *const ACLoudLibModeTest;
+//正式环境
+extern NSString *const ACloudLibModeRouter;
+//*******REGION******
+//中国
+extern NSString *const ACLoudLibRegionChina;
+//东南亚
+extern NSString *const ACLoudLibRegionSouthEastAsia;
+//欧洲
+extern NSString *const ACLoudLibRegionCentralEurope;
+//美洲
+extern NSString *const ACLoudLibRegionNorthAmerica;
+*/
+
+[ACloudLib setMode:ACLoudLibModeTest Region:ACLoudLibRegionChina];
 ```
+
+
+
 
 #帐号管理
 
@@ -244,6 +244,9 @@ Xcode下直接**Command + R**运行。
 ####1.ACWifiLinkManager类
 
 Ablecloud提供了ACWifiLinkManager类激活器供你使用
+
+>注: 模拟器不能使用该类, 如需要绑定设备, 请使用真机测试
+
 ```objectivec
 
 @interface ACWifiLinkManager : NSObject
@@ -261,6 +264,7 @@ NSString * ssid = [ACWifilinkManager getCurrentSSID];
 
 ####3.激活设备
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+
 ```objectivec
 //ssid是Wi-Fi名字 pwd是Wi-Fi密码
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
@@ -279,6 +283,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 ####4.绑定设备
 通过获取到的subdomainID匹配subdomian，然后在成功激活设备后的回调方法中，通过subdomian和物理Id绑定设备。
+
 ```objectivec
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
@@ -302,6 +307,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 
 ###GPRS设备
 **<font color="red">注</font>：GPRS设备无需激活流程，设备连接到GPRS后会自动连接云端完成激活。因此设备上电后就可以直接进入绑定流程。**建议通过扫二维码的形式获取物理Id进行绑定。
+
 ```objectivec
 [ACBindManager bindDeviceWithSubDomain:subdomain physicalDeviceId:tmpdevice.deviceId
 name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError *error)
@@ -358,6 +364,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 
 ####1、管理员或普通用户解绑设备
 <font color=red>注意：</font>如果是管理员解绑设备，那么其他绑定该设备的普通成员也会失去该设备的绑定权。
+
 ```objectivec
 [ACBindManager unbindDeviceWithSubDomain:subDomian deviceId:deviceId callback:^(NSError *error) {
          if(error){
@@ -406,7 +413,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 ```
 
 <font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有`smartlink`、`oneshot`、`easyconfig`、`easylink`、`smartconfig`、`esptouch`。
+目前支持的开发板有`smartlink(汉枫)`、`oneshot(联胜德)`、`easyconfig(RAK)`、`easylink(庆科)`、`smartconfig(MTK)`、`esptouch(乐鑫)`、`realtek(瑞昱)`。
 
 ####2.得到WiFi SSID
 ```objectivec
@@ -416,6 +423,7 @@ NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
 
 ####3.激活网关
 APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通过广播通知APP同时获取设备物理Id和subDomainId（用来区分设备类型）。当前只支持配置手机当前连接的WiFi。
+
 ```objectivec
 [wifiManager sendWifiInfo:ssid password:pwd timeout:timeout callback:^(NSArray *localDevices, NSError *error) {
           if(error){
@@ -428,6 +436,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 ####4.绑定网关
 在成功激活设备后的回调方法中，通过物理Id绑定网关。
+
 ```objectivec
 [ACBindManager bindGatewayWithSubDomain:subDomain physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
           if(error){
@@ -482,6 +491,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 ####3．绑定子设备
 通过上一步获取的子设备列表获取physicalDeviceId进行绑定。
 如有用户确认过程的话，则在用户点击确认之后循环调用此接口绑定用户选择的子设备。
+
 ```objectivec
 [ACBindManager addSubDeviceWithSubDomain:subDomain gatewayDeviceId:deviceId physicalDeviceId:physicalDeviceId name:name  callback:^(ACUserDevice *device, NSError *error) {
            if(error){
@@ -559,6 +569,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 ####添加设备到Home里
 创建完Home之后，需要添加绑定设备，绑定流程见上篇独立设备或网关开发指导，把bindDevice改成如下接口即可。
+
 ```objc
     //旧设备
     [ACGroupManager addDeviceToHomeWithSubDomain:subDomain deviceId:deviceId homeId:homeId name:name callback:^(BOOL isSuccess, NSError *error) {
@@ -901,7 +912,8 @@ table.primaryKey =primaryKey;
 ```
 
 ####4、接收已订阅的实时数据
-```c
+
+```objc
 [pushManager onReceiveWithCallback:^(ACPushReceive *pushReceive, NSError *error) {
              if (!error) {
              //pushReceive.className 表名
@@ -915,7 +927,8 @@ table.primaryKey =primaryKey;
 
 ####5、取消订阅
 建议在退出订阅的activity之后调用，避免造成流量浪费。
-```c
+
+```objc
 //实例化ACPushTable对象
 ACPushTable *table  = [[ACPushTable alloc] init];
 //设置订阅的表名
@@ -941,6 +954,7 @@ table.primaryKey =primaryKey;
 功能介绍参见 [功能说明-功能介绍-局域网通信](../features/functions.md#_18)
 
 获取设备列表（在网络环境差的情况下如果获取不到设备列表会从本地缓存里取设备列表）。
+
 ```objectivec
 [ACBindManager listDevicesWithStatusCallback:^(NSArray *devices, NSError *error) {
          if (!error) {
@@ -963,6 +977,7 @@ table.primaryKey =primaryKey;
 ><font color=red>注意</font>：app启动初始化AbleCloud时会自动获取局域网设备，由于获取局域网设备是一个异步过程（默认时间为2s），用户可在自定义设置超时的timeout(建议为闪屏页的时间)，所以建议在启动app到打开设备列表页面之间根据实际情况增加一个闪屏页面。
 
 因为局域网通讯要求设备与APP处于同一个WiFi下，若网络环境变化，如切换WiFi时，或者设备掉线时，直连的状态会发生改变，所以建议在设备页通过定时器手动定时更新局域网状态。
+
 ```objectivec
 //手动调用局域网发现 subDomainId:子域ID(传0即可) timeout:(根据实际需求自定义设置)
 ACloud * cloud = [[ACloud alloc]init];
@@ -987,12 +1002,14 @@ ACloud * cloud = [[ACloud alloc]init];
 
 ####获取定时管理器－－ACTimerManager类
 **使用默认时区**
+
 ```objectivec
 
 ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 ```
 
 **使用自定义时区**
+
 ```objectivec
 - (id)initWithTimeZone:(NSTimeZone *)timeZone {
        self = [super init];
@@ -1286,11 +1303,11 @@ AbleCloud在SDK中提供了与推送服务相关的接口（封装了友盟的�
 
 >1、iOS权限原因，下载文件上传文件的操作只能在本应用的沙盒中操作
 
->2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现
+>2、文件下载功能是基于系统自带的NSURLSession框架实现
 
 >3、上传下载支持断点续传功能
 
->4、如果编译报错,尝试在项目中加入`libz.tbd`、`MobileCoreServices.framework`、`SystemConfiguration.framework`.
+
 
 
 ##一、获取文件管理器

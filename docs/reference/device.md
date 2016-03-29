@@ -17,17 +17,19 @@
 
 ![device_message_arch](../pic/reference/device_message_arch.png) 
 
-每个消息由AC_MessageHead和AC_MessagePayload两部分构成：
+说明如下：
 
 |名称	 			|  	作用						    |
 |-------------------|---------------------------    |
 |AC_MessageHead     |	公共消息头，所有消息都要包含此头|
+|AC_MessageOptHead	|可选消息控制头（Option项），提供扩展定义功能，此头是可选存在项，是否存在由AC_MessageHead中的OptNum字段指示|
+|AC_MessageOption	|可选消息控制体，用以提供可选消息的具体内容，和AC_MessageOptHead配对出现|
 |AC_MessagePayload  |	具体的消息内容                |
 |					|								|
 
 
 
-##AC_MessageHead
+##公共消息头格式说明
 
 ![device_AC_MessageHead](../pic/reference/device_AC_MessageHead.png) 
  

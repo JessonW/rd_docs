@@ -1400,8 +1400,13 @@ AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先
 获取方式：
 ```java
 ACFilter filter = ac.filter();
+
 ```
+
 ><font color="red">注意</font>：此处使用开发者或用户上下文都可以。
+
+><font color="red">注意</font>：在同一级filter,and的优先级要高于or。
+
 
 接口定义如下：
 ```java
@@ -1422,33 +1427,68 @@ public class ACFilter {
     public static long NOT_IN           = 12;
 
     // 向查询过滤器中添加等于表达式
-    public ACFilter whereEqualTo(String key, Object value);
+    public ACFilter whereEqualTo(String key, Object value); //添加（默认为and）一个等于表达式
+    public ACFilter andEqualTo(String key, Object value);   //and一个等于表达式
+    public ACFilter orEqualTo(String key, Object value);    //or一个等于表达式
+
     // 向查询过滤器中添加不等于表达式
-    public ACFilter whereNotEqualTo(String key, Object value);
+    public ACFilter whereNotEqualTo(String key, Object value);    //添加（默认为and）一个不等于表达式
+    public ACFilter andNotEqualTo(String key, Object value);      //and一个不等于表达式
+    public ACFilter orNotEqualTo(String key, Object value);       //or一个不等于表达式
+
     // 向查询过滤器中添加大于表达式
-    public ACFilter whereGreaterThan(String key, Object value);
+    public ACFilter whereGreaterThan(String key, Object value);   //添加（默认为and）一个大于表达式
+    public ACFilter andGreaterThan(String key, Object value);     //and一个大于表达式
+    public ACFilter orGreaterThan(String key, Object value);      //or一个大于表达式
+
     // 向查询过滤器中添加大于等于表达式
-    public ACFilter whereGreaterThanOrEqualTo(String key, Object value);
+    public ACFilter whereGreaterThanOrEqualTo(String key, Object value); //添加（默认为and）一个大于等于表达式
+    public ACFilter andGreaterThanOrEqualTo(String key, Object value);   //and一个大于等于表达式
+    public ACFilter orGreaterThanOrEqualTo(String key, Object value);    //or一个大于等于表达式
+
     // 向查询过滤器中添加小于表达式
-    public ACFilter whereLessThan(String key, Object value);
+    public ACFilter whereLessThan(String key, Object value);  //添加（默认为and）一个小于表达式
+    public ACFilter andLessThan(String key, Object value);    //and一个小于表达式
+    public ACFilter orLessThan(String key, Object value);     //or一个小于表达式
+
     // 向查询过滤器中添加小于等于表达式
-    public ACFilter whereLessThanOrEqualTo(String key, Object value);
+    public ACFilter whereLessThanOrEqualTo(String key, Object value); //添加（默认为and）一个小于等于表达式
+    public ACFilter andLessThanOrEqualTo(String key, Object value);   //and一个小于等于表达式
+    public ACFilter orLessThanOrEqualTo(String key, Object value);    //or一个小于等于表达式
+
     // 向查询过滤器中添加LIKE表达式(不区分大小写)
     // value的类型必须是String类型，格式和mysql一致，尽量使用前缀匹配，否则可能造成索引失效
     // 匹配以abcd为前缀的值: "abcd%"
     // 匹配以abcd为后缀的值: "%abcd"
     // 任意位置匹配: "%abcd%"
-    public ACFilter whereLike(String key, Object value);
+    public ACFilter whereLike(String key, Object value); //添加（默认为and）一个Like表达式
+    public ACFilter andLike(String key, Object value);   //and一个like表达式
+    public ACFilter orLike(String key, Object value);    //or一个like表达式
+
     // 向查询过滤器中添加NOT LIKE表达式(不区分大小写)
-    public ACFilter whereNotLike(String key, Object value);
+    public ACFilter whereNotLike(String key, Object value); //添加（默认为and）一个Not Like表达式
+    public ACFilter andNotLike(String key, Object value);   //and一个Not Like表达式
+    public ACFilter orNotLike(String key, Object value);    //or一个Not Like表达式
+
     // 向查询过滤器中添加LIKE表达式(区分大小写)
-    public ACFilter whereBinaryLike(String key, Object value);
+    public ACFilter whereBinaryLike(String key, Object value); //添加（默认为and）一个Like表达式
+    public ACFilter andBinaryLike(String key, Object value);   //and一个Like表达式
+    public ACFilter orBinaryLike(String key, Object value);    //or一个Like表达式
+
     // 向查询过滤器中添加NOT LIKE表达式(区分大小写)
-    public ACFilter whereBinaryNotLike(String key, Object value);
+    public ACFilter whereBinaryNotLike(String key, Object value); //添加（默认为and）一个Not Like表达式
+    public ACFilter andBinaryNotLike(String key, Object value);   //and一个Not Like表达式
+    public ACFilter orBinaryNotLike(String key, Object value);    //or一个Not Like表达式
+
     // 向查询过滤器中添加IN表达式(不区分大小写)
-    public ACFilter whereIn(String key, Object value);
+    public ACFilter whereIn(String key, Object value); //添加（默认为and）一个IN表达式
+    public ACFilter andIn(String key, Object value);   //and一个IN表达式
+    public ACFilter orIn(String key, Object value);    //or一个IN表达式
+
     // 向查询过滤器中添加NOT IN表达式(不区分大小写)
-    public ACFilter whereNotIn(String key, Object value);
+    public ACFilter whereNotIn(String key, Object value); //添加（默认为and）一个NOT IN表达式
+    public ACFilter andNotIn(String key, Object value);   //and一个NOT IN表达式
+    public ACFilter orNotIn(String key, Object value);    //or一个NOT IN表达式
 }
 ```
 

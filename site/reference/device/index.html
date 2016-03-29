@@ -234,7 +234,7 @@
         </li>
         
             
-            <li class="sub parent__2" style="display: none;"><a href="#ac_messagehead">AC_MessageHead</a></li>
+            <li class="sub parent__2" style="display: none;"><a href="#_3">公共消息头格式说明</a></li>
             
         
             
@@ -270,31 +270,31 @@
         
         
         <li class="main">
-            <a href="#_3">设备接口定义<span class="main-set parent__3">+</span></a>
+            <a href="#_4">设备接口定义<span class="main-set parent__4">+</span></a>
         </li>
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#_4">数据发送接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#_5">数据发送接口</a></li>
             
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#_5">协议消息组包接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#_6">协议消息组包接口</a></li>
             
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#klv">KLV协议解析包接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#klv">KLV协议解析包接口</a></li>
             
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#klv_1">KLV协议内存分配接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#klv_1">KLV协议内存分配接口</a></li>
             
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#klv_2">KLV协议内存释放接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#klv_2">KLV协议内存释放接口</a></li>
             
         
             
-            <li class="sub parent__3" style="display: none;"><a href="#klv_3">KLV协议组包接口</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#klv_3">KLV协议组包接口</a></li>
             
         
     
@@ -314,7 +314,7 @@
 </ol>
 <p>设备通过联网模块给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图</p>
 <p><img alt="device_message_arch" src="../../pic/reference/device_message_arch.png" /> </p>
-<p>每个消息由AC_MessageHead和AC_MessagePayload两部分构成：</p>
+<p>说明如下：</p>
 <table>
 <thead>
 <tr>
@@ -328,6 +328,14 @@
 <td>公共消息头，所有消息都要包含此头</td>
 </tr>
 <tr>
+<td>AC_MessageOptHead</td>
+<td>可选消息控制头（Option项），提供扩展定义功能，此头是可选存在项，是否存在由AC_MessageHead中的OptNum字段指示</td>
+</tr>
+<tr>
+<td>AC_MessageOption</td>
+<td>可选消息控制体，用以提供可选消息的具体内容，和AC_MessageOptHead配对出现</td>
+</tr>
+<tr>
 <td>AC_MessagePayload</td>
 <td>具体的消息内容</td>
 </tr>
@@ -337,7 +345,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="ac_messagehead">AC_MessageHead</h2>
+<h2 id="_3">公共消息头格式说明</h2>
 <p><img alt="device_AC_MessageHead" src="../../pic/reference/device_AC_MessageHead.png" /> </p>
 <p>格式定义如下所示： </p>
 <pre><code>typedef struct
@@ -962,8 +970,8 @@ typedef struct
 <p>除了上述公共控制消息外，设备可以自行定义消息内容，所有消息类型的基址为AC_EVENT_BASE，根据需要进行累加，最多支持到255。</p>
 <p><font color="red">说明</font>：
 开区间(64,200)内的代码表示由服务或APP发给设备的控制消息以及设备的应答消息, 注意控制消息和应答消息使用不同的消息类型；闭区间[200,255]内的代码表示设备上报信息。</p>
-<h1 id="_3">设备接口定义</h1>
-<h2 id="_4">数据发送接口</h2>
+<h1 id="_4">设备接口定义</h1>
+<h2 id="_5">数据发送接口</h2>
 <p>函数定义</p>
 <pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
 </code></pre>
@@ -990,7 +998,7 @@ typedef struct
 </tr>
 </tbody>
 </table>
-<h2 id="_5">协议消息组包接口</h2>
+<h2 id="_6">协议消息组包接口</h2>
 <p>函数定义</p>
 <pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
     u8 *pu8Payload, u16 u16PayloadLen,
