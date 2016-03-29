@@ -334,6 +334,36 @@ TCP长连接下载OTA文件只支持下载当前程序运行文件，如果程�
 * **HTTP方式下载OTA文件**
 ablecloud默认支持的方式，支持多文件和大文件版本下载，需要基于libcurl和openssl链接选项，升级本地版本开发者可以参照上面的脚本文件实现，典型的链接选项是：-lcurl -lssl -lcrypto -lm
 
+接口说明：
+
+```c
+     
+    int AC_OtaUpdate(int otaMode, char *DonwloadOtaFilePath,AC_OtaFileInfo *DonwloadOtaFileInfo, int *FileNum, char *OtaDescription，char *OtaTargetVersion)
+|字段|类型|说明|
+| ----|----|----|
+|otaMode|const char *|ota升级模式，mode：1代表系统升级，mode：2代表通信模组升级|
+| DonwloadOtaFilePath|char *|下载的ota文件存储路径|
+| DonwloadOtaFileInfo|AC_OtaFileInfo *|存储ota文件信息数组|
+| FileNum|int *|ota文件数目|
+| *OtaDescription|char *|ota描述|
+| *OtaTargetVersion|char *|目标版本号|
+AC_OtaFileInfo定义如下：
+```c
+
+    typedef struct
+    {
+        char chName[64];
+        char chDownloadUrl[512];
+        int IntFileType;
+        int IntChecksum;
+    }AC_OtaFileInfo;
+
+|字段|类型|说明|
+| ----|----|----|
+|chName|const char *|ota升级文件名|
+| chDownloadUrl|char *|下载的ota文件url|
+| IntFileType|int *|ota文件类型|
+| IntChecksum|char *|ota文件校验和|
 ###开发示例
 ```c
     
@@ -343,6 +373,7 @@ ablecloud默认支持的方式，支持多文件和大文件版本下载，需�
         int ret =0;
         AC_OtaFileInfo fileInfo[MAX_OTAFILENUM];
         char otadescription[64];
+        char otatargetverion[32];
         int otamode = 1;//system update
         int otadowloadfilenum = 0;
         int  i= 0;
@@ -354,7 +385,7 @@ ablecloud默认支持的方式，支持多文件和大文件版本下载，需�
         }
         else
         {
-            ret = AC_OtaUpdate(otamode,"//tmp",fileInfo,&otadowloadfilenum,otadescription);//ota升级文件，如果返回0，代表下载文件成功，返回其它值代码没有ota文件或下载出错
+            ret = AC_OtaUpdate(otamode,"//tmp",fileInfo,&otadowloadfilenum,otadescription，otatargetverion);//ota升级文件，如果返回0，代表下载文件成功，返回其它值代码没有ota文件或下载出错
             if(CURLE_OK == ret)
             {
                 for(i=0; i<otadowloadfilenum ;i++)
@@ -364,6 +395,7 @@ ablecloud默认支持的方式，支持多文件和大文件版本下载，需�
                     printf("ota IntChecksum =%d\n",fileInfo[i].IntChecksum);
                 }
                 printf("ota Description = %s\n",otadescription);
+                printf("ota target version = %s\n",otatargetverion);
                 system("/etc/init.d/AbleCloud restart");
             }
 
