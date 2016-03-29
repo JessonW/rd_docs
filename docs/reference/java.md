@@ -6,6 +6,7 @@
 
 #配置信息
 本SDK定义的配置信息如下：
+
 ```java
 /**
  * AbleCloud Java API配置信息。
@@ -132,6 +133,7 @@ ACConfig是抽象类，要求开发者在实际应用中提供关于ACConfig的�
 ##ACContext
 ACContext即上下文，用于标记每一次交互（比如发起者、发起时间、签名等）、追踪通信事件。AbleCloud服务之间的交互消息中均需要带有上下文信息。
 ACContext定义的内容如下：
+
 ```java
 public class ACContext {
     private String majorDomain;			// 服务所属主域ID
@@ -159,6 +161,7 @@ public class ACContext {
 
 ##ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。ACObject数据内部结构以HashMap来存放，通过put存入ACObject的数据内部以json方式处理，因此ACObject中的value也可以是嵌套的ACObject，能满足大部分需求场景。
+
 ```java
 public class ACObject {
     private HashMap<String, Object> data = new HashMap<String, Object>();
@@ -177,13 +180,49 @@ public class ACObject {
      * @param value	参数值
      */
     public ACObject add(String key, Object value) {}
-    
+   
     /**
      * 获取一个参数值
-     * @param key	参数名
-     * @return		参数值
+     *
+     * @param key 参数名
+     * @return 参数值;如果不存在该参数值,返回null
      */
     public <T> T get(String key) {}
+     
+    /**
+     * @return 返回能被转化为Byte类型的值, 否则返回0
+     */
+    public byte getByte(String key) {}
+
+    /**
+     * @return 返回能被转化为Integer类型的值, 否则返回0
+     */
+    public int getInt(String key) {}
+
+    /**
+     * @return 返回能被转化为Long类型的值, 否则返回0L
+     */
+    public long getLong(String key) {}
+
+    /**
+     * @return 返回能被转化为Float类型的值, 否则返回0F
+     */
+    public float getFloat(String key) {}
+
+    /**
+     * @return 返回能被转化为Double类型的值, 否则返回0D
+     */
+    public double getDouble(String key) {}
+
+    /**
+     * @return 返回能被转化为Boolean类型的值, 否则返回false
+     */
+    public boolean getBoolean(String key) {}
+
+    /**
+     * @return 返回能被转化为String类型的字符串, 否则返回""
+     */
+    public String getString(String key) {}
     
     /**
      * 检查某一key是否存在
@@ -203,6 +242,7 @@ public class ACObject {
 
 ##ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name、交互的上下文context以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**ACMsg.OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进解析。
+
 ```java
 public class ACMsg extends ACObject {
 	public static final String OBJECT_PAYLOAD = "application/x-zc-object";
@@ -325,6 +365,7 @@ public class ACMsg extends ACObject {
 
 ###使用示例
 client端发起请求（伪代码，完整代码请参看各部分demo）：
+
 ```java
 ACContext context = ac.newContext(account.getUid());	// 通过框架构造一个用户context
 ACMsg req = new ACMsg();								// 创建一个空请求消息
@@ -336,7 +377,8 @@ ACMsg resp = client.send(req);							// 发送请求并返回服务端响应
 ```
 
 服务端处理请求（伪代码，完整代码请参看各部分demo）：
-```
+
+```java
 private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
     Long lightId = req.get("deviceId");		// 从请求中获取“设备id”
     String action = req.get("action");		// 从请求中获取“动作”
@@ -345,59 +387,33 @@ private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
 ```
 
 ##ACDeviceMsg
-该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的序列化/反序列化操作。
->+ **二进制/json**
->在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。
->+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊格式。具体应用时，需要到AbleCloud平台定义设备的数据点和数据包。此时开发者不需要自己编写消息序列化/反序列化器，AbleCloud可依据定义的数据点和数据包自动解析消息的内容。
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的处理响应。
+ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
 
 ACDeviceMsg定义如下：
+
 ```java
 public class ACDeviceMsg {
-    private int code;			// 消息码，用于区分消息类型
-    private Object content;		// 设备消息的具体内容
-
+    //消息码，用于区分消息类型
+    private int code;
+    //设备消息的具体内容,使用二进制与json格式
+    private byte[] content;
+    //设备消息的具体内容,使用klv通讯格式
+    private ACKLVObject object;
+    //设备描述信息
+    private String description;
+    
     public ACDeviceMsg() {}
-    public ACDeviceMsg(int code, Object content) {}
-    public int getCode() {}
-    public void setCode(int code) {}
-    public Object getContent() {}
-    public void setContent(Object content) {}
-    public void setKLVObject(ACKLVObject object) {}
-    public ACKLVObject getKLVObject() {}
+
+    public ACDeviceMsg(int code, byte[] content) {}
+
+    public ACDeviceMsg(int code, byte[] content, String description) {}
+
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 }
 ```
-
-<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型。开发者需要根据实际情况实现序列化器用来解释content的内容。
-
-##ACDeviceMsgMarshaller
-设备消息的序列化/反序列化器，用于解释ACDeviceMsg的具体内容。其定义如下：
-```java
-public interface ACDeviceMsgMarshaller {
-	/**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络下发****给设备
-     *
-     * @param msg       设备消息
-     * @return          序列化后的字节数组
-     * @throws Exception
-     */
-    public byte[] marshal(ACDeviceMsg msg) throws Exception;
-
-    /**
-     * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
-     *
-     * @param msgCode   消息码
-     * @param payload   设备消息序列化后的字节数组
-     * @return          设备消息
-     * @throws Exception
-     */
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception;
-}
-```
-
-开发者应该在其重载的ACService.init()方法中初始化设备消息的序列化/反序列化器，并将其配置给服务开发框架。
-当UDS向设备发送消息时，开发框架会自动调用该序列化/反序列化器的marshal方法将数据序列化为设备可理解的数据，之后再通过AbleCloud云端服务传输给设备。
-当UDS接收到设备上报的消息时，开发框架会自动调用该序列化/反序列化器的unmarshal方法依据设备上报的消息创建ACDeviceMsg对象，并以该ACDeviceMsg对象为参数调用开发者重载的ACService.handleDeviceMsg()方法。
 
 #基础框架
 
@@ -584,21 +600,6 @@ public abstract class AC {
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
 
     /**
-     * 如果服务要处理和设备之间的交互消息，需要实现设备消息序列化/反序列化器
-     * 该接口将序列化/反序列化器设置给ac框架
-     *
-     * @param marshaller 设备消息序列化/反序列化器
-     */
-    public void setDeviceMsgMarshaller(ACDeviceMsgMarshaller marshaller);
-
-    /**
-     * 获取设备消息序列化/反序列化器
-     *
-     * @return
-     */
-    public ACDeviceMsgMarshaller getDeviceMsgMarshaller();
-
-    /**
      * 获取用于单元测试的服务框架ac
      *
      * @param config 单元测试环境构造的config
@@ -747,6 +748,7 @@ public interface ACAccountMgr {
 
 ##单元测试接口说明
 服务框架接收的命令大部分来自于APP端，因此需要创建一些*测试用户*，以便模拟客户发起的请求。该单元测试类即用于此类场景。需要注意的是，该测试接口只在测试环境中正常工作，具体定义如下：
+
 ```java
 public interface ACAccountMgrForTest extends ACAccountMgr {
 
@@ -1243,6 +1245,7 @@ public interface ACBindMgr {
 
 ##单元测试接口说明
 为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外该类还提供了cleanAll和unbindUser接口，用于清理单元测试中产生的数据，在单元测试中可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：
+
 ```java
 public interface ACBindMgrForTest extends ACBindMgr {
 
@@ -1299,6 +1302,7 @@ public interface ACBindMgrForTest extends ACBindMgr {
 ##数据结构说明
 
 被绑定的设备的基础信息。
+
 ```java
 public class ACUserDevice {
     private long id;                  // 设备的逻辑ID
@@ -2278,6 +2282,7 @@ public class ACTimerTask {
 
 ##设备桩
 设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：
+
 ```java
 public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2287,6 +2292,7 @@ public abstract  class ACDeviceStub {
 
 ##服务桩
 服务桩的定义和真正的服务开发类似，开发者需要实现其中的`handleMsg(ACMsg req, ACMsg resp)`接口以模拟服务提供的功能。
+
 ```java
 public abstract class ACServiceSub {
 
@@ -2375,6 +2381,7 @@ public class ACSigner {
 ```
 
 其中，timestamp精确到秒；nonce是一个随机字符串（一般选则长度为16个字符）。如：
+
 ```java
 long timestamp = System.currentTimeMillis() / 1000;
 String nonce = genNonce(timestamp, 16);
@@ -2392,9 +2399,12 @@ public static String genNonce(long seed, int length) {
 ><font color=red>注意</font>：使用如上方法算出签名后，通过HTTP请求的Header将签名的结果发送给云端服务，用于验证请求的消息是否被篡改。
 
 示例：以下为windows通过curl命令发送HTTP请求。其中Header项“X-Zc-Developer-Signature”即用来发送签名值。
+
 ```curl
 curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:ablecloud" -H "X-Zc-Sub-Domain:test" -H "X-Zc-Developer-Id:developerId" -H "X-Zc-Timestamp:timestamp" -H "X-Zc-Timeout:timeout" -H "X-Zc-Nonce:exzabc9xy10a2cb3" -H "X-Zc-Developer-Signature:signature" --data-ascii "{\"deviceId\":\"1\"}"
 ```
 
 #Error Code
 参考[Reference-Error Code](./error_code.md)。
+
+
