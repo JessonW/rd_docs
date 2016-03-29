@@ -260,10 +260,6 @@
                 
             
         
-            
-                
-            
-        
         
         <li class="main">
             <a href="#_4">交互消息<span class="main-set parent__4">+</span></a>
@@ -275,10 +271,6 @@
         
             
             <li class="sub parent__4" style="display: none;"><a href="#acdevicemsg">ACDeviceMsg</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#acdevicemsgmarshaller">ACDeviceMsgMarshaller</a></li>
             
         
     
@@ -751,10 +743,46 @@ ACContext定义的内容如下：</p>
 
     /**
      * 获取一个参数值
-     * @param key   参数名
-     * @return      参数值
+     *
+     * @param key 参数名
+     * @return 参数值;如果不存在该参数值,返回null
      */
     public &lt;T&gt; T get(String key) {}
+
+    /**
+     * @return 返回能被转化为Byte类型的值, 否则返回0
+     */
+    public byte getByte(String key) {}
+
+    /**
+     * @return 返回能被转化为Integer类型的值, 否则返回0
+     */
+    public int getInt(String key) {}
+
+    /**
+     * @return 返回能被转化为Long类型的值, 否则返回0L
+     */
+    public long getLong(String key) {}
+
+    /**
+     * @return 返回能被转化为Float类型的值, 否则返回0F
+     */
+    public float getFloat(String key) {}
+
+    /**
+     * @return 返回能被转化为Double类型的值, 否则返回0D
+     */
+    public double getDouble(String key) {}
+
+    /**
+     * @return 返回能被转化为Boolean类型的值, 否则返回false
+     */
+    public boolean getBoolean(String key) {}
+
+    /**
+     * @return 返回能被转化为String类型的字符串, 否则返回&quot;&quot;
+     */
+    public String getString(String key) {}
 
     /**
      * 检查某一key是否存在
@@ -909,7 +937,7 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 </code></pre>
 
 <p>服务端处理请求（伪代码，完整代码请参看各部分demo）：</p>
-<pre><code>private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
+<pre><code class="java">private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
     Long lightId = req.get(&quot;deviceId&quot;);     // 从请求中获取“设备id”
     String action = req.get(&quot;action&quot;);      // 从请求中获取“动作”
     // do something
@@ -917,59 +945,31 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 </code></pre>
 
 <h2 id="acdevicemsg">ACDeviceMsg</h2>
-<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的序列化/反序列化操作。</p>
-<blockquote>
-<ul>
-<li><strong>二进制/json</strong>
-在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传，因此开发者需要自己编写设备消息序列化/反序列化器。</li>
-<li><strong>KLV</strong>
-KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊格式。具体应用时，需要到AbleCloud平台定义设备的数据点和数据包。此时开发者不需要自己编写消息序列化/反序列化器，AbleCloud可依据定义的数据点和数据包自动解析消息的内容。</li>
-</ul>
-</blockquote>
+<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的处理响应。
+ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。</p>
 <p>ACDeviceMsg定义如下：</p>
 <pre><code class="java">public class ACDeviceMsg {
-    private int code;           // 消息码，用于区分消息类型
-    private Object content;     // 设备消息的具体内容
+    //消息码，用于区分消息类型
+    private int code;
+    //设备消息的具体内容,使用二进制与json格式
+    private byte[] content;
+    //设备消息的具体内容,使用klv通讯格式
+    private ACKLVObject object;
+    //设备描述信息
+    private String description;
 
     public ACDeviceMsg() {}
-    public ACDeviceMsg(int code, Object content) {}
-    public int getCode() {}
-    public void setCode(int code) {}
-    public Object getContent() {}
-    public void setContent(Object content) {}
-    public void setKLVObject(ACKLVObject object) {}
-    public ACKLVObject getKLVObject() {}
+
+    public ACDeviceMsg(int code, byte[] content) {}
+
+    public ACDeviceMsg(int code, byte[] content, String description) {}
+
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 }
 </code></pre>
 
-<p><font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型。开发者需要根据实际情况实现序列化器用来解释content的内容。</p>
-<h2 id="acdevicemsgmarshaller">ACDeviceMsgMarshaller</h2>
-<p>设备消息的序列化/反序列化器，用于解释ACDeviceMsg的具体内容。其定义如下：</p>
-<pre><code class="java">public interface ACDeviceMsgMarshaller {
-    /**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制设备时通过网络下发****给设备
-     *
-     * @param msg       设备消息
-     * @return          序列化后的字节数组
-     * @throws Exception
-     */
-    public byte[] marshal(ACDeviceMsg msg) throws Exception;
-
-    /**
-     * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
-     *
-     * @param msgCode   消息码
-     * @param payload   设备消息序列化后的字节数组
-     * @return          设备消息
-     * @throws Exception
-     */
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception;
-}
-</code></pre>
-
-<p>开发者应该在其重载的ACService.init()方法中初始化设备消息的序列化/反序列化器，并将其配置给服务开发框架。
-当UDS向设备发送消息时，开发框架会自动调用该序列化/反序列化器的marshal方法将数据序列化为设备可理解的数据，之后再通过AbleCloud云端服务传输给设备。
-当UDS接收到设备上报的消息时，开发框架会自动调用该序列化/反序列化器的unmarshal方法依据设备上报的消息创建ACDeviceMsg对象，并以该ACDeviceMsg对象为参数调用开发者重载的ACService.handleDeviceMsg()方法。</p>
 <h1 id="_6">基础框架</h1>
 <h2 id="ac">AC</h2>
 <p>通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。</p>
@@ -1150,21 +1150,6 @@ KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分�
      * @param stub      设备桩
      */
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
-
-    /**
-     * 如果服务要处理和设备之间的交互消息，需要实现设备消息序列化/反序列化器
-     * 该接口将序列化/反序列化器设置给ac框架
-     *
-     * @param marshaller 设备消息序列化/反序列化器
-     */
-    public void setDeviceMsgMarshaller(ACDeviceMsgMarshaller marshaller);
-
-    /**
-     * 获取设备消息序列化/反序列化器
-     *
-     * @return
-     */
-    public ACDeviceMsgMarshaller getDeviceMsgMarshaller();
 
     /**
      * 获取用于单元测试的服务框架ac
