@@ -22,7 +22,7 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 
     本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.3.x)的API说明。
+下文是PHP SDK (v1.5.x)的API说明。
 
 #对接微信#
 
@@ -2048,6 +2048,64 @@ class ACStoreBatchUpdate extends ACService {
 }
 ```
 
+##ACStoreModify##
+
+```php
+/**
+ * AbleCloud数据存储服务的修改单条数据记录的方法。
+ * 本方法先检查符合条件的记录是否存在。如存在则更新该记录，否则不执行操作。
+ */
+class ACStoreModify extends ACService {
+
+    /**
+     * 构造函数。
+     * @param $name     string      数据存储服务的名字。
+     * @param $version  int         数据存储服务的版本。
+     * @param $context  ACContext   ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $className    string  要修改的记录所属的数据集的名字。
+     */
+    function __construct($name, $version, $context, $className);
+
+    /**
+     * 设置要更新的记录
+     * @param $row      array   以键值对的方式（关联数组）描述的要被更新的记录。$row参数应指定所有主键的值，用于定位要被更新的记录。
+     * 如果主键指定的记录不存在，则不执行操作。
+     * @return          ACStoreModify   返回本对象。
+     */
+    public function where($row);
+
+    /**
+     * 设置要更新的列的值：将记录中该列的值修改为指定的值。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    mixed   要修改的目标值。
+     * @return          ACStoreModify   返回本对象。
+     */
+    public function set($column, $value);
+
+    /**
+     * 设置更新某列的值为当前值加上$value后的结果。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    int|float|double    修改的增量值。
+     * @return          ACStoreModify       返回本对象。
+     */
+    public function inc($column, $value);
+
+    /**
+     * 设置更新某列的值为当前值减去$value后的结果。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    int|float|double    修改的减量值。
+     * @return          ACStoreModify       返回本对象。
+     */
+    public function dec($column, $value);
+
+    /**
+     * 执行查询，返回查询结果。
+     * @return bool 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
 ##ACStore##
 
 ```php
@@ -2057,102 +2115,109 @@ class ACStoreBatchUpdate extends ACService {
 class ACStore extends ACService {
     /**
      * 构造函数。
-     * @param $name 数据存储服务的名字。
-     * @param $version 数据存储服务的版本。
-     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $name 	string	数据存储服务的名字。
+     * @param $version	int		数据存储服务的版本。
+     * @param $context	ACContext	ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
     
     /**
      * 创建数据集。仅测试环境支持该方法。
-     * @param $classDef ACStoreClass对象，表示数据集的定义。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $classDef ACStoreClass	ACStoreClass对象，表示数据集的定义。
+     * @return			bool			操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function createClass($classDef);
     
     /**
      * 查询已创建的数据集。
-     * @return 返回ACStoreClass数组，表示已定义的数据集。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @return array 返回ACStoreClass数组，表示已定义的数据集。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listClasses();
     
     /**
      * 删除指定的数据集。仅测试环境支持该方法。
-     * @param $name 字符串，表示要被删除的数据集的名字。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	字符串，表示要被删除的数据集的名字。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function dropClass($name);
     
     /**
      * 清除指定数据集中的数据。仅测试环境支持该方法。
-     * @param $name 要清除其数据的数据集的名字。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要清除其数据的数据集的名字。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function clearClass($name);
     
     /**
      * 在数据集中添加一条数据记录。
-     * @param $name 要添加数据的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要添加的数据记录。其中，至少应包含所有主键的值。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要添加数据的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要添加的数据记录。其中，至少应包含所有主键的值。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function create($name, $row);
     
     /**
      * 从数据集中删除指定的记录。
-     * @param $name 要删除数据的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要被删除的记录。$row参数应指定所有主键的值，删除操作将删除主键值与$row匹配的记录。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要删除数据的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要被删除的记录。$row参数应指定所有主键的值，删除操作将删除主键值与$row匹配的记录。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function delete($name, $row);
     
     /**
      * 更新数据集中指定的记录。
-     * @param $name 要更新的数据所属的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要被更新的记录，以及更新后的值。$row参数应指定所有主键的值，用于定位要被更新的记录；$row中记录的其它列的值用于更新该记录：只更新原数据记录中已经存在的字段。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要更新的数据所属的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要被更新的记录，以及更新后的值。$row参数应指定所有主键的值，用于定位要被更新的记录；$row中记录的其它列的值用于更新该记录：只更新原数据记录中已经存在的字段。如果主键指定的记录不存在，本方法将会在数据集中新建一条对应的记录。
+     * @return		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function update($name, $row);
     
     /**
      * 查询指定的记录。
-     * @param $name 要查询的数据集的名字。
-     * @param $primaryKeyValues 以键值对方式（如关联数组等）描述的要查询的记录的主键值。
-     * @param $select 字符串数组，记录了查询结果中应显示的数据列的集合。可选。如为NULL，则表示要查询所有数据列。
-     * @return 操作成功时返回一个关联数组，记录查询结果。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $name				string	要查询的数据集的名字。
+     * @param $primaryKeyValues array	以键值对方式（如关联数组等）描述的要查询的记录的主键值。
+     * @param $select 			array	字符串数组，记录了查询结果中应显示的数据列的集合。可选。如为NULL，则表示要查询所有数据列。
+     * @return 					array	操作成功时返回一个关联数组，记录查询结果。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function find($name, $primaryKeyValues, $select = NULL);
     
     /**
      * 查询分区内的数据。兼容v1.3.x之前的版本。
-     * @param $scanner ACStoreScanner对象，表示查询条件。
-     * @return 返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
+     * @param $scanner	ACStoreScanner	ACStoreScanner对象，表示查询条件。
+     * @return 			ACStoreIterator	返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
      */
     public function scan($scanner);
     
     /**
      * 查询数据。
-     * @param $name 字符串。要被查询的数据集的名字。
-     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-     * @return 返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
+     * @param $name					string	字符串。要被查询的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return						ACStoreScanner	返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
      */
     public function scanExt($name, $entityGroupKeyValues = NULL);
 
 	/**
-	 * 批量删除数据。
-	 * @param $name 字符串。要被操作的数据集的名字。
-	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-	 * @return 返回一个ACStoreBatchDelete对象，以便于设置删除参数，执行操作。
-	 */
+     * 批量删除数据。
+     * @param $name 				string	字符串。要被操作的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return 						ACStoreBatchDelete	返回一个ACStoreBatchDelete对象，以便于设置删除参数，执行操作。
+     */
 	public function batchDelete($name, $entityGroupKeyValues = NULL);
 
 	/**
-	 * 批量更新数据。
-	 * @param $name 字符串。要被操作的数据集的名字。
-	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-	 * @return 返回一个ACStoreBatchUpdate对象，以便于设置更新参数，执行操作。
-	 */
+     * 批量更新数据。
+     * @param $name 				string	字符串。要被操作的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return 						ACStoreBatchUpdate	返回一个ACStoreBatchUpdate对象，以便于设置更新参数，执行操作。
+     */
 	public function batchUpdate($name, $entityGroupKeyValues = NULL);
+
+	/**
+     * 更新单条记录。
+     * @param $name				string	字符串，是要被操作的数据集的名字。
+     * @return					ACStoreModify	返回一个ACStoreModify对象，以便于设置更新参数，执行操作。
+     */
+    public function modify($name);
 }
 ```
 
