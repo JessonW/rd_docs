@@ -890,17 +890,17 @@ ACPushManager * pushManager = [[ACPushManager alloc] init];
 
 ```c
 //实例化ACPushTable对象
-ACPushTable *table  = [[ACPushTable alloc] init];
+ACPushTable *table = [[ACPushTable alloc] init];
 //设置订阅的表名
-table.className = @"BramcDeviceManager";
+table.className = @"<#name#>";
 //设置订阅的columns行
-table.cloumns = [NSMutableArray arrayWithObjects:@"speed", nil];
+table.cloumns = [NSMutableArray arrayWithObjects:@"<#obj#>", nil];
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.opType =  OPTYPE_CREATE |OPTYPE_DELETE | OPTYPE_REPLACE | OPTYPE_UPDATE;
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
 ACObject * primaryKey = [[ACObject alloc] init];
-[primaryKey putInteger:@"deviceId" value:100001];
-table.primaryKey =primaryKey;
+[primaryKey putInteger:@"deviceId" value:<#value#>];
+table.primaryKey = primaryKey;
 //可以多次调用以下此方法watch多个table
 [pushManager watchWithTable:table Callback:^(NSError *error) {
              if (!error) {
