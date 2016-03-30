@@ -22,7 +22,7 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 
     本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.3.x)的API说明。
+下文是PHP SDK (v1.5.x)的API说明。
 
 #对接微信#
 
@@ -603,6 +603,12 @@ class ACClient {
      * @return 返回ACTimerTaskMgr对象。
      */
     public static function getTimerTaskMgr();
+    
+    /**
+	   * AbleCloud数分分析服务。
+	   * @return ACAnalysisMgr 返回ACAnalysisMgr对象。
+	   */
+	  public static function getAnalysisMgr();
     
     /**
      * 取访问AbleCloud远程服务的环境信息。
@@ -2042,6 +2048,64 @@ class ACStoreBatchUpdate extends ACService {
 }
 ```
 
+##ACStoreModify##
+
+```php
+/**
+ * AbleCloud数据存储服务的修改单条数据记录的方法。
+ * 本方法先检查符合条件的记录是否存在。如存在则更新该记录，否则不执行操作。
+ */
+class ACStoreModify extends ACService {
+
+    /**
+     * 构造函数。
+     * @param $name     string      数据存储服务的名字。
+     * @param $version  int         数据存储服务的版本。
+     * @param $context  ACContext   ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $className    string  要修改的记录所属的数据集的名字。
+     */
+    function __construct($name, $version, $context, $className);
+
+    /**
+     * 设置要更新的记录
+     * @param $row      array   以键值对的方式（关联数组）描述的要被更新的记录。$row参数应指定所有主键的值，用于定位要被更新的记录。
+     * 如果主键指定的记录不存在，则不执行操作。
+     * @return          ACStoreModify   返回本对象。
+     */
+    public function where($row);
+
+    /**
+     * 设置要更新的列的值：将记录中该列的值修改为指定的值。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    mixed   要修改的目标值。
+     * @return          ACStoreModify   返回本对象。
+     */
+    public function set($column, $value);
+
+    /**
+     * 设置更新某列的值为当前值加上$value后的结果。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    int|float|double    修改的增量值。
+     * @return          ACStoreModify       返回本对象。
+     */
+    public function inc($column, $value);
+
+    /**
+     * 设置更新某列的值为当前值减去$value后的结果。
+     * @param $column   string  要修改的列的名字。
+     * @param $value    int|float|double    修改的减量值。
+     * @return          ACStoreModify       返回本对象。
+     */
+    public function dec($column, $value);
+
+    /**
+     * 执行查询，返回查询结果。
+     * @return bool 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
 ##ACStore##
 
 ```php
@@ -2051,102 +2115,109 @@ class ACStoreBatchUpdate extends ACService {
 class ACStore extends ACService {
     /**
      * 构造函数。
-     * @param $name 数据存储服务的名字。
-     * @param $version 数据存储服务的版本。
-     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $name 	string	数据存储服务的名字。
+     * @param $version	int		数据存储服务的版本。
+     * @param $context	ACContext	ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
     
     /**
      * 创建数据集。仅测试环境支持该方法。
-     * @param $classDef ACStoreClass对象，表示数据集的定义。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $classDef ACStoreClass	ACStoreClass对象，表示数据集的定义。
+     * @return			bool			操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function createClass($classDef);
     
     /**
      * 查询已创建的数据集。
-     * @return 返回ACStoreClass数组，表示已定义的数据集。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @return array 返回ACStoreClass数组，表示已定义的数据集。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listClasses();
     
     /**
      * 删除指定的数据集。仅测试环境支持该方法。
-     * @param $name 字符串，表示要被删除的数据集的名字。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	字符串，表示要被删除的数据集的名字。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function dropClass($name);
     
     /**
      * 清除指定数据集中的数据。仅测试环境支持该方法。
-     * @param $name 要清除其数据的数据集的名字。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要清除其数据的数据集的名字。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function clearClass($name);
     
     /**
      * 在数据集中添加一条数据记录。
-     * @param $name 要添加数据的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要添加的数据记录。其中，至少应包含所有主键的值。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要添加数据的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要添加的数据记录。其中，至少应包含所有主键的值。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function create($name, $row);
     
     /**
      * 从数据集中删除指定的记录。
-     * @param $name 要删除数据的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要被删除的记录。$row参数应指定所有主键的值，删除操作将删除主键值与$row匹配的记录。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要删除数据的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要被删除的记录。$row参数应指定所有主键的值，删除操作将删除主键值与$row匹配的记录。
+     * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function delete($name, $row);
     
     /**
      * 更新数据集中指定的记录。
-     * @param $name 要更新的数据所属的数据集的名字。
-     * @param $row 以键值对的方式（关联数组）描述的要被更新的记录，以及更新后的值。$row参数应指定所有主键的值，用于定位要被更新的记录；$row中记录的其它列的值用于更新该记录：只更新原数据记录中已经存在的字段。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $name string	要更新的数据所属的数据集的名字。
+     * @param $row	array	以键值对的方式（关联数组）描述的要被更新的记录，以及更新后的值。$row参数应指定所有主键的值，用于定位要被更新的记录；$row中记录的其它列的值用于更新该记录：只更新原数据记录中已经存在的字段。如果主键指定的记录不存在，本方法将会在数据集中新建一条对应的记录。
+     * @return		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function update($name, $row);
     
     /**
      * 查询指定的记录。
-     * @param $name 要查询的数据集的名字。
-     * @param $primaryKeyValues 以键值对方式（如关联数组等）描述的要查询的记录的主键值。
-     * @param $select 字符串数组，记录了查询结果中应显示的数据列的集合。可选。如为NULL，则表示要查询所有数据列。
-     * @return 操作成功时返回一个关联数组，记录查询结果。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $name				string	要查询的数据集的名字。
+     * @param $primaryKeyValues array	以键值对方式（如关联数组等）描述的要查询的记录的主键值。
+     * @param $select 			array	字符串数组，记录了查询结果中应显示的数据列的集合。可选。如为NULL，则表示要查询所有数据列。
+     * @return 					array	操作成功时返回一个关联数组，记录查询结果。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function find($name, $primaryKeyValues, $select = NULL);
     
     /**
      * 查询分区内的数据。兼容v1.3.x之前的版本。
-     * @param $scanner ACStoreScanner对象，表示查询条件。
-     * @return 返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
+     * @param $scanner	ACStoreScanner	ACStoreScanner对象，表示查询条件。
+     * @return 			ACStoreIterator	返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
      */
     public function scan($scanner);
     
     /**
      * 查询数据。
-     * @param $name 字符串。要被查询的数据集的名字。
-     * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-     * @return 返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
+     * @param $name					string	字符串。要被查询的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return						ACStoreScanner	返回一个ACStoreScanner对象，以便于设置查询参数，执行查询，获取查询结果。
      */
     public function scanExt($name, $entityGroupKeyValues = NULL);
 
 	/**
-	 * 批量删除数据。
-	 * @param $name 字符串。要被操作的数据集的名字。
-	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-	 * @return 返回一个ACStoreBatchDelete对象，以便于设置删除参数，执行操作。
-	 */
+     * 批量删除数据。
+     * @param $name 				string	字符串。要被操作的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return 						ACStoreBatchDelete	返回一个ACStoreBatchDelete对象，以便于设置删除参数，执行操作。
+     */
 	public function batchDelete($name, $entityGroupKeyValues = NULL);
 
 	/**
-	 * 批量更新数据。
-	 * @param $name 字符串。要被操作的数据集的名字。
-	 * @param $entityGroupKeyValues 以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
-	 * @return 返回一个ACStoreBatchUpdate对象，以便于设置更新参数，执行操作。
-	 */
+     * 批量更新数据。
+     * @param $name 				string	字符串。要被操作的数据集的名字。
+     * @param $entityGroupKeyValues array	以键值对的方式（关联数组）描述的操作数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
+     * @return 						ACStoreBatchUpdate	返回一个ACStoreBatchUpdate对象，以便于设置更新参数，执行操作。
+     */
 	public function batchUpdate($name, $entityGroupKeyValues = NULL);
+
+	/**
+     * 更新单条记录。
+     * @param $name				string	字符串，是要被操作的数据集的名字。
+     * @return					ACStoreModify	返回一个ACStoreModify对象，以便于设置更新参数，执行操作。
+     */
+    public function modify($name);
 }
 ```
 
@@ -2251,6 +2322,426 @@ class ACTimerTaskMgr extends ACService {
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()获取错误信息。
      */
     public function startTask($user, $deviceId, $taskId);
+}
+```
+
+#AbleCloud数据分析服务#
+
+##ACAnalysisMgr##
+
+```php
+/**
+ * AbleCloud数据分析服务。
+ */
+class ACAnalysisMgr extends ACService {
+    /**
+     * 构造函数。
+     * @param $name		string		AbleCloud数据分析服务的名字。
+     * @param $version	int			AbleCloud数据分析服务的主版本号。
+     * @param $context	ACContext	表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 取ACQECount对象。
+     * @return ACQECount    ACQECount对象。
+     */
+    public function count();
+
+    /**
+     * 取ACQECountUnique对象。
+     * @return ACQECountUnique  ACQECountUnique对象。
+     */
+    public function countUnique();
+
+    /**
+     * 取ACQEDistribution对象。
+     * @return ACQEDistribution  ACQEDistribution对象。
+     */
+    public function distribution();
+}
+```
+
+##ACQEAggFilters##
+
+```php
+/**
+ * AbleCloud数据分析服务的查询条件集合：ACQEPropertyFilters对象的集合。
+ */
+class ACQEAggFilters {
+    /**
+     * 设置集合中ACQEPropertyFilters对象之间的连接关系。缺省值为'AND'。
+     * @param $isAnd    bool    为TRUE时表示集合中的ACQEPropertyFilters对象以AND关系连接。
+     * @return          ACQEAggFilters 返回本集合对象。
+     */
+    public function setRelation($isAnd);
+
+    /**
+     * 向集合中添加查询条件。
+     * @param $filters  ACQEPropertyFilters 查询条件。
+     * @return          ACQEAggFilters      返回本集合对象。
+     */
+    public function appendFilter($filters);
+
+    /**
+     * 将对象转为AC-QueryEngine接受的参数格式。
+     * @return array    以数组形式记录的参数。
+     */
+    public function toParamInArray();
+}
+```
+
+##ACQECount##
+```php
+/**
+ * * AbleCloud数据分析服务的数据查询类方法的基类。
+ */
+class ACQECount extends ACQEReadInterface {
+    /**
+     * 构造函数。
+     * @param $name		string		AbleCloud数据分析服务的名字。
+     * @param $version	int			AbleCloud数据分析服务的主版本号。
+     * @param $context	ACContext	表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 执行AC-QueryEngine::count查询。
+     * @return array|bool   返回服务端返回的结果。返回结果为数组时表示访问成功。
+     * 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
+##ACQECountUnique##
+
+```php
+/**
+ * AbleCloud数据分析服务的Count_unique方法。
+ */
+class ACQECountUnique extends ACQEReadInterface {
+    /**
+     * 构造函数。
+     * @param $name		string		AbleCloud数据分析服务的名字。
+     * @param $version	int			AbleCloud数据分析服务的主版本号。
+     * @param $context	ACContext	表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 设置拟操作的属性的名字。是必要参数。
+     * @param $name     string  拟操作的属性的名字。
+     * @return          ACQECountUnique 返回本对象。
+     */
+    public function property($name);
+
+    /**
+     * 执行AC-QueryEngine::count_unique查询。
+     * @return array|bool   返回服务端返回的结果。返回结果为数组时表示访问成功。
+     * 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
+##ACQEDistribution##
+
+```php
+/**
+ * AbleCloud数据分析服务的distribution方法。
+ */
+class ACQEDistribution extends ACQEReadInterface {
+    /**
+     * 构造函数。
+     * @param $name		string		AbleCloud数据分析服务的名字。
+     * @param $version	int			AbleCloud数据分析服务的主版本号。
+     * @param $context	ACContext	表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 设置对数据进行哪种聚合操作。是必要参数。
+     * @param $name     string      聚合操作的名字：count/count_unique/min/max/avg/sum。
+     * @return          ACQECount   返回本对象。
+     */
+    public function aggregation($name);
+
+    /**
+     * 设置order_by参数。是必要参数。
+     * @param $range    array   整数组成的数组，如array(1, 2, 10, 20)，是不同区间内的聚合结果行的个数。
+     * @return          ACQECount   返回本对象。
+     */
+    public function range($range);
+
+    /**
+     * 执行AC-QueryEngine::distribution查询。
+     * @return array|bool   返回服务端返回的结果。返回结果为数组时表示访问成功。
+     * 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    public function execute();
+}
+```
+
+##ACQEFilter##
+
+```php
+/**
+ * AbleCloud数据分析服务的过滤条件，如：temperature >= 38.5。
+ */
+class ACQEFilter {
+    /// @name 过滤条件中的操作符。
+    //@{
+    /// 相等
+    public static $Equal              = 'eq';
+    /// 不相等
+    public static $NotEqual           = 'ne';
+    /// 小于
+    public static $LessThan           = 'lt';
+    /// 小于或等于
+    public static $LessThanOrEqual    = 'lte';
+    /// 大于
+    public static $GreaterThan        = 'gt';
+    /// 大于或等于
+    public static $GreaterThanOrEqual = 'gte';
+    /// 包含，用于字符串模糊匹配。
+    public static $Contain            = 'contains';
+    /// 不包含，用于字符串模糊匹配。
+    public static $NotContain         = 'not_contains';
+    /// 在...中。此时用作判断的基准值应该为数组形式,如[2, 3, 4,5]等。
+    public static $In                  = 'in';
+    /// 值在某个范围内。此时用作判断的基准值应该为包含两个元素的数组，如[10, 20]或["2015-07-10","2015-07-11"]等。
+    public static $Between             = 'between';
+    //@}
+
+    /**
+     * 构造函数。
+     * @param $propertyName string  是查询条件中的数据列的名字。
+     * @param $operator     string  是查询条件中的操作符，ACQEFilter::$Equal，ACQEFilter::$NotEqual等。
+     * @param $value        mixed   是查询条件的判断基准值，其类型取决于对应的数据列的类型以及操作符的要求。
+     */
+    function __construct($propertyName, $operator, $value);
+
+    /**
+     * 重置过滤条件。
+     * @param $propertyName string  是查询条件中的数据列的名字。
+     * @param $operator     string  是查询条件中的操作符，ACQEFilter::$Equal，ACQEFilter::$NotEqual等。
+     * @param $value        mixed   是查询条件的判断基准值，其类型取决于对应的数据列的类型以及操作符的要求。
+     * @return              ACQEFilter  返回本对象。
+     */
+    public function set($propertyName, $operator, $value);
+
+    /**
+     * 将对象转为AC-QueryEngine接受的参数格式。
+     * @return array    以数组形式记录的参数。
+     */
+    public function toParamInArray();
+}
+```
+
+##ACQEPropertyFilters##
+
+```php
+/**
+ * AbleCloud数据分析服务的查询条件集合：ACQEFilter对象的集合。
+ */
+class ACQEPropertyFilters {
+    /**
+     * 设置集合中ACQEFilter对象之间的连接关系。缺省值为'AND'。
+     * @param $isAnd    bool    为TRUE时表示集合中的ACQEFilter对象以AND关系连接。
+     * @return          ACQEPropertyFilters 返回本集合对象。
+     */
+    public function setRelation($isAnd);
+
+    /**
+     * 向集合中添加查询条件。
+     * @param $filter   ACQEFilter          查询条件。
+     * @return          ACQEPropertyFilters 返回本集合对象。
+     */
+    public function appendFilter($filter);
+
+    /**
+     * 将对象转为AC-QueryEngine接受的参数格式。
+     * @return array    以数组形式记录的参数。
+     */
+    public function toParamInArray();
+}
+```
+
+##ACQEReadInterface##
+
+```php
+/**
+ * AbleCloud数据分析服务的Count方法。
+ */
+abstract class ACQEReadInterface extends ACService {
+    /**
+     * 构造函数。
+     * @param $name		string		AbleCloud数据分析服务的名字。
+     * @param $version	int			AbleCloud数据分析服务的主版本号。
+     * @param $context	ACContext	表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 设置拟操作的数据集的名字。是必要参数。
+     * @param $name     string  拟操作的数据集的名字。
+     * @return          ACQEReadInterface   返回本对象。
+     */
+    public function collection($name);
+
+    /**
+     * 设置数分分析的时间段。是必要参数。
+     * @param $frame    ACQETimeframe       时间段对象。
+     * @return          ACQEReadInterface   返回本对象。
+     */
+    public function timeframe($frame);
+
+    /**
+     * 设置分析的时间间隔参数。可选参数。
+     * @param $interval ACQETimeInterval    时间间隔对象。
+     * @return          ACQEReadInterface   返回本对象。
+     */
+    public function timeInterval($interval);
+
+    /**
+     * 设置object_filters参数。可选参数。
+     * @param $aggFilters   ACQEAggFilters      查询条件。
+     * @return              ACQEReadInterface   返回本对象。
+     */
+    public function objectFilters($aggFilters);
+
+    /**
+     * 设置filters参数。可选参数。
+     * @param $aggFilters   ACQEAggFilters      查询条件。
+     * @return              ACQEReadInterface   返回本对象。
+     */
+    public function filters($aggFilters);
+
+    /**
+     * 设置group_by参数。可选参数。
+     * @param $properties   array   指定group_by所依赖的属性列（可以是多个），以及每个属性列的性质，如：array(array('province', 'actor'), array('gender', 'collection'))。
+     * 参数$properties是一个数组，数组的每个元素是一个由两个字符串组成的数组。由这两个字符串组成的数组可描述一个属性列：
+     * 第一个字符串是属性列的名字；第二个字符串标记属性列的性质——actor，object，phone或者collection（缺省值）。
+     * @return              ACQEReadInterface   返回本对象。
+     */
+    public function groupBy($properties);
+
+    /**
+     * 设置order_by参数。可选参数。
+     * @param $property string              用来排序的属性列的名字。符号“#”表示依据聚合函数的结果排序。
+     * @param $ascend   bool                为TRUE时表示按升序排序，否则表示按降序排序。
+     * @return          ACQEReadInterface   返回本对象。
+     */
+    public function orderBy($property, $ascend);
+
+    /**
+     * 执行数据分析查询。
+     * @return array|bool   返回服务端返回的结果。返回结果为数组时表示访问成功。
+     * 返回FALSE时，表示有错误发生。此时可调用getLastError()方法获取错误消息。
+     */
+    abstract public function execute();
+}
+```
+
+##ACQETimeframe##
+
+```php
+/**
+ * AbleCloud数据分析服务的时间段参数。可以是绝对时间，或者是相对时间。
+ */
+class ACQETimeframe {
+    /// @name 时间单位
+    //@{
+    public static $Unit_Second  = 'seconds';    ///< 秒
+    public static $Unit_Minute  = 'minutes';    ///< 分钟
+    public static $Unit_Hour    = 'hours';      ///< 小时
+    public static $Unit_Day     = 'days';       ///< 天
+    public static $Unit_Week    = 'weeks';      ///< 周
+    public static $Unit_Month   = 'months';     ///< 月
+    public static $Unit_Year    = 'years';      ///< 年
+    //@}
+
+    /**
+     * 构造函数。
+     */
+    function __construct();
+
+    /// @name 绝对时间
+    //@{
+    /**
+     * 设置本对象为绝对时间段。
+     * @param $start   DateTime 表示时间段的起始时刻的DateTime对象。$start与$end必须使用相同的时区。
+     * @param $end     DateTime 表示时间段的结束时间的DateTime对象。$start与$end必须使用相同的时区。
+     */
+    public function setAbsoluteFrame($start, $end);
+    //@}
+
+    /// @name 相对时间段
+    //@{
+    /**
+     * 设置时间段为“当前N个单位”。
+     * “当前”与“之前”的区别是，“当前3分钟”是包含当前时刻所在的这一分钟在内往前3分钟，“之前3分钟”是不包含当前时刻所在的这一分钟在内往前3分钟。
+     * @param $n        int     正整数，表示时间量。
+     * @param $unit     string  时间单位，如ACQETimeframe::$Unit_Second，ACQETimeframe::$Unit_Minute，……，ACQETimeframe::$Unit_Year等。
+     * @param $timezone string  时区的名字。缺省值为'Asia/Shanghai'。
+     */
+    public function thisRelativeFrame($n, $unit, $timezone = 'Asia/Shanghai');
+
+    /**
+     * 设置时间段为“之前N个单位”。
+     * “当前”与“之前”的区别是，“当前3分钟”是包含当前时刻所在的这一分钟在内往前3分钟，“之前3分钟”是不包含当前时刻所在的这一分钟在内往前3分钟。
+     * @param $n        int     正整数，表示时间量。
+     * @param $unit     string  时间单位，如ACQETimeframe::$Unit_Second，ACQETimeframe::$Unit_Minute，……，ACQETimeframe::$Unit_Year等。
+     * @param $timezone string  时区的名字。缺省值为'Asia/Shanghai'。
+     */
+    public function previousRelativeFrame($n, $unit, $timezone = 'Asia/Shanghai');
+    //@}
+
+    /**
+     * 取时间段的时区。
+     * @return string   返回时区的名字。
+     */
+    public function getTimezone();
+
+    /**
+     * 将时间段转换为AC-QueryEngine要求的参数格式。
+     * @return          array|string   以数组格式记录的绝对时间段，或者以字符串记录的相对时间段。
+     */
+    public function toParamInArray();
+}
+```
+
+##ACQETimeInterval##
+
+```php
+/**
+ * AC-QueryEngine的时间区间参数。
+ */
+class ACQETimeInterval {
+    /// @name 时间单位。
+    //@{
+    public static $Unit_Second  = 'seconds';    ///< 秒
+    public static $Unit_Minute  = 'minutes';    ///< 分钟
+    public static $Unit_Hour    = 'hours';      ///< 小时
+    public static $Unit_Day     = 'days';       ///< 天
+    public static $Unit_Week    = 'weeks';      ///< 周
+    public static $Unit_Month   = 'months';     ///< 月
+    public static $Unit_Year    = 'years';      ///< 年
+    //@}
+
+    /**
+     * 构造函数。
+     * @param $n    int     正整数，是时间数量。
+     * @param $unit string  时间单位，ACQETimeInterval::$Unit_Second，ACQETimeInterval::$Unit_Minute，……，ACQETimeInterval::$Unit_Year等。
+     */
+    function __construct($n, $unit);
+
+    /**
+     * 将对象转为AC-QueryEngine接受的参数格式。
+     * @return string   以字符串记录的时间间隔参数。
+     */
+    public function toParamInArray();
 }
 ```
 
