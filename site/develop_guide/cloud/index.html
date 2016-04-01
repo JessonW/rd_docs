@@ -442,14 +442,14 @@
 <h1 id="_2">开发准备</h1>
 <p>本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。</p>
 <h2 id="uds">UDS发布说明</h2>
-<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（或子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（或子域）级别的UDS来处理。
+<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（子域）级别的UDS来处理。
 其它请求（包括设备或其它客户端发起的）可由请求发起方选择由产品（或子域）级别或者主域级别的UDS来处理：请求中指定了子域名字时表示由对应产品（或子域）级别的UDS处理；请求中不包含子域名子（或子域名字为空）时表示由主域级别的UDS处理。</p>
 <p>开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的Java版本服务开发框架一致，如下所示。</p>
 <pre><code class="java">/config
     /cloudservice-conf.xml
 /lib
-    /ablecloud-framework-1.1.0.jar
-    /ac-java-api-1.0.0.jar
+    /ablecloud-framework-1.3.0.jar
+    /ac-java-api-1.2.0.jar
     /commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -463,7 +463,7 @@ start.cmd
 <p><font color=red>注意事项：</font></p>
 <ol>
 <li>
-<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.1.0.jar</code>和<code>ac-java-api-1.0.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
+<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.3.0.jar</code>和<code>ac-java-api-1.2.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
 </li>
 <li>
 <p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
@@ -577,7 +577,7 @@ start.cmd
 </li>
 <li>
 <p><strong>布署AbleCloud框架便于本机测试以及提交版本</strong></p>
-<p>新建package目录，将ablecloud-framework-1.1.0.zip解压到package目录下。</p>
+<p>新建package目录，将ablecloud-framework-1.3.0.zip解压到package目录下。</p>
 </li>
 <li>
 <p><strong>设置工程</strong></p>
@@ -631,8 +631,8 @@ start.cmd
                 &lt;/dependencies&gt;
                 &lt;configuration&gt;
                     &lt;additionalClasspathElements&gt;
-                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.1.0.jar&lt;/additionalClasspathElement&gt;
-                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ac-java-api-1.0.0.jar&lt;/additionalClasspathElement&gt;
+                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.3.0.jar&lt;/additionalClasspathElement&gt;
+                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ac-java-api-1.2.0.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-api-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/log4j-1.2.17.jar&lt;/additionalClasspathElement&gt;
@@ -689,7 +689,6 @@ start.cmd
     &lt;version&gt;your service version&lt;/version&gt;
 &lt;/project&gt;
 </code></pre>
-<p>注意其他配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</p>
 </li>
 <li>
 <p><strong>修改配置文件</strong></p>
@@ -821,7 +820,6 @@ start.cmd
 <li>要开发服务程序，需从<code>ACService</code>派生子类来实现自己的服务框架。本示例中，<code>DemoService</code>就是继承自<code>ACService</code>的子类；</li>
 <li>服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为<code>handleMsg</code>提供具体的实现handler；</li>
 <li>服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式<code>LightMsg</code>；</li>
-<li>【使用KLV通讯格式则跳过此步骤】在步骤3定义好了消息格式后，我们还需要根据<code>ACDeviceMsgMarshaller</code>实现具体的消息序列化/反序列化器<code>LightMsgMarshaller</code>；最后重载<code>ACService</code>的<code>init</code>接口，将序列化器设置到<code>ac</code>框架中；</li>
 <li>服务要接收智能灯汇报的开/关消息，因此必须为<code>handleDeviceMsg</code>提供具体的实现handler。</li>
 </ol>
 </blockquote>
@@ -832,12 +830,17 @@ start.cmd
 <pre><code class="java">package com.ablecloud.demo;
 
 import com.ablecloud.common.*;
+
 import com.ablecloud.service.ACDeviceStub;
 import com.ablecloud.service.ACService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
+/**
+ * Created by chenpeng on 15-1-17.
+ */
 public class DemoService extends ACService {
     private static final Logger logger = LoggerFactory.getLogger(DemoService.class);
     private static final String DATA_CLASS_NAME = &quot;light_action_data&quot;;
@@ -845,12 +848,10 @@ public class DemoService extends ACService {
 
     /**
      * 重载init函数。
-     * 因为我们的服务要处理和设备交互的消息，因此在该函数中将序列化/反序列化器设置到ac框架中。
      *
      * @throws Exception
      */
     public void init() throws Exception {
-        ac.setDeviceMsgMarshaller(new LightMsgMarshaller());
     }
 
     /**
@@ -862,36 +863,30 @@ public class DemoService extends ACService {
      */
     public void handleMsg(ACMsg req, ACMsg resp) throws Exception {
         String name = req.getName();
-        if (name != null) {
-            switch (name) {
-                case &quot;controlLight&quot;:
-                    handleControlLight(req, resp);
-                    break;
-                case &quot;queryData&quot;:
-                    handleQueryData(req, resp);
-                    break;
-                default:
-                    logger.warn(&quot;got an invalid request, method[&quot; + name + &quot;] is not implemented.&quot;);
-            }
-        } else {
-            logger.warn(&quot;got an invalid request, method name is empty.&quot;);
+        switch (name) {
+            case &quot;controlLight&quot;:
+                handleControlLight(req, resp);
+                break;
+            case &quot;queryData&quot;:
+                handleQueryData(req, resp);
+                break;
+            default:
+                logger.warn(&quot;got an invalid request, method[&quot; + name + &quot;] is not implemented.&quot;);
         }
     }
 
     /**
      * 处理来自设备上报消息的入口函数
      *
-     * @param context          上下文信息，在设备联动情况下，可能会跨子域访问
-     * @param deviceId         设备的逻辑id
-     * @param physicalDeviceId 设备的物理id
-     * @param req              设备上报消息
+     * @param reportInfo 设备的属性
+     * @param req        设备上报消息
      * @throws Exception
      */
-    public void handleDeviceMsg(ACContext context, long deviceId, String physicalDeviceId, ACDeviceMsg req) throws Exception {
-        Integer msgCode = req.getCode();
+    public void handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req) throws Exception {
+        int msgCode = req.getCode();
         switch (msgCode) {
             case LightMsg.REPORT_CODE:
-                handleLightReport(context, deviceId, req);
+                handleLightReport(reportInfo.getDeviceId(), req.getContent());
                 break;
             default:
                 logger.warn(&quot;got an unknown report, opcode[&quot; + msgCode + &quot;]&quot;);
@@ -916,62 +911,51 @@ public class DemoService extends ACService {
      * @throws Exception
      */
     private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
-        Long lightId = req.get(&quot;deviceId&quot;);
+        long userId = req.getContext().getUserId();
+        long lightId = req.getLong(&quot;deviceId&quot;);
         String action = req.get(&quot;action&quot;);
         byte deviceAction;
         if (action.equalsIgnoreCase(&quot;on&quot;)) {
             deviceAction = LightMsg.ON;
         } else
-            deviceAction = LightMsg.OFF; 
-        //使用二进制通讯格式
-        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction, LightMsg.FROM_APP));
-        /*
-        //使用KLV通讯格式
-        ACKLVObject object = new ACKLVObject();
-        object.put(Scheme.KEY_ACTION, deviceAction);
-        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, object);
+            deviceAction = LightMsg.OFF;
+        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new byte[]{deviceAction, 0, 0, 0});
         ACDeviceMsg deviceRespMsg;
-        */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
-           ACDeviceMsg deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg, req.getContext().getUserId());
-            // 获取控制开关结果【二进制通讯格式】
-            byte result = (Byte) deviceRespMsg.getContent();
-            /*
-            // 获取控制开关结果【KLV通讯格式】
-            ACKLVObject result = (ACKLVObject) deviceRespMsg.getContent();
-            */
-            resp.put(&quot;result&quot;, result == 1 ? &quot;success&quot; : &quot;fail&quot;);
+            deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(subDomain, lightId, deviceReqMsg, userId);
+            // 获取控制开关结果
+            byte[] payload = deviceRespMsg.getContent();
+            if (payload.length &gt; 0 &amp;&amp; payload[0] == 1)
+                resp.put(&quot;result&quot;, &quot;success&quot;);
+            else
+                resp.put(&quot;result&quot;, &quot;fail&quot;);
             resp.setAck();
             logger.info(&quot;handle control light ok, action[&quot; + action + &quot;].&quot;);
         } catch (ACServiceException e) {
             resp.setErr(e.getErrorCode(), e.getErrorMsg());
-            logger.error(&quot;send to device[&quot; + lightId + &quot;] error:&quot;, e);
+            logger.warn(&quot;send to device[&quot; + lightId + &quot;] error:&quot;, e);
         }
     }
 
     /**
      * 处理智能灯汇报的消息，在该函数中，服务还将收到的汇报数据写入ablecloud提供的云端存储中。
      *
-     * @param context  汇报设备的上下文数据，包括主域/子域等。
      * @param deviceId 汇报设备的逻辑id
-     * @param req      汇报的消息
+     * @param payload  汇报的具体消息内容
      * @throws Exception
      */
-    private void handleLightReport(ACContext context, long deviceId, ACDeviceMsg req) throws Exception {
+    private void handleLightReport(long deviceId, byte[] payload) throws Exception {
         try {
-            LightMsg lightMsg = (LightMsg) req.getContent();
-            byte onOff = lightMsg.getLedOnOff();
-            byte type = lightMsg.getType();
-            long timestamp = System.currentTimeMillis();
+            LightMsg lightMsg = new LightMsg(payload);
             // 通过ac框架，将智能灯汇报的数据存入云端存储
-            ac.store(DATA_CLASS_NAME, context)
-                    .create(&quot;deviceId&quot;, deviceId, &quot;time&quot;, timestamp)
-                    .put(&quot;action&quot;, onOff)
-                    .put(&quot;type&quot;, type)
+            ac.store(DATA_CLASS_NAME, ac.newContext())
+                    .create(&quot;deviceId&quot;, deviceId, &quot;time&quot;, System.currentTimeMillis())
+                    .put(&quot;action&quot;, lightMsg.getLedOnOff())
+                    .put(&quot;type&quot;, lightMsg.getType())
                     .execute();
         } catch (ACServiceException e) {
-            logger.error(&quot;handle light report error:&quot;, e);
+            logger.warn(&quot;handle light report error:&quot;, e);
         }
     }
 
@@ -998,8 +982,14 @@ public class DemoService extends ACService {
             resp.setAck();
         } catch (ACServiceException e) {
             resp.setErr(e.getErrorCode(), e.getErrorMsg());
-            logger.error(&quot;handle query data error:&quot;, e);
+            logger.warn(&quot;handle query data error:&quot;, e);
         }
+    }
+
+    //////////////////////
+    // for test
+    public void addDeviceStub(String subDomain, ACDeviceStub stub) {
+        ac.addDeviceStub(subDomain, stub);
     }
 }
 </code></pre>
@@ -1023,9 +1013,9 @@ class LightMsg {
     private byte ledOnOff;
     private byte type;
 
-    public LightMsg(byte ledOnOff, byte type) {
-        this.ledOnOff = ledOnOff;
-        this.type = type;
+    public LightMsg(byte[] payload) {
+        this.ledOnOff = payload[0];
+        this.type = payload[1];
     }
 
     public byte getLedOnOff() {
@@ -1034,74 +1024,6 @@ class LightMsg {
 
     public byte getType() {
         return type;
-    }
-}
-</code></pre>
-
-<h3 id="lightmsgmarshaller">LightMsgMarshaller</h3>
-<p>该序列化/反序列化器用于序列化智能灯控制消息，如果一个服务会和多类智能设备交互，则在你自定义的marshaller中可以对多种设备消息进行序列化/反序列化操作。</p>
-<pre><code class="java">package com.ablecloud.demo;
-
-import com.ablecloud.common.ACDeviceMsg;
-import com.ablecloud.common.ACDeviceMsgMarshaller;
-
-import java.nio.ByteBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
-    private static final Logger logger = LoggerFactory.getLogger(LightMsgMarshaller.class);
-
-    /**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制灯时通过网络传输给灯
-     *
-     * @param msg 设备消息
-     * @return 序列化后的字节数组
-     * @throws Exception
-     */
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        int msgCode = msg.getCode();
-        ByteBuffer bb;
-        switch (msgCode) {
-            case LightMsg.CODE:
-                LightMsg lightMsg = (LightMsg) msg.getContent();
-                bb = ByteBuffer.allocate(4);
-                bb.put(lightMsg.getLedOnOff());
-                byte[] pad = new byte[3];
-                bb.put(pad);
-                return bb.array();
-            default:
-                logger.warn(&quot;got an unknown msgCode[&quot; + msgCode + &quot;]&quot;);
-                return null;
-        }
-    }
-
-    /**
-     * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
-     *
-     * @param msgCode 消息码，ablecloud也称为操作码opCode
-     * @param payload 设备消息序列化后的字节数组
-     * @return 设备消息
-     * @throws Exception
-     */
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        ByteBuffer bb;
-        switch (msgCode) {
-            case LightMsg.RESP_CODE:
-                bb = ByteBuffer.wrap(payload);
-                byte result = bb.get();
-                return new ACDeviceMsg(msgCode, result);
-            case LightMsg.REPORT_CODE:
-                bb = ByteBuffer.wrap(payload);
-                byte ledOnOff = bb.get();
-                byte ledType = bb.get();
-                byte[] pad = new byte[2];
-                bb.get(pad);
-                return new ACDeviceMsg(msgCode, new LightMsg(ledOnOff, ledType));
-            default:
-                logger.warn(&quot;got an unknown msgCode[&quot; + msgCode + &quot;]&quot;);
-                return null;
-        }
     }
 }
 </code></pre>
@@ -1155,57 +1077,8 @@ public class DemoCronJob extends ACCronJob {
 <p>上一章节，我们一步步开发了一个完整的服务程序<code>DemoService</code>。代码是写完了，如何验证我们写的代码是否正常工作呢，比如自定义的<code>LightMsgMarshaller</code>逻辑是否正确，<code>DemoService</code>能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。</p>
 <h2 id="_12">单元测试</h2>
 <p>准备工作做好后，就可以开始我们的测试了，我们的单元测试采用org.apache.maven.surefire插件结合junit来完成。</p>
-<h3 id="lighmsgmarshaller">测试LighMsgMarshaller</h3>
-<p>该测试很简单，不与任何后端服务交互，纯粹的测试计算逻辑，用于测试序列化/反序列化逻辑正确与否。</p>
-<pre><code class="java">package com.ablecloud.demo;
-
-import com.ablecloud.common.ACDeviceMsg;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-public class LightMsgMarshallerTest {
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void testLightMsg() {
-        LightMsg msg = new LightMsg(LightMsg.ON, LightMsg.FROM_APP);
-        LightMsgMarshaller marshaller = new LightMsgMarshaller();
-        ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.CODE, msg);
-        byte[] req = null;
-        try {
-            req = marshaller.marshal(deviceMsg);
-            assertNotNull(req);
-            assertEquals(4, req.length);
-        } catch (Exception e) {
-            System.out.println(&quot;marshal light msg error: &quot; + e.toString());
-            fail(&quot;test marshal light msg fail&quot;);
-        }
-
-        try {
-            byte[] resp = new byte[]{LightMsg.ON, 0, 0, 0};
-            ACDeviceMsg respDeviceMsg = marshaller.unmarshal(LightMsg.RESP_CODE, resp);
-            assertEquals(LightMsg.RESP_CODE, respDeviceMsg.getCode());
-            byte result = (Byte) (respDeviceMsg.getContent());
-            assertEquals(1, result);
-        } catch (Exception e) {
-            System.out.println(&quot;unmarshal light msg error: &quot; + e.toString());
-            fail(&quot;test unmarshal light msg fail&quot;);
-        }
-    }
-}
-</code></pre>
-
 <blockquote>
-<p><font color="red"><strong>注：</strong>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</font></p>
+<p><font color="red"><strong>注：</strong></font>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</p>
 </blockquote>
 <h3 id="demoservice_1">测试DemoService</h3>
 <p>具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，详细介绍如下。</p>
@@ -1228,9 +1101,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-/**
- * Created by chenpeng on 15-1-18.
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DemoServiceTest {
     // 我们会在多个测试case中用到以下的成员，并且只需要初始化一次，
@@ -1239,24 +1109,24 @@ public class DemoServiceTest {
     private static AC ac;                   // 测试用的AC框架，正式环境由框架初始化，开发者不用关注
     private static DemoService demoService; // 我们开发的服务
     private static ACAccount account;       // 用于保存测试的帐号信息
-    private static ACUserDevice light;          // 用于保存测试的设备信息
+    private static ACUserDevice light;      // 用于保存测试的设备信息
 
     // 在所有的test case执行前初始化一次
     @BeforeClass
     public static void setUp() throws Exception {
         try {
-            // 这里初始化config对象，必须指定测试环境配置文件的绝对路径，否则会找不到配置文件
+            // 这里初始化config对象
             config = new ACConfiguration(&quot;cloudservice-conf.xml&quot;);
             ac = AC.getTestAc(config);          // 通过AC的接口获取用于测试的ac框架
 
             demoService = new DemoService();
             demoService.setEnv(ac, config);     // 需要调用该接口，将框架ac赋予demoService
-            demoService.init();                 // 初始化demoService，将marshshaller设置给ac
+            demoService.init();                 // 初始化demoService
 
             // 使用开发者权限创建一个测试账号
             account = ac.accountMgrForTest(ac.newContext()).register(&quot;test@ablecloud.cn&quot;, &quot;13100000000&quot;, &quot;pswd&quot;);
             // 使用注册的测试账号绑定一个虚拟的测试设备
-            light = ac.bindMgrForTest(ac.newContext(account.getUid())).bindDevice(&quot;11111111&quot;, &quot;light1&quot;);
+            light = ac.bindMgrForTest(ac.newContext()).bindDevice(config.getSubDomain(), &quot;11111111&quot;, &quot;light1&quot;, account.getUid());
         } catch (Exception e) {
             e.printStackTrace();
             fail(&quot;set up fail&quot;);
@@ -1267,7 +1137,7 @@ public class DemoServiceTest {
     @AfterClass
     public static void tearDown() throws Exception {
         // 执行完test后，需要解绑setUp绑定的测试设备，同时注销测试账号，确保下次单测能顺利通过
-        ac.bindMgrForTest(ac.newContext(account.getUid())).unbindDevice(light.getId());
+        ac.bindMgrForTest(ac.newContext()).unbindDevice(config.getSubDomain(), light.getId(), account.getUid());
         // 注意，这里需要传入开发者context
         ac.accountMgrForTest(ac.newContext()).deleteAccount(&quot;13100000000&quot;);
         // 清除store开关记录的所有数据
@@ -1299,10 +1169,13 @@ public class DemoServiceTest {
             assertEquals(&quot;success&quot;, resp.get(&quot;result&quot;));
             // 成功打开灯之后，模拟设备进行数据上报
             try {
-                ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new LightMsg(LightMsg.ON, LightMsg.FROM_APP));
+                ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new byte[]{LightMsg.ON, LightMsg.FROM_APP});
                 // 这里直接调用服务的设备消息处理handler，驱动测试
-                // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
-                demoService.handleDeviceMsg(ac.newContext(), light.getId(), light.getPhysicalId(), deviceMsg);
+                ACDeviceReportInfo reportInfo = new ACDeviceReportInfo();
+                reportInfo.setContext(ac.newContext());
+                reportInfo.setDeviceId(light.getId());
+                reportInfo.setPhysicalDeviceId(light.getPhysicalId());
+                demoService.handleDeviceMsg(reportInfo, deviceMsg);
             } catch (Exception e) {
                 e.printStackTrace();
                 fail(&quot;test light report fail&quot;);
@@ -1317,11 +1190,13 @@ public class DemoServiceTest {
     public void test2LightReportAndQuery() throws Exception {
         // 先测试智能灯上报消息，将上报数据写入云端存储中
         try {
-            LightMsg lightMsg = new LightMsg(LightMsg.ON, LightMsg.FROM_SWITCH);  // 1--on
-            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, lightMsg);
+            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new byte[]{LightMsg.ON, LightMsg.FROM_SWITCH});
             // 这里直接调用服务的设备消息处理handler，驱动测试
-            // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
-            demoService.handleDeviceMsg(ac.newContext(1), light.getId(), light.getPhysicalId(), acDeviceMsg);
+            ACDeviceReportInfo reportInfo = new ACDeviceReportInfo();
+            reportInfo.setContext(ac.newContext());
+            reportInfo.setDeviceId(light.getId());
+            reportInfo.setPhysicalDeviceId(light.getPhysicalId());
+            demoService.handleDeviceMsg(reportInfo, acDeviceMsg);
         } catch (Exception e) {
             e.printStackTrace();
             fail(&quot;test light report fail&quot;);
@@ -1351,7 +1226,6 @@ public class DemoServiceTest {
         }
     }
 }
-
 </code></pre>
 
 <blockquote>

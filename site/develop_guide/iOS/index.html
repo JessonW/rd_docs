@@ -507,9 +507,9 @@
 <h4 id="_2">系统准备</h4>
 <p>在进行开发前，需要对系统以及环境进行设置。目前框架支持Objective-C、C语言，因此系统准备基本都是和iOS开发相关，如Mac OS X、Xcode等。
 + <strong>OS X</strong>
-系统建议采用Mac OS X 10.8以上的版本
+系统建议采用Mac OS X 10.11以上的版本
 + <strong>Xcode</strong>
-安装Xcode，建议采用6.0以上版本
+安装Xcode，建议采用7.0以上版本
 + <strong>ablecloud</strong>
 下载ablecloud开发框架并解压</p>
 <h4 id="xcode">Xcode</h4>
@@ -525,30 +525,10 @@
 选择AbleCloudLib的路径，勾选<strong>Copy items if needed</strong>，点击<strong>Add</strong>添加。
 完成上述步骤后，我们将在工程视图里面看到该目录。
 至此，开发者开发服务所以来的ablecloud开发框架库添加成功。</li>
+<li><strong>添加依赖库</strong> SDK依赖<code>libicucore.tbd</code> <code>libresolv.tbd</code> <code>libz.tbd</code>, 请分别添加进自己的工程。</li>
 <li><strong>本地运行</strong>
 Xcode下直接<strong>Command + R</strong>运行。</li>
 </ol>
-<blockquote>
-<p><font color="brown"><strong>注：</strong></font></p>
-<ol>
-<li>
-<p>如果是模拟器运行请导入模拟器的静态库，如果是真机运行则导入真机静态库，否则在编译的过程中会失败。</p>
-</li>
-<li>
-<p>模拟器要导入<code>SystemConfiguration</code>库</p>
-</li>
-<li>
-<p>导入<code>libicucore.tbd</code></p>
-</li>
-<li>
-<p>SDK中集成<code>.framework</code>形式的<code>AFNetworking3.0.4</code>包, 开发者可根据自己需求选择删除<code>AFNetworking.framework</code>, 然后使用<code>cocoapods</code>等工具导入Github上源码.</p>
-</li>
-<li>
-<p>如果选择使用<code>AFNetworking.framework</code>, 由于<code>AFNetworking</code>自身打包的bug,需添加如下操作, 否则运行崩溃.</p>
-</li>
-</ol>
-</blockquote>
-<p><img alt="account_register" src="../../pic/develop_guide/AFN.png" /></p>
 <h4 id="_3">应用程序初始化</h4>
 <p>在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。
 建议在APP启动方法<code>didFinishLaunchingWithOptions:</code>中调用此方法来进行初始化</p>
@@ -562,13 +542,26 @@ Xcode下直接<strong>Command + R</strong>运行。</li>
 
 </code></pre>
 
-<p>开发阶段，请初始化<strong>测试环境</strong></p>
-<pre><code class="objectivec">//开发环境选择  TEST_MODE:测试环境  PRODUCTION_MODE:正式环境   REGIONAL_CHINA:国内地区 REGIONAL_EAST_CHINA:国内华东地区   REGIONAL_SOUTHEAST_ASIA:东南亚地区
-[ACloudLib setMode:TEST_MODE Region:REGIONAL_CHINA];
-</code></pre>
+<p>开发阶段，请初始化<strong>测试环境</strong>
+在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
+<pre><code class="objectivec">/**
+//********MODE*******
+//测试环境
+extern NSString *const ACLoudLibModeTest;
+//正式环境
+extern NSString *const ACloudLibModeRouter;
+//*******REGION******
+//中国
+extern NSString *const ACLoudLibRegionChina;
+//东南亚
+extern NSString *const ACLoudLibRegionSouthEastAsia;
+//欧洲
+extern NSString *const ACLoudLibRegionCentralEurope;
+//美洲
+extern NSString *const ACLoudLibRegionNorthAmerica;
+*/
 
-<p>在完成测试阶段之后，需要迁移到<strong>正式环境</strong>下</p>
-<pre><code class="objectivec">[ACloudLib setMode:PRODUCTION_MODE Region:REGIONAL_CHINA];
+[ACloudLib setMode:ACLoudLibModeTest Region:ACLoudLibRegionChina];
 </code></pre>
 
 <h1 id="_4">帐号管理</h1>
@@ -714,6 +707,9 @@ Xcode下直接<strong>Command + R</strong>运行。</li>
 <h3 id="wifi">WiFi设备</h3>
 <h4 id="1acwifilinkmanager">1.ACWifiLinkManager类</h4>
 <p>Ablecloud提供了ACWifiLinkManager类激活器供你使用</p>
+<blockquote>
+<p>注: 模拟器不能使用该类, 如需要绑定设备, 请使用真机测试</p>
+</blockquote>
 <pre><code class="objectivec">
 @interface ACWifiLinkManager : NSObject
 
@@ -855,7 +851,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 </code></pre>
 
 <p><font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有<code>smartlink</code>、<code>oneshot</code>、<code>easyconfig</code>、<code>easylink</code>、<code>smartconfig</code>、<code>esptouch</code>。</p>
+目前支持的开发板有<code>smartlink(汉枫)</code>、<code>oneshot(联胜德)</code>、<code>easyconfig(RAK)</code>、<code>easylink(庆科)</code>、<code>smartconfig(MTK)</code>、<code>esptouch(乐鑫)</code>、<code>realtek(瑞昱)</code>。</p>
 <h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
 <pre><code class="objectivec">NSString * ssid = [ACWifiLinkManager  getCurrentSSID ];
 </code></pre>
@@ -1262,7 +1258,7 @@ table.primaryKey =primaryKey;
 </code></pre>
 
 <h4 id="4_3">4、接收已订阅的实时数据</h4>
-<pre><code class="c">[pushManager onReceiveWithCallback:^(ACPushReceive *pushReceive, NSError *error) {
+<pre><code class="objc">[pushManager onReceiveWithCallback:^(ACPushReceive *pushReceive, NSError *error) {
              if (!error) {
              //pushReceive.className 表名
              //pushReceive.opType 接收类型，如ACPushTableOpType.CREATE
@@ -1275,7 +1271,7 @@ table.primaryKey =primaryKey;
 
 <h4 id="5">5、取消订阅</h4>
 <p>建议在退出订阅的activity之后调用，避免造成流量浪费。</p>
-<pre><code class="c">//实例化ACPushTable对象
+<pre><code class="objc">//实例化ACPushTable对象
 ACPushTable *table  = [[ACPushTable alloc] init];
 //设置订阅的表名
 table.className = @&quot;BramcDeviceManager&quot;;
@@ -1584,9 +1580,8 @@ dmsg.payload = [OrderInfoTwo getOrderInfo:@&quot;SWITCH_ON&quot;];
 <blockquote>
 <p><font color="red">注意</font>：</p>
 <p>1、iOS权限原因，下载文件上传文件的操作只能在本应用的沙盒中操作</p>
-<p>2、文件下载功能是基于系统自带的NSURLSession框架实现,文件上传功能是借助第三方七牛云存储实现</p>
+<p>2、文件下载功能是基于系统自带的NSURLSession框架实现</p>
 <p>3、上传下载支持断点续传功能</p>
-<p>4、如果编译报错,尝试在项目中加入<code>libz.tbd</code>、<code>MobileCoreServices.framework</code>、<code>SystemConfiguration.framework</code>.</p>
 </blockquote>
 <h2 id="_43">一、获取文件管理器</h2>
 <pre><code class="objectivec">ACFileManager *fileManager = [[ACFileManager alloc] init];
