@@ -1170,11 +1170,9 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 ####添加定时任务
 >**<font color="red">注意</font>：**
 
->**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。**
+>**1、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
 
->**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
-
->**3、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
+>**2、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
 
 >+ **"once":**单次循环
 
@@ -1190,23 +1188,7 @@ ACTimerMgr timerMgr=AC.timerMgr(timeZone);
 >+ **"week[0,1,2,3,4,5,6]":**在每星期的**`HH:mm:ss`**时间点循环执行(如周一，周五重复，则表示为"week[1,5]")
 
 ```java
-//设置序列化器，若为klv格式类型，则无需此步骤
-AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return (byte[]) msg.getContent();
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        //跟定时任务无关
-        return null;
-    }
-});
-```
-
-```java
-//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，ACTimerTask.OP_TYPE.CLOUD代表云端定时
 timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback<ACTimerTask>() {
      @Override
      public void success(ACTimerTask task) {

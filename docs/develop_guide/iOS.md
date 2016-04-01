@@ -1023,11 +1023,9 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 ####添加定时任务
 >**<font color="red">注意</font>：**
 
->**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。**
+>**1、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
 
->**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
-
->**3、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
+>**2、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
 
 >+ **"once":**单次循环
 
