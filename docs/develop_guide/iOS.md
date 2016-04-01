@@ -654,40 +654,32 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 **例如**：以开关设备为例,协议如下:
 
-```objectivec
+```
 //请求数据包
-{ 68 ：[
-//开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
-{ 0/1 , 0 , 0 , 0 }
-]}
+{ 68 ：
+    //开关灯(二进制流，由厂商自己解析)，其中0代表关灯，1代表开灯
+    [ 0/1 , 0 , 0 , 0 ]
+}
 //响应数据包  
-{ 102 ：[
-//结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
-{ 0/1 , 0 , 0 , 0 }
-]}
-
+{ 102 ：
+    //结果(二进制流，由厂商自己解析)，其中0代表失败，1代表成功
+    [ 0/1 , 0 , 0 , 0 ]
+}
 ```
 截取开灯代码，如下:
-####1、设置序列化器
+
 ```objectivec
-//反序列化
-+ (instancetype)unmarshalWithData:(NSData *)data;
-//序列化
-- (NSData *)marshal;
-```
-####2、发送到设备
-```objectivec
-/**
-*  网络连接操作灯
-*/
+ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
+msg.msgCode = 68;
+Byte content[] = {1 , 0, 0, 0};
+msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
 //LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
 [ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
      if(!error){
-     //开灯成功
+         //开灯成功
      }else{
-     //开灯失败
+         //开灯失败
      }
-
 }];
 ```
 ###json格式
@@ -705,26 +697,20 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 **例如**：以开关设备为例,协议如下:
 
-```objectivec
+```
 //请求数据包
-{ 70 ：[
-//开关灯，其中0代表关灯，1代表开灯
-{"switch", 0/1}
-]}
+{ 70 ：
+    {
+        //开关灯，其中0代表关灯，1代表开灯
+        "switch" : 0/1
+    }
+}
 //响应数据包  
-{ 102 ：[
-//结果，其中false代表失败，1代表成功
-{"result", false/true}
-]}
+{
+     //结果，其中false代表失败，1代表成功
+     "result" : false/true
+}
 ```
-####1、设置序列化器
-
-```objective
-ACObject * req = [[ACObject alloc]init];
-[req marshal];
-```
-####2、发送到设备
-此处以ACObject作为json消息的承载对象；开发者可根据开发需求自定义对象，注意自定义对象需要设置序列化器把自定义对象转化为byte数组
 
 ```objective
 [req putInteger:@"switch" value:1];
@@ -733,14 +719,12 @@ msg.msgCode = 68;
 msg.payload = [req marshal];
 //LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 [ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-          if(!error){
-          //开灯成功
-          }else{
-          //开灯失败
-          }
-
+    if(!error){
+        //开灯成功
+    }else{
+        //开灯失败
+    }
 }];
-
 ```
 
 ###KLV格式
@@ -1023,11 +1007,9 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 ####添加定时任务
 >**<font color="red">注意</font>：**
 
->**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。**
+>**1、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
 
->**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败。**
-
->**3、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
+>**2、timeCycle需要在timePoint时间点的基础上,选择循环方式。**
 
 >+ **"once":**单次循环
 
@@ -1044,19 +1026,20 @@ ACTimerManager ＊ timerMgr=［［ACTimerManager alloc］ init］;
 
 ####添加定时任务
 ```objectivec
-ACDeviceMsg * dmsg = [[ACDeviceMsg alloc] init];
-dmsg.msgCode = 68;
+ACDeviceMsg * msg = [[ACDeviceMsg alloc] init];
+msg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
-dmsg.payload = [OrderInfoTwo getOrderInfo:@"SWITCH_ON"];
-[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:dmsg callback:^( NSError *error) {
-        if (error)
-        {
+Byte content[] = {1 , 0, 0, 0};
+msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
+[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:msg callback:^( NSError *error) {
+    if (error)
+    {
         NSLog(@"添加定时失败");
-        }
-        else
-        {
+    }
+    else
+    {
         NSLog(@"添加定时成功");
-        }
+    }
 }];
 ```
 

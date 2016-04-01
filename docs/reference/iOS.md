@@ -224,9 +224,6 @@ ACDeviceMsg定义如下：
 - (NSData *)marshalWithAESKey:(NSData *)AESKey;
 ```
 
-<font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。
-
-
 ####ACKLVObject
 <font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。
 
@@ -1347,11 +1344,9 @@ ablecloud提供了激活器供你使用，定义如下：
 
 >**<font color="red">注意</font>：**
 
->**1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备**
+>**1、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败**
 
->**2、timePoint的格式为`"yyyy-MM-dd HH:mm:ss"`，否则会失败**
-
->**3、timeCycle需要在timePoint时间点的基础上,选择循环方式**
+>**2、timeCycle需要在timePoint时间点的基础上,选择循环方式**
 
 >+ **"once":**单次循环
 
