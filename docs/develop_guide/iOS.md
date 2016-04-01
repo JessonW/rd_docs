@@ -350,7 +350,7 @@ name:[deviceNames objectAtIndex:i] callback:^(ACUserDevice *userDevice, NSError 
 }];
 
 //普通用户通过分享码绑定设备
-[ACBindManager bindDeviceWithShareCode:shareCode subDomain:subDomain deviceId:deviceId callback:^(ACUserDevice *userDevice, NSError *error) {
+[ACBindManager bindDeviceWithShareCode:shareCode callback:^(ACUserDevice *userDevice, NSError *error) {
           if(error){
          //返回失败信息，根据error做不同的提示或者处理
          }else{

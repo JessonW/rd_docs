@@ -829,13 +829,9 @@ ablecloud提供了激活器供你使用，定义如下：
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
- *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-                      subDomain:(NSString *)subDomain
-                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
@@ -1806,13 +1802,9 @@ import "ACAccountManager.h"
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
- *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-                      subDomain:(NSString *)subDomain
-                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
