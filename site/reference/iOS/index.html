@@ -669,7 +669,6 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 - (NSData *)marshalWithAESKey:(NSData *)AESKey;
 </code></pre>
 
-<p><font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。</p>
 <h4 id="acklvobject">ACKLVObject</h4>
 <p><font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。</p>
 <h1 id="sdk">SDK接口列表</h1>
@@ -1242,13 +1241,9 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
- *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-                      subDomain:(NSString *)subDomain
-                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
@@ -1759,9 +1754,8 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 <h2 id="_9">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<p><strong>1、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
+<p><strong>2、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -2191,13 +2185,9 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
- *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-                      subDomain:(NSString *)subDomain
-                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
