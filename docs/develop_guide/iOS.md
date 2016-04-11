@@ -1405,7 +1405,7 @@ upManager = [[ACFileManager alloc] init];
 #辅助功能
 SDK提供了一些额外的辅助功能
 
-##获取室外天气
+##获取室外的pm2.5, AQI(空气质量)以及天气状况
 SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
 
 ###1. 使用类

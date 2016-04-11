@@ -602,6 +602,83 @@ public class ACFeedback {
     }
 }
 ```
+####ACPM25
+说明：用来表示pm25的信息，定义如下：
+
+```java
+public class ACPM25 {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新pm25时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    public String timestamp;
+    //pm25平均值
+    public int avg;
+    //pm25最小值
+    public int min;
+    //pm25最大值
+    public int max;
+
+    public ACPM25(String timestamp, int avg, int min, int max) {}
+}
+```
+
+####ACAQI
+说明：用来表示空气质量的信息，定义如下：
+
+```java
+public class ACAQI {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新空气质量时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //空气质量
+    int AQI;
+    //最低空气质量
+    int minAQI;
+    //最高空气质量
+    int maxAQI;
+    
+    public ACAQI(int AQI, int minAQI, int maxAQI, String timestamp) {}
+}
+```
+
+####ACWeather
+说明：用来表示温湿度的信息，定义如下：
+
+```java
+public class ACWeather {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新天气时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //温度
+    double temperature;
+    //最低温度
+    double minTemperature;
+    //最高温度
+    double maxTemperature;
+    //湿度
+    int humidity;
+    //最低湿度
+    int minHumidity;
+    //最高湿度
+    int maxHumidity;
+
+    public ACWeather(String timestamp, double temperature, double minTemperature, double maxTemperature, int humidity, int minHumidity, int maxHumidity) {}
+}
+```
 
 ####ACException
 说明：用来表示所有错误信息，定义如下：
@@ -1705,6 +1782,7 @@ public interface ACTimerMgr {
 ##消息推送
 
 如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
+
 ```java
 public interface ACNotificationMgr {
 
@@ -1756,6 +1834,7 @@ public interface ACNotificationMgr {
 }
 ```
 另外，还需要在`<manifest>`标签下添加权限：
+
 ```xml
 <!-- 必选 -->
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -1835,6 +1914,7 @@ public interface ACNotificationMgr {
 </receiver>
 ```
 可以根据需要自行设置 android:label 中的服务名 ：
+
 ```xml
 <!-- Umeng的长连服务，用来建立推送的长连接的 -->
 <!-- 【应用包名】字符串需要替换成本应用的应用包名 -->
@@ -2091,7 +2171,9 @@ public class ACACL {
 ```
 ><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
-##用户意见反馈
+##辅助功能
+除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。
+####用户意见反馈
 
 ```java
 public interface ACFeedbackMgr {
@@ -2103,6 +2185,81 @@ public interface ACFeedbackMgr {
      * @param callback 返回结果的监听回调
      */
     public void submitFeedback(ACFeedback feedback, VoidCallback callback);
+}
+```
+####获取室外天气
+SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
+
+```java
+public interface ACWeatherMgr {
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public void getLatestPM25(String area, PayloadCallback<ACPM25> callback);
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysPM25(String area, int day, PayloadCallback<List<ACPM25>> callback);
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursPM25(String area, int hour, PayloadCallback<List<ACPM25>> callback);
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public void getLatestAqi(String area, PayloadCallback<ACAQI> callback);
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysAqi(String area, int day, PayloadCallback<List<ACAQI>> callback);
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursAqi(String area, int hour, PayloadCallback<List<ACAQI>> callback);
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public void getLatestWeather(String area, PayloadCallback<ACWeather> callback);
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysWeather(String area, int day, PayloadCallback<List<ACWeather>> callback);
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursWeather(String area, int hour, PayloadCallback<List<ACWeather>> callback);
 }
 ```
 
@@ -2617,7 +2774,9 @@ public class ACACL {
     public void unsetUserDeny(OpType opType, long userId);
 }
 ```
-##8、用户意见反馈
+##8、辅助功能
+除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。
+####用户意见反馈
 
 ```java
 public interface ACFeedbackMgr {
@@ -2629,6 +2788,81 @@ public interface ACFeedbackMgr {
      * @param callback 返回结果的监听回调
      */
     public void submitFeedback(ACFeedback feedback, VoidCallback callback);
+}
+```
+####获取室外天气
+SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
+
+```java
+public interface ACWeatherMgr {
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public void getLatestPM25(String area, PayloadCallback<ACPM25> callback);
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysPM25(String area, int day, PayloadCallback<List<ACPM25>> callback);
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursPM25(String area, int hour, PayloadCallback<List<ACPM25>> callback);
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public void getLatestAqi(String area, PayloadCallback<ACAQI> callback);
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysAqi(String area, int day, PayloadCallback<List<ACAQI>> callback);
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursAqi(String area, int hour, PayloadCallback<List<ACAQI>> callback);
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public void getLatestWeather(String area, PayloadCallback<ACWeather> callback);
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysWeather(String area, int day, PayloadCallback<List<ACWeather>> callback);
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursWeather(String area, int hour, PayloadCallback<List<ACWeather>> callback);
 }
 ```
 
