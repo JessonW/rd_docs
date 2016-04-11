@@ -445,7 +445,7 @@ start.cmd
 }
 </code></pre>
 
-<p>在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。通常情况下，init只需要设置设备消息处理的序列化器即可。因此，开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。</p>
+<p>在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。</p>
 <blockquote>
 <p><font color="red"><strong>注：</strong></font>通常情况下，开发者只需要重点实现<strong>handleMsg</strong>即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现<strong>handleDeviceMsg</strong>并根据不同code做不同处理 。</p>
 </blockquote>
@@ -566,7 +566,6 @@ start.cmd
 <p>在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是AbleCloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：</p>
 <pre><code class="java">public abstract class AC {
     protected ACConfiguration config;
-    protected ACDeviceMsgMarshaller deviceMsgMarshaller;
 
     /**
      * 构建一个开发者上下文
@@ -719,20 +718,6 @@ start.cmd
      * @param stub          设备桩
      */
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
-
-    /**
-     * 如果服务要处理和设备之间的交互消息，需要实现设备消息序列化/反序列化器
-     * 该接口将序列化/反序列化器设置给ac框架
-     *
-     * @param marshaller    设备消息序列化/反序列化器
-     */
-    public void setDeviceMsgMarshaller(ACDeviceMsgMarshaller marshaller) {}
-
-    /**
-     * 获取设备消息序列化/反序列化器
-     * @return
-     */
-    public ACDeviceMsgMarshaller getDeviceMsgMarshaller() {}
 
     /**
      * 获取用于单元测试的服务框架ac

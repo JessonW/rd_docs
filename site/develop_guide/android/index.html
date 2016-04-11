@@ -1509,9 +1509,8 @@ public void getDeviceList() {
 <h4 id="_31">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败。</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式。</strong></p>
+<p><strong>1、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败。</strong></p>
+<p><strong>2、timeCycle需要在timePoint时间点的基础上,选择循环方式。</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -1533,22 +1532,7 @@ public void getDeviceList() {
 </li>
 </ul>
 </blockquote>
-<pre><code class="java">//设置序列化器，若为klv格式类型，则无需此步骤
-AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return (byte[]) msg.getContent();
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        //跟定时任务无关
-        return null;
-    }
-});
-</code></pre>
-
-<pre><code class="java">//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+<pre><code class="java">//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，ACTimerTask.OP_TYPE.CLOUD代表云端定时
 timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback&lt;ACTimerTask&gt;() {
      @Override
      public void success(ACTimerTask task) {
