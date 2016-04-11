@@ -64,7 +64,7 @@ extern NSString *const ACLoudLibRegionCentralEurope;
 extern NSString *const ACLoudLibRegionNorthAmerica;
 */
 
-[ACloudLib setMode:ACLoudLibModeTest Region:ACLoudLibRegionChina];
+[ACloudLib setMode:ACloudLibModeRouter Region:ACLoudLibRegionChina];
 ```
 
 
@@ -716,7 +716,7 @@ msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
 [req putInteger:@"switch" value:1];
 ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
 msg.msgCode = 68;
-msg.payload = [req marshal];
+msg.payload = [msg marshal];
 //LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 [ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
     if(!error){
@@ -1031,7 +1031,7 @@ msg.msgCode = 68;
 //payload根据厂商而定，此处只是示例
 Byte content[] = {1 , 0, 0, 0};
 msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
-[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr description:switchStr deviceMsg:msg callback:^( NSError *error) {
+[timerMgr addTaskWithdeviceId:self.upDeviceId name:nameStr timePoint:resultString timeCycle:weekStr deviceMsg:msg callback:^( NSError *error) {
     if (error)
     {
         NSLog(@"添加定时失败");
@@ -1400,13 +1400,81 @@ upManager = [[ACFileManager alloc] init];
 */
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
-#用户意见反馈
+
+
+#辅助功能
+SDK提供了一些额外的辅助功能
+
+##获取室外天气
+SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
+
+###1. 使用类
+
+```
+@interface ACWeatherManager : NSObject
+```
+
+###2. 代码示例
+
+####PM25
+
+```
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
+- (void)getLastDaysPM25 {
+    [ACWeatherManager getLastDaysPM25WithArea:_area days:3 callback:^(NSArray *pm25List, NSError *error) {
+        [pm25List enumerateObjectsUsingBlock:^(ACPM25 *pm25, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"%@", pm25);
+        }];
+    }];
+}
+```
+
+####AQI
+
+```
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
+- (void)getLastDaysAQI {
+    [ACWeatherManager getLastDaysAqiWithArea:_area days:3 callback:^(NSArray *aqiList, NSError *error) {
+       [aqiList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           NSLog(@"%@", obj);
+       }];
+    }];
+}
+```
+####weather
+
+```
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    weather模型数组
+- (void)getLastDaysWeather {
+    [ACWeatherManager getLastDaysWeatherWithArea:_area days:5 callback:^(NSArray *weatherList, NSError *error) {
+        [weatherList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"%@", obj);
+        }];
+    }];
+}
+```
+
+
+
+##用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 使用意见反馈前,需要先在控制台设置反馈项参数
 ![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
 
-##一 建议的开发流程
+###一 建议的开发流程
 参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. 
 
 如果需要上传图片资源, 请按下以下顺序调用接口
@@ -1422,7 +1490,7 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 4. 将反馈信息和第三步获取到的URLString作为参数填入意见反馈接口对应的value位置
 
 
-##二 代码示例
+###二 代码示例
 
 ####1. 设置要上传图片的fileInfo
 ```objc
@@ -1463,7 +1531,7 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
     //这里的键值对需要跟自己在后台定义的一致
     [feedback addFeedBackWithKey:@"description" value:@"descriptionValue"];
     [feedback addFeedBackWithKey:@"telephoneNumber" value:@"130xxxxxxxx"];
-    //将上面获取到的 urlString放到对应的value
+    //将上面获取到的 urlStringg放到对应的value
     [feedback addFeedBackPictureWithKey:@"pictures" value:<#urlString#>];
     
     [ACFeedBackManager submitFeedBack:feedback callback:^(BOOL isSuccess, NSError *error) {
