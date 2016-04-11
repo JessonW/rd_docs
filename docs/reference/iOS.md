@@ -16,7 +16,7 @@ SDK即Software Develop Kit，开发者将基本对象结构基于此，快速的
 ####ACObject
 ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。
 
-```c
+```objc
 @interface ACObject : NSObject
 
 /**
@@ -91,7 +91,7 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 ####ACMsg
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
 
-```c
+```objc
 //
 //  ACMsg.h
 //  ACloudLib
@@ -168,7 +168,7 @@ extern NSString *const ACMsgErrMSG;
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
 
-```c
+```objc
 
 @interface ACContext : NSObject
 
@@ -236,7 +236,7 @@ ACDeviceMsg定义如下：
 ####ACUserInfo
 用来表示AbleCloud的一个注册帐号信息，定义如下：
 
-```c
+```objc
 // 用户ID
 @property(nonatomic,assign) NSInteger userId;
 // 用户昵称
@@ -257,24 +257,72 @@ ACDeviceMsg定义如下：
 @property (nonatomic, copy) NSString *type;
 //开发者自定义的扩展信息，与前端定义的字段一致
 @property (nonatomic, strong) ACObject *extend;
+```
 
-//对应AbleCloud控制台反馈项设定的key与value值
-- (void)addFeedBackWithKey:(NSString *)key value:(NSString *)value;
-- 
-/**
-* 添加图片下载地址的url
-*
-* @param key   对应为AbleCloud控制台反馈项设定的key值
-* @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
-*/
-- (void)addFeedBackPictureWithKey:(NSString *)key value:(NSString *)value;
+####ACAQI
+用来表示室外天气状况
+
+```objc
+@interface ACAQI : NSObject
+
+///  获取最新一次时间格式为"yyyy-MM-dd HH:mm:ss"
+///  获取最近几天时间格式为"yyyy-MM-dd"
+///  获取最近几小时时间格式为"yyyy-MM-dd HH"
+@property (nonatomic, copy) NSString *timestamp;
+// 空气质量
+@property (nonatomic, assign) NSInteger AQI;
+// 最小值
+@property (nonatomic, assign) NSInteger minAQI;
+// 最大值
+@property (nonatomic, assign) NSInteger maxAQI;
+```
+####ACPM25
+用来表示室外pm25情况
+
+```objc
+@interface ACPM25 : NSObject
+
+///  获取最新一次时间格式为"yyyy-MM-dd HH:mm:ss"
+///  获取最近几天时间格式为"yyyy-MM-dd"
+///  获取最近几小时时间格式为"yyyy-MM-dd HH"
+@property (nonatomic, copy) NSString *timestamp;
+// 平均值
+@property (nonatomic, assign) NSInteger PM25;
+// 最小值
+@property (nonatomic, assign) NSInteger minPM25;
+// 最大值
+@property (nonatomic, assign) NSInteger maxPM25;
+
+```
+####ACWeather
+用来表示室外天气状况
+
+```objc
+@interface ACWeather : NSObject
+
+///  获取最新一次时间格式为"yyyy-MM-dd HH:mm:ss"
+///  获取最近几天时间格式为"yyyy-MM-dd"
+///  获取最近几小时时间格式为"yyyy-MM-dd HH"
+@property (nonatomic, copy) NSString *timestamp;
+// 温度
+@property (nonatomic, assign) float temperature;
+// 最低温度
+@property (nonatomic, assign) float minTemperature;
+// 最高温度
+@property (nonatomic, assign) float maxTemperature;
+// 湿度
+@property (nonatomic, assign) NSInteger humidity;
+// 最低湿度
+@property (nonatomic, assign) NSInteger minHumidity;
+// 最高湿度
+@property (nonatomic, assign) NSInteger maxHumidity;
 
 ```
 
 ####ACUserDevice
 设备管理模式下，用来表示一个设备，定义如下：
 
-```c
+```objc
 //设备逻辑ID
 @property(nonatomic,assign) NSInteger deviceId;
 //设备管理员ID
@@ -297,7 +345,7 @@ ACDeviceMsg定义如下：
 ####ACBindUser
 设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：
 
-```c
+```objc 
 //用户ID
 @property(nonatomic,assign) NSInteger userId;
 //设备的逻辑ID
@@ -345,7 +393,7 @@ ACDeviceMsg定义如下：
 ####ACTimerTask
 说明：列举定时任务列表时用来表示定时任务信息，定义如下：
 
-```c
+```objc
 @property (assign, nonatomic) NSInteger taskId;
 //任务的类型（onceTask）
 @property (strong, nonatomic) NSString *taskType;
@@ -376,7 +424,7 @@ ACDeviceMsg定义如下：
 ####ACFileInfo
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
 
-```c
+```objc
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
 
@@ -401,7 +449,7 @@ ACDeviceMsg定义如下：
 ####ACFindDevicesManager
 说明：用来获取局域网本地设备，定义如下：
 
-```c
+```objc
 @protocol ACFindDevicesDelegate <NSObject>
 
 @optional
@@ -466,7 +514,7 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 
 ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。
 
-```c
+```objc
 @interface ACloudLib : NSObject
 
 /**
@@ -554,11 +602,11 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：
 
 ####引入头文件
-```c
+```objc
 import "ACAccountManager.h"
 ```
 ####接口说明
-```c
+```objc
 @interface ACAccountManager : NSObject
 
 /**
@@ -709,7 +757,7 @@ import "ACAccountManager.h"
 
 ablecloud提供了激活器供你使用，定义如下：
 
-```c
+```objc
 @interface ACWifiLinkManager : NSObject
 
 - (id)initWithLinkerName:(NSString *)linkerName;
@@ -751,7 +799,7 @@ ablecloud提供了激活器供你使用，定义如下：
 
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
-```c
+```objc
 //
 //  ACBindManager.h
 //  AbleCloudLib
@@ -1362,7 +1410,7 @@ ablecloud提供了激活器供你使用，定义如下：
 
 接口定义如下：
 
-```c
+```objc
 - (id)initWithTimeZone:(NSTimeZone *)timeZone;
 
 /**
@@ -1459,7 +1507,7 @@ ablecloud提供了激活器供你使用，定义如下：
 
 如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：
 
-```c
+```objc
 /** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
  *@param appKey      主站生成appKey
  *@param launchOptions 启动参数
@@ -1486,7 +1534,7 @@ ablecloud提供了激活器供你使用，定义如下：
 **<font color="red">注</font>：具体使用步骤见开发指导-->与云端通信**
 ##局域网通信
 
-```c
+```objc
 /**
 *  局域网发现设备
 *
@@ -1501,7 +1549,7 @@ ablecloud提供了激活器供你使用，定义如下：
 ##文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
 
-```c
+```objc
 /**
  * //获取下载URL
  * @param file      文件信息对象
@@ -1537,7 +1585,8 @@ ablecloud提供了激活器供你使用，定义如下：
 ```
 ><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
-##用户意见反馈
+##辅助功能
+###用户意见反馈
 
 ```objc
 
@@ -1548,13 +1597,94 @@ ablecloud提供了激活器供你使用，定义如下：
               callback:(void(^)(BOOL isSuccess, NSError *error))callback;
 ```
 
+###获取室外天气
+
+```objc
+@interface ACWeatherManager : NSObject
+
+#pragma mark - pm25
+// 获取最新的pm25值
++ (void)getLatestPM25WithArea:(NSString *)area
+                     callback:(void(^)(ACPM25 *pm25, NSError *error))callback;
+
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
++ (void)getLastDaysPM25WithArea:(NSString *)area
+                           days:(NSInteger)days
+                       callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+///  获取最近n小时的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    pm25模型数组
++ (void)getLastHoursPM25WithArea:(NSString *)area
+                           hours:(NSInteger)hours
+                        callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+
+#pragma mark - aqi
+// 获取最新的aqi值
+// 支持到地级市, area填写中文如: "北京"
++ (void)getLatestAqiWithArea:(NSString *)area
+                    callback:(void(^)(ACAQI *aqi, NSError *error))callback;
+
+
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
++ (void)getLastDaysAqiWithArea:(NSString *)area
+                          days:(NSInteger)days
+                      callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+///  获取最近n小时的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    aqi模型数组
++ (void)getLastHoursAqiWithArea:(NSString *)area
+                          hours:(NSInteger)hours
+                       callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+
+#pragma mark - weather
+// 获取最新的Weather值
++ (void)getLatestWeatherWithArea:(NSString *)area
+                        callback:(void(^)(ACWeather *weather, NSError *error))callback;
+
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    weather模型数组
++ (void)getLastDaysWeatherWithArea:(NSString *)area
+                              days:(NSInteger)days
+                          callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+///  获取最近n小时的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    weather模型数组
++ (void)getLastHoursWeatherWithArea:(NSString *)area
+                              hours:(NSInteger)hours
+                           callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+
+```
+
 
 ##桩模块
 为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。
 ####设备桩
 设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：
 
-```c
+```objc
 @protocol ACDeviceStubDelegate <NSObject>
 
 - (void)handleDeviceMsg:(ACDeviceMsg *)req callback:(void (^)(ACDeviceMsg *responseObject, NSError *error))callback;
@@ -1575,7 +1705,7 @@ ablecloud提供了激活器供你使用，定义如下：
 ####服务桩
 服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：
 
-```c
+```objc
 @protocol ACServiceStubDelegate <NSObject>
 
 - (void)handleServiceMsg:(ACMsg *)req callback:(void (^)(ACMsg *responseObject, NSError *error))callback;
@@ -1611,11 +1741,11 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 
 
 ####引入头文件
-```c
+```objc
 import "ACAccountManager.h"
 ```
 ####接口说明
-```c
+```objc
 @interface ACAccountManager : NSObject
 
 /**
@@ -1756,7 +1886,7 @@ import "ACAccountManager.h"
 
 ##3、设备管理
 
-```c
+```objc
 /**
  *  获取设备列表,不包含设备状态信息
  *  
@@ -1947,7 +2077,7 @@ import "ACAccountManager.h"
 ##6、和云端通信
 ACServiceClient通信器
 
-```c
+```objc
 /*
  * @param host        访问子域
  * @param service      服务名
@@ -1997,7 +2127,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 +(void)getDownloadUrlWithfile:(ACFileInfo *)fileInfo  ExpireTime:(long)expireTime payloadCallback:( void (^)(NSString * urlString,NSError * error))callback ;
 ```
 ###2、根据url下载文件
-```c
+```objc
 /**
  * //session下载
  * @param urlString   获得的downURLString
@@ -2010,14 +2140,16 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 ###三、上传文件
 
 ###1、设置上传文件的权限管理类－－ACACL
-```c
+
+```objc
 @interface ACACL : NSObject
 ```
 <font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
 ###2、上传文件
 ####1)、设置上传文件信息－－ACFileInfo类
-```c
+
+```objc
 @interface ACFileInfo : NSObject
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
@@ -2035,7 +2167,8 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 + (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 ```
 ####2)、设置文件权限
-```c
+
+```objc
 /**
  * 设置全局可读访问权限，不设置则默认为所有人可读
  * @param allow 是否全局可读
@@ -2063,7 +2196,7 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 -(void)setUserDeny:(OpType)optype userId:(long)userId;
 ```
 ####3)、上传文件
-```c
+```objc
 /**
  * 上传文件
  * @param fileInfo      文件信息
@@ -2081,7 +2214,8 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 
-##8、用户意见反馈
+##8、辅助功能
+###1. 用户意见反馈
 ```objc
 
 @interface ACFeedBackManager : NSObject
@@ -2090,6 +2224,102 @@ ACFileManager * fileManager =[[ACFileManager alloc] init];
 + (void)submitFeedBack:(ACFeedBack *)feedback
               callback:(void(^)(BOOL isSuccess, NSError *error))callback;
 ```
+
+
+###2. 获取室外天气
+##辅助功能
+###用户意见反馈
+
+```objc
+
+@interface ACFeedBackManager : NSObject
+
+///  提交用户意见反馈
++ (void)submitFeedBack:(ACFeedBack *)feedback
+              callback:(void(^)(BOOL isSuccess, NSError *error))callback;
+```
+
+###获取室外天气
+
+```objc
+@interface ACWeatherManager : NSObject
+
+#pragma mark - pm25
+// 获取最新的pm25值
++ (void)getLatestPM25WithArea:(NSString *)area
+                     callback:(void(^)(ACPM25 *pm25, NSError *error))callback;
+
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
++ (void)getLastDaysPM25WithArea:(NSString *)area
+                           days:(NSInteger)days
+                       callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+///  获取最近n小时的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    pm25模型数组
++ (void)getLastHoursPM25WithArea:(NSString *)area
+                           hours:(NSInteger)hours
+                        callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+
+#pragma mark - aqi
+// 获取最新的aqi值
+// 支持到地级市, area填写中文如: "北京"
++ (void)getLatestAqiWithArea:(NSString *)area
+                    callback:(void(^)(ACAQI *aqi, NSError *error))callback;
+
+
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
++ (void)getLastDaysAqiWithArea:(NSString *)area
+                          days:(NSInteger)days
+                      callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+///  获取最近n小时的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    aqi模型数组
++ (void)getLastHoursAqiWithArea:(NSString *)area
+                          hours:(NSInteger)hours
+                       callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+
+#pragma mark - weather
+// 获取最新的Weather值
++ (void)getLatestWeatherWithArea:(NSString *)area
+                        callback:(void(^)(ACWeather *weather, NSError *error))callback;
+
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    weather模型数组
++ (void)getLastDaysWeatherWithArea:(NSString *)area
+                              days:(NSInteger)days
+                          callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+///  获取最近n小时的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param hours       0表示24小时
+///  @param callback    weather模型数组
++ (void)getLastHoursWeatherWithArea:(NSString *)area
+                              hours:(NSInteger)hours
+                           callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+
+```
+
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 

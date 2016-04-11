@@ -697,7 +697,7 @@ msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
 
 **例如**：以开关设备为例,协议如下:
 
-```
+```objc
 //请求数据包
 { 70 ：
     {
@@ -712,11 +712,13 @@ msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
 }
 ```
 
-```objective
+```objc
+ACMsg *req = [[ACMsg alloc] init];
 [req putInteger:@"switch" value:1];
 ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
 msg.msgCode = 68;
-msg.payload = [msg marshal];
+//json -> NSdata 序列化
+msg.payload = [req marshal];
 //LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 [ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
     if(!error){
@@ -1465,7 +1467,6 @@ SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
     }];
 }
 ```
-
 
 
 ##用户意见反馈
