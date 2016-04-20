@@ -865,7 +865,17 @@ class ACAccountMgr extends ACService {
      * @return		bool	返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
      */
     public function updateUserToken($user);
-    
+
+    /**
+     * 重设用户的密码。
+     * @param $userId		int		要更新其密码的用户的ID。
+     * @param $account		string	要更新其密码的用户的登录名。
+     * @param $password		string	用户的新密码。
+     * @param $verifyCode	string	更新用户密码的验证码。
+     * @return				bool	操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+     */
+    public function resetPassword($userId, $account, $password, $verifyCode);
+
     /// @name 用户的扩展属性
     //@{
     /**
