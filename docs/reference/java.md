@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.1.x)的API说明。
+下文是Java SDK (v1.3.x)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
@@ -422,9 +422,6 @@ public class ACDeviceMsg {
 
 ```java
 public abstract class AC {
-    protected ACConfig config;
-    protected ACDeviceMsgMarshaller deviceMsgMarshaller;
-
     /**
      * 构建一个开发者上下文
      *
@@ -559,6 +556,14 @@ public abstract class AC {
     public abstract ACNotificationMgrForTest notificationMgrForTest(ACContext context);
 
     /**
+     * 获取短信管理器，可以给用户发送短信
+     *
+     * @param context 开发者的context
+     * @return
+     */
+    public abstract ACSmsMgr smsMgr(ACContext context);
+
+    /**
      * 获取定时管理器，可以定时给设备发送消息
      *
      * @param context 开发者的context
@@ -575,12 +580,20 @@ public abstract class AC {
     public abstract ACTimerTaskMgrForTest timerTaskMgrForTest(ACContext context);
 
     /**
+     * 获取数据分析管理器
+     *
+     * @param context 开发者的context
+     * @return
+     */
+    public abstract ACAnalysisMgr analysisMgr(ACContext context);
+
+    /**
      * 获取文件管理器，可以上传下载文件
      *
      * @param context 开发者的context
      * @return
      */
-    public abstract ACFileMgr fileMgr(ACContext context);
+    public abstract ACBlobStoreMgr blobStoreMgr(ACContext context);
 
     /**
      * 为便于测试，开发者可实现一个服务的桩
@@ -598,6 +611,15 @@ public abstract class AC {
      * @param stub      设备桩
      */
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
+
+
+    /**
+     * 获取AC日志, 可以在打印日志时保存TraceId等信息, 便于调试
+     *
+     * @param context
+     * @return
+     */
+    public abstract ACLog acLog(ACContext context);
 
     /**
      * 获取用于单元测试的服务框架ac
@@ -632,6 +654,7 @@ public interface ACAccountMgr {
 
     /**
      * 为某用户获取注册帐号的验证码。
+     *
      * @param account 拟注册帐号的用户的登录名（Email地址或手机号）。
      * @param timeout 是验证码的有效时长，单位为秒。
      * @return 返回验证码。
@@ -641,20 +664,22 @@ public interface ACAccountMgr {
 
     /**
      * 向用户的手机发送验证码。
-     * @param phone     用户的手机号码。
-     * @param template  短信模板的编号。
-     * @param timeout   验证码的有效时长，单位为秒。
+     *
+     * @param phone    用户的手机号码。
+     * @param template 短信模板的编号。
+     * @param timeout  验证码的有效时长，单位为秒。
      * @throws Exception
      */
     public void sendVerifyCode(String phone, long template, long timeout) throws Exception;
 
     /**
      * 注册帐号。
-     * @param name          用户的昵称。
-     * @param email         用户的登录名：Email地址。email与phone至少需提供一个。
-     * @param phone         用户的登录名：手机号码。email与phone至少需要提供一个。
-     * @param password      用户的密码。
-     * @param verifyCode    用户的注册验证码。
+     *
+     * @param name       用户的昵称。
+     * @param email      用户的登录名：Email地址。email与phone至少需提供一个。
+     * @param phone      用户的登录名：手机号码。email与phone至少需要提供一个。
+     * @param password   用户的密码。
+     * @param verifyCode 用户的注册验证码。
      * @return 注册成功时返回一个ACAccount对象。
      * @throws Exception
      */
@@ -662,8 +687,9 @@ public interface ACAccountMgr {
 
     /**
      * 用户登录。
-     * @param account   用户的登录名：email地址或手机号。
-     * @param password  用户的密码。
+     *
+     * @param account  用户的登录名：email地址或手机号。
+     * @param password 用户的密码。
      * @return 登录成功时返回一个ACAccount对象。
      * @throws Exception
      */
@@ -687,6 +713,25 @@ public interface ACAccountMgr {
     public long getIdByAccount(String account) throws Exception;
 
     /**
+     * 根据用户ID设置用户扩展信息
+     *
+     * @param userId
+     * @param userProfile
+     * @return
+     * @throws Exception
+     */
+    public void setUserProfile(long userId, ACObject userProfile) throws Exception;
+
+    /**
+     * 查出所有用户的信息（基本信息+扩展信息）
+     * @param offset
+     * @param limit
+     * @return
+     * @throws Exception
+     */
+    public List<ACObject> listUserProfiles(long offset, long limit) throws Exception;
+
+    /**
      * 根据用户ID查找用户扩展信息
      *
      * @param accountId
@@ -694,6 +739,39 @@ public interface ACAccountMgr {
      * @throws Exception
      */
     public ACObject getUserProfileById(long accountId) throws Exception;
+
+    /**
+     * 根据用户ID查找用户的所有信息（基本信息+扩展信息）
+     * @param accountId
+     * @return
+     * @throws Exception
+     */
+    public ACObject getWholeUserProfileById(long accountId) throws Exception;
+
+    /**
+     * 根据用户电话或邮箱查找用户的所有信息(基本信息+扩展信息)
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    public ACObject getWholeUserProfileByAccount(String account) throws Exception;
+
+    /**
+     * 获取账号总数
+     * @return
+     * @throws Exception
+     */
+    public long getAccountCount() throws Exception;
+
+    /**
+     * 查询用户列表。
+     *
+     * @param offset    查询的记录偏移量。取值应该为非负整数。
+     * @param limit     限制本次调用查询的记录的最大数目。取值范围是闭区间[1, 100]。
+     * @return          返回用户列表。
+     * @throws Exception
+     */
+    public List<ACAccount> listAllAccounts(long offset, long limit) throws Exception;
 
     /**
      * 注册一个来自第三方平台的用户。
@@ -727,22 +805,53 @@ public interface ACAccountMgr {
     public ACAccount loginWithOpenId(ACThirdPlatform thirdPlatform, String openId) throws Exception;
 
     /**
+     * 获取用户在第三方平台上的OpenID。
+     *
+     * @param thirdPlatform 第三方平台的标识符。
+     * @param userId        是用户在AbleCloud平台上的ID。
+     * @return              返回一个字符串，表示用户在指定的第三方平台中对应的OpenID。
+     * @throws Exception
+     */
+    public String getUserOpenId(ACThirdPlatform thirdPlatform, long userId) throws Exception;
+
+    /**
      * 修改用户的手机号码。
      *
-     * @param accountId     要修改手机号的用户的ID。
-     * @param phone         用户的新手机号。
-     * @param verifyCode    用户修改手机号时使用的验证码。
-     * @param password      用户的登录密码。
+     * @param accountId  要修改手机号的用户的ID。
+     * @param phone      用户的新手机号。
+     * @param verifyCode 用户修改手机号时使用的验证码。
+     * @param password   用户的登录密码。
      * @throws Exception
      */
     public void changePhone(long accountId, String phone, String verifyCode, String password) throws Exception;
-    
+
+    /**
+     * 修改用户的昵称
+     *
+     * @param userId   要修改手机号的用户的ID。
+     * @param nickName 用户的昵称
+     * @throws Exception
+     */
+    public void changeNickName(long userId, String nickName) throws Exception;
+
     /**
      * 更新用户的Token.
-     * @param account       要更新其Token的用户。操作成功时直接修改该对象保存的信息。
+     *
+     * @param account 要更新其Token的用户。操作成功时直接修改该对象保存的信息。
      * @throws Exception
      */
     public void updateUserToken(ACAccount account) throws Exception;
+
+    /**
+     * 重设用户的密码。
+     *
+     * @param userId        要更新其密码的用户的ID。
+     * @param account       要更新其密码的用户的登录名。
+     * @param password      用户的新密码。
+     * @param verifyCode    更新用户密码的验证码。
+     * @throws Exception
+     */
+    public void resetPassword(long userId, String account, String password, String verifyCode) throws Exception;
 }
 ```
 
@@ -776,6 +885,59 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
      * @throws Exception
      */
     public void cleanAll() throws Exception;
+}
+```
+
+#文件相关接口
+该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
+##获取方式
+```java
+ACBlobStoreMgr blobStoreMgr = ac.blobStoreMgr(ACContext context);
+```
+><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`。
+
+##接口说明
+```java
+public interface ACBlobStoreMgr {
+
+    /**
+     * 向BlobStore服务上传文件。
+     *
+     * @param bucket    文件所属的类别名字。
+     * @param filePath  要被上传的文件的本地路径。
+     * @param name      可以指定文件被上传后在服务器端的存储名字。如果未指定，则使用从$filePath中提取到的文件名。
+     * @throws Exception
+     */
+    public void put(String bucket, String filePath, String name) throws Exception;
+
+    /**
+     * 从BlobStore服务下载文件。
+     *
+     * @param bucket    要下载的文件所属的类别名。
+     * @param name      要下载的文件的名字。
+     * @param filePath  文件下载后的本地存储路径。
+     * @throws Exception
+     */
+    public void get(String bucket, String name, String filePath) throws Exception;
+
+    /**
+     * 从BlobStore服务撒上删除指定文件。
+     *
+     * @param bucket    要被删除的文件所属的类别名。
+     * @param name      要被删除的文件的名字。
+     * @throws Exception
+     */
+    public void delete(String bucket, String name) throws Exception;
+
+    /**
+     * 替换BlobStore服务中存储的文件。
+     *
+     * @param bucket    要被替换的文件所属的类别名。
+     * @param name      要被替换的文件的名字。
+     * @param filePath  包含新内容的文件在本地的存储路径。
+     * @throws Exception
+     */
+    public void replace(String bucket, String name, String filePath) throws Exception;
 }
 ```
 
@@ -1316,6 +1478,26 @@ public class ACUserDevice {
     private String subDomainName;     // 设备所属产品子域的名字
 
     public ACUserDevice(long id, long owner, String name, String physicalId, long subDomainId, long gatewayDeviceId, long rootId, long status, String subDomainName);
+
+    public long getId();
+
+    public String getPhysicalId();
+
+    public String getSubDomainName();
+
+    public long getSubDomainId();
+
+    public long getOwner();
+
+    public String getName();
+
+    public long getGatewayDeviceId();
+
+    public long getRootId();
+
+    public long getStatus();
+
+    public String toString();
 }
 ```
 
@@ -1332,6 +1514,18 @@ public class ACDeviceUser {
     private String email;      // 用户的Email
 
     public ACDeviceUser(long id, long deviceId, long userType, String phone, String email);
+
+    public long getId();
+
+    public long getDeviceId();
+
+    public long getUserType();
+
+    public String getPhone();
+
+    public String getEmail();
+
+    public String toString();
 }
 ```
 
