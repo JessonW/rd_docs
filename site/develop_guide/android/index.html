@@ -474,15 +474,15 @@
         
         
         <li class="main">
-            <a href="#_47">用户意见反馈<span class="main-set parent__47">+</span></a>
+            <a href="#_47">辅助功能<span class="main-set parent__47">+</span></a>
         </li>
         
             
-            <li class="sub parent__47" style="display: none;"><a href="#_48">一 建议的开发流程</a></li>
+            <li class="sub parent__47" style="display: none;"><a href="#_48">用户意见反馈</a></li>
             
         
             
-            <li class="sub parent__47" style="display: none;"><a href="#_49">二 代码示例</a></li>
+            <li class="sub parent__47" style="display: none;"><a href="#_51">获取室外天气</a></li>
             
         
     
@@ -2150,11 +2150,13 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 });
 </code></pre>
 
-<h1 id="_47">用户意见反馈</h1>
+<h1 id="_47">辅助功能</h1>
+<p>SDK提供了一些额外的辅助功能</p>
+<h2 id="_48">用户意见反馈</h2>
 <p>AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 使用意见反馈前,需要先在控制台设置反馈项参数
 <img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
-<h2 id="_48">一 建议的开发流程</h2>
+<h3 id="_49">一 建议的开发流程</h3>
 <p>参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. </p>
 <p>如果需要上传图片资源, 请按下以下顺序调用接口</p>
 <p>原理如下:</p>
@@ -2172,7 +2174,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 <p>将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
 </li>
 </ol>
-<h2 id="_49">二 代码示例</h2>
+<h3 id="_50">二 代码示例</h3>
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
 <pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
@@ -2229,6 +2231,23 @@ AC.feedbackMgr().submitFeedback(feedback, new VoidCallback(){
         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照AbleCloud控制台填写的key与value类型
     }
 });
+</code></pre>
+
+<h2 id="_51">获取室外天气</h2>
+<p>SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.</p>
+<p>如获取最新pm25，代码如下：</p>
+<pre><code class="java">AC.weatherMgr().getLatestPM25(&quot;北京&quot;, new PayloadCallback&lt;ACPM25&gt;() {
+    @Override
+    public void success(ACPM25 pm25) {
+        //成功获取最新pm25信息
+        LogUtil.d(TAG, pm25.toString());
+    }
+
+    @Override
+    public void error(ACException e) {
+        fail(e.getErrorCode() + &quot;--&gt;&quot; + e.getMessage());
+    }
+ });
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>
