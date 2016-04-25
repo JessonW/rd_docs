@@ -669,19 +669,30 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 截取开灯代码，如下:
 
 ```objc
-ACDeviceMsg *msg = [[ACDeviceMsg alloc]init];
-msg.msgCode = 68;
-Byte content[] = {1 , 0, 0, 0};
-msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
-//LOCAL_FIRST表示先走局域网，局域网不通的情况下再走云端
-[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-     if(!error){
-         //开灯成功
-     }else{
-         //开灯失败
-     }
+//开灯的二进制指令
+Byte content[] ={1,0,0,0};
+NSData *payload = [NSData dataWithBytes:content length:sizeof(content)];
+    
+ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 
+binaryData:payload];
+//通讯的加密模式, 如果是非动态加密, 可直接控制, 不需要绑定设备
+[msg setSecurityMode:ACDeviceSecurityModeNone];
+    
+[ACBindManager sendToDeviceWithOption:ACDeviceCommunicationOptionOnlyLocal
+                           SubDomain:<#subdomain#>
+                    physicalDeviceId:<#physicalDeviceId#>
+                                 msg:msg
+                            callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+                                
+                                if (error) {
+                                    //错误处理
+                                    return;
+                                }
+                                //开灯成功
+                                NSLog(@"发消息给设备结果: %@", responseMsg);
 }];
 ```
+
 ###json格式
 
 **在新建产品的时候选择数据格式为JSON，并填写功能点里的数据点与数据包。**
@@ -713,20 +724,27 @@ msg.payload = [NSData dataWithBytes:content length:sizeof(content)];
 ```
 
 ```objc
+//开灯的json格式指令
 ACMsg *req = [[ACMsg alloc] init];
 [req putInteger:@"switch" value:1];
-ACDeviceMsg * msg = [[ACDeviceMsg alloc]init];
-msg.msgCode = 68;
-//json -> NSdata 序列化
-msg.payload = [req marshal];
-//LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-[ACBindManager sendToDeviceWithOption:LOCAL_FIRST SubDomain:subDomian deviceId:deviceId msg:msg callback:^(ACDeviceMsg *responseMsg, NSError *error) {
-    if(!error){
-        //开灯成功
-    }else{
-        //开灯失败
-    }
+    
+ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 ACObject:req];
+//通讯的加密模式, 如果是非动态加密, 可直接控制, 不需要绑定设备
+[msg setSecurityMode:ACDeviceSecurityModeNone];
+   
+[ACBindManager sendToDeviceWithOption:ACDeviceCommunicationOptionLocalFirst
+                           SubDomain:<#subdomain#>
+                    physicalDeviceId:<#physicalDeviceId#>
+                                 msg:msg
+                            callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+                                if (error) {
+                                    //错误处理, 开灯失败
+                                    return;
+                                }
+                                //开灯成功
+                                NSLog(@"发消息给设备结果: %@", responseMsg);
 }];
+
 ```
 
 ###KLV格式
@@ -967,7 +985,7 @@ table.primaryKey =primaryKey;
 
 ```objc
 //手动调用局域网发现 subDomainId:子域ID(传0即可) timeout:(根据实际需求自定义设置)
-ACloud * cloud = [[ACloud alloc]init];
+ACloudLib *cloud = [[ACloudLib alloc]init];
 [cloud findDeviceTimeout:3 SudDomainId:subDomainId callback:^(NSArray *deviceList, NSError *error) {
          if (!error) {
          //发现局域网设备,根据更新局域网在线状态或者重新获取设备列表
