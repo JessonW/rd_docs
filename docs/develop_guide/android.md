@@ -1866,14 +1866,15 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
     }
 });
 ```
-
-#用户意见反馈
+#辅助功能
+SDK提供了一些额外的辅助功能
+##用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 使用意见反馈前,需要先在控制台设置反馈项参数
 ![cloud_syn_1](../pic/develop_guide/submitFeedback.png)
 
 
-##一 建议的开发流程
+###一 建议的开发流程
 参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. 
 
 如果需要上传图片资源, 请按下以下顺序调用接口
@@ -1889,7 +1890,7 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 4. 将获取到的URLString作为参数填入意见反馈接口对应的value位置
 
 
-##二 代码示例
+###二 代码示例
 
 ####1. 设置要上传图片的fileInfo
 ```java
@@ -1949,6 +1950,28 @@ AC.feedbackMgr().submitFeedback(feedback, new VoidCallback(){
     }
 });
 ```
+
+##获取室外天气
+SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
+
+如获取最新pm25，代码如下：
+
+```java
+AC.weatherMgr().getLatestPM25("北京", new PayloadCallback<ACPM25>() {
+    @Override
+    public void success(ACPM25 pm25) {
+        //成功获取最新pm25信息
+        LogUtil.d(TAG, pm25.toString());
+    }
+
+    @Override
+    public void error(ACException e) {
+        fail(e.getErrorCode() + "-->" + e.getMessage());
+    }
+ });
+```
+
+
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 

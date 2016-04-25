@@ -1404,72 +1404,8 @@ upManager = [[ACFileManager alloc] init];
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 ```
 
-
 #辅助功能
 SDK提供了一些额外的辅助功能
-
-##获取室外天气
-SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
-
-###1. 使用类
-
-```
-@interface ACWeatherManager : NSObject
-```
-
-###2. 代码示例
-
-####PM25
-
-```
-///  获取最近n天的pm25值
-///
-///  @param area        支持到地级市, area填写中文如: "北京"
-///  @param days        0表示7天
-///  @param callback    pm25模型数组
-- (void)getLastDaysPM25 {
-    [ACWeatherManager getLastDaysPM25WithArea:_area days:3 callback:^(NSArray *pm25List, NSError *error) {
-        [pm25List enumerateObjectsUsingBlock:^(ACPM25 *pm25, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSLog(@"%@", pm25);
-        }];
-    }];
-}
-```
-
-####AQI
-
-```
-///  获取最近n天的aqi值
-///
-///  @param area        支持到地级市, area填写中文如: "北京"
-///  @param days        0表示7天
-///  @param callback    aqi模型数组
-- (void)getLastDaysAQI {
-    [ACWeatherManager getLastDaysAqiWithArea:_area days:3 callback:^(NSArray *aqiList, NSError *error) {
-       [aqiList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-           NSLog(@"%@", obj);
-       }];
-    }];
-}
-```
-####weather
-
-```
-///  获取最近n天的weather
-///
-///  @param area        支持到地级市, area填写中文如: "北京"
-///  @param days        0表示7天
-///  @param callback    weather模型数组
-- (void)getLastDaysWeather {
-    [ACWeatherManager getLastDaysWeatherWithArea:_area days:5 callback:^(NSArray *weatherList, NSError *error) {
-        [weatherList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSLog(@"%@", obj);
-        }];
-    }];
-}
-```
-
-
 ##用户意见反馈
 AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 使用意见反馈前,需要先在控制台设置反馈项参数
@@ -1544,6 +1480,68 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
         //提交成功
     }];
 ```
+
+##获取室外的pm2.5, AQI(空气质量)以及天气状况
+SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.
+
+###1. 使用类
+
+```
+@interface ACWeatherManager : NSObject
+```
+
+###2. 代码示例
+
+####PM25
+
+```
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
+- (void)getLastDaysPM25 {
+    [ACWeatherManager getLastDaysPM25WithArea:_area days:3 callback:^(NSArray *pm25List, NSError *error) {
+        [pm25List enumerateObjectsUsingBlock:^(ACPM25 *pm25, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"%@", pm25);
+        }];
+    }];
+}
+```
+
+####AQI
+
+```
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
+- (void)getLastDaysAQI {
+    [ACWeatherManager getLastDaysAqiWithArea:_area days:3 callback:^(NSArray *aqiList, NSError *error) {
+       [aqiList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           NSLog(@"%@", obj);
+       }];
+    }];
+}
+```
+####weather
+
+```
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: "北京"
+///  @param days        0表示7天
+///  @param callback    weather模型数组
+- (void)getLastDaysWeather {
+    [ACWeatherManager getLastDaysWeatherWithArea:_area days:5 callback:^(NSArray *weatherList, NSError *error) {
+        [weatherList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"%@", obj);
+        }];
+    }];
+}
+```
+
 #Error Code
 参考[reference-Error Code](../reference/error_code.md)
 
