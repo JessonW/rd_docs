@@ -202,11 +202,27 @@ public class ACDeviceMsg {
 
     public ACDeviceMsg() {}
 
+    //初始化byte[]二进制数组（也支持json格式，通过"jsonString".getBytes设置）
     public ACDeviceMsg(int code, byte[] content) {}
 
-    public ACDeviceMsg(int code, byte[] content, String description) {}
-
+    //初始化ACObject，本质上为json格式,与JSONObject用法相同
+    public ACDeviceMsg(int code, ACObject object) {}
+    
+    //初始化ACKLVObject，使用klv通讯格式
     public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    /**
+     * 设置局域网通讯安全模式,默认为动态加密
+     * <p/>
+     * ACDeviceSecurityMode.NO_ENCRYPTED      不加密
+     * ACDeviceSecurityMode.STATIC_ENCRYPTED  静态加密,即使用默认秘钥
+     * ACDeviceSecurityMode.DYNAMIC_ENCRYPTED 动态加密
+     */
+    public void setSecurityMode(ACDeviceSecurityMode securityMode) {}
+    
+    public ACDeviceMsg(int code, byte[] content, String description) {}
+    
+    public ACDeviceMsg(int code, ACObject object, String description) {}
 
     public ACDeviceMsg(int code, ACKLVObject object, String description) {}
     
@@ -217,6 +233,10 @@ public class ACDeviceMsg {
     public byte[] getContent() {}
 
     public void setContent(byte[] content) {}
+       
+    public ACObject getObject() {}
+ 
+    public void setObject(ACObject object) {}
 
     public ACKLVObject getKLVObject() {}
 
@@ -1444,8 +1464,23 @@ public interface ACBindMgr {
      *                  AC.CLOUD_FIRST 优先通过云端给设备发消息
      * @param callback  返回结果的监听回调
      */
+    @Deprecated
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback<ACDeviceMsg> callback);
 }
+
+    /**
+     * 给设备发消息(建议使用该接口)
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备物理id
+     * @param deviceMsg        具体的消息内容
+     * @param option           AC.ONLY_LOCAL  只通过局域网直连方式给设备发消息
+     *                         AC.ONLY_CLOUD  只通过云端给设备发消息
+     *                         AC.LOCAL_FIRST 优先通过局域网直连方式给设备发消息
+     *                         AC.CLOUD_FIRST 优先通过云端给设备发消息
+     * @param callback         返回结果的监听回调
+     */
+    public void sendToDeviceWithOption(String subDomain, String physicalDeviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback<ACDeviceMsg> callback);
 ```
 
 

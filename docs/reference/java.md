@@ -404,12 +404,19 @@ public class ACDeviceMsg {
     private String description;
     
     public ACDeviceMsg() {}
-
+    
+    //初始化byte[]二进制数组（也支持json格式，通过"jsonString".getBytes设置）
     public ACDeviceMsg(int code, byte[] content) {}
+    
+    //初始化ACObject，本质上为json格式,与JSONObject用法相同
+    public ACDeviceMsg(int code, ACObject object) {}
 
+    //初始化ACKLVObject，使用klv通讯格式
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+    
     public ACDeviceMsg(int code, byte[] content, String description) {}
 
-    public ACDeviceMsg(int code, ACKLVObject object) {}
+    public ACDeviceMsg(int code, ACObject object, String description) {}
 
     public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 }

@@ -766,8 +766,13 @@ public class LightMsg {
 ```
 ```java
 LightMsg lightMsg = new LightMsg(LightMsg.ON);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription());
+//设置局域网通讯加密方式，不设置则默认为动态加密
+deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription()), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte[] resp = deviceMsg.getContent();
@@ -820,8 +825,13 @@ try {
     req.put("switch", 1);
 } catch (JSONException e) {
 }
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(70, req.toString().getBytes(), "open light");
+//设置局域网通讯加密方式，不设置则默认为动态加密
+deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toString().getBytes(), "open light"), AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         try {
@@ -889,8 +899,13 @@ public class Config {
 ACKLVObject req = new ACKLVObject();
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(69, req, "open light");
+//设置局域网通讯加密方式，不设置则默认为动态加密
+deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(69, req, "open light"), AC.LOCAL_FIRST, new PayloadCallback<ACKLVDeviceMsg>() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();

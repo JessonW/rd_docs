@@ -47,6 +47,8 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
 <meta-data android:name="region" android:value="0"/>
 <!-- [Optional] 设备版本,格式为"1-0-0",不设置情况下默认值为"1-0-0",也可通过ACConfig进行设置 -->
 <meta-data android:name="version" android:value="1-0-0"/>
+<!-- [Optional] 加密方式,默认值为2(0不加密 1静态加密 2动态加密) -->
+<meta-data android:name="security-mode" android:value="1"/>
 ```
 
 另外在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。 请在MainActivity的onCreate()方法中调用此方法来进行初始化
@@ -56,12 +58,12 @@ AbleCloud发布的安卓设备SDK为`ac_device_android.jar`，除此之外，还
  * 请在MainActivity的onCreate()中初始化设备物理ID并开始连云操作
  *
  * @param mContext         Context实例
- * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+ * @param physicalDeviceId AbleCloud设备物理ID，长度为[8,64]个字节，厂商需自己保证唯一性
  */
 AC.init(Context Context, String PhysicalDeviceId);
 ```
 
-><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个**16字节长度的物理ID**，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用**WIFI MAC地址**或者**手机IMEI号**并补0或其他将长度拼至16字节；可通过AbleCloud控制台查看**在线设备**查看对应设备的物理ID。
+><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个**[8,64]字节长度的物理ID**，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用**WIFI MAC地址**或者**手机IMEI号**作为设备物理ID；可通过AbleCloud控制台查看**在线设备**查看对应设备的物理ID。
 
 #安卓设备的控制与数据上报
 
