@@ -216,7 +216,7 @@ public class ACDeviceMsg {
      * <p/>
      * ACDeviceSecurityMode.NO_ENCRYPTED      不加密
      * ACDeviceSecurityMode.STATIC_ENCRYPTED  静态加密,即使用默认秘钥
-     * ACDeviceSecurityMode.DYNAMIC_ENCRYPTED 动态加密
+     * ACDeviceSecurityMode.DYNAMIC_ENCRYPTED 动态加密,使用云端分配的秘钥,要求提前调用接口listDevice/listDeviceWithStatus
      */
     public void setSecurityMode(ACDeviceSecurityMode securityMode) {}
     

@@ -768,8 +768,9 @@ public class LightMsg {
 LightMsg lightMsg = new LightMsg(LightMsg.ON);
 //初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
 ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription());
+
 //设置局域网通讯加密方式，不设置则默认为动态加密
-deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
 
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
@@ -827,8 +828,9 @@ try {
 }
 //初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
 ACDeviceMsg deviceMsg = new ACDeviceMsg(70, req.toString().getBytes(), "open light");
+
 //设置局域网通讯加密方式，不设置则默认为动态加密
-deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
 
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
@@ -901,8 +903,9 @@ ACKLVObject req = new ACKLVObject();
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
 //初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
 ACDeviceMsg deviceMsg = new ACDeviceMsg(69, req, "open light");
+
 //设置局域网通讯加密方式，不设置则默认为动态加密
-deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
 
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
 bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback<ACDeviceMsg>() {
