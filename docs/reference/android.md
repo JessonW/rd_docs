@@ -212,7 +212,7 @@ public class ACDeviceMsg {
     public ACDeviceMsg(int code, ACKLVObject object) {}
 
     /**
-     * 设置局域网通讯安全模式,默认为动态加密
+     * 设置局域网通讯安全模式,默认为动态加密;不加密/静态加密在局域网控制模式下不要求必须先绑定该设备
      * <p/>
      * ACDeviceSecurityMode.NO_ENCRYPTED      不加密
      * ACDeviceSecurityMode.STATIC_ENCRYPTED  静态加密,即使用默认秘钥
