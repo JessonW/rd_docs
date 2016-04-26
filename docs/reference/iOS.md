@@ -206,18 +206,49 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ACDeviceMsg定义如下：
 
 ```objc
+
+//设备通讯的安全性设置
+typedef enum: NSInteger {
+    ACDeviceSecurityModeNone,     //不加密
+    ACDeviceSecurityModeStatic,   //静态加密
+    ACDeviceSecurityModeDynamic,  //动态加密
+} ACDeviceSecurityMode;
+
+//设备通讯的优先性设置
+typedef enum: NSUInteger {
+    ACDeviceCommunicationOptionOnlyLocal = 1,  //仅通过局域网
+    ACDeviceCommunicationOptionOnlyCloud,      //仅通过云端
+    ACDeviceCommunicationOptionCloudFirst,     //云端优先
+    ACDeviceCommunicationOptionLocalFirst,     //局域网优先
+} ACDeviceCommunicationOption;
+
+
+@class ACKLVObject;
+@interface ACDeviceMsg : NSObject
 @property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
 @property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong) NSArray *optArray;
-@property (nonatomic, copy) NSString *description;
-//KLV协议时使用
-@property (nonatomic, strong, readonly) ACKLVObject *KLVObject;
+@property (nonatomic, copy) NSString *describe;
+//用来区分设备固件版本, 开发者不需要使用
+@property (nonatomic, assign) NSInteger deviceVersion;
+// 与设备通讯的安全性级别, 默认是动态加密
+@property (nonatomic, assign, readonly) ACDeviceSecurityMode securePolicy;
 
+///  设置局域网通讯安全模式,默认为动态加密
+///
+///  @param mode 加密方式, 详见ACDeviceSecurityMode枚举
+- (void)setSecurityMode:(ACDeviceSecurityMode)mode;
+#pragma mark - 初始化器
+//json格式
+- (instancetype)initWithCode:(NSInteger)code ACObject:(ACObject *)ACObject;
+//二进制
+- (instancetype)initWithCode:(NSInteger)code binaryData:(NSData *)binaryData;
 //KLV协议时使用
-- (id)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
+- (instancetype)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
 - (ACKLVObject *)getKLVObject;
 
+#pragma mark - 解析器
 + (instancetype)unmarshalWithData:(NSData *)data;
 + (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
 - (NSData *)marshal;
