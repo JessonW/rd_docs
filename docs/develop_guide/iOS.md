@@ -644,6 +644,11 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 **说明**：在设备尚未开发完成时，在管理后台可以启动虚拟设备用于APP的调试。虚拟设备和真实设备使用方法相同，需要先绑定再使用。虚拟设备能够显示APP发到设备的指令，上报数据到云端、填入数据供APP查询。
 
 ##一、发送消息到设备
+发送消息到设备支持局域网发送和云端发送两种模式,
+局域网通讯支持三种安全级别, 详见`ACDeviceMsg`中的`ACDeviceSecurityMode`枚举
+局域网通讯动态加密方式需先调用`ACBindManager`中的`listDevice/listDeviceWithStatus`接口获取设备信息,
+局域网通讯非动态加密需调用`ACFindDeviceManager`中的`findDevice`接口获取本地设备信息
+
 
 ###二进制格式
 
@@ -673,12 +678,11 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 Byte content[] ={1,0,0,0};
 NSData *payload = [NSData dataWithBytes:content length:sizeof(content)];
     
-ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 
-binaryData:payload];
-//通讯的加密模式, 如果是非动态加密, 可直接控制, 不需要绑定设备
+ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 binaryData:payload];
+//通讯的加密模式, 默认是动态加密方式
 [msg setSecurityMode:ACDeviceSecurityModeNone];
     
-[ACBindManager sendToDeviceWithOption:ACDeviceCommunicationOptionOnlyLocal
+[ACBindManager sendToDeviceWithOption:<#ACDeviceCommunicationOption#>
                            SubDomain:<#subdomain#>
                     physicalDeviceId:<#physicalDeviceId#>
                                  msg:msg
@@ -725,14 +729,14 @@ binaryData:payload];
 
 ```objc
 //开灯的json格式指令
-ACMsg *req = [[ACMsg alloc] init];
+ACMsg *obj = [[ACMsg alloc] init];
 [req putInteger:@"switch" value:1];
     
-ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 ACObject:req];
-//通讯的加密模式, 如果是非动态加密, 可直接控制, 不需要绑定设备
+ACDeviceMsg *msg = [[ACDeviceMsg alloc] initWithCode:68 ACObject:obj];
+//通讯的加密模式, 默认是动态加密方式
 [msg setSecurityMode:ACDeviceSecurityModeNone];
    
-[ACBindManager sendToDeviceWithOption:ACDeviceCommunicationOptionLocalFirst
+[ACBindManager sendToDeviceWithOption:<#ACDeviceCommunicationOption#>
                            SubDomain:<#subdomain#>
                     physicalDeviceId:<#physicalDeviceId#>
                                  msg:msg
@@ -776,54 +780,29 @@ KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.
 ]}
 ```
 
-定义如下:
-
 ```objc
+//开灯的klv指令
+ACKLVObject *klvObj = [[ACKLVObject alloc] init];
+[klvObj putInt:1 value:1];
+ACDeviceMsg *klvMsg = [[ACDeviceMsg alloc] initWithCode:69 KLVObject:klvObj];
 
-@interface ACKLVObject : NSObject
+//通讯的加密模式, 默认是动态加密方式
+[msg setSecurityMode:ACDeviceSecurityModeNone];
+   
+[ACBindManager sendToDeviceWithOption:<#ACDeviceCommunicationOption#>
+                           SubDomain:<#subdomain#>
+                    physicalDeviceId:<#physicalDeviceId#>
+                                 msg:msg
+                            callback:^(ACDeviceMsg *responseMsg, NSError *error) {
+                                if (error) {
+                                    //错误处理, 开灯失败
+                                    return;
+                                }
+                                //开灯成功
+                                NSLog(@"发消息给设备结果: %@", responseMsg);
+}];
 
-/**
-* 获取一个参数值
-* @param name	参数名
-* @return		参数值
-*/
-- (ACKLVValue *)getValueForKey:(u_int16_t)key;
-- (NSNull *)get:(u_int16_t)key;
-- (BOOL)getBool:(u_int16_t)key;
-- (Byte)getByte:(u_int16_t)key;
-- (short)getShort:(u_int16_t)key;
-- (int)getInt:(u_int16_t)key;
-- (long)getLong:(u_int16_t)key;
-- (float)getFloat:(u_int16_t)key;
-- (double)getDouble:(u_int16_t)key;
-- (NSString *)getString:(u_int16_t)key;
-- (NSData *)getData:(u_int16_t)key;
-
-/**
-* 设置一个参数
-* @param name	参数名
-* @param value	参数值
-* @return
-*/
-- (void)put:(u_int16_t)key;
-- (void)putBool:(u_int16_t)key value:(BOOL)value;
-- (void)putByte:(u_int16_t)key value:(Byte)value;
-- (void)putShort:(u_int16_t)key value:(short)value;
-- (void)putInt:(u_int16_t)key value:(int)value;
-- (void)putLong:(u_int16_t)key value:(long)value;
-- (void)putFloat:(u_int16_t)key value:(float)value;
-- (void)putDouble:(u_int16_t)key value:(double)value;
-- (void)putString:(u_int16_t)key value:(NSString *)value;
-- (void)putData:(u_int16_t)key value:(NSData *)value;
-
-- (BOOL)contains:(u_int16_t)key;
-- (NSIndexSet *)getKeys;
-
-- (BOOL)hasObjectData;
-- (NSDictionary *)getObjectData;
-- (void)setObjectData:(NSDictionary *)data;
 ```
-
 
 
 ##二、发送消息到服务

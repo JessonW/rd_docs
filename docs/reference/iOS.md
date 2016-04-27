@@ -196,22 +196,21 @@ extern NSString *const ACMsgErrMSG;
 
 ##ACDeviceMsg
 ####ACDeviceMsg
-该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据[code](firmware/wifi_interface_guide/#13 "消息码说明")来区分设备消息类型。并根据code的不同值做出不同的处理响应。
->+ **二进制/json**
->在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传。
->+ **KLV**
->KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
-KLV协议介绍请参考：[功能介绍-KLV协议介绍](../features/functions.md#klv)。
+该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值做出不同的处理响应。 ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包
 
-ACDeviceMsg定义如下：
+定义如下：
 
 ```objc
 
 //设备通讯的安全性设置
 typedef enum: NSInteger {
-    ACDeviceSecurityModeNone,     //不加密
-    ACDeviceSecurityModeStatic,   //静态加密
-    ACDeviceSecurityModeDynamic,  //动态加密
+    //不加密
+    ACDeviceSecurityModeNone,
+    //静态加密, 即使用默认秘钥.
+    ACDeviceSecurityModeStatic,
+    //动态加密,使用云端分配的秘钥
+    ACDeviceSecurityModeDynamic,
+
 } ACDeviceSecurityMode;
 
 //设备通讯的优先性设置
@@ -223,7 +222,7 @@ typedef enum: NSUInteger {
 } ACDeviceCommunicationOption;
 
 
-@class ACKLVObject;
+@class ACKLVObject, ACObject;
 @interface ACDeviceMsg : NSObject
 @property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
@@ -235,24 +234,22 @@ typedef enum: NSUInteger {
 // 与设备通讯的安全性级别, 默认是动态加密
 @property (nonatomic, assign, readonly) ACDeviceSecurityMode securePolicy;
 
-///  设置局域网通讯安全模式,默认为动态加密
+///  设置局域网通讯安全模式, 如果不设置, 默认为动态加密
 ///
 ///  @param mode 加密方式, 详见ACDeviceSecurityMode枚举
 - (void)setSecurityMode:(ACDeviceSecurityMode)mode;
 #pragma mark - 初始化器
 //json格式
 - (instancetype)initWithCode:(NSInteger)code ACObject:(ACObject *)ACObject;
-//二进制
+- (ACObject *)getACObject;
+
+//二进制格式
 - (instancetype)initWithCode:(NSInteger)code binaryData:(NSData *)binaryData;
-//KLV协议时使用
+- (NSData *)getBinaryData;
+
+//KLV格式
 - (instancetype)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
 - (ACKLVObject *)getKLVObject;
-
-#pragma mark - 解析器
-+ (instancetype)unmarshalWithData:(NSData *)data;
-+ (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-- (NSData *)marshal;
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
 ```
 
 ####ACKLVObject
@@ -457,23 +454,18 @@ typedef enum: NSUInteger {
 
 ```objc
 //上传文件名字
-@property (copy,nonatomic) NSString * name;
+@property (copy,nonatomic) NSString *name;
 
 //上传文件路径，支持断点续传
-@property (copy,nonatomic) NSString * filePath;
+@property (copy,nonatomic) NSString *filePath;
 //上传文件二进制流数据，用于小文件上传，如拍照后头像直接上传
-@property (retain,nonatomic) NSData * data;
+@property (retain,nonatomic) NSData *data;
 //文件访问权限管理 如果不设置，则默认所有人可读，自己可写
-@property (retain,nonatomic) ACACL  * acl;
+@property (retain,nonatomic) ACACL  *acl;
 //文件存储的空间；自定义文件目录，如ota
 @property (copy,nonatomic) NSString * bucket;
 //crc校验使用
 @property (nonatomic,unsafe_unretained) NSInteger checksum;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-+ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
 
 ```
 
@@ -543,90 +535,27 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 
 ##ACloudLib
 
-ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。
+ACloudLib主要负责设置初始化相关参数，如服务器地址、主域名称、指定服务桩等。
 
 ```objc
 @interface ACloudLib : NSObject
 
-/**
- * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
- */
-+ (void)setHost:(NSString *)host;
-+ (NSString *)getHost;
++ (NSString *)getVersion;
 
-/**
- * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
- */
++ (void)setMode:(NSString *)mode Region:(NSString *)region;
+
++ (NSString *)getHost;
++ (NSString *)getHttpsHost;
++ (NSString *)getPushHost;
+
++ (void)setMajorDomain:(NSString *)majorDomain majorDomainId:(NSInteger)majorDomainId;
++ (NSString *)getMajorDomain;
++ (NSInteger)getMajorDomainId;
+
 + (void)setHttpRequestTimeout:(NSString *)timeout;
 + (NSString *)getHttpRequestTimeout;
 
-/**
- * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
- */
-+ (void)setMajorDomain:(NSString *)majorDomain;
-+ (NSString *)getMajorDomain;
-
-
-/**
- * 获取帐号管理器。
- * 可以调用前面介绍的帐号管理ACAccountManager提供的各个通用接口
- * @return	帐号管理器
- */
-@interface ACAccountManager : NSObject
-
-/**
- * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
- * @param wifiLinkerName 设备wifi模块类型
- * @return	设备激活器
- */
-ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@"wifi模块"];
-
-/**
- * 获取简单无组的设备管理器
- * 可以调用前面介绍的设备管理ACBindManager提供的各个通用接口
- *
- * @return  绑定管理器
- */
-@interface ACBindManager : NSObject
-
-/**
- * 获取消息推送管理器（集成了友盟推送的一部分接口）
- * 可以调用前面介绍的推送管理ACNotificationManager提供的各个通用接口
- *
- * @return 推送通知管理器
- */
-@interface ACNotificationManager : NSObject
-
-/**
- * 获取定时管理器
- * 可以调用前面介绍的定时管理ACTimerManager提供的各个通用接口
- * 获取定时管理器
- * @param timeZone 自定义时区
- */
-ACTimerManager * timerManager = [[ACTimerManager alloc] initWithTimeZone：@"自定义时区"];
-
-/**
- * 获取OTA管理器
- * 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口 
- *
- */
-@interface ACOTAManager : NSObject
-
-/**
- * 获取文件上传下载管理器
- * 可以调用前面介绍的文件管理ACFileManager提供的各个通用接口
- */
-ACFileManager * filemanager = [[ACFileManager alloc] init];
-
-/**
- * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
- * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
- *
- * @param serviceName	服务名
- */
-+ (void)setServiceStub:(NSString *)serviceName delegate:(id<ACServiceStubDelegate>)delegate;
 ```
-
 
 ##用户帐号管理
 
@@ -826,7 +755,7 @@ ablecloud提供了激活器供你使用，定义如下：
                           Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
 ```
 
-##设备管理( 独立和网关型）
+##设备管理(独立和网关型）
 
 将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。
 
@@ -841,6 +770,8 @@ ablecloud提供了激活器供你使用，定义如下：
 
 
 #import <Foundation/Foundation.h>
+#import "AFNetworking.h"
+#import "ACDeviceMsg.h"
 
 #define BIND_SERVICE @"zc-bind"
 
@@ -905,9 +836,13 @@ ablecloud提供了激活器供你使用，定义如下：
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
+ *  @param subDomain        子域名
+ *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
+                      subDomain:(NSString *)subDomain
+                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
@@ -963,7 +898,6 @@ ablecloud提供了激活器供你使用，定义如下：
  *  @param subDomain        子域名称
  *  @param physicalDeviceId 设备物理ID
  *  @param deviceId         设备逻辑ID
- *  @param bindCode         绑定码(可选)
  */
 + (void)changeDeviceWithSubDomain:(NSString *)subDomain
                  physicalDeviceId:(NSString *)physicalDeviceId
@@ -1141,7 +1075,6 @@ ablecloud提供了激活器供你使用，定义如下：
                            deviceId:(NSInteger)deviceId
                    physicalDeviceId:(NSString *)physicalDeviceId
                            callback:(void(^)(Boolean online,NSError *error))callback;
-
 /**
  *  向设备发送消息
  *
@@ -1153,19 +1086,31 @@ ablecloud提供了激活器供你使用，定义如下：
             deviceId:(NSInteger)deviceId
                  msg:(ACDeviceMsg *)msg
             callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
+
+#warning 请使用sendToDeviceWithOption:SubDomain:physicalDeviceId:msg:callback: 方法
++(void)sendToDeviceWithOption:(int)option
+                    SubDomain:(NSString *)subDomain
+                     deviceId:(NSInteger)deviceId
+                          msg:(ACDeviceMsg *)msg
+                     callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
 /**
  *  向设备发送消息
  *
  *  @param option    与设备交互的方式  1:仅通过局域网 2:仅通过云 3:通过云优先 4:通过局域网优先
  *  @param subDomain 子域名
- *  @param deviceId  设备逻辑ID
+ *  @param deviceId  设备物理ID
  *  @param msg       发送的消息
  *  @param callback  返回结果的监听
  */
-+(void)sendToDeviceWithOption:(int)option SubDomain:(NSString *)subDomain
-           deviceId:(NSInteger)deviceId
-                msg:(ACDeviceMsg *)msg
-           callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
++ (void)sendToDeviceWithOption:(ACDeviceCommunicationOption)option
+                     SubDomain:(NSString *)subDomain
+              physicalDeviceId:(NSString *)physicalDeviceId
+                           msg:(ACDeviceMsg *)msg
+                      callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
+
 /**
  *  监听网络变化并且更新设备信息
  *
