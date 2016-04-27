@@ -2,7 +2,7 @@
 
 #开发环境配置
 ##SDK发布库
-ablcloud发布的android端SDK为[`ac-service-android-1.2.0.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.2.0.zip)
+ablcloud发布的android端SDK为[`ac-service-android-1.2.0.jar`](https://www.ablecloud.cn/download/SDK&Demo/ac-service-android-SDK-1.2.1.zip)
 
 
 ><font color="red">注意:</font>
@@ -1164,7 +1164,7 @@ public void refreshDeviceStatus() {
 ```
 ><font color=red>注意</font>：使用定时器时需要使用handler将以上此方法post到主线程处理
 
-最后，至于如何通过直连方式给设备发消息，详情见[和云端通讯](#_19)部分。
+最后，至于如何通过直连方式给设备发消息，详情见[云端通信-->发送消息到设备](#_19)部分。
 
 
 #定时任务
