@@ -255,7 +255,7 @@ Ablecloud提供了ACWifiLinkManager类激活器供你使用
 ```
 
 ><font color="red">注</font>：linkerName表示开发板型号，如果用的是其它的开发板，则需要改成相对应的值。
-目前支持的开发板有`smartlink(汉枫)`、`oneshot(联胜德)`、`easyconfig(RAK)`、`easylink(庆科)`、`smartconfig(MTK)`、`esptouch(乐鑫)`、`realtek(瑞昱)`。
+目前支持的开发板有：`smartlink`(汉枫)、oneshot`(联胜德)、`easyconfig`(RAK)、`easylink`(庆科)、`smartconfig`(MTK)、`esptouch`(乐鑫)、`realtek`(瑞昱)。
 
 ####2.获取WiFi SSID
 ```objc
@@ -413,7 +413,7 @@ ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:
 ```
 
 <font color="red">注</font>：linkerName表示开发板的型号，如果用的是其它的开发板，则需要修改。
-目前支持的开发板有`smartlink(汉枫)`、`oneshot(联胜德)`、`easyconfig(RAK)`、`easylink(庆科)`、`smartconfig(MTK)`、`esptouch(乐鑫)`、`realtek(瑞昱)`。
+目前支持的开发板有：`smartlink`(汉枫)、`oneshot`(联胜德)、`easyconfig`(RAK)、`easylink`(庆科)、`smartconfig`(MTK)、`esptouch`(乐鑫)、`realtek`(瑞昱)。
 
 ####2.得到WiFi SSID
 ```objc

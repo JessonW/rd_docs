@@ -572,7 +572,7 @@
      * 请在主Activity的onCreate()中初始化设备物理ID并开始连云操作
      *
      * @param context          Context实例
-     * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+     * @param physicalDeviceId AbleCloud设备物理ID，长度为[8,64]个字节，厂商需自己保证唯一性
      */
     public static void init(Context context, String physicalDeviceId) {}
 
