@@ -570,9 +570,9 @@ class ACClient {
     
     /**
      * AbleCloud文件存储服务。
-     * @return 返回ACBlobStoreMgr对象。
+     * @return ACFileMgr	返回ACFileMgr对象。
      */
-    public static function getBlobStoreMgr();
+    public static function getFileMgr();
     
     /**
      * AbleCloud设备管理服务。
@@ -911,55 +911,80 @@ class ACAccountMgr extends ACService {
 ```
 #AbleCloud文件存储服务#
 
-##ACBlobStoreMgr##
+##ACACL##
 
+```php
+/**
+ * AbleCloud文件存储服务中文件的访问权限。
+ */
+class ACACL {
+    /**
+     * 构造函数。
+     * @param $allowPublicRead  bool    是否可读。不可读的文件不能被访问。
+     * @param $allowPublicWrite bool    是否可写。不可写的文件上传后不能被修改。
+     */
+    function __construct($allowPublicRead = true, $allowPublicWrite = true);
+
+    /**
+     * 设置是否可读。
+     * @param $allow    bool    布尔值，是否可读。
+     * @return $this            返回本对象。
+     */
+    public function allowPublicRead($allow);
+
+    /**
+     * 检查是否允许读。
+     * @return bool 返回TRUE表示可读，否则表示不可读。
+     */
+    public function isPublicReadAllowed();
+
+    /**
+     * 设置是否可写。
+     * @param $allow    bool    布尔值，是否可写。
+     * @return $this            返回本对象。
+     */
+    public function allowPublicWrite($allow);
+
+    /**
+     * 检查是否允许写。
+     * @return bool 返回TRUE表示可写，否则表示不可写。
+     */
+    public function isPublicWriteAllowed();
+}
+```
+
+##ACFileMgr##
 ```php
 /**
  * AbleCloud文件存储服务。
  */
-class ACBlobStoreMgr extends ACService {
+class ACFileMgr extends ACService {
     /**
      * 构造函数。
-     * @param $name AbleCloud文件存储服务的名字。
-     * @param $version AbleCloud文件存储服务的版本。
-     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $name     string      AbleCloud文件存储服务的名字。
+     * @param $version  int         AbleCloud文件存储服务的版本。
+     * @param $context  ACContext   ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /**
-     * 向BlobStore服务上传文件。
-     * @param $bucket 给定的类别名字。
-     * @param $filePath 要被上传的文件的本地路径。
-     * @param $name 可以指定文件被上传后在服务器端的存储名字。如果未指定，则使用从$filePath在哦好嗯提取到的文件名。
-     * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
+     * 获取文件的访问/下载URL。
+     * @param $bucket       string  要访问/下载的文件在云端所属的类别的名字。
+     * @param $name         string  要访问/下载的文件在云端的名字。
+     * @param $expireTime   int     所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
+     * @return              string  返回指定文件的访问/下载URL。返回空字符串时表示操作失败，可以调用getLastError()获取错误信息。
      */
-    public function put($bucket, $filePath, $name = NULL);
-    
+    public function getDownloadUrl($bucket, $name, $expireTime = 0);
+
     /**
-     * 从BlobStore服务下载文件。
-     * @param $bucket 要下载的文件所属的类别名。
-     * @param $name 要下载的文件的名字。
-     * @param $filePath 文件下载后的本地存储路径。
-     * @return 下载文件成功时返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
+     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
+     * @param $filePath     string  要被上传的文件的本地路径。
+     * @param $bucket       string  文件上传后在云端所属的类别的名字。
+     * @param $name         string  文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
+     * @param $acl          ACACL   文件的访问权限。如果为NULL，则使用缺省值。
+     * @return              bool    操作成功是返回TRUE，否则表示操作失败。失败时可以调用getLastError()获取错误信息。
      */
-    public function get($bucket, $name, $filePath);
-    
-    /**
-     * 从BlobStore服务撒上删除指定文件。
-     * @param $bucket 要被删除的文件所属的类别名。
-     * @param $name 要被删除的文件的名字。
-     * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
-     */
-    public function delete($bucket, $name);
-    
-    /**
-     * 替换BlobStore服务中存储的文件。
-     * @param $bucket 要被替换的文件所属的类别名。
-     * @param $name 要被替换的文件的名字。
-     * @param $filePath 包含新内容的文件在本地的存储路径。
-     * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
-     */
-    public function replace($bucket, $name, $filePath);
+    public function uploadFile($filePath, $bucket, $name, $acl = NULL);
 }
 ```
 
