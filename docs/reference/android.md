@@ -1891,6 +1891,7 @@ public interface ACNotificationMgr {
 在`<application>`标签下添加组件：
 
 <font color="red">注意</font>：添加组件时需要将【应用包名】替换为你自己应用的包名。
+
 ```xml
 <!-- 监听通知点击或者忽略处理的广播 -->
 <receiver
@@ -2005,6 +2006,7 @@ public interface ACNotificationMgr {
 </service>
 ```
 最后，添加 **AppKey** 和 **Umeng Message Secret**
+
 ```xml
 <!-- V1.3.0添加的service，负责下载通知的资源 -->
 <service android:name="com.umeng.message.UmengDownloadResourceService" />
@@ -2025,6 +2027,7 @@ public interface ACNotificationMgr {
 </meta-data>
 ```
 如果APP进行了混淆，请添加:
+
 ```java
 -keep class com.umeng.message.* {
         public <fields>;
@@ -2101,15 +2104,17 @@ public static void findLocalDevice(int timeout, PaylodCallback<List<ACDeviceFind
 
 ##文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：
+
 ```java
 public interface ACFileMgr {
 
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback<String> callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback<String> callback);
 
     /**
      * 下载文件到内存里,适合小文件下载
@@ -2155,6 +2160,7 @@ public interface ACFileMgr {
 }
 ```
 另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
+
 ```java
 public class ACACL {
    /**
@@ -2709,9 +2715,11 @@ public interface ACFileMgr {
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback<String> callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback<String> callback);
+
 
     /**
      * 下载文件到内存里,适合小文件下载（如头像下载）
@@ -2759,6 +2767,7 @@ public interface ACFileMgr {
 }
 ```
 另外，如果文件存储需要增加权限管理，则需要用到ACACL中的接口，具体接口定义如下：
+
 ```java
 public class ACACL {
 

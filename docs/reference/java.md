@@ -978,6 +978,16 @@ public interface ACBindMgr {
     public List<ACDeviceUser> listUsers(long deviceId) throws Exception;
 
     /**
+     * 修改设备名
+     *
+     * @param subDomain 子域名，如djj（豆浆机）
+     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param name      新的设备名
+     * @param userId    修改该设备名的用户的ID
+     */
+    public void changeName(String subDomain, long deviceId, String name, long userId) throws Exception;
+
+    /**
      * 绑定设备
      *
      * @param subDomain         拟被绑定的设备所属的子域的名字
@@ -987,6 +997,17 @@ public interface ACBindMgr {
      * @throws Exception
      */
     public ACUserDevice bindDevice(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
+
+    /**
+     * 绑定设备,无管理员概念,所有人都可以绑定设备,同时所有人只能使自己解绑设备
+     *
+     * @param subDomain        拟被绑定的设备所属的子域的名字
+     * @param physicalDeviceId 设备物理id
+     * @param name             名字
+     * @param userId           要绑定该设备的用户的ID
+     * @throws Exception
+     */
+    public ACUserDevice bindDeviceWithoutOwner(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
 
     /**
      * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
@@ -2510,6 +2531,184 @@ public class ACTimerTask {
             return 1;
         else
             return 0;
+    }
+}
+```
+
+#天气服务接口
+该服务用于获取到室外的pm2.5, AQI(空气质量)以及天气状况等信息.
+
+##获取方式
+```java
+ACWeatherMgr weatherMgr = ac.weatherMgr(ACContext context);
+```
+><font color="red">注意</font>：此处应该使用开发者上下文即可，即`ac.newContext()`。
+
+##接口说明
+```java
+public interface ACWeatherMgr {
+
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public ACPM25 getLatestPM25(String area) throws Exception;
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACPM25> getLastDaysPM25(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACPM25> getLastHoursPM25(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public ACAQI getLatestAqi(String area) throws Exception;
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACAQI> getLastDaysAqi(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACAQI> getLastHoursAqi(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public ACWeather getLatestWeather(String area) throws Exception;
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACWeather> getLastDaysWeather(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACWeather> getLastHoursWeather(String area, int hour) throws Exception;
+}
+```
+
+##数据结构说明
+PM2.5相关信息的结构说明:
+
+```java
+public class ACPM25 {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新pm25时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    public String timestamp;
+    //pm25平均值
+    public int avg;
+    //pm25最小值
+    public int min;
+    //pm25最大值
+    public int max;
+
+    public ACPM25(String timestamp, int avg, int min, int max) {
+        this.timestamp = timestamp;
+        this.avg = avg;
+        this.min = min;
+        this.max = max;
+    }
+}
+```
+
+空气质量相关信息的结构说明:
+
+```java
+public class ACAQI {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新空气质量时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //空气质量
+    int AQI;
+    //最低空气质量
+    int minAQI;
+    //最高空气质量
+    int maxAQI;
+
+    public ACAQI(int AQI, int minAQI, int maxAQI, String timestamp) {
+        this.AQI = AQI;
+        this.minAQI = minAQI;
+        this.maxAQI = maxAQI;
+        this.timestamp = timestamp;
+    }
+}
+```
+
+温湿度相关信息的结构说明:
+
+```java
+public class ACWeather {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新天气时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //温度
+    double temperature;
+    //最低温度
+    double minTemperature;
+    //最高温度
+    double maxTemperature;
+    //湿度
+    int humidity;
+    //最低湿度
+    int minHumidity;
+    //最高湿度
+    int maxHumidity;
+
+    public ACWeather(String timestamp, double temperature, double minTemperature, double maxTemperature, int humidity, int minHumidity, int maxHumidity) {
+        this.timestamp = timestamp;
+        this.temperature = temperature;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+        this.humidity = humidity;
+        this.minHumidity = minHumidity;
+        this.maxHumidity = maxHumidity;
     }
 }
 ```
