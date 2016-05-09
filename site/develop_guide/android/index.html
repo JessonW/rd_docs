@@ -2040,8 +2040,8 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 <h2 id="_45">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
-//0代表url链接有效时间为长期有效
-fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
+//24*60*60代表url链接有效时间，即1天
+fileMgr.getDownloadUrl(fileInfo, 24*60*60 ，new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
          //成功获取文件url
@@ -2219,16 +2219,16 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 </code></pre>
 
 <h4 id="3-url">3. 获取上传的图片的url</h4>
-<pre><code class="java">    //建议ExpireTime=0，url永久有效
+<pre><code class="java">    //建议ExpireTime=0，国内环境下url永久有效
     fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
-         //成功获取文件url
+        //成功获取文件url
     }
 
     @Override
     public void error(ACException e) {
-         //没有权限或其他网络错误
+        //没有权限或其他网络错误
     }
 });
 </code></pre>

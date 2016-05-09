@@ -548,17 +548,49 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_38">测试桩<span class="main-set parent__38">+</span></a>
+            <a href="#_38">天气服务接口<span class="main-set parent__38">+</span></a>
         </li>
         
             
-            <li class="sub parent__38" style="display: none;"><a href="#_39">设备桩</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_39">获取方式</a></li>
             
         
             
-            <li class="sub parent__38" style="display: none;"><a href="#_40">服务桩</a></li>
+            <li class="sub parent__38" style="display: none;"><a href="#_40">接口说明</a></li>
+            
+        
+            
+            <li class="sub parent__38" style="display: none;"><a href="#_41">数据结构说明</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_42">测试桩<span class="main-set parent__42">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__42" style="display: none;"><a href="#_43">设备桩</a></li>
+            
+        
+            
+            <li class="sub parent__42" style="display: none;"><a href="#_44">服务桩</a></li>
             
         
     
@@ -570,11 +602,11 @@
         
         
         <li class="main">
-            <a href="#_41">附录<span class="main-set parent__41">+</span></a>
+            <a href="#_45">附录<span class="main-set parent__45">+</span></a>
         </li>
         
             
-            <li class="sub parent__41" style="display: none;"><a href="#_42">签名算法</a></li>
+            <li class="sub parent__45" style="display: none;"><a href="#_46">签名算法</a></li>
             
         
     
@@ -1554,6 +1586,16 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public List&lt;ACDeviceUser&gt; listUsers(long deviceId) throws Exception;
 
     /**
+     * 修改设备名
+     *
+     * @param subDomain 子域名，如djj（豆浆机）
+     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param name      新的设备名
+     * @param userId    修改该设备名的用户的ID
+     */
+    public void changeName(String subDomain, long deviceId, String name, long userId) throws Exception;
+
+    /**
      * 绑定设备
      *
      * @param subDomain         拟被绑定的设备所属的子域的名字
@@ -1563,6 +1605,17 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      * @throws Exception
      */
     public ACUserDevice bindDevice(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
+
+    /**
+     * 绑定设备,无管理员概念,所有人都可以绑定设备,同时所有人只能使自己解绑设备
+     *
+     * @param subDomain        拟被绑定的设备所属的子域的名字
+     * @param physicalDeviceId 设备物理id
+     * @param name             名字
+     * @param userId           要绑定该设备的用户的ID
+     * @throws Exception
+     */
+    public ACUserDevice bindDeviceWithoutOwner(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
 
     /**
      * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
@@ -3091,14 +3144,185 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h1 id="_38">测试桩</h1>
+<h1 id="_38">天气服务接口</h1>
+<p>该服务用于获取到室外的pm2.5, AQI(空气质量)以及天气状况等信息.</p>
+<h2 id="_39">获取方式</h2>
+<pre><code class="java">ACWeatherMgr weatherMgr = ac.weatherMgr(ACContext context);
+</code></pre>
+
+<blockquote>
+<p><font color="red">注意</font>：此处应该使用开发者上下文即可，即<code>ac.newContext()</code>。</p>
+</blockquote>
+<h2 id="_40">接口说明</h2>
+<pre><code class="java">public interface ACWeatherMgr {
+
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public ACPM25 getLatestPM25(String area) throws Exception;
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List&lt;ACPM25&gt; getLastDaysPM25(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List&lt;ACPM25&gt; getLastHoursPM25(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public ACAQI getLatestAqi(String area) throws Exception;
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List&lt;ACAQI&gt; getLastDaysAqi(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List&lt;ACAQI&gt; getLastHoursAqi(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public ACWeather getLatestWeather(String area) throws Exception;
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List&lt;ACWeather&gt; getLastDaysWeather(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List&lt;ACWeather&gt; getLastHoursWeather(String area, int hour) throws Exception;
+}
+</code></pre>
+
+<h2 id="_41">数据结构说明</h2>
+<p>PM2.5相关信息的结构说明:</p>
+<pre><code class="java">public class ACPM25 {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新pm25时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    public String timestamp;
+    //pm25平均值
+    public int avg;
+    //pm25最小值
+    public int min;
+    //pm25最大值
+    public int max;
+
+    public ACPM25(String timestamp, int avg, int min, int max) {
+        this.timestamp = timestamp;
+        this.avg = avg;
+        this.min = min;
+        this.max = max;
+    }
+}
+</code></pre>
+
+<p>空气质量相关信息的结构说明:</p>
+<pre><code class="java">public class ACAQI {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新空气质量时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    String timestamp;
+    //空气质量
+    int AQI;
+    //最低空气质量
+    int minAQI;
+    //最高空气质量
+    int maxAQI;
+
+    public ACAQI(int AQI, int minAQI, int maxAQI, String timestamp) {
+        this.AQI = AQI;
+        this.minAQI = minAQI;
+        this.maxAQI = maxAQI;
+        this.timestamp = timestamp;
+    }
+}
+</code></pre>
+
+<p>温湿度相关信息的结构说明:</p>
+<pre><code class="java">public class ACWeather {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新天气时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    String timestamp;
+    //温度
+    double temperature;
+    //最低温度
+    double minTemperature;
+    //最高温度
+    double maxTemperature;
+    //湿度
+    int humidity;
+    //最低湿度
+    int minHumidity;
+    //最高湿度
+    int maxHumidity;
+
+    public ACWeather(String timestamp, double temperature, double minTemperature, double maxTemperature, int humidity, int minHumidity, int maxHumidity) {
+        this.timestamp = timestamp;
+        this.temperature = temperature;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+        this.humidity = humidity;
+        this.minHumidity = minHumidity;
+        this.maxHumidity = maxHumidity;
+    }
+}
+</code></pre>
+
+<h1 id="_42">测试桩</h1>
 <p>在开发较大型项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游服务还在开发之中。此时不能等着下游完全就绪后才开始测试。上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
 开发者基于AbleCloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此AbleCloud的服务开发框架支持两类桩：</p>
 <ul>
 <li><strong>设备桩：</strong>模拟一个智能设备，对服务发过来的命令/消息做出响应。</li>
 <li><strong>服务桩：</strong>模拟一个服务，对当前服务发过来的消息做出响应。</li>
 </ul>
-<h2 id="_39">设备桩</h2>
+<h2 id="_43">设备桩</h2>
 <p>设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -3106,7 +3330,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_40">服务桩</h2>
+<h2 id="_44">服务桩</h2>
 <p>服务桩的定义和真正的服务开发类似，开发者需要实现其中的<code>handleMsg(ACMsg req, ACMsg resp)</code>接口以模拟服务提供的功能。</p>
 <pre><code class="java">public abstract class ACServiceSub {
 
@@ -3124,8 +3348,8 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <blockquote>
 <p><font color="red"><strong>注：</strong>无论是设备桩，还是服务桩，仅在测试（<strong>test</strong>）模式生效，正式生产（<strong>production</strong>）环境无效。</font></p>
 </blockquote>
-<h1 id="_41">附录</h1>
-<h2 id="_42">签名算法</h2>
+<h1 id="_45">附录</h1>
+<h2 id="_46">签名算法</h2>
 <pre><code class="java">public class ACSigner {
     private static final Logger logger = LoggerFactory.getLogger(ACSigner.class);
     private static final String ENCODING = &quot;UTF-8&quot;;
