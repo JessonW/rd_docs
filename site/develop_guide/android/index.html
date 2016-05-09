@@ -501,7 +501,7 @@
 <h1 id="_1">安卓客户端开发指导</h1>
 <h1 id="_2">开发环境配置</h1>
 <h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.2.0.zip"><code>ac-service-android-1.2.0.jar</code></a></p>
+<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.2.1.zip"><code>ac-service-android-1.2.0.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
 <p><code>ac-service-android-release</code>文件夹下有6个子目录，分别为不同模块功能的sdk（非必需项），开发者可根据需求导入对应的sdk，其中包括<strong>推送模块sdk</strong>、<strong>文件管理模块sdk</strong>、<strong>音视频模块sdk</strong>、<strong>MTK配网sdk</strong>、<strong>MX庆科配网sdk</strong>、<strong>Realtek配网sdk</strong></p>
@@ -705,7 +705,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>、<code>AC.DEVICE_TI</code>、<code>AC.DEVICE_ESP8266</code>、<code>AC.DEVICE_REALTEK</code></p>
+目前支持的wifi模块有：<code>AC.DEVICE_MTK</code>(MTK模块)、<code>AC.DEVICE_MX</code>（庆科模块）、<code>AC.DEVICE_MARVELL</code>（MARVELL模块）、<code>AC.DEVICE_MURATA</code>（村田模块）、<code>AC.DEVICE_WM</code>（联盛德模块）、<code>AC.DEVICE_RAK</code>（RAK模块）、<code>AC.DEVICE_TI</code>、<code>AC.DEVICE_ESP8266</code>、<code>AC.DEVICE_REALTEK</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -861,14 +861,14 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
 <h3 id="_17">一．绑定网关</h3>
 <h3 id="wifi_1">WiFi网关</h3>
-<h4 id="1acdeviceactivitor">1.获取ACDeviceActivitor激活器</h4>
+<h4 id="1acdeviceactivator_1">1.获取ACDeviceActivator激活器</h4>
 <p>AbleCloud提供了ACDeviceActivitor激活器供你使用。</p>
 <pre><code class="java">ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>。</p>
+目前支持的wifi模块有<code>AC.DEVICE_MTK</code>(MTK模块)、<code>AC.DEVICE_MX</code>（庆科模块）、<code>AC.DEVICE_MARVELL</code>（MARVELL模块）、<code>AC.DEVICE_MURATA</code>（村田模块）、<code>AC.DEVICE_WM</code>（联盛德模块）、<code>AC.DEVICE_RAK</code>（RAK模块）。</p>
 </blockquote>
 <h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -1145,8 +1145,14 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 </code></pre>
 
 <pre><code class="java">LightMsg lightMsg = new LightMsg(LightMsg.ON);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription());
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription()), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte[] resp = deviceMsg.getContent();
@@ -1191,8 +1197,14 @@ try {
     req.put(&quot;switch&quot;, 1);
 } catch (JSONException e) {
 }
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(70, req.toString().getBytes(), &quot;open light&quot;);
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toString().getBytes(), &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         try {
@@ -1252,8 +1264,14 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toSt
 <pre><code class="java">ACKLVObject req = new ACKLVObject();
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(69, req, &quot;open light&quot;);
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(69, req, &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
@@ -1493,7 +1511,7 @@ public void getDeviceList() {
 <blockquote>
 <p><font color=red>注意</font>：使用定时器时需要使用handler将以上此方法post到主线程处理</p>
 </blockquote>
-<p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
+<p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">云端通信--&gt;发送消息到设备</a>部分。</p>
 <h1 id="_29">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>

@@ -811,11 +811,27 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 
     public ACDeviceMsg() {}
 
+    //初始化byte[]二进制数组（也支持json格式，通过&quot;jsonString&quot;.getBytes设置）
     public ACDeviceMsg(int code, byte[] content) {}
+
+    //初始化ACObject，本质上为json格式,与JSONObject用法相同
+    public ACDeviceMsg(int code, ACObject object) {}
+
+    //初始化ACKLVObject，使用klv通讯格式
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    /**
+     * 设置局域网通讯安全模式,默认为动态加密;不加密/静态加密在局域网控制模式下不要求必须先绑定该设备
+     * &lt;p/&gt;
+     * ACDeviceSecurityMode.NO_ENCRYPTED      不加密
+     * ACDeviceSecurityMode.STATIC_ENCRYPTED  静态加密,即使用默认秘钥
+     * ACDeviceSecurityMode.DYNAMIC_ENCRYPTED 动态加密,使用云端分配的秘钥,要求提前调用接口listDevice/listDeviceWithStatus
+     */
+    public void setSecurityMode(ACDeviceSecurityMode securityMode) {}
 
     public ACDeviceMsg(int code, byte[] content, String description) {}
 
-    public ACDeviceMsg(int code, ACKLVObject object) {}
+    public ACDeviceMsg(int code, ACObject object, String description) {}
 
     public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 
@@ -826,6 +842,10 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public byte[] getContent() {}
 
     public void setContent(byte[] content) {}
+
+    public ACObject getObject() {}
+
+    public void setObject(ACObject object) {}
 
     public ACKLVObject getKLVObject() {}
 
@@ -2011,8 +2031,23 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      *                  AC.CLOUD_FIRST 优先通过云端给设备发消息
      * @param callback  返回结果的监听回调
      */
+    @Deprecated
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACDeviceMsg&gt; callback);
 }
+
+    /**
+     * 给设备发消息(建议使用该接口)
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备物理id
+     * @param deviceMsg        具体的消息内容
+     * @param option           AC.ONLY_LOCAL  只通过局域网直连方式给设备发消息
+     *                         AC.ONLY_CLOUD  只通过云端给设备发消息
+     *                         AC.LOCAL_FIRST 优先通过局域网直连方式给设备发消息
+     *                         AC.CLOUD_FIRST 优先通过云端给设备发消息
+     * @param callback         返回结果的监听回调
+     */
+    public void sendToDeviceWithOption(String subDomain, String physicalDeviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACDeviceMsg&gt; callback);
 </code></pre>
 
 <h2 id="home">Home模型</h2>

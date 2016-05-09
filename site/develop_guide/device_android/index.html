@@ -394,6 +394,8 @@
 &lt;meta-data android:name=&quot;region&quot; android:value=&quot;0&quot;/&gt;
 &lt;!-- [Optional] 设备版本,格式为&quot;1-0-0&quot;,不设置情况下默认值为&quot;1-0-0&quot;,也可通过ACConfig进行设置 --&gt;
 &lt;meta-data android:name=&quot;version&quot; android:value=&quot;1-0-0&quot;/&gt;
+&lt;!-- [Optional] 加密方式,默认值为2(0不加密 1静态加密 2动态加密) --&gt;
+&lt;meta-data android:name=&quot;security-mode&quot; android:value=&quot;1&quot;/&gt;
 </code></pre>
 
 <p>另外在你的应用使用AbleCloud服务之前，你需要在代码中对AbleCloud SDK进行初始化。 请在MainActivity的onCreate()方法中调用此方法来进行初始化</p>
@@ -401,13 +403,13 @@
  * 请在MainActivity的onCreate()中初始化设备物理ID并开始连云操作
  *
  * @param mContext         Context实例
- * @param physicalDeviceId AbleCloud设备物理ID，长度为16个字节，厂商需自己保证唯一性
+ * @param physicalDeviceId AbleCloud设备物理ID，长度为[8,64]个字节，厂商需自己保证唯一性
  */
 AC.init(Context Context, String PhysicalDeviceId);
 </code></pre>
 
 <blockquote>
-<p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>16字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>并补0或其他将长度拼至16字节；可通过AbleCloud控制台查看<strong>在线设备</strong>查看对应设备的物理ID。</p>
+<p><font color=red>注</font>：初始化操作时厂商需要为每个设备分配一个<strong>[8,64]字节长度的物理ID</strong>，并保证该ID的唯一性。在厂商没有自己唯一的设备标识号情况下，建议使用<strong>WIFI MAC地址</strong>或者<strong>手机IMEI号</strong>作为设备物理ID；可通过AbleCloud控制台查看<strong>在线设备</strong>查看对应设备的物理ID。</p>
 </blockquote>
 <h1 id="_5">安卓设备的控制与数据上报</h1>
 <p>下面以开关灯为例，通过二进制、klv、json三种格式简要介绍与安卓设备通讯的例子。注意实际开发请只选择以下其中一种消息格式。</p>

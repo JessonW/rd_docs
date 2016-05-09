@@ -255,7 +255,7 @@ Ablecloud提供了ACDeviceActivator激活器供你使用，具体使用步骤如
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
 ><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有`AC.DEVICE_MTK(MTK模块)`、`AC.DEVICE_MX（庆科模块）`、`AC.DEVICE_MARVELL（MARVELL模块）`、`AC.DEVICE_MURATA（村田模块）`、`AC.DEVICE_WM（联盛德模块）`、`AC.DEVICE_RAK（RAK模块）`、`AC.DEVICE_TI`、`AC.DEVICE_ESP8266`、`AC.DEVICE_REALTEK`
+目前支持的wifi模块有：`AC.DEVICE_MTK`(MTK模块)、`AC.DEVICE_MX`（庆科模块）、`AC.DEVICE_MARVELL`（MARVELL模块）、`AC.DEVICE_MURATA`（村田模块）、`AC.DEVICE_WM`（联盛德模块）、`AC.DEVICE_RAK`（RAK模块）、`AC.DEVICE_TI`、`AC.DEVICE_ESP8266`、`AC.DEVICE_REALTEK`。
 
 ####2.获取WiFi SSID
 ```java
@@ -430,14 +430,14 @@ bindMgr.unbindDeviceWithUser(subDomain, userId, deviceId, new VoidCallback() {
 
 ###WiFi网关
 
-####1.获取ACDeviceActivitor激活器
+####1.获取ACDeviceActivator激活器
 AbleCloud提供了ACDeviceActivitor激活器供你使用。
 
 ```java
 ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 ```
 ><font color="red">注</font>：`AC.DEVICE_HF`表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有`AC.DEVICE_MTK(MTK模块)`、`AC.DEVICE_MX（庆科模块）`、`AC.DEVICE_MARVELL（MARVELL模块）`、`AC.DEVICE_MURATA（村田模块）`、`AC.DEVICE_WM（联盛德模块）`、`AC.DEVICE_RAK（RAK模块）`。
+目前支持的wifi模块有`AC.DEVICE_MTK`(MTK模块)、`AC.DEVICE_MX`（庆科模块）、`AC.DEVICE_MARVELL`（MARVELL模块）、`AC.DEVICE_MURATA`（村田模块）、`AC.DEVICE_WM`（联盛德模块）、`AC.DEVICE_RAK`（RAK模块）。
 
 ####2.得到WiFi SSID
 ```java
@@ -1937,7 +1937,7 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 ```
 ####3. 获取上传的图片的url
 ```java
-    //建议ExpireTime=0，国内环境下url长期有效
+    //建议ExpireTime=0，国内环境下url永久有效
     fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
     @Override
     public void success(String url) {
@@ -1995,5 +1995,7 @@ AC.weatherMgr().getLatestPM25("北京", new PayloadCallback<ACPM25>() {
 
 >+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
 >+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**
+
+
 
 
