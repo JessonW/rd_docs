@@ -22,7 +22,7 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 
     本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.5.x)的API说明。
+下文是PHP SDK (v1.6.x)的API说明。
 
 #对接微信#
 
