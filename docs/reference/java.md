@@ -604,6 +604,14 @@ public abstract class AC {
     public abstract ACFileMgr fileMgr(ACContext context);
 
     /**
+     * 获取天气管理器，可以获取pm25,空气质量等相关天气信息
+     *
+     * @param context 开发者的context
+     * @return
+     */
+    public abstract ACWeatherMgr weatherMgr(ACContext context);
+
+    /**
      * 为便于测试，开发者可实现一个服务的桩
      * 在框架中添加一个服务桩
      *
