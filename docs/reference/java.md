@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.3.x)的API说明。
+下文是Java SDK (v1.4.x)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
@@ -595,7 +595,8 @@ public abstract class AC {
     public abstract ACAnalysisMgr analysisMgr(ACContext context);
 
     /**
-     * 获取文件管理器，可以上传下载文件
+     * 获取文件管理器，可以上传下载文件。
+     * 注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。
      *
      * @param context 开发者的context
      * @return
@@ -897,6 +898,9 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 
 #文件相关接口
 该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
+
+**注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。**
+
 ##获取方式
 ```java
 ACFileMgr fileMgr = ac.fileMgr(ACContext context);
