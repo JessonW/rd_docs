@@ -384,6 +384,8 @@ public class ACTimerTask {
     private long userId;
     //创建该用户的昵称
     private String nickName;
+    //任务名称
+    private String name;
     //任务描述
     private String description;
     //任务时区

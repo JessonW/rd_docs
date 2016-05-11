@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.3.x)的API说明。
+下文是Java SDK (v1.4.0)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
