@@ -951,10 +951,12 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 >注意：使用单步调试需要更新java sdk到1.4.0以上
 
 1. 点击上方的三角形按钮后，点击Edit Configurations...
-![debug](../develop_guide/debug/1.png)
+
+![debug](../pic/develop_guide/debug/1.png)
 
 1. 出现如下小窗口后，点击左上角＋号，选择Application
-![debug](../develop_guide/debug/2.png)
+
+![debug](../pic/develop_guide/debug/2.png)
 
 1. 可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入**`com.ablecloud.cloudservice.ACServer`**，最后确认Use classpath of module项为你的工程的module，点击OK按钮
 
