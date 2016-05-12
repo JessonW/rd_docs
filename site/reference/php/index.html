@@ -1482,19 +1482,27 @@ class ACAccountMgr extends ACService {
     public function sendVerifyCode($phone, $template, $timeout);
 
     /**
-     * 修改用户的手机号码。
-     * @param $user ACUser对象，是要修改手机号的用户。
-     * @param $phone 字符串，是用户的新手机号码。
-     * @param $verifyCode 字符串，是验证码。
-     * @param $password 字符串，是用户的密码。
-     * @return 操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
-     */
-    public function changePhone($user, $phone, $verifyCode, $password);
+       * 修改用户的手机号码。
+       * @param $user             ACUser    是要修改手机号的用户。
+       * @param $phone        string    字符串，是用户的新手机号码。
+       * @param $verifyCode string  是验证码。
+       * @param $password       string  是用户的密码。
+       * @return                    bool    操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+       */
+      public function changePhone($user, $phone, $verifyCode, $password);
+
+    /**
+       * 修改用户显示名称。
+       * @param $user             ACUser    是要修改显示名的用户。
+       * @param $nickName       string  用户的新名字。
+       * @return                    bool    操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+       */
+      public function changeNickName($user, $nickName);
 
     /**
      * 更新用户的Token。
      * @param $user ACUser  要更新其Token的用户。操作成功后直接更新该对象保存的信息。
-     * @return      bool    返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
+     * @return        bool  返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
      */
     public function updateUserToken($user);
 
