@@ -336,9 +336,13 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_11">文件相关接口<span class="main-set parent__11">+</span></a>
+            <a href="#_11">绑定相关接口<span class="main-set parent__11">+</span></a>
         </li>
         
             
@@ -350,47 +354,11 @@
             
         
             
-            <li class="sub parent__11" style="display: none;"><a href="#_14">数据结构说明</a></li>
-            
-        
-    
-        
-        
-            
-                
+            <li class="sub parent__11" style="display: none;"><a href="#_14">单元测试接口说明</a></li>
             
         
             
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-        
-        <li class="main">
-            <a href="#_15">绑定相关接口<span class="main-set parent__15">+</span></a>
-        </li>
-        
-            
-            <li class="sub parent__15" style="display: none;"><a href="#_16">获取方式</a></li>
-            
-        
-            
-            <li class="sub parent__15" style="display: none;"><a href="#_17">接口说明</a></li>
-            
-        
-            
-            <li class="sub parent__15" style="display: none;"><a href="#_18">单元测试接口说明</a></li>
-            
-        
-            
-            <li class="sub parent__15" style="display: none;"><a href="#_19">数据结构说明</a></li>
+            <li class="sub parent__11" style="display: none;"><a href="#_15">数据结构说明</a></li>
             
         
     
@@ -418,27 +386,27 @@
         
         
         <li class="main">
-            <a href="#_20">存储相关接口<span class="main-set parent__20">+</span></a>
+            <a href="#_16">存储相关接口<span class="main-set parent__16">+</span></a>
         </li>
         
             
-            <li class="sub parent__20" style="display: none;"><a href="#_21">获取方式</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#_17">获取方式</a></li>
             
         
             
-            <li class="sub parent__20" style="display: none;"><a href="#_22">存储模型</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#_18">存储模型</a></li>
             
         
             
-            <li class="sub parent__20" style="display: none;"><a href="#_23">分区键与主键</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#_19">分区键与主键</a></li>
             
         
             
-            <li class="sub parent__20" style="display: none;"><a href="#_24">接口说明</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#_20">接口说明</a></li>
             
         
             
-            <li class="sub parent__20" style="display: none;"><a href="#_25">单元测试接口说明</a></li>
+            <li class="sub parent__16" style="display: none;"><a href="#_21">单元测试接口说明</a></li>
             
         
     
@@ -462,23 +430,55 @@
         
         
         <li class="main">
-            <a href="#_26">推送服务接口<span class="main-set parent__26">+</span></a>
+            <a href="#_22">推送服务接口<span class="main-set parent__22">+</span></a>
         </li>
         
             
-            <li class="sub parent__26" style="display: none;"><a href="#_27">获取方式</a></li>
+            <li class="sub parent__22" style="display: none;"><a href="#_23">获取方式</a></li>
             
         
             
-            <li class="sub parent__26" style="display: none;"><a href="#_28">接口说明</a></li>
+            <li class="sub parent__22" style="display: none;"><a href="#_24">接口说明</a></li>
             
         
             
-            <li class="sub parent__26" style="display: none;"><a href="#_29">单元测试接口说明</a></li>
+            <li class="sub parent__22" style="display: none;"><a href="#_25">单元测试接口说明</a></li>
             
         
             
-            <li class="sub parent__26" style="display: none;"><a href="#_30">数据结构说明</a></li>
+            <li class="sub parent__22" style="display: none;"><a href="#_26">数据结构说明</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_27">文件相关接口<span class="main-set parent__27">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__27" style="display: none;"><a href="#_28">获取方式</a></li>
+            
+        
+            
+            <li class="sub parent__27" style="display: none;"><a href="#_29">接口说明</a></li>
+            
+        
+            
+            <li class="sub parent__27" style="display: none;"><a href="#_30">数据结构说明</a></li>
             
         
     
@@ -1520,114 +1520,16 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h1 id="_11">文件相关接口</h1>
-<p>该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。</p>
-<p><strong>注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。</strong></p>
-<h2 id="_12">获取方式</h2>
-<pre><code class="java">ACFileMgr fileMgr = ac.fileMgr(ACContext context);
-</code></pre>
-
-<blockquote>
-<p><font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>。</p>
-</blockquote>
-<h2 id="_13">接口说明</h2>
-<pre><code class="java">public interface ACFileMgr {
-
-    /**
-     * 获取文件的访问/下载URL。
-     *
-     * @param bucket        要访问/下载的文件在云端所属的类别的名字。
-     * @param name          要访问/下载的文件在云端的名字。
-     * @param expireTime    所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
-     * @return              指定文件的访问/下载URL。
-     * @throws Exception    获取文件访问/下载URL失败时抛出异常。
-     */
-    public String getDownloadUrl(String bucket, String name, long expireTime) throws Exception;
-
-    /**
-     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
-     *
-     * @param filePath      要被上传的文件的本地路径。
-     * @param bucket        文件上传后在云端所属的类别的名字。
-     * @param name          文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
-     * @param acl           文件的访问权限。如果为null，则使用缺省值。
-     * @throws Exception    上传文件失败时抛出异常。
-     */
-    public void uploadFile(String filePath, String bucket, String name, ACACL acl) throws Exception;
-}
-</code></pre>
-
-<h2 id="_14">数据结构说明</h2>
-<p>文件的访问权限。</p>
-<pre><code class="java">public class ACACL {
-
-    /**
-     * 用户类型
-     * &lt;p/&gt;
-     * USER：终端用户，DEVELOPER：开发者
-     */
-    public enum UserType {
-        USER,
-        DEVELOPER
-    }
-
-    public enum OpType {
-        READ(&quot;read&quot;),
-        WRITE(&quot;write&quot;);
-
-        public String type;
-
-        OpType(String type) {
-            this.type = type;
-        }
-    }
-
-    public static String readTag = &quot;read&quot;;
-    public static String writeTag = &quot;write&quot;;
-
-    private boolean isPublicReadAllow;    // 缺省为true。
-    private boolean isPublicWriteAllow;   // 缺省为true。
-
-    private ACObject userAccessObj;
-    private ACObject userDenyObj;
-
-    public ACACL();
-
-    // 设置全局访问权限
-    public void setPublicReadAccess(boolean allow);
-    public void setPublicWriteAccess(boolean allow);
-
-    // 设置用户访问权限（白名单）
-    public void setUserAccess(OpType opType, UserType userType, long user);
-    public void unsetUserAccess(OpType opType, UserType userType, long user);
-
-    // 设置用户访问权限（黑名单）
-    public void setUserDeny(OpType opType, UserType userType, long user);
-    public void unsetUserDeny(OpType opType, UserType userType, long user);
-
-    // 检查用户读权限，先检查黑名单，再检查白名单
-    public boolean isReadAllowed(UserType userType, Long user);
-
-    // 检查用户写权限
-    public boolean isWriteAllowed(UserType userType, Long user);
-
-    // 辅助函数
-    public boolean isAllowed(UserType userType, Long user, OpType opType);
-
-    public ACObject toObject();
-}
-</code></pre>
-
-<h1 id="_15">绑定相关接口</h1>
+<h1 id="_11">绑定相关接口</h1>
 <p>该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。</p>
-<h2 id="_16">获取方式</h2>
+<h2 id="_12">获取方式</h2>
 <pre><code class="java">ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>(仅调用listUsers方法时，可以使用<code>ac.newContext()</code>)。</p>
 </blockquote>
-<h2 id="_17">接口说明</h2>
+<h2 id="_13">接口说明</h2>
 <pre><code class="java">public interface ACBindMgr {
 
     /**
@@ -2103,7 +2005,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_18">单元测试接口说明</h2>
+<h2 id="_14">单元测试接口说明</h2>
 <p>为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外该类还提供了cleanAll和unbindUser接口，用于清理单元测试中产生的数据，在单元测试中可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：</p>
 <pre><code class="java">public interface ACBindMgrForTest extends ACBindMgr {
 
@@ -2157,7 +2059,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_19">数据结构说明</h2>
+<h2 id="_15">数据结构说明</h2>
 <p>被绑定的设备的基础信息。</p>
 <pre><code class="java">public class ACUserDevice {
     private long id;                  // 设备的逻辑ID
@@ -2221,16 +2123,16 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h1 id="_20">存储相关接口</h1>
+<h1 id="_16">存储相关接口</h1>
 <p>AbleCloud存储服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。</p>
-<h2 id="_21">获取方式</h2>
+<h2 id="_17">获取方式</h2>
 <pre><code class="java">ACStore store = ac.store(String className, ACContext contexte);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处传开发者上下文，即<code>ac.newContext()</code>。</p>
 </blockquote>
-<h2 id="_22">存储模型</h2>
+<h2 id="_18">存储模型</h2>
 <p>AbleCloud目前提供基于MySQL的分布式存储服务。开发者需要预先设定数据集的结构，同时可以选择对数据进行分区或不分区。为定位数据所在分区，需要定义数据分区key，AbleCloud称其为entity group key（分区键）。当我们要查找一条存储在AbleCloud中的数据时，需要提供其key值，通过key值定位到具体的数据，这种用于定位具体数据的key，AbleCloud称其为primary key（主键）。</p>
 <p>存储模型示例如下：
 <img alt="store" src="../../pic/reference/store.png" /></p>
@@ -2246,7 +2148,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。</p>
 </blockquote>
 <p>2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题</p>
-<h2 id="_23">分区键与主键</h2>
+<h2 id="_19">分区键与主键</h2>
 <p>分区键（entity group key）用于实现数据库分表，写入store的数据会根据分区键的值，写入到不同的分区。
 主键（primary key）用于唯一索引一条数据。
 分区键必须为主键的一部分，可以相同。</p>
@@ -2296,7 +2198,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 设备00001的两行数据，肯定是在同一个分区。而设备00001与设备00002是有可能不再同一个分区的。</p>
 <p>分区的优点是可以实现存储的水平扩展，缺点是会导致一些使用的限制，比如，用户无法在一次请求中跨分区查询或写入数据，任何请求都要加上分区键才能实现。</p>
 <p>所以如果数据集的数据量比较少的话，可以选择不分区，如果数据量很大的话，建议选择分区;分区键的选择要符合自己的场景，比如对于设备上报数据集的话，分区键一般为设备ID，主键一般为设备ID+时间戳。是否分区，一旦选定，不能更改</p>
-<h2 id="_24">接口说明</h2>
+<h2 id="_20">接口说明</h2>
 <h3 id="acfilter">ACFilter：</h3>
 <p>数据查询过滤器，独立于数据集之外，同一个过滤器可用于在不同的数据集中进行数据查询过滤。</p>
 <p>获取方式：</p>
@@ -2674,7 +2576,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <blockquote>
 <p><font color=red>注意</font>：ACIterator仅用于分区数据集。对于未分区的数据集，请直接使用Scan接口。</p>
 </blockquote>
-<h2 id="_25">单元测试接口说明</h2>
+<h2 id="_21">单元测试接口说明</h2>
 <p>测试过程如果用到了AbleCloud云端存储，也会在云端存储中存储一些测试用的数据。在每次单元测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），可对测试数据进行清理。该类便提供了创建/删除数据集（类似于table）的功能。接口定义如下：</p>
 <pre><code class="java">public interface ACStoreForTest {
     /**
@@ -2709,16 +2611,16 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h1 id="_26">推送服务接口</h1>
+<h1 id="_22">推送服务接口</h1>
 <p>该服务用于向当前设备的拥有者（owner）或所有用户发送推送消息（App端）。</p>
-<h2 id="_27">获取方式</h2>
+<h2 id="_23">获取方式</h2>
 <pre><code class="java">ACNotificationMgr notificationMgr = ac.notificationMgr(ac.newContext());
 </code></pre>
 
 <blockquote>
 <p><font color="red">注意</font>：此处使用开发者上下文，即<code>ac.newContext()</code>。</p>
 </blockquote>
-<h2 id="_28">接口说明</h2>
+<h2 id="_24">接口说明</h2>
 <pre><code class="java">public interface ACNotificationMgr {
     //通知绑定该设备的所有用户
     public static long NOTIFY_ALL_USER = 0;
@@ -2744,7 +2646,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_29">单元测试接口说明</h2>
+<h2 id="_25">单元测试接口说明</h2>
 <pre><code class="java">public interface ACNotificationMgrForTest extends ACNotificationMgr {
 
     /**
@@ -2769,7 +2671,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_30">数据结构说明</h2>
+<h2 id="_26">数据结构说明</h2>
 <pre><code class="java">public class ACNotification {
     public static final long GO_APP = 0;
     public static final long GO_URL = 1;
@@ -2852,6 +2754,104 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <blockquote>
 <p><font color=red>注意：</font><code>title</code>跟<code>content</code>为必填项，其它为可选项。</p>
 </blockquote>
+<h1 id="_27">文件相关接口</h1>
+<p>该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。</p>
+<p><strong>注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。</strong></p>
+<h2 id="_28">获取方式</h2>
+<pre><code class="java">ACFileMgr fileMgr = ac.fileMgr(ACContext context);
+</code></pre>
+
+<blockquote>
+<p><font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>。</p>
+</blockquote>
+<h2 id="_29">接口说明</h2>
+<pre><code class="java">public interface ACFileMgr {
+
+    /**
+     * 获取文件的访问/下载URL。
+     *
+     * @param bucket        要访问/下载的文件在云端所属的类别的名字。
+     * @param name          要访问/下载的文件在云端的名字。
+     * @param expireTime    所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
+     * @return              指定文件的访问/下载URL。
+     * @throws Exception    获取文件访问/下载URL失败时抛出异常。
+     */
+    public String getDownloadUrl(String bucket, String name, long expireTime) throws Exception;
+
+    /**
+     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
+     *
+     * @param filePath      要被上传的文件的本地路径。
+     * @param bucket        文件上传后在云端所属的类别的名字。
+     * @param name          文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
+     * @param acl           文件的访问权限。如果为null，则使用缺省值。
+     * @throws Exception    上传文件失败时抛出异常。
+     */
+    public void uploadFile(String filePath, String bucket, String name, ACACL acl) throws Exception;
+}
+</code></pre>
+
+<h2 id="_30">数据结构说明</h2>
+<p>文件的访问权限。</p>
+<pre><code class="java">public class ACACL {
+
+    /**
+     * 用户类型
+     * &lt;p/&gt;
+     * USER：终端用户，DEVELOPER：开发者
+     */
+    public enum UserType {
+        USER,
+        DEVELOPER
+    }
+
+    public enum OpType {
+        READ(&quot;read&quot;),
+        WRITE(&quot;write&quot;);
+
+        public String type;
+
+        OpType(String type) {
+            this.type = type;
+        }
+    }
+
+    public static String readTag = &quot;read&quot;;
+    public static String writeTag = &quot;write&quot;;
+
+    private boolean isPublicReadAllow;    // 缺省为true。
+    private boolean isPublicWriteAllow;   // 缺省为true。
+
+    private ACObject userAccessObj;
+    private ACObject userDenyObj;
+
+    public ACACL();
+
+    // 设置全局访问权限
+    public void setPublicReadAccess(boolean allow);
+    public void setPublicWriteAccess(boolean allow);
+
+    // 设置用户访问权限（白名单）
+    public void setUserAccess(OpType opType, UserType userType, long user);
+    public void unsetUserAccess(OpType opType, UserType userType, long user);
+
+    // 设置用户访问权限（黑名单）
+    public void setUserDeny(OpType opType, UserType userType, long user);
+    public void unsetUserDeny(OpType opType, UserType userType, long user);
+
+    // 检查用户读权限，先检查黑名单，再检查白名单
+    public boolean isReadAllowed(UserType userType, Long user);
+
+    // 检查用户写权限
+    public boolean isWriteAllowed(UserType userType, Long user);
+
+    // 辅助函数
+    public boolean isAllowed(UserType userType, Long user, OpType opType);
+
+    public ACObject toObject();
+}
+</code></pre>
+
 <h1 id="_31">短信服务接口</h1>
 <p>该服务用于向当前注册用户发送短信消息。</p>
 <h2 id="_32">获取方式</h2>
