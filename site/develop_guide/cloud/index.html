@@ -1324,6 +1324,9 @@ start.cmd
 </blockquote>
 <h2 id="_16">单步调试</h2>
 <p>集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。</p>
+<blockquote>
+<p>注意：使用单步调试需要更新java sdk到1.4.0以上</p>
+</blockquote>
 <ol>
 <li>
 <p>点击上方的三角形按钮后，点击Edit Configurations...
@@ -1334,38 +1337,38 @@ start.cmd
 <img alt="debug" src="../../develop_guide/debug/2.png" /></p>
 </li>
 <li>
-<p>可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入<strong><code>com.ablecloud.cloudservice.ACServer</code></strong>，最后确认Use classpath of module项为你的工程的module，点击OK按钮
-<img alt="debug" src="../../develop_guide/debug/3.png" /></p>
-</li>
-<li>
-<p>下面可以开始debug你的工程了，首先在您的工程代码处设置断点
-<img alt="debug" src="../../develop_guide/debug/4.png" /></p>
-</li>
-<li>
-<p>设置完断点后，点击上方小甲虫按钮，如下图所示
-<img alt="debug" src="../../develop_guide/debug/5.png" /></p>
-</li>
-<li>
-<p>可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
-<img alt="debug" src="../../develop_guide/debug/6.png" /></p>
-</li>
-<li>
-<p>进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
-<img alt="debug" src="../../develop_guide/debug/7.png" /></p>
-</li>
-<li>
-<p>发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
-<img alt="debug" src="../../develop_guide/debug/8.png" /></p>
-</li>
-<li>
-<p>Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
-<img alt="debug" src="../../develop_guide/debug/9.png" /></p>
-</li>
-<li>
-<p>切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的<code>this.writeResp(reqMsg,resp)</code>后，可以看到终端会自动出现程序处理后的返回结果，调试结束
-<img alt="debug" src="../../develop_guide/debug/10.png" /></p>
+<p>可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入<strong><code>com.ablecloud.cloudservice.ACServer</code></strong>，最后确认Use classpath of module项为你的工程的module，点击OK按钮</p>
 </li>
 </ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/3.png" /></p>
+<ol>
+<li>下面可以开始debug你的工程了，首先在您的工程代码处设置断点</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/4.png" /></p>
+<ol>
+<li>设置完断点后，点击上方小甲虫按钮，如下图所示</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/5.png" /></p>
+<ol>
+<li>可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/6.png" /></p>
+<ol>
+<li>进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/7.png" /></p>
+<ol>
+<li>发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/8.png" /></p>
+<ol>
+<li>Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/9.png" /></p>
+<ol>
+<li>切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的<code>this.writeResp(reqMsg,resp)</code>后，可以看到终端会自动出现程序处理后的返回结果，调试结束</li>
+</ol>
+<p><img alt="debug" src="../../pic/develop_guide/debug/10.png" /></p>
 <h1 id="store">Store存储接口示例</h1>
 <p>以数据集<code>test_data</code>为例，假定其分区键为<code>deviceId</code>（字符串型）；主键为<code>deviceId</code>（字符串型）和<code>timestamp</code>（整型）；其他字段包括<code>status</code>（字符串型）、<code>mode</code>（字符串型）、<code>speed</code>（整型）和<code>pm25</code>（浮点型）等。</p>
 <h2 id="create">Create</h2>
