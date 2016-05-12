@@ -951,43 +951,33 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 >注意：使用单步调试需要更新java sdk到1.4.0以上
 
 1. 点击上方的三角形按钮后，点击Edit Configurations...
-
 ![debug](../pic/develop_guide/debug/1.png)
 
-2. 出现如下小窗口后，点击左上角＋号，选择Application
-
+1. 出现如下小窗口后，点击左上角＋号，选择Application
 ![debug](../pic/develop_guide/debug/2.png)
 
-3. 可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入**`com.ablecloud.cloudservice.ACServer`**，最后确认Use classpath of module项为你的工程的module，点击OK按钮
-
+1. 可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入**`com.ablecloud.cloudservice.ACServer`**，最后确认Use classpath of module项为你的工程的module，点击OK按钮
 ![debug](../pic/develop_guide/debug/3.png)
 
-4. 下面可以开始debug你的工程了，首先在您的工程代码处设置断点
-
+1. 下面可以开始debug你的工程了，首先在您的工程代码处设置断点
 ![debug](../pic/develop_guide/debug/4.png)
 
-5. 设置完断点后，点击上方小甲虫按钮，如下图所示
-
+1. 设置完断点后，点击上方小甲虫按钮，如下图所示
 ![debug](../pic/develop_guide/debug/5.png)
 
-6. 可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
-
+1. 可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
 ![debug](../pic/develop_guide/debug/6.png)
 
-7. 进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
-
+1. 进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
 ![debug](../pic/develop_guide/debug/7.png)
 
-8. 发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
-
+1. 发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
 ![debug](../pic/develop_guide/debug/8.png)
 
-9. Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
-
+1. Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
 ![debug](../pic/develop_guide/debug/9.png)
 
-10. 切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的`this.writeResp(reqMsg,resp)`后，可以看到终端会自动出现程序处理后的返回结果，调试结束
-
+1. 切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的`this.writeResp(reqMsg,resp)`后，可以看到终端会自动出现程序处理后的返回结果，调试结束
 ![debug](../pic/develop_guide/debug/10.png)
 
 #Store存储接口示例
