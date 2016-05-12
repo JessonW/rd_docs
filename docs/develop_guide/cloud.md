@@ -948,6 +948,8 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 ##单步调试
 集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。
 
+>注意：使用单步调试需要更新java sdk到1.4.0以上
+
 1. 点击上方的三角形按钮后，点击Edit Configurations...
 ![debug](../develop_guide/debug/1.png)
 
