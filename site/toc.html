@@ -1,0 +1,21 @@
+<div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    {% for toc_item in toc %}
+        {% set exists = [] %}
+        {% for sub_item in toc_item.children %}
+            {% if sub_item.title != '||SKIP||' %}
+                {% if exists.append(1) %}{% endif %}
+            {% endif %}
+        {% endfor %}
+        {% set parent_id = toc_item.url.replace('#', '') %}
+        <li class="main{% if toc_item.active %} active{% endif %}{% if toc_item.children %}{% endif %}">
+            <a href="{{ toc_item.url }}">{{ toc_item.title }}{% if exists %}<span class="main-set parent_{{ parent_id }}">+</span>{% endif %}</a>
+        </li>
+        {% for sub_item in toc_item.children %}
+            {% if sub_item.title != '||SKIP||' %}
+            <li class="sub parent_{{ parent_id }}" style="display: none;"><a href="{{ sub_item.url }}">{{ sub_item.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
+</div>

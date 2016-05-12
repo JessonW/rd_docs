@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.4.0)的API说明。
+下文是Java SDK (v1.4.x)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
@@ -595,12 +595,21 @@ public abstract class AC {
     public abstract ACAnalysisMgr analysisMgr(ACContext context);
 
     /**
-     * 获取文件管理器，可以上传下载文件
+     * 获取文件管理器，可以上传下载文件。
+     * 注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。
      *
      * @param context 开发者的context
      * @return
      */
-    public abstract ACBlobStoreMgr blobStoreMgr(ACContext context);
+    public abstract ACFileMgr fileMgr(ACContext context);
+
+    /**
+     * 获取天气管理器，可以获取pm25,空气质量等相关天气信息
+     *
+     * @param context 开发者的context
+     * @return
+     */
+    public abstract ACWeatherMgr weatherMgr(ACContext context);
 
     /**
      * 为便于测试，开发者可实现一个服务的桩
@@ -892,59 +901,6 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
      * @throws Exception
      */
     public void cleanAll() throws Exception;
-}
-```
-
-#文件相关接口
-该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
-##获取方式
-```java
-ACBlobStoreMgr blobStoreMgr = ac.blobStoreMgr(ACContext context);
-```
-><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`。
-
-##接口说明
-```java
-public interface ACBlobStoreMgr {
-
-    /**
-     * 向BlobStore服务上传文件。
-     *
-     * @param bucket    文件所属的类别名字。
-     * @param filePath  要被上传的文件的本地路径。
-     * @param name      可以指定文件被上传后在服务器端的存储名字。如果未指定，则使用从$filePath中提取到的文件名。
-     * @throws Exception
-     */
-    public void put(String bucket, String filePath, String name) throws Exception;
-
-    /**
-     * 从BlobStore服务下载文件。
-     *
-     * @param bucket    要下载的文件所属的类别名。
-     * @param name      要下载的文件的名字。
-     * @param filePath  文件下载后的本地存储路径。
-     * @throws Exception
-     */
-    public void get(String bucket, String name, String filePath) throws Exception;
-
-    /**
-     * 从BlobStore服务撒上删除指定文件。
-     *
-     * @param bucket    要被删除的文件所属的类别名。
-     * @param name      要被删除的文件的名字。
-     * @throws Exception
-     */
-    public void delete(String bucket, String name) throws Exception;
-
-    /**
-     * 替换BlobStore服务中存储的文件。
-     *
-     * @param bucket    要被替换的文件所属的类别名。
-     * @param name      要被替换的文件的名字。
-     * @param filePath  包含新内容的文件在本地的存储路径。
-     * @throws Exception
-     */
-    public void replace(String bucket, String name, String filePath) throws Exception;
 }
 ```
 
@@ -2177,6 +2133,108 @@ public class ACNotification {
 ```
 ><font color=red>注意：</font>`title`跟`content`为必填项，其它为可选项。
 
+#文件相关接口
+该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
+
+**注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。**
+
+##获取方式
+```java
+ACFileMgr fileMgr = ac.fileMgr(ACContext context);
+```
+><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`。
+
+##接口说明
+```java
+public interface ACFileMgr {
+
+    /**
+     * 获取文件的访问/下载URL。
+     *
+     * @param bucket        要访问/下载的文件在云端所属的类别的名字。
+     * @param name          要访问/下载的文件在云端的名字。
+     * @param expireTime    所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
+     * @return              指定文件的访问/下载URL。
+     * @throws Exception    获取文件访问/下载URL失败时抛出异常。
+     */
+    public String getDownloadUrl(String bucket, String name, long expireTime) throws Exception;
+
+    /**
+     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
+     *
+     * @param filePath      要被上传的文件的本地路径。
+     * @param bucket        文件上传后在云端所属的类别的名字。
+     * @param name          文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
+     * @param acl           文件的访问权限。如果为null，则使用缺省值。
+     * @throws Exception    上传文件失败时抛出异常。
+     */
+    public void uploadFile(String filePath, String bucket, String name, ACACL acl) throws Exception;
+}
+```
+
+##数据结构说明
+
+文件的访问权限。
+
+```java
+public class ACACL {
+
+    /**
+     * 用户类型
+     * <p/>
+     * USER：终端用户，DEVELOPER：开发者
+     */
+    public enum UserType {
+        USER,
+        DEVELOPER
+    }
+
+    public enum OpType {
+        READ("read"),
+        WRITE("write");
+
+        public String type;
+
+        OpType(String type) {
+            this.type = type;
+        }
+    }
+
+    public static String readTag = "read";
+    public static String writeTag = "write";
+
+    private boolean isPublicReadAllow;    // 缺省为true。
+    private boolean isPublicWriteAllow;   // 缺省为true。
+
+    private ACObject userAccessObj;
+    private ACObject userDenyObj;
+
+    public ACACL();
+
+    // 设置全局访问权限
+    public void setPublicReadAccess(boolean allow);
+    public void setPublicWriteAccess(boolean allow);
+
+    // 设置用户访问权限（白名单）
+    public void setUserAccess(OpType opType, UserType userType, long user);
+    public void unsetUserAccess(OpType opType, UserType userType, long user);
+
+    // 设置用户访问权限（黑名单）
+    public void setUserDeny(OpType opType, UserType userType, long user);
+    public void unsetUserDeny(OpType opType, UserType userType, long user);
+
+    // 检查用户读权限，先检查黑名单，再检查白名单
+    public boolean isReadAllowed(UserType userType, Long user);
+
+    // 检查用户写权限
+    public boolean isWriteAllowed(UserType userType, Long user);
+
+    // 辅助函数
+    public boolean isAllowed(UserType userType, Long user, OpType opType);
+
+    public ACObject toObject();
+}
+```
 
 #短信服务接口
 该服务用于向当前注册用户发送短信消息。
