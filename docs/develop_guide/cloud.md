@@ -957,28 +957,36 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 ![debug](../develop_guide/debug/2.png)
 
 1. 可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入**`com.ablecloud.cloudservice.ACServer`**，最后确认Use classpath of module项为你的工程的module，点击OK按钮
-![debug](../develop_guide/debug/3.png)
+
+![debug](../pic/develop_guide/debug/3.png)
 
 1. 下面可以开始debug你的工程了，首先在您的工程代码处设置断点
-![debug](../develop_guide/debug/4.png)
+
+![debug](../pic/develop_guide/debug/4.png)
 
 1. 设置完断点后，点击上方小甲虫按钮，如下图所示
-![debug](../develop_guide/debug/5.png)
+
+![debug](../pic/develop_guide/debug/5.png)
 
 1. 可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
-![debug](../develop_guide/debug/6.png)
+
+![debug](../pic/develop_guide/debug/6.png)
 
 1. 进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
-![debug](../develop_guide/debug/7.png)
+
+![debug](../pic/develop_guide/debug/7.png)
 
 1. 发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
-![debug](../develop_guide/debug/8.png)
+
+![debug](../pic/develop_guide/debug/8.png)
 
 1. Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
-![debug](../develop_guide/debug/9.png)
+
+![debug](../pic/develop_guide/debug/9.png)
 
 1. 切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的`this.writeResp(reqMsg,resp)`后，可以看到终端会自动出现程序处理后的返回结果，调试结束
-![debug](../develop_guide/debug/10.png)
+
+![debug](../pic/develop_guide/debug/10.png)
 
 #Store存储接口示例
 以数据集`test_data`为例，假定其分区键为`deviceId`（字符串型）；主键为`deviceId`（字符串型）和`timestamp`（整型）；其他字段包括`status`（字符串型）、`mode`（字符串型）、`speed`（整型）和`pm25`（浮点型）等。
