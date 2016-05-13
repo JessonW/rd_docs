@@ -1752,8 +1752,8 @@ ACFileMgr fileMgr = AC.fileMgr();
 ###1、获取下载url
 ```java
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
-//0代表url链接有效时间为长期有效
-fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
+//24*60*60代表url链接有效时间，即1天
+fileMgr.getDownloadUrl(fileInfo, 24*60*60 ，new PayloadCallback<String>() {
     @Override
     public void success(String url) {
          //成功获取文件url
@@ -1937,16 +1937,16 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 ```
 ####3. 获取上传的图片的url
 ```java
-    //建议ExpireTime=0，url永久有效
+    //建议ExpireTime=0，国内环境下url永久有效
     fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
     @Override
     public void success(String url) {
-         //成功获取文件url
+        //成功获取文件url
     }
 
     @Override
     public void error(ACException e) {
-         //没有权限或其他网络错误
+        //没有权限或其他网络错误
     }
 });
 ```
@@ -1995,5 +1995,7 @@ AC.weatherMgr().getLatestPM25("北京", new PayloadCallback<ACPM25>() {
 
 >+ **建议在调用AbleCloud云服务接口之前先判断网络处于可访问状态之后再调用相关接口，可以省去对error回调里网络错误的处理。**
 >+ **调试阶段，可通过`e.getErrorCode()`获取错误码，`e.getMessage()`获取错误信息。**
+
+
 
 

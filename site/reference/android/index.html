@@ -977,6 +977,8 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     private long userId;
     //创建该用户的昵称
     private String nickName;
+    //任务名称
+    private String name;
     //任务描述
     private String description;
     //任务时区
@@ -2661,9 +2663,10 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback&lt;String&gt; callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback&lt;String&gt; callback);
 
     /**
      * 下载文件到内存里,适合小文件下载
@@ -3238,9 +3241,11 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback&lt;String&gt; callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback&lt;String&gt; callback);
+
 
     /**
      * 下载文件到内存里,适合小文件下载（如头像下载）

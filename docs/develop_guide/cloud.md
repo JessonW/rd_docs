@@ -14,8 +14,8 @@
 /config
 	/cloudservice-conf.xml
 /lib
-	/ablecloud-framework-1.3.0.jar
-    /ac-java-api-1.2.0.jar
+	/ablecloud-framework-1.4.0.jar
+    /ac-java-api-1.4.0.jar
 	/commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -27,7 +27,7 @@ start.cmd
 
 ><font color=red>注意事项：</font>
 
->1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.3.0.jar`和`ac-java-api-1.2.0.jar`。根据SDK的发行状态，各jar包的版本号可能不同。
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.4.0.jar`和`ac-java-api-1.4.0.jar`。根据SDK的发行状态，各jar包的版本号可能不同。
 
 >1. 开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
 
@@ -72,7 +72,7 @@ start.cmd
 
 ![demoservice_class](../pic/develop_guide/DemoService_Class.png)
 
-3、接下来就可以在本地启动服务并进行测试。
+3、启动终端，进入package目录下，接下来就可以在本地启动服务并进行测试。
 
 <b>*linux*</b>下在终端运行如下命令启动服务：
 
@@ -103,7 +103,9 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 `X-Zc-Major-Domain`是开发者帐号的主域的名字；`X-Zc-Sub-Domain`是要访问的服务所关联的子域的名字；`deviceId`是要被控制的设备的逻辑ID；`X-Zc-User-Id`是对设备发起控制指令的用户的ID。
 前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。
 
->2. 例子中访问的controlLight方法需要参数`X-Zc-User-Id`和`deviceId`，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。
+>2. 若返回`{"error":"device not exist","errorCode":3802}`,说明这个设备`deviceId`没有被`X-Zc-User-Id`用户绑定。但是至少说明本地测试已经成功了，能测试该接口的返回结果了。
+
+>3. 例子中访问的controlLight方法需要参数`X-Zc-User-Id`、`deviceId`、`action`，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。
 
 ##开发工具设置
 
@@ -122,7 +124,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
 + **AbleCloud SDK**
 
-[点此下载](https://www.ablecloud.cn/download/SDK&Demo/ablecloud-framework-1.2.0.zip) AbleCloud云端服务开发框架
+[点此下载](https://www.ablecloud.cn/download/SDK&Demo/ablecloud-framework-1.4.0.zip) AbleCloud云端服务开发框架
 
 ####Intellij
 1. **新建工程**
@@ -153,9 +155,10 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     至此，新建工程完成。
     
-1. **布署AbleCloud框架便于本机测试以及提交版本**
+1. **部署AbleCloud框架便于本机测试以及提交版本**
     
-    新建package目录，将ablecloud-framework-1.3.0.zip解压到package目录下。
+    新建package目录，将ablecloud-framework-1.4.0.zip解压到package目录下。
+    > package子目录的结构为config/、lib/、start.sh文件等
    
 1. **设置工程**
 
@@ -184,10 +187,6 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     
     ![lib](../pic/reference/intellij/set_project_2_4.png)
     
-    完成上述步骤后，我们将在工程视图里面看到新添加的该目录，如下：
-    
-    ![lib](../pic/reference/intellij/set_project_2_5.png))
-    
     至此，UDS开发所依赖的AbleCloud开发框架库添加成功。
     
 1. **修改pom.xml文件**
@@ -202,7 +201,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 
     		<groupId>com.ablecloud.demo</groupId>
             <artifactId>DemoService</artifactId>
-            <version>1.1.0</version>
+            <version>1.0.0</version>
 
             <properties>
                 <ablecloud.lib.dir>./package/lib</ablecloud.lib.dir>
@@ -224,8 +223,8 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
                 		</dependencies>
 	                	<configuration>
 	                    	<additionalClasspathElements>
-    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/ablecloud-framework-1.3.0.jar</additionalClasspathElement>
-                                <additionalClasspathElement>${ablecloud.lib.dir}/ac-java-api-1.2.0.jar</additionalClasspathElement>
+    	                    	<additionalClasspathElement>${ablecloud.lib.dir}/ablecloud-framework-1.4.0.jar</additionalClasspathElement>
+                                <additionalClasspathElement>${ablecloud.lib.dir}/ac-java-api-1.4.0.jar</additionalClasspathElement>
         	                	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar</additionalClasspathElement>
             	            	<additionalClasspathElement>${ablecloud.lib.dir}/slf4j-api-1.7.7.jar</additionalClasspathElement>
                 	        	<additionalClasspathElement>${ablecloud.lib.dir}/log4j-1.2.17.jar</additionalClasspathElement>
@@ -905,8 +904,8 @@ public class LightStub extends ACDeviceStub {
 /config
 	/cloudservice-conf.xml
 /lib
-	/ablecloud-framework-1.1.0.jar
-    /ac-java-api-1.0.0.jar
+	/ablecloud-framework-1.4.0.jar
+    /ac-java-api-1.4.0.jar
 	/commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -925,7 +924,7 @@ start.cmd
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505
 2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad{HTTP/1.1}{0.0.0.0:8080}
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms
-2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.
+2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service DemoService ok.
 ```
 
 ###用任意客户端发送http请求
@@ -946,6 +945,40 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 其中`-H`指定头域ACContext的信息；`-d`指定的内容，是构造的ACMsg中的请求参数；`http://localHost:8080/controlLight`中的`ip:port`是你启动DemoService的主机和端口号；`controlLight`即为具体的方法，对应ACMsg设置的名字。
 ><font color="red">**注：**若在handleMsg接口的处理中使用`req.getContext()`获取请求的用户信息，则在构造http请求的时候，需要使用`-H`增加如下三个头域：`X-Zc-Major-Domain`、`X-Zc-Sub-Domain`、`X-Zc-User-Id`</font>。
 
+##单步调试
+集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。
+
+>注意：使用单步调试需要更新java sdk到1.4.0以上
+
+1. 点击上方的三角形按钮后，点击Edit Configurations...
+![debug](../pic/develop_guide/debug/1.png)
+
+1. 出现如下小窗口后，点击左上角＋号，选择Application
+![debug](../pic/develop_guide/debug/2.png)
+
+1. 可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入**`com.ablecloud.cloudservice.ACServer`**，最后确认Use classpath of module项为你的工程的module，点击OK按钮
+![debug](../pic/develop_guide/debug/3.png)
+
+1. 下面可以开始debug你的工程了，首先在您的工程代码处设置断点
+![debug](../pic/develop_guide/debug/4.png)
+
+1. 设置完断点后，点击上方小甲虫按钮，如下图所示
+![debug](../pic/develop_guide/debug/5.png)
+
+1. 可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
+![debug](../pic/develop_guide/debug/6.png)
+
+1. 进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
+![debug](../pic/develop_guide/debug/7.png)
+
+1. 发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
+![debug](../pic/develop_guide/debug/8.png)
+
+1. Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
+![debug](../pic/develop_guide/debug/9.png)
+
+1. 切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的`this.writeResp(reqMsg,resp)`后，可以看到终端会自动出现程序处理后的返回结果，调试结束
+![debug](../pic/develop_guide/debug/10.png)
 
 #Store存储接口示例
 以数据集`test_data`为例，假定其分区键为`deviceId`（字符串型）；主键为`deviceId`（字符串型）和`timestamp`（整型）；其他字段包括`status`（字符串型）、`mode`（字符串型）、`speed`（整型）和`pm25`（浮点型）等。
@@ -1196,7 +1229,7 @@ ACRowIterator it = ac.store(TEST_CLASS, context)
 		.simpleFullScan()
 		.where(f1)
 		.and(f2)
-		.or(f3)
+		.or(f3) 
 		.execute();
 
 // 注意这里可以直接使用每次期望获取的数据条数limit，不需要传入limit+1;同时每次迭代给定的limit可以不同

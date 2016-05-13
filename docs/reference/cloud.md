@@ -10,8 +10,8 @@ AbleCloud一期发布Java版本服务开发框架，其发布目录、文件如�
 /config
 	/cloudservice-conf.xml
 /lib
-	/ablecloud-framework-1.3.0.jar
-    /ac-java-api-1.2.0.jar
+	/ablecloud-framework-1.4.0.jar
+    /ac-java-api-1.4.0.jar
 	/commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -22,7 +22,7 @@ start.cmd
 ```
 ><font color=red>注意事项：</font>
 
->1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.3.0.jar`和`ac-java-api-1.2.0.jar`。根据AbleCloud的发行状态，各jar包的版本号可能不同。
+>1. 所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架`ablecloud-framework-1.4.0.jar`和`ac-java-api-1.4.0.jar`。根据AbleCloud的发行状态，各jar包的版本号可能不同。
 
 >1. 开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的`<additionalClasspathElement>`标签下添加测试依赖。
 
@@ -230,6 +230,7 @@ Crontab定时规则由五部分组成，由左至右分别表示分、时、日�
 
 ##AC
 在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是AbleCloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：
+
 ```java
 public abstract class AC {
     protected ACConfiguration config;

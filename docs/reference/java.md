@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.3.x)的API说明。
+下文是Java SDK (v1.4.x)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
@@ -595,12 +595,21 @@ public abstract class AC {
     public abstract ACAnalysisMgr analysisMgr(ACContext context);
 
     /**
-     * 获取文件管理器，可以上传下载文件
+     * 获取文件管理器，可以上传下载文件。
+     * 注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。
      *
      * @param context 开发者的context
      * @return
      */
-    public abstract ACBlobStoreMgr blobStoreMgr(ACContext context);
+    public abstract ACFileMgr fileMgr(ACContext context);
+
+    /**
+     * 获取天气管理器，可以获取pm25,空气质量等相关天气信息
+     *
+     * @param context 开发者的context
+     * @return
+     */
+    public abstract ACWeatherMgr weatherMgr(ACContext context);
 
     /**
      * 为便于测试，开发者可实现一个服务的桩
@@ -895,59 +904,6 @@ public interface ACAccountMgrForTest extends ACAccountMgr {
 }
 ```
 
-#文件相关接口
-该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
-##获取方式
-```java
-ACBlobStoreMgr blobStoreMgr = ac.blobStoreMgr(ACContext context);
-```
-><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`。
-
-##接口说明
-```java
-public interface ACBlobStoreMgr {
-
-    /**
-     * 向BlobStore服务上传文件。
-     *
-     * @param bucket    文件所属的类别名字。
-     * @param filePath  要被上传的文件的本地路径。
-     * @param name      可以指定文件被上传后在服务器端的存储名字。如果未指定，则使用从$filePath中提取到的文件名。
-     * @throws Exception
-     */
-    public void put(String bucket, String filePath, String name) throws Exception;
-
-    /**
-     * 从BlobStore服务下载文件。
-     *
-     * @param bucket    要下载的文件所属的类别名。
-     * @param name      要下载的文件的名字。
-     * @param filePath  文件下载后的本地存储路径。
-     * @throws Exception
-     */
-    public void get(String bucket, String name, String filePath) throws Exception;
-
-    /**
-     * 从BlobStore服务撒上删除指定文件。
-     *
-     * @param bucket    要被删除的文件所属的类别名。
-     * @param name      要被删除的文件的名字。
-     * @throws Exception
-     */
-    public void delete(String bucket, String name) throws Exception;
-
-    /**
-     * 替换BlobStore服务中存储的文件。
-     *
-     * @param bucket    要被替换的文件所属的类别名。
-     * @param name      要被替换的文件的名字。
-     * @param filePath  包含新内容的文件在本地的存储路径。
-     * @throws Exception
-     */
-    public void replace(String bucket, String name, String filePath) throws Exception;
-}
-```
-
 #绑定相关接口
 该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。
 ##获取方式
@@ -978,6 +934,16 @@ public interface ACBindMgr {
     public List<ACDeviceUser> listUsers(long deviceId) throws Exception;
 
     /**
+     * 修改设备名
+     *
+     * @param subDomain 子域名，如djj（豆浆机）
+     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param name      新的设备名
+     * @param userId    修改该设备名的用户的ID
+     */
+    public void changeName(String subDomain, long deviceId, String name, long userId) throws Exception;
+
+    /**
      * 绑定设备
      *
      * @param subDomain         拟被绑定的设备所属的子域的名字
@@ -987,6 +953,17 @@ public interface ACBindMgr {
      * @throws Exception
      */
     public ACUserDevice bindDevice(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
+
+    /**
+     * 绑定设备,无管理员概念,所有人都可以绑定设备,同时所有人只能使自己解绑设备
+     *
+     * @param subDomain        拟被绑定的设备所属的子域的名字
+     * @param physicalDeviceId 设备物理id
+     * @param name             名字
+     * @param userId           要绑定该设备的用户的ID
+     * @throws Exception
+     */
+    public ACUserDevice bindDeviceWithoutOwner(String subDomain, String physicalDeviceId, String name, long userId) throws Exception;
 
     /**
      * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
@@ -2156,6 +2133,108 @@ public class ACNotification {
 ```
 ><font color=red>注意：</font>`title`跟`content`为必填项，其它为可选项。
 
+#文件相关接口
+该服务接口用于通过云端服务管理文件数据，如用户的头像文件等。
+
+**注意：当前版本的ACFileMgr适用于直接连接互联网的服务器环境，而不适于在UDS中使用。**
+
+##获取方式
+```java
+ACFileMgr fileMgr = ac.fileMgr(ACContext context);
+```
+><font color="red">注意</font>：此处应该传用户上下文，即`req.getContext()`。
+
+##接口说明
+```java
+public interface ACFileMgr {
+
+    /**
+     * 获取文件的访问/下载URL。
+     *
+     * @param bucket        要访问/下载的文件在云端所属的类别的名字。
+     * @param name          要访问/下载的文件在云端的名字。
+     * @param expireTime    所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
+     * @return              指定文件的访问/下载URL。
+     * @throws Exception    获取文件访问/下载URL失败时抛出异常。
+     */
+    public String getDownloadUrl(String bucket, String name, long expireTime) throws Exception;
+
+    /**
+     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
+     *
+     * @param filePath      要被上传的文件的本地路径。
+     * @param bucket        文件上传后在云端所属的类别的名字。
+     * @param name          文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
+     * @param acl           文件的访问权限。如果为null，则使用缺省值。
+     * @throws Exception    上传文件失败时抛出异常。
+     */
+    public void uploadFile(String filePath, String bucket, String name, ACACL acl) throws Exception;
+}
+```
+
+##数据结构说明
+
+文件的访问权限。
+
+```java
+public class ACACL {
+
+    /**
+     * 用户类型
+     * <p/>
+     * USER：终端用户，DEVELOPER：开发者
+     */
+    public enum UserType {
+        USER,
+        DEVELOPER
+    }
+
+    public enum OpType {
+        READ("read"),
+        WRITE("write");
+
+        public String type;
+
+        OpType(String type) {
+            this.type = type;
+        }
+    }
+
+    public static String readTag = "read";
+    public static String writeTag = "write";
+
+    private boolean isPublicReadAllow;    // 缺省为true。
+    private boolean isPublicWriteAllow;   // 缺省为true。
+
+    private ACObject userAccessObj;
+    private ACObject userDenyObj;
+
+    public ACACL();
+
+    // 设置全局访问权限
+    public void setPublicReadAccess(boolean allow);
+    public void setPublicWriteAccess(boolean allow);
+
+    // 设置用户访问权限（白名单）
+    public void setUserAccess(OpType opType, UserType userType, long user);
+    public void unsetUserAccess(OpType opType, UserType userType, long user);
+
+    // 设置用户访问权限（黑名单）
+    public void setUserDeny(OpType opType, UserType userType, long user);
+    public void unsetUserDeny(OpType opType, UserType userType, long user);
+
+    // 检查用户读权限，先检查黑名单，再检查白名单
+    public boolean isReadAllowed(UserType userType, Long user);
+
+    // 检查用户写权限
+    public boolean isWriteAllowed(UserType userType, Long user);
+
+    // 辅助函数
+    public boolean isAllowed(UserType userType, Long user, OpType opType);
+
+    public ACObject toObject();
+}
+```
 
 #短信服务接口
 该服务用于向当前注册用户发送短信消息。
@@ -2510,6 +2589,184 @@ public class ACTimerTask {
             return 1;
         else
             return 0;
+    }
+}
+```
+
+#天气服务接口
+该服务用于获取到室外的pm2.5, AQI(空气质量)以及天气状况等信息.
+
+##获取方式
+```java
+ACWeatherMgr weatherMgr = ac.weatherMgr(ACContext context);
+```
+><font color="red">注意</font>：此处应该使用开发者上下文即可，即`ac.newContext()`。
+
+##接口说明
+```java
+public interface ACWeatherMgr {
+
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public ACPM25 getLatestPM25(String area) throws Exception;
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACPM25> getLastDaysPM25(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACPM25> getLastHoursPM25(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public ACAQI getLatestAqi(String area) throws Exception;
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACAQI> getLastDaysAqi(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACAQI> getLastHoursAqi(String area, int hour) throws Exception;
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public ACWeather getLatestWeather(String area) throws Exception;
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public List<ACWeather> getLastDaysWeather(String area, int day) throws Exception;
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public List<ACWeather> getLastHoursWeather(String area, int hour) throws Exception;
+}
+```
+
+##数据结构说明
+PM2.5相关信息的结构说明:
+
+```java
+public class ACPM25 {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新pm25时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    public String timestamp;
+    //pm25平均值
+    public int avg;
+    //pm25最小值
+    public int min;
+    //pm25最大值
+    public int max;
+
+    public ACPM25(String timestamp, int avg, int min, int max) {
+        this.timestamp = timestamp;
+        this.avg = avg;
+        this.min = min;
+        this.max = max;
+    }
+}
+```
+
+空气质量相关信息的结构说明:
+
+```java
+public class ACAQI {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新空气质量时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //空气质量
+    int AQI;
+    //最低空气质量
+    int minAQI;
+    //最高空气质量
+    int maxAQI;
+
+    public ACAQI(int AQI, int minAQI, int maxAQI, String timestamp) {
+        this.AQI = AQI;
+        this.minAQI = minAQI;
+        this.maxAQI = maxAQI;
+        this.timestamp = timestamp;
+    }
+}
+```
+
+温湿度相关信息的结构说明:
+
+```java
+public class ACWeather {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新天气时间格式为"yyyy-MM-dd HH:mm:ss"
+     * 获取最近几天时间格式为"yyyy-MM-dd"
+     * 获取最近几小时时间格式为"yyyy-MM-dd HH"
+     */
+    String timestamp;
+    //温度
+    double temperature;
+    //最低温度
+    double minTemperature;
+    //最高温度
+    double maxTemperature;
+    //湿度
+    int humidity;
+    //最低湿度
+    int minHumidity;
+    //最高湿度
+    int maxHumidity;
+
+    public ACWeather(String timestamp, double temperature, double minTemperature, double maxTemperature, int humidity, int minHumidity, int maxHumidity) {
+        this.timestamp = timestamp;
+        this.temperature = temperature;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+        this.humidity = humidity;
+        this.minHumidity = minHumidity;
+        this.maxHumidity = maxHumidity;
     }
 }
 ```
