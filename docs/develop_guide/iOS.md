@@ -284,10 +284,10 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 ```
 设备无法激活时，请检查以下问题：
 
-- 0. 设备是否进入了配网模式。
-- 1. 确认WIFI密码是否输入正确。
-- 2. 确认路由器的广播功能有没有被禁用。
-- 3. 设备的秘钥可能存在问题。
+- 1. 设备是否进入了配网模式。
+- 2. 确认WIFI密码是否输入正确。
+- 3. 确认路由器的广播功能有没有被禁用。
+- 4. 设备的秘钥可能存在问题。
 
 
 ####4.绑定设备
@@ -355,7 +355,7 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
         //获取分享码shareCode成功
     }];
 
-//普通用户通过分享码绑定设备
+	//普通用户通过分享码绑定设备
     [ACBindManager bindDeviceWithShareCode:<#shareCode#> callback:^(ACUserDevice *userDevice, NSError *error) {
         if (error) {
             //绑定失败, 错误处理
@@ -541,10 +541,10 @@ APP通过startAbleLink广播自己的WiFi密码，设备成功连上云之后通
 
 若无法添加子设备时，请检查是否有以下问题：
 
-- 0. 网关掉线
-- 1. 子设备已经被其他人绑定
-- 2. 子设备subdomain填写错误
-- 3. 子设备和网关的连接断开了
+- 1. 网关掉线
+- 2. 子设备已经被其他人绑定
+- 3. 子设备subdomain填写错误
+- 4. 子设备和网关的连接断开了
 
 ##Home模型
 
@@ -897,7 +897,7 @@ ACPushManager *pushManager = [[ACPushManager alloc] init];
 
 ####2、创建与服务器的连接
 ```objc
-    [manager connectWithCallback:^(NSError *error) {
+    [pushManager connectWithCallback:^(NSError *error) {
         if (error) {
             //建立连接失败, 错误处理
             return;
@@ -917,7 +917,7 @@ ACPushTable *table = [[ACPushTable alloc] init];
 //设置订阅的表名
 table.className = @"<#name#>";
 //设置订阅的columns行
-table.cloumns = @[<#Valve1#>, <#value2#>,...];
+table.cloumns = @[<#Valve1#>, <#value2#>,...].mutableCopy;
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.opType =  OPTYPE_CREATE |OPTYPE_DELETE | OPTYPE_REPLACE | OPTYPE_UPDATE;
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)
