@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -365,15 +359,27 @@ start.cmd
     /**
      * 处理Device--&gt;Service之间的交互消息
      * 如果服务不处理和设备之间的交互消息，则无须重载该方法。
+     * &lt;p/&gt;
+     * 该接口处理设备汇报的消息后不做响应处理。
      *
-     * 当前，处理设备汇报的消息不做响应。
-     *
-     * @param context       设备的上下文，其中uid字段为系统填充
-     * @param deviceId      设备的逻辑id
-     * @param req           请求消息体
+     * @param reportInfo 设备的信息,包括上下文/设备逻辑id/设备物理id/设备ip
+     * @param req        请求消息体
      * @throws Exception
      */
-    public abstract void handleDeviceMsg(ACContext context, long deviceId, ACDeviceMsg req) throws Exception;
+    public abstract void handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req) throws Exception;
+
+    /**
+     * 处理Device--&gt;Service之间的交互消息并做响应
+     * 如果服务不处理和设备之间的交互消息，则无须重载该方法。
+     * &lt;p/&gt;
+     * 处理设备汇报的消息并做响应。
+     *
+     * @param reportInfo 设备的信息,包括上下文/设备逻辑id/设备物理id/设备ip
+     * @param req        请求消息体
+     * @param resp       返回消息体,不需要回响应时可以不用关心,仅仅用于设置成功/失败
+     * @throws Exception
+     */
+    public ACDeviceMsg handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req, ACMsg resp) throws Exception {}
 
     /**
      * 处理JINDDONG--&gt;Service之间的交互消息，收到Stream点数组，进行设备控制
@@ -442,6 +448,19 @@ start.cmd
      * @return
      */
     public final AC getAc() {}
+}
+</code></pre>
+
+<p>ACDeviceReportInfo为设备上报的属性信息，包含如下：</p>
+<pre><code class="java">public class ACDeviceReportInfo {
+    //设备上下文
+    private ACContext context;
+    //设备逻辑id
+    private Long deviceId;
+    //设备物理id
+    private String physicalDeviceId;
+    //设备的ip地址
+    private String ip;
 }
 </code></pre>
 

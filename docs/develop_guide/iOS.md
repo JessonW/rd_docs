@@ -179,7 +179,7 @@ Xcode下直接**Command + R**运行。
 
 使用账号扩展属性需要先到AbleCloud官网平台上的用户管理添加扩展属性
 
-![userExtned](../pic/develop_guide/userExtned.png)
+![userExtned](../pic/develop_guide/userExtend.png)
 
 ####2、设置用户自定义扩展属性
 

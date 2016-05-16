@@ -75,15 +75,27 @@ public abstract class ACService {
     /**
      * 处理Device-->Service之间的交互消息
      * 如果服务不处理和设备之间的交互消息，则无须重载该方法。
+     * <p/>
+     * 该接口处理设备汇报的消息后不做响应处理。
      *
-     * 当前，处理设备汇报的消息不做响应。
-     *
-     * @param context		设备的上下文，其中uid字段为系统填充
-     * @param deviceId		设备的逻辑id
-     * @param req			请求消息体
+     * @param reportInfo 设备的信息,包括上下文/设备逻辑id/设备物理id/设备ip
+     * @param req        请求消息体
      * @throws Exception
      */
-    public abstract void handleDeviceMsg(ACContext context, long deviceId, ACDeviceMsg req) throws Exception;
+    public abstract void handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req) throws Exception;
+
+    /**
+     * 处理Device-->Service之间的交互消息并做响应
+     * 如果服务不处理和设备之间的交互消息，则无须重载该方法。
+     * <p/>
+     * 处理设备汇报的消息并做响应。
+     *
+     * @param reportInfo 设备的信息,包括上下文/设备逻辑id/设备物理id/设备ip
+     * @param req        请求消息体
+     * @param resp       返回消息体,不需要回响应时可以不用关心,仅仅用于设置成功/失败
+     * @throws Exception
+     */
+    public ACDeviceMsg handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req, ACMsg resp) throws Exception {}
 
     /**
      * 处理JINDDONG-->Service之间的交互消息，收到Stream点数组，进行设备控制
@@ -154,6 +166,21 @@ public abstract class ACService {
     public final AC getAc() {}
 }
 ```
+ACDeviceReportInfo为设备上报的属性信息，包含如下：
+
+```java
+public class ACDeviceReportInfo {
+    //设备上下文
+    private ACContext context;
+    //设备逻辑id
+    private Long deviceId;
+    //设备物理id
+    private String physicalDeviceId;
+    //设备的ip地址
+    private String ip;
+}
+```
+
 在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。
 
 ><font color="red">**注：**</font>通常情况下，开发者只需要重点实现**handleMsg**即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现**handleDeviceMsg**并根据不同code做不同处理 。
