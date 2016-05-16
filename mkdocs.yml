@@ -28,7 +28,7 @@ pages:
     - PHP SDK: reference/php.md
     - Java SDK: reference/java.md
     - Error Code: reference/error_code.md
-- Q&A: QandA.md
+#- Q&A: QandA.md
 
 
 
