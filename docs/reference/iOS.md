@@ -20,9 +20,9 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 @interface ACObject : NSObject
 
 /**
- * Get各种类型的参数值，务必保证Get和Put参数名和类型是一致的
- * @param name  参数名
- * @return      参数值
+ * 获取一个参数值
+ * @param name	参数名
+ * @return		参数值
  */
 - (id)get:(NSString *)name;
 - (NSArray *)getArray:(NSString *)name;
@@ -36,12 +36,13 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (ACObject *)getACObject:(NSString *)name;
 
 /**
- * Put各种类型的参数值，务必保证Put与Get的参数名和类型是一致的
- * @param name  参数名
- * @param value 参数值
+ * 设置一个参数
+ * @param name	参数名
+ * @param value	参数值
  * @return
  */
 - (void)put:(NSString *)name value:(id)value;
+- (void)putArray:(NSString *)name value:(id)value;
 - (void)putBool:(NSString *)name value:(BOOL)value;
 - (void)putLong:(NSString *)name value:(long)value;
 - (void)putLongLong:(NSString *)name value:(long long)value;
@@ -52,13 +53,14 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)putACObject:(NSString *)name value:(ACObject *)value;
 
 /**
- * 添加一个参数到Array类型中
- * @param name  参数名
- * @param value 参数值
+ * 添加一个参数，该参数添加到一个List中
+ * @param name	参数所在List的名字
+ * @param value	参数值
  */
 - (void)add:(NSString *)name value:(id)value;
 - (void)addBool:(NSString *)name value:(BOOL)value;
 - (void)addLong:(NSString *)name value:(long)value;
+- (void)addLongLong:(NSString *)name value:(long long)value;
 - (void)addInteger:(NSString *)name value:(NSInteger)value;
 - (void)addFloat:(NSString *)name value:(float)value;
 - (void)addDouble:(NSString *)name value:(double)value;
@@ -66,21 +68,21 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 - (void)addACObject:(NSString *)name value:(ACObject *)value;
 
 /**
- * 判断是否存在此参数
- * @param name  参数名
+ * 删除一个参数，该参数从List中移除
+ * @param key
  */
-- (BOOL)contains:(NSString *)name;
+- (void)removeString:(NSString *)key;
 
-/**
- * 获取所有参数名列表
- * @param name  参数名
- */
+
+- (BOOL)contains:(NSString *)name;
 - (NSArray *)getKeys;
 
-/**
- * ACObject对象的序列化和反序列化
- */
+- (BOOL)hasObjectData;
+- (NSDictionary *)getObjectData;
+- (void)setObjectData:(NSDictionary *)data;
+
 - (NSData *)marshal;
+
 + (NSData *)marshal:(ACObject *)object;
 + (instancetype)unmarshal:(NSData *)data;
 
@@ -92,18 +94,6 @@ ACObject用于承载交互的具体数据，我们称之为payload（负载）�
 ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及**其它形式**的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的**OBJECT_PAYLOAD**格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。
 
 ```objc
-//
-//  ACMsg.h
-//  ACloudLib
-//
-//  Created by zhourx5211 on 12/10/14.
-//  Copyright (c) 2014 zcloud. All rights reserved.
-//
-
-#import <Foundation/Foundation.h>
-#import "ACObject.h"
-#import "ACContext.h"
-
 @interface ACMsg : ACObject
 
 @property (nonatomic, strong) NSString *name;
@@ -159,11 +149,6 @@ extern NSString *const ACMsgStreamPayload;
 extern NSString *const ACMsgMsgNameHeader;
 extern NSString *const ACMsgAckMSG;
 extern NSString *const ACMsgErrMSG;
-
-@end
-
-
-@end
 ```
 ####ACContext
 交互消息中的context主要用于包含重要的上下文信息，其定义如下：
@@ -212,15 +197,6 @@ typedef enum: NSInteger {
     ACDeviceSecurityModeDynamic,
 
 } ACDeviceSecurityMode;
-
-//设备通讯的优先性设置
-typedef enum: NSUInteger {
-    ACDeviceCommunicationOptionOnlyLocal = 1,  //仅通过局域网
-    ACDeviceCommunicationOptionOnlyCloud,      //仅通过云端
-    ACDeviceCommunicationOptionCloudFirst,     //云端优先
-    ACDeviceCommunicationOptionLocalFirst,     //局域网优先
-} ACDeviceCommunicationOption;
-
 
 @class ACKLVObject, ACObject;
 @interface ACDeviceMsg : NSObject
@@ -453,19 +429,24 @@ typedef enum: NSUInteger {
 说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：
 
 ```objc
+@interface ACFileInfo : NSObject
 //上传文件名字
-@property (copy,nonatomic) NSString *name;
+@property (nonatomic, copy) NSString *name;
+
+//上传小型文件，直接上传数据 不支持断点续传
+@property (nonatomic, strong) NSData *data;
 
 //上传文件路径，支持断点续传
 @property (copy,nonatomic) NSString *filePath;
-//上传文件二进制流数据，用于小文件上传，如拍照后头像直接上传
-@property (retain,nonatomic) NSData *data;
-//文件访问权限管理 如果不设置，则默认所有人可读，自己可写
-@property (retain,nonatomic) ACACL  *acl;
-//文件存储的空间；自定义文件目录，如ota
-@property (copy,nonatomic) NSString * bucket;
+
+//文件访问权限 如果不设置 则默认
+@property (nonatomic, strong) ACACL *acl;
+
+//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
+@property (nonatomic, copy) NSString *bucket;
+
 //crc校验使用
-@property (nonatomic,unsafe_unretained) NSInteger checksum;
+@property (nonatomic, unsafe_unretained) NSInteger checksum;
 
 ```
 
@@ -527,8 +508,6 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 
 @property (nonatomic, strong) ACOTAFileMeta *meta;
 
--(BOOL)isUpdate;
-
 ```
 
 
@@ -538,11 +517,34 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 ACloudLib主要负责设置初始化相关参数，如服务器地址、主域名称、指定服务桩等。
 
 ```objc
+
+typedef NS_ENUM(NSUInteger, ACLoudLibMode) {
+    //测试环境
+    ACLoudLibModeTest,
+    //正式环境
+    ACloudLibModeRouter,
+};
+
+typedef NS_ENUM(NSUInteger, ACLoudLibRegion) {
+    //中国
+    ACLoudLibRegionChina,
+    //东南亚
+    ACLoudLibRegionSouthEastAsia,
+    //欧洲
+    ACLoudLibRegionCentralEurope,
+    //美洲
+    ACLoudLibRegionNorthAmerica,
+};
+
+@class ACMsg, ACDeviceMsg;
 @interface ACloudLib : NSObject
 
 + (NSString *)getVersion;
 
-+ (void)setMode:(NSString *)mode Region:(NSString *)region;
+//手动修改RouterAddress方法
++ (void)setRouterAddress:(NSString*)router;
+
++ (void)setMode:(ACLoudLibMode)mode Region:(ACLoudLibRegion)region;
 
 + (NSString *)getHost;
 + (NSString *)getHttpsHost;
@@ -554,7 +556,6 @@ ACloudLib主要负责设置初始化相关参数，如服务器地址、主域�
 
 + (void)setHttpRequestTimeout:(NSString *)timeout;
 + (NSString *)getHttpRequestTimeout;
-
 ```
 
 ##用户帐号管理
