@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -326,7 +320,7 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_8">设备管理( 独立和网关型）</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_8">设备管理(独立和网关型）</a></li>
             
         
             
@@ -354,11 +348,11 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_13">用户意见反馈</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_13">辅助功能</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_16">桩模块</a></li>
             
         
     
@@ -398,39 +392,39 @@
         
         
         <li class="main">
-            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
+            <a href="#_19">适用蓝牙的接口<span class="main-set parent__19">+</span></a>
         </li>
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#1">1、帐号管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备激活</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#2">2、设备激活</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#3">3、设备管理</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#3">3、设备管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#4ota">4、OTA</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#4ota">4、OTA</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#5">5、消息推送</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#5">5、消息推送</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#6">6、和云端通信</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#6">6、和云端通信</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#7">7、文件存储</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#8">8、辅助功能</a></li>
             
         
     
@@ -462,10 +456,10 @@
 <p>介绍ACMsg之前，我们先来了解一下AbleCloud的基本数据结构ACObject</p>
 <h4 id="acobject">ACObject</h4>
 <p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。上文提到通过put存入ACObject的数据内部以json方式处理，因此ACObject中的某一value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
-<pre><code class="c">@interface ACObject : NSObject
+<pre><code class="objc">@interface ACObject : NSObject
 
 /**
- * Get各种类型的参数值，务必保证Get和Put参数名和类型是一致的
+ * 获取一个参数值
  * @param name  参数名
  * @return      参数值
  */
@@ -481,12 +475,13 @@
 - (ACObject *)getACObject:(NSString *)name;
 
 /**
- * Put各种类型的参数值，务必保证Put与Get的参数名和类型是一致的
+ * 设置一个参数
  * @param name  参数名
  * @param value 参数值
  * @return
  */
 - (void)put:(NSString *)name value:(id)value;
+- (void)putArray:(NSString *)name value:(id)value;
 - (void)putBool:(NSString *)name value:(BOOL)value;
 - (void)putLong:(NSString *)name value:(long)value;
 - (void)putLongLong:(NSString *)name value:(long long)value;
@@ -497,13 +492,14 @@
 - (void)putACObject:(NSString *)name value:(ACObject *)value;
 
 /**
- * 添加一个参数到Array类型中
- * @param name  参数名
+ * 添加一个参数，该参数添加到一个List中
+ * @param name  参数所在List的名字
  * @param value 参数值
  */
 - (void)add:(NSString *)name value:(id)value;
 - (void)addBool:(NSString *)name value:(BOOL)value;
 - (void)addLong:(NSString *)name value:(long)value;
+- (void)addLongLong:(NSString *)name value:(long long)value;
 - (void)addInteger:(NSString *)name value:(NSInteger)value;
 - (void)addFloat:(NSString *)name value:(float)value;
 - (void)addDouble:(NSString *)name value:(double)value;
@@ -511,21 +507,21 @@
 - (void)addACObject:(NSString *)name value:(ACObject *)value;
 
 /**
- * 判断是否存在此参数
- * @param name  参数名
+ * 删除一个参数，该参数从List中移除
+ * @param key
  */
-- (BOOL)contains:(NSString *)name;
+- (void)removeString:(NSString *)key;
 
-/**
- * 获取所有参数名列表
- * @param name  参数名
- */
+
+- (BOOL)contains:(NSString *)name;
 - (NSArray *)getKeys;
 
-/**
- * ACObject对象的序列化和反序列化
- */
+- (BOOL)hasObjectData;
+- (NSDictionary *)getObjectData;
+- (void)setObjectData:(NSDictionary *)data;
+
 - (NSData *)marshal;
+
 + (NSData *)marshal:(ACObject *)object;
 + (instancetype)unmarshal:(NSData *)data;
 
@@ -537,29 +533,46 @@
 </blockquote>
 <h4 id="acmsg_1">ACMsg</h4>
 <p>ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name以及<strong>其它形式</strong>的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的<strong>OBJECT_PAYLOAD</strong>格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进行解析。</p>
-<pre><code class="c">@interface ACMsg : ACObject
+<pre><code class="objc">@interface ACMsg : ACObject
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) ACContext *context;
 @property (nonatomic, strong) NSString *payloadFormat;
 @property (nonatomic, assign) NSUInteger payloadSize;
-@property (nonatomic, strong, readonly) NSData *payload;
+@property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong, readonly) NSData *streamPayload;
 
 /**
- * 设置流式负载，主要用于较大二进制数据传输，如上传文件等。
+ *  生成带签名信息的ACMsg实例,默认`subDomain`为`nil`
+ */
++ (instancetype)msgWithName:(NSString *)name;
+
+/**
+ *  生成带签名信息的ACMsg实例, subDomain需要自己传入
+ */
++ (instancetype)msgWithName:(NSString *)name subDomain:(NSString *)subDomain;
+
+/**
+ * 设置二进制负载
+ * 通过put/add方式设置的负载要么框架将其序列化为json，
+ * 要么解析后作为url的参数传输。
+ * 通过该函数可以设置额外的负载数据。
+ * @param payload
+ * @param format
+ */
+- (void)setPayload:(NSData *)payload format:(NSString *)format;
+/**
+ * 设置流式负载，主要用于较大的数据传输，如上传文件等。
  * @param payload   负载内容
  * @param size      负载大小
  */
 - (void)setStreamPayload:(NSData *)streamPayload size:(NSInteger)size;
-
 /**
  * 设置错误信息。在服务端处理错误时，需要显示的调用该结果设置错误信息
  * @param errCode   错误码
  * @param errMsg    错误信息
  */
 - (void)setErr:(NSInteger)errCode errMsg:(NSString *)errMsg;
-
 /**
  * 判断服务端响应的处理结果是否有错
  * @return  YES-处理有错，NO-处理成功
@@ -575,13 +588,11 @@ extern NSString *const ACMsgStreamPayload;
 extern NSString *const ACMsgMsgNameHeader;
 extern NSString *const ACMsgAckMSG;
 extern NSString *const ACMsgErrMSG;
-
-@end
 </code></pre>
 
 <h4 id="accontext">ACContext</h4>
 <p>交互消息中的context主要用于包含重要的上下文信息，其定义如下：</p>
-<pre><code class="c">
+<pre><code class="objc">
 @interface ACContext : NSObject
 
 @property (nonatomic, strong) NSString *os; // 操作系统
@@ -608,36 +619,50 @@ extern NSString *const ACMsgErrMSG;
 
 <h2 id="acdevicemsg">ACDeviceMsg</h2>
 <h4 id="acdevicemsg_1">ACDeviceMsg</h4>
-<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据<a href="../firmware/wifi_interface_guide/#13" title="消息码说明">code</a>来区分设备消息类型。并根据code的不同值做出不同的处理响应。</p>
-<blockquote>
-<ul>
-<li><strong>二进制/json</strong>
-在使用二进制或json格式通讯协议的情况下,ACDeviceMsg的content部分由开发者解释，框架透传。</li>
-<li><strong>KLV</strong>
-KLV是由AbleCloud规定的一种数据格式，即可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
-KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-KLV协议介绍</a>。</li>
-</ul>
-</blockquote>
-<p>ACDeviceMsg定义如下：</p>
-<pre><code class="objc">@property (nonatomic, assign) NSInteger msgId;
+<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值做出不同的处理响应。 ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包</p>
+<p>定义如下：</p>
+<pre><code class="objc">
+//设备通讯的安全性设置
+typedef enum: NSInteger {
+    //不加密
+    ACDeviceSecurityModeNone,
+    //静态加密, 即使用默认秘钥.
+    ACDeviceSecurityModeStatic,
+    //动态加密,使用云端分配的秘钥
+    ACDeviceSecurityModeDynamic,
+
+} ACDeviceSecurityMode;
+
+@class ACKLVObject, ACObject;
+@interface ACDeviceMsg : NSObject
+@property (nonatomic, assign) NSInteger msgId;
 @property (nonatomic, assign) NSInteger msgCode;
 @property (nonatomic, strong) NSData *payload;
 @property (nonatomic, strong) NSArray *optArray;
-@property (nonatomic, copy) NSString *description;
-//KLV协议时使用
-@property (nonatomic, strong, readonly) ACKLVObject *KLVObject;
+@property (nonatomic, copy) NSString *describe;
+//用来区分设备固件版本, 开发者不需要使用
+@property (nonatomic, assign) NSInteger deviceVersion;
+// 与设备通讯的安全性级别, 默认是动态加密
+@property (nonatomic, assign, readonly) ACDeviceSecurityMode securePolicy;
 
-//KLV协议时使用
-- (id)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
+///  设置局域网通讯安全模式, 如果不设置, 默认为动态加密
+///
+///  @param mode 加密方式, 详见ACDeviceSecurityMode枚举
+- (void)setSecurityMode:(ACDeviceSecurityMode)mode;
+#pragma mark - 初始化器
+//json格式
+- (instancetype)initWithCode:(NSInteger)code ACObject:(ACObject *)ACObject;
+- (ACObject *)getACObject;
+
+//二进制格式
+- (instancetype)initWithCode:(NSInteger)code binaryData:(NSData *)binaryData;
+- (NSData *)getBinaryData;
+
+//KLV格式
+- (instancetype)initWithCode:(NSInteger)code KLVObject:(ACKLVObject *)KLVObject;
 - (ACKLVObject *)getKLVObject;
-
-+ (instancetype)unmarshalWithData:(NSData *)data;
-+ (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-- (NSData *)marshal;
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
 </code></pre>
 
-<p><font color=red>注意</font>：从上面的定义可以看到，设备消息的具体内容为Object类型，若使用二进制或json数据格式，则开发者需要根据实际情况实现序列化器用来解释content的内容，在作具体的序列化/反序列化时，可根据code的不同值做出不同的序列化行为。</p>
 <h4 id="acklvobject">ACKLVObject</h4>
 <p><font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里就不具体介绍了。</p>
 <h1 id="sdk">SDK接口列表</h1>
@@ -645,7 +670,7 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 <p>这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。</p>
 <h4 id="acuserinfo">ACUserInfo</h4>
 <p>用来表示AbleCloud的一个注册帐号信息，定义如下：</p>
-<pre><code class="c">// 用户ID
+<pre><code class="objc">// 用户ID
 @property(nonatomic,assign) NSInteger userId;
 // 用户昵称
 @property(nonatomic,copy) NSString *nickName;
@@ -664,23 +689,67 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 @property (nonatomic, copy) NSString *type;
 //开发者自定义的扩展信息，与前端定义的字段一致
 @property (nonatomic, strong) ACObject *extend;
+</code></pre>
 
-//对应AbleCloud控制台反馈项设定的key与value值
-- (void)addFeedBackWithKey:(NSString *)key value:(NSString *)value;
-- 
-/**
-* 添加图片下载地址的url
-*
-* @param key   对应为AbleCloud控制台反馈项设定的key值
-* @param value 对应为AbleCloud控制台反馈项设定的图片类型,此处建议为图片的url
-*/
-- (void)addFeedBackPictureWithKey:(NSString *)key value:(NSString *)value;
+<h4 id="acaqi">ACAQI</h4>
+<p>用来表示室外天气状况</p>
+<pre><code class="objc">@interface ACAQI : NSObject
+
+///  获取最新一次时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+///  获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+///  获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+@property (nonatomic, copy) NSString *timestamp;
+// 空气质量
+@property (nonatomic, assign) NSInteger AQI;
+// 最小值
+@property (nonatomic, assign) NSInteger minAQI;
+// 最大值
+@property (nonatomic, assign) NSInteger maxAQI;
+</code></pre>
+
+<h4 id="acpm25">ACPM25</h4>
+<p>用来表示室外pm25情况</p>
+<pre><code class="objc">@interface ACPM25 : NSObject
+
+///  获取最新一次时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+///  获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+///  获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+@property (nonatomic, copy) NSString *timestamp;
+// 平均值
+@property (nonatomic, assign) NSInteger PM25;
+// 最小值
+@property (nonatomic, assign) NSInteger minPM25;
+// 最大值
+@property (nonatomic, assign) NSInteger maxPM25;
+
+</code></pre>
+
+<h4 id="acweather">ACWeather</h4>
+<p>用来表示室外天气状况</p>
+<pre><code class="objc">@interface ACWeather : NSObject
+
+///  获取最新一次时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+///  获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+///  获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+@property (nonatomic, copy) NSString *timestamp;
+// 温度
+@property (nonatomic, assign) float temperature;
+// 最低温度
+@property (nonatomic, assign) float minTemperature;
+// 最高温度
+@property (nonatomic, assign) float maxTemperature;
+// 湿度
+@property (nonatomic, assign) NSInteger humidity;
+// 最低湿度
+@property (nonatomic, assign) NSInteger minHumidity;
+// 最高湿度
+@property (nonatomic, assign) NSInteger maxHumidity;
 
 </code></pre>
 
 <h4 id="acuserdevice">ACUserDevice</h4>
 <p>设备管理模式下，用来表示一个设备，定义如下：</p>
-<pre><code class="c">//设备逻辑ID
+<pre><code class="objc">//设备逻辑ID
 @property(nonatomic,assign) NSInteger deviceId;
 //设备管理员ID
 @property(nonatomic,assign) NSInteger ownerId;
@@ -702,7 +771,7 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 
 <h4 id="acbinduser">ACBindUser</h4>
 <p>设备管理模式下，用来表示一个设备下的所有用户信息，定义如下：</p>
-<pre><code class="c">//用户ID
+<pre><code class="objc">//用户ID
 @property(nonatomic,assign) NSInteger userId;
 //设备的逻辑ID
 @property(nonatomic,assign) NSInteger deviceId;
@@ -744,7 +813,7 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 
 <h4 id="actimertask">ACTimerTask</h4>
 <p>说明：列举定时任务列表时用来表示定时任务信息，定义如下：</p>
-<pre><code class="c">@property (assign, nonatomic) NSInteger taskId;
+<pre><code class="objc">@property (assign, nonatomic) NSInteger taskId;
 //任务的类型（onceTask）
 @property (strong, nonatomic) NSString *taskType;
 //创建该用户的逻辑ID
@@ -771,30 +840,30 @@ KLV协议介绍请参考：<a href="../../features/functions/#klv">功能介绍-
 
 <h4 id="acfileinfo">ACFileInfo</h4>
 <p>说明：文件管理中获取下载url或上传文件时用来表示用户信息，定义如下：</p>
-<pre><code class="c">//上传文件名字
-@property (copy,nonatomic) NSString * name;
+<pre><code class="objc">@interface ACFileInfo : NSObject
+//上传文件名字
+@property (nonatomic, copy) NSString *name;
+
+//上传小型文件，直接上传数据 不支持断点续传
+@property (nonatomic, strong) NSData *data;
 
 //上传文件路径，支持断点续传
-@property (copy,nonatomic) NSString * filePath;
-//上传文件二进制流数据，用于小文件上传，如拍照后头像直接上传
-@property (retain,nonatomic) NSData * data;
-//文件访问权限管理 如果不设置，则默认所有人可读，自己可写
-@property (retain,nonatomic) ACACL  * acl;
-//文件存储的空间；自定义文件目录，如ota
-@property (copy,nonatomic) NSString * bucket;
+@property (copy,nonatomic) NSString *filePath;
+
+//文件访问权限 如果不设置 则默认
+@property (nonatomic, strong) ACACL *acl;
+
+//文件存储的空间   用户自定义   如名字为Image或者text的文件夹下
+@property (nonatomic, copy) NSString *bucket;
+
 //crc校验使用
-@property (nonatomic,unsafe_unretained) NSInteger checksum;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-
--(id)initWithName:(NSString *)name bucket:(NSString *)bucket  ;
-+ (instancetype)fileInfoWithName:(NSString *)name bucket:(NSString *)bucket ;
+@property (nonatomic, unsafe_unretained) NSInteger checksum;
 
 </code></pre>
 
 <h4 id="acfinddevicesmanager">ACFindDevicesManager</h4>
 <p>说明：用来获取局域网本地设备，定义如下：</p>
-<pre><code class="c">@protocol ACFindDevicesDelegate &lt;NSObject&gt;
+<pre><code class="objc">@protocol ACFindDevicesDelegate &lt;NSObject&gt;
 
 @optional
 - (void)findDevice:(ACLocalDevice *)device;
@@ -847,101 +916,59 @@ typedef NS_ENUM(NSUInteger, ACOTAUpgradeInfoStatus) {
 
 @property (nonatomic, strong) ACOTAFileMeta *meta;
 
--(BOOL)isUpdate;
-
 </code></pre>
 
 <h2 id="acloudlib">ACloudLib</h2>
-<p>ACloudLib主要负责设置相关参数，如服务器地址（测试环境为test.ablecloud.cn：5000，线上环境为production.ablecloud.cn:5000）、主域名称、指定服务桩等。</p>
-<pre><code class="c">@interface ACloudLib : NSObject
+<p>ACloudLib主要负责设置初始化相关参数，如服务器地址、主域名称、指定服务桩等。</p>
+<pre><code class="objc">
+typedef NS_ENUM(NSUInteger, ACLoudLibMode) {
+    //测试环境
+    ACLoudLibModeTest,
+    //正式环境
+    ACloudLibModeRouter,
+};
 
-/**
- * 设置云端服务的接入地址，测试环境为test.ablecloud.cn:5000, 线上环境为production.ablecloud.cn:5000
- */
-+ (void)setHost:(NSString *)host;
+typedef NS_ENUM(NSUInteger, ACLoudLibRegion) {
+    //中国
+    ACLoudLibRegionChina,
+    //东南亚
+    ACLoudLibRegionSouthEastAsia,
+    //欧洲
+    ACLoudLibRegionCentralEurope,
+    //美洲
+    ACLoudLibRegionNorthAmerica,
+};
+
+@class ACMsg, ACDeviceMsg;
+@interface ACloudLib : NSObject
+
++ (NSString *)getVersion;
+
+//手动修改RouterAddress方法
++ (void)setRouterAddress:(NSString*)router;
+
++ (void)setMode:(ACLoudLibMode)mode Region:(ACLoudLibRegion)region;
+
 + (NSString *)getHost;
++ (NSString *)getHttpsHost;
++ (NSString *)getPushHost;
 
-/**
- * 设置访问云端服务的超时时间，根据开发者服务的性能合理定义，单位是秒
- */
++ (void)setMajorDomain:(NSString *)majorDomain majorDomainId:(NSInteger)majorDomainId;
++ (NSString *)getMajorDomain;
++ (NSInteger)getMajorDomainId;
+
 + (void)setHttpRequestTimeout:(NSString *)timeout;
 + (NSString *)getHttpRequestTimeout;
-
-/**
- * 设置APP所属开发者帐号的主域信息，通过控制台进行查看帐号的主域等私密信息
- */
-+ (void)setMajorDomain:(NSString *)majorDomain;
-+ (NSString *)getMajorDomain;
-
-
-/**
- * 获取帐号管理器。
- * 可以调用前面介绍的帐号管理ACAccountManager提供的各个通用接口
- * @return  帐号管理器
- */
-@interface ACAccountManager : NSObject
-
-/**
- * 获取设备激活器ACWifiLinkManager，用于激活设备，如获取SSID、使用smartconfig技术让设备连上wifi等
- * @param wifiLinkerName 设备wifi模块类型
- * @return  设备激活器
- */
-ACWifiLinkManager * wifiManager = [[ACWifiLinkManager alloc] initWithLinkerName:@&quot;wifi模块&quot;];
-
-/**
- * 获取简单无组的设备管理器
- * 可以调用前面介绍的设备管理ACBindManager提供的各个通用接口
- *
- * @return  绑定管理器
- */
-@interface ACBindManager : NSObject
-
-/**
- * 获取消息推送管理器（集成了友盟推送的一部分接口）
- * 可以调用前面介绍的推送管理ACNotificationManager提供的各个通用接口
- *
- * @return 推送通知管理器
- */
-@interface ACNotificationManager : NSObject
-
-/**
- * 获取定时管理器
- * 可以调用前面介绍的定时管理ACTimerManager提供的各个通用接口
- * 获取定时管理器
- * @param timeZone 自定义时区
- */
-ACTimerManager * timerManager = [[ACTimerManager alloc] initWithTimeZone：@&quot;自定义时区&quot;];
-
-/**
- * 获取OTA管理器
- * 可以调用前面介绍的OTA管理ACOTAManager提供的各个通用接口 
- *
- */
-@interface ACOTAManager : NSObject
-
-/**
- * 获取文件上传下载管理器
- * 可以调用前面介绍的文件管理ACFileManager提供的各个通用接口
- */
-ACFileManager * filemanager = [[ACFileManager alloc] init];
-
-/**
- * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
- * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
- *
- * @param serviceName   服务名
- */
-+ (void)setServiceStub:(NSString *)serviceName delegate:(id&lt;ACServiceStubDelegate&gt;)delegate;
 </code></pre>
 
 <h2 id="_4">用户帐号管理</h2>
 <p>一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
 <h4 id="_5">引入头文件</h4>
-<pre><code class="c">import &quot;ACAccountManager.h&quot;
+<pre><code class="objc">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
 <h4 id="_6">接口说明</h4>
-<pre><code class="c">@interface ACAccountManager : NSObject
+<pre><code class="objc">@interface ACAccountManager : NSObject
 
 /**
  * 发送验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
@@ -1078,6 +1105,9 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 <blockquote>
 <ol>
 <li>
+<p>模拟器不能使用, 请在真机下进行调试</p>
+</li>
+<li>
 <p>调用激活器的以下接口，将wifi的ssid，密码广播给设备；</p>
 </li>
 <li>
@@ -1095,7 +1125,7 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
 </ol>
 </blockquote>
 <p>ablecloud提供了激活器供你使用，定义如下：</p>
-<pre><code class="c">@interface ACWifiLinkManager : NSObject
+<pre><code class="objc">@interface ACWifiLinkManager : NSObject
 
 - (id)initWithLinkerName:(NSString *)linkerName;
 
@@ -1131,9 +1161,30 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
                           Callback:(void(^)(ACMsg *responseMsg , NSError *error))callback;
 </code></pre>
 
-<h2 id="_8">设备管理( 独立和网关型）</h2>
+<h2 id="_8">设备管理(独立和网关型）</h2>
 <p>将用户和设备绑定后，用户才能使用设备。AbleCloud提供了设备绑定、解绑、分享、网关添加子设备、删除子设备等接口。</p>
-<pre><code class="c">/**
+<pre><code class="objc">//
+//  ACBindManager.h
+//  AbleCloudLib
+//
+//  Created by OK on 15/3/24.
+//  Copyright (c) 2015年 ACloud. All rights reserved.
+//
+
+
+#import &lt;Foundation/Foundation.h&gt;
+#import &quot;AFNetworking.h&quot;
+#import &quot;ACDeviceMsg.h&quot;
+
+#define BIND_SERVICE @&quot;zc-bind&quot;
+
+@class ACDeviceMsg, ACMsg, ACUserDevice, ACObject;
+@interface ACBindManager : NSObject
+
+@property (nonatomic, strong) NSArray *cahceArray;
+
+#pragma mark 设备权限管理
+/**
  *  获取设备列表,不包含设备状态信息
  *  
  *  @param callback     数组：devices保存的对象是ACUserDevice的对象
@@ -1146,6 +1197,7 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
  *  @param callback     数组：devices保存的对象是ACUserDevice的对象
  */
 + (void)listDevicesWithStatusCallback:(void(^)(NSArray *devices,NSError *error))callback;
+
 /**
  *  获取用户列表
  *
@@ -1169,28 +1221,44 @@ ACFileManager * filemanager = [[ACFileManager alloc] init];
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
+ * 修改设备扩展属性
+ */
++ (void) setDeviceProfileWithSubDomain:(NSString *)subDomain
+                              deviceId:(NSInteger)deviceId
+                               profile:(ACObject *)profile
+                              callback:(void (^) (NSError *error))callback;
+
+/**
+ * 获取设备扩展属性
+ */
++ (void) getDeviceProfileWithSubDomain:(NSString*)subDomain
+                              deviceId:(NSInteger)deviceId
+                              callback:(void (^) (ACObject*profile, NSError *error))callback;
+
+/**
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
+ *  @param subDomain        子域名
  *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
                       subDomain:(NSString *)subDomain
                        deviceId:(NSInteger )deviceId
-                      callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
+                       callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
- * 分享设备
+ *  根据账户绑定设备
  *
- * @param subDomain 子域名，如djj（豆浆机）
- * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param account   手机号
- * @param callback  返回结果的监听回调
+ *  @param subDomain 子域
+ *  @param deviceId  设备ID
+ *  @param phone     电话号码
  */
-public void bindDeviceWithUser(String subDomain, long deviceId, String account, VoidCallback callback);
-
++ (void)bindDeviceWithUserSubdomain:(NSString *)subDomain
+                           deviceId:(NSInteger)deviceId
+                            account:(NSString *)account
+                           callback:(void(^)(NSError *error))callback;
 /**
  *  解绑设备
  *
@@ -1200,6 +1268,7 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
 + (void)unbindDeviceWithSubDomain:(NSString *)subDomain
                          deviceId:(NSInteger)deviceId
                          callback:(void(^)(NSError *error))callback;
+
 
 /**
  *  管理员取消 某个用户的绑定  （管理员接口）
@@ -1214,14 +1283,43 @@ public void bindDeviceWithUser(String subDomain, long deviceId, String account, 
                              deviceId:(NSInteger)deviceId
                              callback:(void(^)(NSError *error))callback;
 
+
 /**
- * 获取分享码（只有管理员可以获取 ，默认一小时内生效）
+ *  设备管理员权限转让 （管理员接口）
  *
- * @param subDomain 子域名，如djj（豆浆机）
- * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
- * @param callback  返回结果的监听回调
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param userId       新的管理员ID
  */
-public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;String&gt; callback);
++ (void)changeOwnerWithSubDomain:(NSString *)subDomain
+                        deviceId:(NSInteger)deviceId
+                          userId:(NSInteger)userId
+                        callback:(void(^)(NSError *error))callback;
+/**
+ *  更换物理设备 （管理员接口）
+ *
+ *  @param subDomain        子域名称
+ *  @param physicalDeviceId 设备物理ID
+ *  @param deviceId         设备逻辑ID
+ */
++ (void)changeDeviceWithSubDomain:(NSString *)subDomain
+                 physicalDeviceId:(NSString *)physicalDeviceId
+                         deviceId:(NSInteger)deviceId
+                         callback:(void(^)(NSError *error))callback;
+
+
+/**
+ *  修改设备名称 （管理员接口）
+ *
+ *  @param subDomain    子域名称
+ *  @param deviceId     设备逻辑ID
+ *  @param name         设备的新名称
+ */
++ (void)changNameWithSubDomain:(NSString *)subDomain
+                      deviceId:(NSInteger)deviceId
+                          name:(NSString *)name
+                      callback:(void(^)(NSError *error))callback;
+
 
 /**
  *  获取分享码  （管理员接口）
@@ -1236,55 +1334,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
                           timeout:(NSTimeInterval)timeout
                          callback:(void(^)(NSString *shareCode,NSError *error))callback;
 
-/**
- *  设备管理员权限转让 （管理员接口）
- *
- *  @param subDomain    子域名称
- *  @param deviceId     设备逻辑ID
- *  @param userId       新的管理员ID
- */
-+ (void)changeOwnerWithSubDomain:(NSString *)subDomain
-                         deviceId:(NSInteger)deviceId
-                           userId:(NSInteger)userId
-                         callback:(void(^)(NSError *error))callback;
-
-/**
- *  更换物理设备 （管理员接口）
- *
- *  @param subDomain        子域名称
- *  @param physicalDeviceId 设备物理ID
- *  @param deviceId         设备逻辑ID
- *  @param bindCode         绑定码(可选)
- */
-+ (void)changeDeviceWithSubDomain:(NSString *)subDomain
-                 physicalDeviceId:(NSString *)physicalDeviceId
-                         deviceId:(NSInteger)deviceId
-                         callback:(void(^)(NSError *error))callback;
-
-/**
- *  修改设备名称 （管理员接口）
- *
- *  @param subDomain    子域名称
- *  @param deviceId     设备逻辑ID
- *  @param name         设备的新名称
- */
-+ (void)changNameWithSubDomain:(NSString *)subDomain
-                      deviceId:(NSInteger)deviceId
-                          name:(NSString *)name
-                      callback:(void(^)(NSError *error))callback;
-
-/**
- *  查询设备在线状态
- *
- *  @param subDomain        子域名称
- *  @param deviceId         设备逻辑ID
- *  @param subDomain        子域名称
- *  @param callback         online  是否在线
- */
-+ (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
-                           deviceId:(NSInteger)deviceId
-                   physicalDeviceId:(NSString *)physicalDeviceId
-                           callback:(void(^)(Boolean online,NSError *error))callback;
+#pragma mark 网关绑定
 
 /**
  * 绑定网关
@@ -1343,7 +1393,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  * @param callback  返回结果的监听回调
  */
 + (void)listGatewaysWithSubDomain:(NSString *)subDomain
-                        callback:(void (^)(NSArray *devices, NSError *error))callback;
+                         callback:(void (^)(NSArray *devices, NSError *error))callback;
 
 /**
  * 获取用户子设备列表
@@ -1404,39 +1454,30 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
                    physicalDeviceId:(NSString *)physicalDeviceId
                            callback:(void (^)(NSError *error))callback;
 
-/**
- * 修改帐号扩展属性
- */
-+ (void) setUserProfile:(ACObject *)profile
-               callback:(void (^) (NSError *error))callback;
+#pragma mark 设备查询控制接口
 
 /**
- * 获取帐号扩展属性
- */
-+ (void) getUserProfile:(void (^) (ACObject*profile, NSError *error))callback;
-
-//反序列化
-+ (instancetype)unmarshalWithData:(NSData *)data;
-+ (instancetype)unmarshalWithData:(NSData *)data AESKey:(NSData *)AESKey;
-//序列化
-- (NSData *)marshal;
-//序列化withAES Key
-- (NSData *)marshalWithAESKey:(NSData *)AESKey;
-
+*  查询设备绑定状态
+*
+*  @param subDomain        子域名称
+*  @param physicalDeviceId 物理id
+*  @param callback         是否被绑定
+*/
++ (void)isDeviceBoundsWithSubDomain:(NSString *)subDomain
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void (^)(BOOL isBounded, NSError *error))callback;
 /**
- * 为便于测试，开发者可实现一个设备的桩
+ *  查询设备在线状态
  *
- * @param stub
+ *  @param subDomain        子域名称
+ *  @param deviceId         设备逻辑ID
+ *  @param subDomain        子域名称
+ *  @param callback         online  是否在线
  */
-@interface ACDeviceStub : NSObject
-
-+ (instancetype)sharedInstance;
-
-+ (void)setDeviceStub:(NSString *)subDomain delegate:(id&lt;ACDeviceStubDelegate&gt;)delegate;
-+ (id&lt;ACDeviceStubDelegate&gt;)getDeviceStubDelegate:(NSString *)subDomain;
-+ (void)removeDeviceStub:(NSString *)subDomain;
-+ (BOOL)isDeviceStub:(NSString *)subDomain;
-
++ (void)isDeviceOnlineWithSubDomain:(NSString *)subDomain
+                           deviceId:(NSInteger)deviceId
+                   physicalDeviceId:(NSString *)physicalDeviceId
+                           callback:(void(^)(Boolean online,NSError *error))callback;
 /**
  *  向设备发送消息
  *
@@ -1445,9 +1486,44 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
  *  @param msg       发送的消息
  */
 + (void)sendToDevice:(NSString *)subDomain
-             deviceId:(NSInteger)deviceId
-                  msg:(ACDeviceMsg *)msg
-             callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+            deviceId:(NSInteger)deviceId
+                 msg:(ACDeviceMsg *)msg
+            callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
+
+#warning 请使用sendToDeviceWithOption:SubDomain:physicalDeviceId:msg:callback: 方法
++(void)sendToDeviceWithOption:(int)option
+                    SubDomain:(NSString *)subDomain
+                     deviceId:(NSInteger)deviceId
+                          msg:(ACDeviceMsg *)msg
+                     callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
+/**
+ *  向设备发送消息
+ *
+ *  @param option    与设备交互的方式  1:仅通过局域网 2:仅通过云 3:通过云优先 4:通过局域网优先
+ *  @param subDomain 子域名
+ *  @param deviceId  设备物理ID
+ *  @param msg       发送的消息
+ *  @param callback  返回结果的监听
+ */
++ (void)sendToDeviceWithOption:(ACDeviceCommunicationOption)option
+                     SubDomain:(NSString *)subDomain
+              physicalDeviceId:(NSString *)physicalDeviceId
+                           msg:(ACDeviceMsg *)msg
+                      callback:(void (^)(ACDeviceMsg *responseMsg, NSError *error))callback;
+
+
+/**
+ *  监听网络变化并且更新设备信息
+ *
+ *  @param timeout     超时时间
+ *  @param subDomainId 子域ID
+ *  @param callback    返回结果的回调
+ */
++(void)networkChangeHanderWithTimeout:(NSInteger)timeout SubDomainId:(NSInteger)subDomainId  Callback:(void(^)(NSArray * deviceArray,NSError *error))callback;
+
+@end
 
 </code></pre>
 
@@ -1690,9 +1766,8 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <h2 id="_9">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<p><strong>1、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
+<p><strong>2、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -1715,7 +1790,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 </ul>
 </blockquote>
 <p>接口定义如下：</p>
-<pre><code class="c">- (id)initWithTimeZone:(NSTimeZone *)timeZone;
+<pre><code class="objc">- (id)initWithTimeZone:(NSTimeZone *)timeZone;
 
 /**
  * 创建定时任务(使用二进制模型)
@@ -1808,7 +1883,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 <h2 id="_10">消息推送</h2>
 <p>如果想使用推送服务，在SDK端提供了相应的接口（封装了友盟2.4.1的部分接口），定义如下：</p>
-<pre><code class="c">/** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
+<pre><code class="objc">/** 绑定App的appKey和启动参数，启动消息参数用于处理用户通过消息打开应用相关信息
  *@param appKey      主站生成appKey
  *@param launchOptions 启动参数
  */
@@ -1832,7 +1907,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;与云端通信</strong></p>
 <h2 id="_11">局域网通信</h2>
-<pre><code class="c">/**
+<pre><code class="objc">/**
 *  局域网发现设备
 *
 *  @param timeout     超时时间
@@ -1846,7 +1921,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <p><strong><font color="red">注</font>：具体使用步骤见开发指导--&gt;局域网通信</strong></p>
 <h2 id="_12">文件存储</h2>
 <p>如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器AC.fileMgr(),具体接口定义如下：</p>
-<pre><code class="c">/**
+<pre><code class="objc">/**
  * //获取下载URL
  * @param file      文件信息对象
  * @param expireTime URL有效期，单位秒，若小于等于0则默认为int32的最大值≈80年
@@ -1883,7 +1958,8 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 <blockquote>
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 </blockquote>
-<h2 id="_13">用户意见反馈</h2>
+<h2 id="_13">辅助功能</h2>
+<h4 id="_14">用户意见反馈</h4>
 <pre><code class="objc">
 @interface ACFeedBackManager : NSObject
 
@@ -1892,11 +1968,90 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
               callback:(void(^)(BOOL isSuccess, NSError *error))callback;
 </code></pre>
 
-<h2 id="_14">桩模块</h2>
+<h4 id="_15">获取室外天气</h4>
+<pre><code class="objc">@interface ACWeatherManager : NSObject
+
+#pragma mark - pm25
+// 获取最新的pm25值
++ (void)getLatestPM25WithArea:(NSString *)area
+                     callback:(void(^)(ACPM25 *pm25, NSError *error))callback;
+
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
++ (void)getLastDaysPM25WithArea:(NSString *)area
+                           days:(NSInteger)days
+                       callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+///  获取最近n小时的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    pm25模型数组
++ (void)getLastHoursPM25WithArea:(NSString *)area
+                           hours:(NSInteger)hours
+                        callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+
+#pragma mark - aqi
+// 获取最新的aqi值
+// 支持到地级市, area填写中文如: &quot;北京&quot;
++ (void)getLatestAqiWithArea:(NSString *)area
+                    callback:(void(^)(ACAQI *aqi, NSError *error))callback;
+
+
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
++ (void)getLastDaysAqiWithArea:(NSString *)area
+                          days:(NSInteger)days
+                      callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+///  获取最近n小时的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    aqi模型数组
++ (void)getLastHoursAqiWithArea:(NSString *)area
+                          hours:(NSInteger)hours
+                       callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+
+#pragma mark - weather
+// 获取最新的Weather值
++ (void)getLatestWeatherWithArea:(NSString *)area
+                        callback:(void(^)(ACWeather *weather, NSError *error))callback;
+
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    weather模型数组
++ (void)getLastDaysWeatherWithArea:(NSString *)area
+                              days:(NSInteger)days
+                          callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+///  获取最近n小时的weather
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    weather模型数组
++ (void)getLastHoursWeatherWithArea:(NSString *)area
+                              hours:(NSInteger)hours
+                           callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+
+</code></pre>
+
+<h2 id="_16">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_15">设备桩</h4>
+<h4 id="_17">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
-<pre><code class="c">@protocol ACDeviceStubDelegate &lt;NSObject&gt;
+<pre><code class="objc">@protocol ACDeviceStubDelegate &lt;NSObject&gt;
 
 - (void)handleDeviceMsg:(ACDeviceMsg *)req callback:(void (^)(ACDeviceMsg *responseObject, NSError *error))callback;
 
@@ -1913,9 +2068,9 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h4 id="_16">服务桩</h4>
+<h4 id="_18">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，IOS端通过代理实现，其定义如下：</p>
-<pre><code class="c">@protocol ACServiceStubDelegate &lt;NSObject&gt;
+<pre><code class="objc">@protocol ACServiceStubDelegate &lt;NSObject&gt;
 
 - (void)handleServiceMsg:(ACMsg *)req callback:(void (^)(ACMsg *responseObject, NSError *error))callback;
 
@@ -1931,7 +2086,7 @@ public void getShareCode(String subDomain, long deviceId, PayloadCallback&lt;Str
 
 </code></pre>
 
-<h1 id="_17">适用蓝牙的接口</h1>
+<h1 id="_19">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
@@ -1939,12 +2094,12 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <h2 id="1">1、帐号管理</h2>
 <p>用户帐号管理
 一台设备最终是需要通过用户来控制的，需要发送验证码、注册、登陆、管理密码等常规功能，ablecloud提供了云端帐号管理系统来协助开发人员快速的完成，在SDK端也提供了相应的接口，定义如下：</p>
-<h4 id="_18">引入头文件</h4>
-<pre><code class="c">import &quot;ACAccountManager.h&quot;
+<h4 id="_20">引入头文件</h4>
+<pre><code class="objc">import &quot;ACAccountManager.h&quot;
 </code></pre>
 
-<h4 id="_19">接口说明</h4>
-<pre><code class="c">@interface ACAccountManager : NSObject
+<h4 id="_21">接口说明</h4>
+<pre><code class="objc">@interface ACAccountManager : NSObject
 
 /**
  * 发送手机验证码 (有关规定每天向同一个手机号发送的短信数量有严格限制)
@@ -2082,7 +2237,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h2 id="3">3、设备管理</h2>
-<pre><code class="c">/**
+<pre><code class="objc">/**
  *  获取设备列表,不包含设备状态信息
  *  
  *  @param callback     数组：devices保存的对象是ACUserDevice的对象
@@ -2122,13 +2277,9 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
  *  根据分享码 绑定设备
  *
  *  @param shareCode        分享码
- *  @param subDomain        主域名
- *  @param deviceId         逻辑  ID
  *  @param callback         回调 ACUserDevice 设备的对象
  */
 + (void)bindDeviceWithShareCode:(NSString *)shareCode
-                      subDomain:(NSString *)subDomain
-                       deviceId:(NSInteger )deviceId
                        callback:(void(^)(ACUserDevice *userDevice,NSError *error))callback;
 
 /**
@@ -2270,7 +2421,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <p>参考<a href="../../develop_guide/ios/#_34">开发指导-IOS-推送</a></p>
 <h2 id="6">6、和云端通信</h2>
 <p>ACServiceClient通信器</p>
-<pre><code class="c">/*
+<pre><code class="objc">/*
  * @param host        访问子域
  * @param service      服务名
  * @param version   服务版本
@@ -2301,11 +2452,11 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 <h2 id="7">7、文件存储</h2>
 <p>文件存储
 如果需要使用文件上传下载管理服务，在SDK端提供了相应的接口，首先需要获取定时管理器ACFileManager,具体接口定义如下：</p>
-<h3 id="_20">一、获取文件管理器</h3>
+<h3 id="_22">一、获取文件管理器</h3>
 <pre><code class="c">ACFileManager * fileManager =[[ACFileManager alloc] init];
 </code></pre>
 
-<h3 id="_21">二、下载文件</h3>
+<h3 id="_23">二、下载文件</h3>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code>/**
  * //获取下载URL
@@ -2317,7 +2468,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h3 id="2url">2、根据url下载文件</h3>
-<pre><code class="c">/**
+<pre><code class="objc">/**
  * //session下载
  * @param urlString   获得的downURLString
  * @param callback    返回error信息的回调
@@ -2326,15 +2477,15 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 -(void)downFileWithsession:(NSString * )urlString callBack:(void(^)(float progress ,NSError * error))callback CompleteCallback:(void (^)(NSString * filePath))completeCallback;
 </code></pre>
 
-<h3 id="_22">三、上传文件</h3>
+<h3 id="_24">三、上传文件</h3>
 <h3 id="1-acacl">1、设置上传文件的权限管理类－－ACACL</h3>
-<pre><code class="c">@interface ACACL : NSObject
+<pre><code class="objc">@interface ACACL : NSObject
 </code></pre>
 
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 <h3 id="2_1">2、上传文件</h3>
 <h4 id="1-acfileinfo">1)、设置上传文件信息－－ACFileInfo类</h4>
-<pre><code class="c">@interface ACFileInfo : NSObject
+<pre><code class="objc">@interface ACFileInfo : NSObject
 //上传文件名字
 @property (copy,nonatomic) NSString * name;
 
@@ -2352,7 +2503,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h4 id="2_2">2)、设置文件权限</h4>
-<pre><code class="c">/**
+<pre><code class="objc">/**
  * 设置全局可读访问权限，不设置则默认为所有人可读
  * @param allow 是否全局可读
  */
@@ -2380,7 +2531,7 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 </code></pre>
 
 <h4 id="3_1">3)、上传文件</h4>
-<pre><code class="c">/**
+<pre><code class="objc">/**
  * 上传文件
  * @param fileInfo      文件信息
  * @param payloadCallback    返回进度的监听回调
@@ -2397,7 +2548,86 @@ AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口�
 -(void)cancleUploadWithfileInfo:(ACFileInfo *)fileInfo;
 </code></pre>
 
-<h2 id="8">8、用户意见反馈</h2>
+<h2 id="8">8、辅助功能</h2>
+<h4 id="_25">获取室外天气</h4>
+<pre><code class="objc">@interface ACWeatherManager : NSObject
+
+#pragma mark - pm25
+// 获取最新的pm25值
++ (void)getLatestPM25WithArea:(NSString *)area
+                     callback:(void(^)(ACPM25 *pm25, NSError *error))callback;
+
+///  获取最近n天的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    pm25模型数组
++ (void)getLastDaysPM25WithArea:(NSString *)area
+                           days:(NSInteger)days
+                       callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+///  获取最近n小时的pm25值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    pm25模型数组
++ (void)getLastHoursPM25WithArea:(NSString *)area
+                           hours:(NSInteger)hours
+                        callback:(void(^)(NSArray *pm25List, NSError *error))callback;
+
+
+#pragma mark - aqi
+// 获取最新的aqi值
+// 支持到地级市, area填写中文如: &quot;北京&quot;
++ (void)getLatestAqiWithArea:(NSString *)area
+                    callback:(void(^)(ACAQI *aqi, NSError *error))callback;
+
+
+///  获取最近n天的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    aqi模型数组
++ (void)getLastDaysAqiWithArea:(NSString *)area
+                          days:(NSInteger)days
+                      callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+///  获取最近n小时的aqi值
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    aqi模型数组
++ (void)getLastHoursAqiWithArea:(NSString *)area
+                          hours:(NSInteger)hours
+                       callback:(void(^)(NSArray *aqiList, NSError *error))callback;
+
+
+#pragma mark - weather
+// 获取最新的Weather值
++ (void)getLatestWeatherWithArea:(NSString *)area
+                        callback:(void(^)(ACWeather *weather, NSError *error))callback;
+
+///  获取最近n天的weather
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param days        0表示7天
+///  @param callback    weather模型数组
++ (void)getLastDaysWeatherWithArea:(NSString *)area
+                              days:(NSInteger)days
+                          callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+///  获取最近n小时的weather
+///
+///  @param area        支持到地级市, area填写中文如: &quot;北京&quot;
+///  @param hours       0表示24小时
+///  @param callback    weather模型数组
++ (void)getLastHoursWeatherWithArea:(NSString *)area
+                              hours:(NSInteger)hours
+                           callback:(void(^)(NSArray *weatherList, NSError *error))callback;
+
+</code></pre>
+
+<h4 id="_26">用户意见反馈</h4>
 <pre><code class="objc">
 @interface ACFeedBackManager : NSObject
 

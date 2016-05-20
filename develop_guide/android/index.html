@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -474,15 +468,15 @@
         
         
         <li class="main">
-            <a href="#_47">用户意见反馈<span class="main-set parent__47">+</span></a>
+            <a href="#_47">辅助功能<span class="main-set parent__47">+</span></a>
         </li>
         
             
-            <li class="sub parent__47" style="display: none;"><a href="#_48">一 建议的开发流程</a></li>
+            <li class="sub parent__47" style="display: none;"><a href="#_48">用户意见反馈</a></li>
             
         
             
-            <li class="sub parent__47" style="display: none;"><a href="#_49">二 代码示例</a></li>
+            <li class="sub parent__47" style="display: none;"><a href="#_51">获取室外天气</a></li>
             
         
     
@@ -501,7 +495,7 @@
 <h1 id="_1">安卓客户端开发指导</h1>
 <h1 id="_2">开发环境配置</h1>
 <h2 id="sdk">SDK发布库</h2>
-<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.2.0.zip"><code>ac-service-android-1.2.0.jar</code></a></p>
+<p>ablcloud发布的android端SDK为<a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ac-service-android-SDK-1.2.1.zip"><code>ac-service-android-1.2.0.jar</code></a></p>
 <blockquote>
 <p><font color="red">注意:</font></p>
 <p><code>ac-service-android-release</code>文件夹下有6个子目录，分别为不同模块功能的sdk（非必需项），开发者可根据需求导入对应的sdk，其中包括<strong>推送模块sdk</strong>、<strong>文件管理模块sdk</strong>、<strong>音视频模块sdk</strong>、<strong>MTK配网sdk</strong>、<strong>MX庆科配网sdk</strong>、<strong>Realtek配网sdk</strong></p>
@@ -705,7 +699,7 @@ accountMgr.setUserProfile(userProfile, new VoidCallback() {
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>、<code>AC.DEVICE_TI</code>、<code>AC.DEVICE_ESP8266</code>、<code>AC.DEVICE_REALTEK</code></p>
+目前支持的wifi模块有：<code>AC.DEVICE_MTK</code>(MTK模块)、<code>AC.DEVICE_MX</code>（庆科模块）、<code>AC.DEVICE_MARVELL</code>（MARVELL模块）、<code>AC.DEVICE_MURATA</code>（村田模块）、<code>AC.DEVICE_WM</code>（联盛德模块）、<code>AC.DEVICE_RAK</code>（RAK模块）、<code>AC.DEVICE_TI</code>、<code>AC.DEVICE_ESP8266</code>、<code>AC.DEVICE_REALTEK</code>。</p>
 </blockquote>
 <h4 id="2wifi-ssid">2.获取WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -861,14 +855,14 @@ bindMgr.bindDeviceWithShareCode(shareCode, new PayloadCallback&lt;ACUserDevice&g
 <p>该流程只是建议流程的一种。其中openGatewayMatch和closeGatewayMatch接口都是为了方便软件开启配对而开发的接口。如果使用硬件上的操作（如网关上有按钮等）完成网关和子设备的配对，则不需要用到这两个接口。</p>
 <h3 id="_17">一．绑定网关</h3>
 <h3 id="wifi_1">WiFi网关</h3>
-<h4 id="1acdeviceactivitor">1.获取ACDeviceActivitor激活器</h4>
+<h4 id="1acdeviceactivator_1">1.获取ACDeviceActivator激活器</h4>
 <p>AbleCloud提供了ACDeviceActivitor激活器供你使用。</p>
 <pre><code class="java">ACDeviceActivator deviceActivator=AC.deviceActivator(AC.DEVICE_HF);
 </code></pre>
 
 <blockquote>
 <p><font color="red">注</font>：<code>AC.DEVICE_HF</code>表示汉枫的wifi模块，如果用的是其它的wifi模块，则需要改成相对应的值。
-目前支持的wifi模块有<code>AC.DEVICE_MTK(MTK模块)</code>、<code>AC.DEVICE_MX（庆科模块）</code>、<code>AC.DEVICE_MARVELL（MARVELL模块）</code>、<code>AC.DEVICE_MURATA（村田模块）</code>、<code>AC.DEVICE_WM（联盛德模块）</code>、<code>AC.DEVICE_RAK（RAK模块）</code>。</p>
+目前支持的wifi模块有<code>AC.DEVICE_MTK</code>(MTK模块)、<code>AC.DEVICE_MX</code>（庆科模块）、<code>AC.DEVICE_MARVELL</code>（MARVELL模块）、<code>AC.DEVICE_MURATA</code>（村田模块）、<code>AC.DEVICE_WM</code>（联盛德模块）、<code>AC.DEVICE_RAK</code>（RAK模块）。</p>
 </blockquote>
 <h4 id="2wifi-ssid_1">2.得到WiFi SSID</h4>
 <pre><code class="java">deviceActivator. getSSID()
@@ -1145,8 +1139,14 @@ bindMgr.setDeviceProfile(subDomain, deviceId, deviceProfile, new VoidCallback() 
 </code></pre>
 
 <pre><code class="java">LightMsg lightMsg = new LightMsg(LightMsg.ON);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription());
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(LightMsg.REQ_CODE, lightMsg.getLedOnOff(), lightMsg.getDescription()), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         byte[] resp = deviceMsg.getContent();
@@ -1191,8 +1191,14 @@ try {
     req.put(&quot;switch&quot;, 1);
 } catch (JSONException e) {
 }
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(70, req.toString().getBytes(), &quot;open light&quot;);
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toString().getBytes(), &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         try {
@@ -1252,8 +1258,14 @@ bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(70, req.toSt
 <pre><code class="java">ACKLVObject req = new ACKLVObject();
 //对应数据点里的key，value；只需要告诉设备指令，而不需要payload时，value传null
 req.put(Config.KEY_SWITCH, Config.VALUE_OPEN);
+//初始化ACDeviceMsg对象消息体，设置发送的msgCode及消息内容
+ACDeviceMsg deviceMsg = new ACDeviceMsg(69, req, &quot;open light&quot;);
+
+//设置局域网通讯加密方式，不设置则默认为动态加密
+//deviceMsg.setSecurityMode(ACDeviceSecurityMode.DYNAMIC_ENCRYPTED);
+
 //AC.LOCAL_FIRST代表优先走局域网，局域网不通的情况下再走云端
-bindMgr.sendToDeviceWithOption(subDomain, deviceId, new ACDeviceMsg(69, req, &quot;open light&quot;), AC.LOCAL_FIRST, new PayloadCallback&lt;ACKLVDeviceMsg&gt;() {
+bindMgr.sendToDeviceWithOption(subDomain, physicalDeviceId, deviceMsg, AC.LOCAL_FIRST, new PayloadCallback&lt;ACDeviceMsg&gt;() {
     @Override
     public void success(ACDeviceMsg deviceMsg) {
         ACKLVObject resp = deviceMsg.getKLVObject();
@@ -1493,7 +1505,7 @@ public void getDeviceList() {
 <blockquote>
 <p><font color=red>注意</font>：使用定时器时需要使用handler将以上此方法post到主线程处理</p>
 </blockquote>
-<p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">和云端通讯</a>部分。</p>
+<p>最后，至于如何通过直连方式给设备发消息，详情见<a href="#_19">云端通信--&gt;发送消息到设备</a>部分。</p>
 <h1 id="_29">定时任务</h1>
 <p>功能介绍参见 <a href="../../features/functions/#_19">功能说明-功能介绍-定时任务</a></p>
 <h2 id="skip"><span class="skip">||SKIP||</span></h2>
@@ -1509,9 +1521,8 @@ public void getDeviceList() {
 <h4 id="_31">添加定时任务</h4>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备。</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败。</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式。</strong></p>
+<p><strong>1、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败。</strong></p>
+<p><strong>2、timeCycle需要在timePoint时间点的基础上,选择循环方式。</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -1533,22 +1544,7 @@ public void getDeviceList() {
 </li>
 </ul>
 </blockquote>
-<pre><code class="java">//设置序列化器，若为klv格式类型，则无需此步骤
-AC.bindMgr().setDeviceMsgMarshaller(new ACDeviceMsgMarshaller() {
-    @Override
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        return (byte[]) msg.getContent();
-    }
-
-    @Override
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        //跟定时任务无关
-        return null;
-    }
-});
-</code></pre>
-
-<pre><code class="java">//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，若为二进制或json格式，则需要先经过序列化器进行序列化；ACTimerTask.OP_TYPE.CLOUD代表云端定时
+<pre><code class="java">//new ACDeviceMsg(msgCode, payload, description)为下发给设备的指令，ACTimerTask.OP_TYPE.CLOUD代表云端定时
 timerMgr.addTask(ACTimerTask.OP_TYPE.CLOUD, deviceId, name, timePoint, timeCycle, new ACDeviceMsg(msgCode, payload, description), new PayloadCallback&lt;ACTimerTask&gt;() {
      @Override
      public void success(ACTimerTask task) {
@@ -2038,8 +2034,8 @@ AC.fileMgr().downloadFile(file, url, checksum, new ProgressCallback() {
 <h2 id="_45">二、下载文件</h2>
 <h3 id="1url">1、获取下载url</h3>
 <pre><code class="java">ACFileInfo fileInfo = new ACFileInfo(bucket, name);
-//0代表url链接有效时间为长期有效
-fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
+//24*60*60代表url链接有效时间，即1天
+fileMgr.getDownloadUrl(fileInfo, 24*60*60 ，new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
          //成功获取文件url
@@ -2166,11 +2162,13 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 });
 </code></pre>
 
-<h1 id="_47">用户意见反馈</h1>
+<h1 id="_47">辅助功能</h1>
+<p>SDK提供了一些额外的辅助功能</p>
+<h2 id="_48">用户意见反馈</h2>
 <p>AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户提交意见的页面。用户意见反馈可以反馈的项由开发者自己定义。
 使用意见反馈前,需要先在控制台设置反馈项参数
 <img alt="cloud_syn_1" src="../../pic/develop_guide/submitFeedback.png" /></p>
-<h2 id="_48">一 建议的开发流程</h2>
+<h3 id="_49">一 建议的开发流程</h3>
 <p>参考以下代码示例, 如果不需要上传图片等资源, 只需要调用第四步. </p>
 <p>如果需要上传图片资源, 请按下以下顺序调用接口</p>
 <p>原理如下:</p>
@@ -2188,7 +2186,7 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 <p>将获取到的URLString作为参数填入意见反馈接口对应的value位置</p>
 </li>
 </ol>
-<h2 id="_49">二 代码示例</h2>
+<h3 id="_50">二 代码示例</h3>
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
 <pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
 ACFileInfo fileInfo = new ACFileInfo(bucket, name);
@@ -2215,16 +2213,16 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 </code></pre>
 
 <h4 id="3-url">3. 获取上传的图片的url</h4>
-<pre><code class="java">    //建议ExpireTime=0，url永久有效
+<pre><code class="java">    //建议ExpireTime=0，国内环境下url永久有效
     fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
-         //成功获取文件url
+        //成功获取文件url
     }
 
     @Override
     public void error(ACException e) {
-         //没有权限或其他网络错误
+        //没有权限或其他网络错误
     }
 });
 </code></pre>
@@ -2245,6 +2243,23 @@ AC.feedbackMgr().submitFeedback(feedback, new VoidCallback(){
         //网络错误或其他，根据e.getErrorCode()做不同的提示或处理，此处一般为参数错误，请对照AbleCloud控制台填写的key与value类型
     }
 });
+</code></pre>
+
+<h2 id="_51">获取室外天气</h2>
+<p>SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.</p>
+<p>如获取最新pm25，代码如下：</p>
+<pre><code class="java">AC.weatherMgr().getLatestPM25(&quot;北京&quot;, new PayloadCallback&lt;ACPM25&gt;() {
+    @Override
+    public void success(ACPM25 pm25) {
+        //成功获取最新pm25信息
+        LogUtil.d(TAG, pm25.toString());
+    }
+
+    @Override
+    public void error(ACException e) {
+        fail(e.getErrorCode() + &quot;--&gt;&quot; + e.getMessage());
+    }
+ });
 </code></pre>
 
 <h1 id="error-code">Error Code</h1>

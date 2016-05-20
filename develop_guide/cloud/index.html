@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -324,6 +318,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#_11">测试简介<span class="main-set parent__11">+</span></a>
@@ -335,6 +333,10 @@
         
             
             <li class="sub parent__11" style="display: none;"><a href="#_14">集成测试</a></li>
+            
+        
+            
+            <li class="sub parent__11" style="display: none;"><a href="#_16">单步调试</a></li>
             
         
     
@@ -398,7 +400,7 @@
             
         
             
-            <li class="sub parent_store" style="display: none;"><a href="#_22">其它</a></li>
+            <li class="sub parent_store" style="display: none;"><a href="#_23">其它</a></li>
             
         
     
@@ -442,14 +444,14 @@
 <h1 id="_2">开发准备</h1>
 <p>本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。</p>
 <h2 id="uds">UDS发布说明</h2>
-<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（或子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（或子域）级别的UDS来处理。
+<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（子域）级别的UDS来处理。
 其它请求（包括设备或其它客户端发起的）可由请求发起方选择由产品（或子域）级别或者主域级别的UDS来处理：请求中指定了子域名字时表示由对应产品（或子域）级别的UDS处理；请求中不包含子域名子（或子域名字为空）时表示由主域级别的UDS处理。</p>
 <p>开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的Java版本服务开发框架一致，如下所示。</p>
 <pre><code class="java">/config
     /cloudservice-conf.xml
 /lib
-    /ablecloud-framework-1.1.0.jar
-    /ac-java-api-1.0.0.jar
+    /ablecloud-framework-1.4.0.jar
+    /ac-java-api-1.4.0.jar
     /commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -463,7 +465,7 @@ start.cmd
 <p><font color=red>注意事项：</font></p>
 <ol>
 <li>
-<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.1.0.jar</code>和<code>ac-java-api-1.0.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
+<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.4.0.jar</code>和<code>ac-java-api-1.4.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
 </li>
 <li>
 <p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
@@ -508,7 +510,7 @@ start.cmd
 </blockquote>
 <p>2、随后，通过开发者管理控制台提供的界面新建数据集“light-action-data”。数据集的结构如下所示：</p>
 <p><img alt="demoservice_class" src="../../pic/develop_guide/DemoService_Class.png" /></p>
-<p>3、接下来就可以在本地启动服务并进行测试。</p>
+<p>3、启动终端，进入package目录下，接下来就可以在本地启动服务并进行测试。</p>
 <p><b><em>linux</em></b>下在终端运行如下命令启动服务：</p>
 <pre><code class="sh">sh start.sh
 </code></pre>
@@ -535,7 +537,10 @@ start.cmd
 前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。</p>
 </li>
 <li>
-<p>例子中访问的controlLight方法需要参数<code>X-Zc-User-Id</code>和<code>deviceId</code>，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。</p>
+<p>若返回<code>{"error":"device not exist","errorCode":3802}</code>,说明这个设备<code>deviceId</code>没有被<code>X-Zc-User-Id</code>用户绑定。但是至少说明本地测试已经成功了，能测试该接口的返回结果了。</p>
+</li>
+<li>
+<p>例子中访问的controlLight方法需要参数<code>X-Zc-User-Id</code>、<code>deviceId</code>、<code>action</code>，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。</p>
 </li>
 </ol>
 </blockquote>
@@ -556,7 +561,7 @@ start.cmd
 <p><strong>AbleCloud SDK</strong></p>
 </li>
 </ul>
-<p><a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ablecloud-framework-1.2.0.zip">点此下载</a> AbleCloud云端服务开发框架</p>
+<p><a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ablecloud-framework-1.4.0.zip">点此下载</a> AbleCloud云端服务开发框架</p>
 <h4 id="intellij">Intellij</h4>
 <ol>
 <li>
@@ -576,8 +581,11 @@ start.cmd
 <p>至此，新建工程完成。</p>
 </li>
 <li>
-<p><strong>布署AbleCloud框架便于本机测试以及提交版本</strong></p>
-<p>新建package目录，将ablecloud-framework-1.1.0.zip解压到package目录下。</p>
+<p><strong>部署AbleCloud框架便于本机测试以及提交版本</strong></p>
+<p>新建package目录，将ablecloud-framework-1.4.0.zip解压到package目录下。</p>
+<blockquote>
+<p>package子目录的结构为config/、lib/、start.sh文件等</p>
+</blockquote>
 </li>
 <li>
 <p><strong>设置工程</strong></p>
@@ -594,8 +602,6 @@ start.cmd
 <p><img alt="lib" src="../../pic/reference/intellij/set_project_2_3.png" /></p>
 <p>这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为<strong>ablecloud-libs</strong>。点击<strong>OK</strong>完成添加。</p>
 <p><img alt="lib" src="../../pic/reference/intellij/set_project_2_4.png" /></p>
-<p>完成上述步骤后，我们将在工程视图里面看到新添加的该目录，如下：</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_5.png" />)</p>
 <p>至此，UDS开发所依赖的AbleCloud开发框架库添加成功。</p>
 </li>
 <li>
@@ -609,7 +615,7 @@ start.cmd
 
     &lt;groupId&gt;com.ablecloud.demo&lt;/groupId&gt;
     &lt;artifactId&gt;DemoService&lt;/artifactId&gt;
-    &lt;version&gt;1.1.0&lt;/version&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
 
     &lt;properties&gt;
         &lt;ablecloud.lib.dir&gt;./package/lib&lt;/ablecloud.lib.dir&gt;
@@ -631,8 +637,8 @@ start.cmd
                 &lt;/dependencies&gt;
                 &lt;configuration&gt;
                     &lt;additionalClasspathElements&gt;
-                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.1.0.jar&lt;/additionalClasspathElement&gt;
-                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ac-java-api-1.0.0.jar&lt;/additionalClasspathElement&gt;
+                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ablecloud-framework-1.4.0.jar&lt;/additionalClasspathElement&gt;
+                        &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/ac-java-api-1.4.0.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-log4j12-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/slf4j-api-1.7.7.jar&lt;/additionalClasspathElement&gt;
                         &lt;additionalClasspathElement&gt;${ablecloud.lib.dir}/log4j-1.2.17.jar&lt;/additionalClasspathElement&gt;
@@ -689,7 +695,6 @@ start.cmd
     &lt;version&gt;your service version&lt;/version&gt;
 &lt;/project&gt;
 </code></pre>
-<p>注意其他配置项<strong>一定不能修改</strong>，否则单测将无法通过。开发者不用担心该配置项，线上环境该配置项自动失效。</p>
 </li>
 <li>
 <p><strong>修改配置文件</strong></p>
@@ -821,7 +826,6 @@ start.cmd
 <li>要开发服务程序，需从<code>ACService</code>派生子类来实现自己的服务框架。本示例中，<code>DemoService</code>就是继承自<code>ACService</code>的子类；</li>
 <li>服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为<code>handleMsg</code>提供具体的实现handler；</li>
 <li>服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式<code>LightMsg</code>；</li>
-<li>【使用KLV通讯格式则跳过此步骤】在步骤3定义好了消息格式后，我们还需要根据<code>ACDeviceMsgMarshaller</code>实现具体的消息序列化/反序列化器<code>LightMsgMarshaller</code>；最后重载<code>ACService</code>的<code>init</code>接口，将序列化器设置到<code>ac</code>框架中；</li>
 <li>服务要接收智能灯汇报的开/关消息，因此必须为<code>handleDeviceMsg</code>提供具体的实现handler。</li>
 </ol>
 </blockquote>
@@ -832,12 +836,17 @@ start.cmd
 <pre><code class="java">package com.ablecloud.demo;
 
 import com.ablecloud.common.*;
+
 import com.ablecloud.service.ACDeviceStub;
 import com.ablecloud.service.ACService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
+/**
+ * Created by chenpeng on 15-1-17.
+ */
 public class DemoService extends ACService {
     private static final Logger logger = LoggerFactory.getLogger(DemoService.class);
     private static final String DATA_CLASS_NAME = &quot;light_action_data&quot;;
@@ -845,12 +854,10 @@ public class DemoService extends ACService {
 
     /**
      * 重载init函数。
-     * 因为我们的服务要处理和设备交互的消息，因此在该函数中将序列化/反序列化器设置到ac框架中。
      *
      * @throws Exception
      */
     public void init() throws Exception {
-        ac.setDeviceMsgMarshaller(new LightMsgMarshaller());
     }
 
     /**
@@ -862,36 +869,30 @@ public class DemoService extends ACService {
      */
     public void handleMsg(ACMsg req, ACMsg resp) throws Exception {
         String name = req.getName();
-        if (name != null) {
-            switch (name) {
-                case &quot;controlLight&quot;:
-                    handleControlLight(req, resp);
-                    break;
-                case &quot;queryData&quot;:
-                    handleQueryData(req, resp);
-                    break;
-                default:
-                    logger.warn(&quot;got an invalid request, method[&quot; + name + &quot;] is not implemented.&quot;);
-            }
-        } else {
-            logger.warn(&quot;got an invalid request, method name is empty.&quot;);
+        switch (name) {
+            case &quot;controlLight&quot;:
+                handleControlLight(req, resp);
+                break;
+            case &quot;queryData&quot;:
+                handleQueryData(req, resp);
+                break;
+            default:
+                logger.warn(&quot;got an invalid request, method[&quot; + name + &quot;] is not implemented.&quot;);
         }
     }
 
     /**
      * 处理来自设备上报消息的入口函数
      *
-     * @param context          上下文信息，在设备联动情况下，可能会跨子域访问
-     * @param deviceId         设备的逻辑id
-     * @param physicalDeviceId 设备的物理id
-     * @param req              设备上报消息
+     * @param reportInfo 设备的属性
+     * @param req        设备上报消息
      * @throws Exception
      */
-    public void handleDeviceMsg(ACContext context, long deviceId, String physicalDeviceId, ACDeviceMsg req) throws Exception {
-        Integer msgCode = req.getCode();
+    public void handleDeviceMsg(ACDeviceReportInfo reportInfo, ACDeviceMsg req) throws Exception {
+        int msgCode = req.getCode();
         switch (msgCode) {
             case LightMsg.REPORT_CODE:
-                handleLightReport(context, deviceId, req);
+                handleLightReport(reportInfo.getDeviceId(), req.getContent());
                 break;
             default:
                 logger.warn(&quot;got an unknown report, opcode[&quot; + msgCode + &quot;]&quot;);
@@ -916,62 +917,51 @@ public class DemoService extends ACService {
      * @throws Exception
      */
     private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
-        Long lightId = req.get(&quot;deviceId&quot;);
+        long userId = req.getContext().getUserId();
+        long lightId = req.getLong(&quot;deviceId&quot;);
         String action = req.get(&quot;action&quot;);
         byte deviceAction;
         if (action.equalsIgnoreCase(&quot;on&quot;)) {
             deviceAction = LightMsg.ON;
         } else
-            deviceAction = LightMsg.OFF; 
-        //使用二进制通讯格式
-        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new LightMsg(deviceAction, LightMsg.FROM_APP));
-        /*
-        //使用KLV通讯格式
-        ACKLVObject object = new ACKLVObject();
-        object.put(Scheme.KEY_ACTION, deviceAction);
-        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, object);
+            deviceAction = LightMsg.OFF;
+        ACDeviceMsg deviceReqMsg = new ACDeviceMsg(LightMsg.CODE, new byte[]{deviceAction, 0, 0, 0});
         ACDeviceMsg deviceRespMsg;
-        */
         try {
             // 通过ac框架的sendToDevice接口，向灯发送控制命令
-           ACDeviceMsg deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(req.getContext().getSubDomainName(), lightId, deviceReqMsg, req.getContext().getUserId());
-            // 获取控制开关结果【二进制通讯格式】
-            byte result = (Byte) deviceRespMsg.getContent();
-            /*
-            // 获取控制开关结果【KLV通讯格式】
-            ACKLVObject result = (ACKLVObject) deviceRespMsg.getContent();
-            */
-            resp.put(&quot;result&quot;, result == 1 ? &quot;success&quot; : &quot;fail&quot;);
+            deviceRespMsg = ac.bindMgr(req.getContext()).sendToDevice(subDomain, lightId, deviceReqMsg, userId);
+            // 获取控制开关结果
+            byte[] payload = deviceRespMsg.getContent();
+            if (payload.length &gt; 0 &amp;&amp; payload[0] == 1)
+                resp.put(&quot;result&quot;, &quot;success&quot;);
+            else
+                resp.put(&quot;result&quot;, &quot;fail&quot;);
             resp.setAck();
             logger.info(&quot;handle control light ok, action[&quot; + action + &quot;].&quot;);
         } catch (ACServiceException e) {
             resp.setErr(e.getErrorCode(), e.getErrorMsg());
-            logger.error(&quot;send to device[&quot; + lightId + &quot;] error:&quot;, e);
+            logger.warn(&quot;send to device[&quot; + lightId + &quot;] error:&quot;, e);
         }
     }
 
     /**
      * 处理智能灯汇报的消息，在该函数中，服务还将收到的汇报数据写入ablecloud提供的云端存储中。
      *
-     * @param context  汇报设备的上下文数据，包括主域/子域等。
      * @param deviceId 汇报设备的逻辑id
-     * @param req      汇报的消息
+     * @param payload  汇报的具体消息内容
      * @throws Exception
      */
-    private void handleLightReport(ACContext context, long deviceId, ACDeviceMsg req) throws Exception {
+    private void handleLightReport(long deviceId, byte[] payload) throws Exception {
         try {
-            LightMsg lightMsg = (LightMsg) req.getContent();
-            byte onOff = lightMsg.getLedOnOff();
-            byte type = lightMsg.getType();
-            long timestamp = System.currentTimeMillis();
+            LightMsg lightMsg = new LightMsg(payload);
             // 通过ac框架，将智能灯汇报的数据存入云端存储
-            ac.store(DATA_CLASS_NAME, context)
-                    .create(&quot;deviceId&quot;, deviceId, &quot;time&quot;, timestamp)
-                    .put(&quot;action&quot;, onOff)
-                    .put(&quot;type&quot;, type)
+            ac.store(DATA_CLASS_NAME, ac.newContext())
+                    .create(&quot;deviceId&quot;, deviceId, &quot;time&quot;, System.currentTimeMillis())
+                    .put(&quot;action&quot;, lightMsg.getLedOnOff())
+                    .put(&quot;type&quot;, lightMsg.getType())
                     .execute();
         } catch (ACServiceException e) {
-            logger.error(&quot;handle light report error:&quot;, e);
+            logger.warn(&quot;handle light report error:&quot;, e);
         }
     }
 
@@ -998,8 +988,14 @@ public class DemoService extends ACService {
             resp.setAck();
         } catch (ACServiceException e) {
             resp.setErr(e.getErrorCode(), e.getErrorMsg());
-            logger.error(&quot;handle query data error:&quot;, e);
+            logger.warn(&quot;handle query data error:&quot;, e);
         }
+    }
+
+    //////////////////////
+    // for test
+    public void addDeviceStub(String subDomain, ACDeviceStub stub) {
+        ac.addDeviceStub(subDomain, stub);
     }
 }
 </code></pre>
@@ -1023,9 +1019,10 @@ class LightMsg {
     private byte ledOnOff;
     private byte type;
 
-    public LightMsg(byte ledOnOff, byte type) {
-        this.ledOnOff = ledOnOff;
-        this.type = type;
+    //通过构造函数传设备上报的二进制数组并对其进行解析
+    public LightMsg(byte[] payload) {
+        this.ledOnOff = payload[0];
+        this.type = payload[1];
     }
 
     public byte getLedOnOff() {
@@ -1034,74 +1031,6 @@ class LightMsg {
 
     public byte getType() {
         return type;
-    }
-}
-</code></pre>
-
-<h3 id="lightmsgmarshaller">LightMsgMarshaller</h3>
-<p>该序列化/反序列化器用于序列化智能灯控制消息，如果一个服务会和多类智能设备交互，则在你自定义的marshaller中可以对多种设备消息进行序列化/反序列化操作。</p>
-<pre><code class="java">package com.ablecloud.demo;
-
-import com.ablecloud.common.ACDeviceMsg;
-import com.ablecloud.common.ACDeviceMsgMarshaller;
-
-import java.nio.ByteBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class LightMsgMarshaller implements ACDeviceMsgMarshaller {
-    private static final Logger logger = LoggerFactory.getLogger(LightMsgMarshaller.class);
-
-    /**
-     * 将具体的ACDeviceMsg序列化成字节数组，用于控制灯时通过网络传输给灯
-     *
-     * @param msg 设备消息
-     * @return 序列化后的字节数组
-     * @throws Exception
-     */
-    public byte[] marshal(ACDeviceMsg msg) throws Exception {
-        int msgCode = msg.getCode();
-        ByteBuffer bb;
-        switch (msgCode) {
-            case LightMsg.CODE:
-                LightMsg lightMsg = (LightMsg) msg.getContent();
-                bb = ByteBuffer.allocate(4);
-                bb.put(lightMsg.getLedOnOff());
-                byte[] pad = new byte[3];
-                bb.put(pad);
-                return bb.array();
-            default:
-                logger.warn(&quot;got an unknown msgCode[&quot; + msgCode + &quot;]&quot;);
-                return null;
-        }
-    }
-
-    /**
-     * 将通过网络收到的字节数组数据，反序列化成具体的消息，以便从消息中提取各个字段。
-     *
-     * @param msgCode 消息码，ablecloud也称为操作码opCode
-     * @param payload 设备消息序列化后的字节数组
-     * @return 设备消息
-     * @throws Exception
-     */
-    public ACDeviceMsg unmarshal(int msgCode, byte[] payload) throws Exception {
-        ByteBuffer bb;
-        switch (msgCode) {
-            case LightMsg.RESP_CODE:
-                bb = ByteBuffer.wrap(payload);
-                byte result = bb.get();
-                return new ACDeviceMsg(msgCode, result);
-            case LightMsg.REPORT_CODE:
-                bb = ByteBuffer.wrap(payload);
-                byte ledOnOff = bb.get();
-                byte ledType = bb.get();
-                byte[] pad = new byte[2];
-                bb.get(pad);
-                return new ACDeviceMsg(msgCode, new LightMsg(ledOnOff, ledType));
-            default:
-                logger.warn(&quot;got an unknown msgCode[&quot; + msgCode + &quot;]&quot;);
-                return null;
-        }
     }
 }
 </code></pre>
@@ -1152,60 +1081,11 @@ public class DemoCronJob extends ACCronJob {
 </code></pre>
 
 <h1 id="_11">测试简介</h1>
-<p>上一章节，我们一步步开发了一个完整的服务程序<code>DemoService</code>。代码是写完了，如何验证我们写的代码是否正常工作呢，比如自定义的<code>LightMsgMarshaller</code>逻辑是否正确，<code>DemoService</code>能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。</p>
+<p>上一章节，我们一步步开发了一个完整的服务程序<code>DemoService</code>。代码是写完了，如何验证我们写的代码是否正常工作呢？<code>DemoService</code>能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。</p>
 <h2 id="_12">单元测试</h2>
 <p>准备工作做好后，就可以开始我们的测试了，我们的单元测试采用org.apache.maven.surefire插件结合junit来完成。</p>
-<h3 id="lighmsgmarshaller">测试LighMsgMarshaller</h3>
-<p>该测试很简单，不与任何后端服务交互，纯粹的测试计算逻辑，用于测试序列化/反序列化逻辑正确与否。</p>
-<pre><code class="java">package com.ablecloud.demo;
-
-import com.ablecloud.common.ACDeviceMsg;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-public class LightMsgMarshallerTest {
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void testLightMsg() {
-        LightMsg msg = new LightMsg(LightMsg.ON, LightMsg.FROM_APP);
-        LightMsgMarshaller marshaller = new LightMsgMarshaller();
-        ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.CODE, msg);
-        byte[] req = null;
-        try {
-            req = marshaller.marshal(deviceMsg);
-            assertNotNull(req);
-            assertEquals(4, req.length);
-        } catch (Exception e) {
-            System.out.println(&quot;marshal light msg error: &quot; + e.toString());
-            fail(&quot;test marshal light msg fail&quot;);
-        }
-
-        try {
-            byte[] resp = new byte[]{LightMsg.ON, 0, 0, 0};
-            ACDeviceMsg respDeviceMsg = marshaller.unmarshal(LightMsg.RESP_CODE, resp);
-            assertEquals(LightMsg.RESP_CODE, respDeviceMsg.getCode());
-            byte result = (Byte) (respDeviceMsg.getContent());
-            assertEquals(1, result);
-        } catch (Exception e) {
-            System.out.println(&quot;unmarshal light msg error: &quot; + e.toString());
-            fail(&quot;test unmarshal light msg fail&quot;);
-        }
-    }
-}
-</code></pre>
-
 <blockquote>
-<p><font color="red"><strong>注：</strong>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</font></p>
+<p><font color="red"><strong>注：</strong></font>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</p>
 </blockquote>
 <h3 id="demoservice_1">测试DemoService</h3>
 <p>具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，详细介绍如下。</p>
@@ -1228,9 +1108,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-/**
- * Created by chenpeng on 15-1-18.
- */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DemoServiceTest {
     // 我们会在多个测试case中用到以下的成员，并且只需要初始化一次，
@@ -1239,24 +1116,24 @@ public class DemoServiceTest {
     private static AC ac;                   // 测试用的AC框架，正式环境由框架初始化，开发者不用关注
     private static DemoService demoService; // 我们开发的服务
     private static ACAccount account;       // 用于保存测试的帐号信息
-    private static ACUserDevice light;          // 用于保存测试的设备信息
+    private static ACUserDevice light;      // 用于保存测试的设备信息
 
     // 在所有的test case执行前初始化一次
     @BeforeClass
     public static void setUp() throws Exception {
         try {
-            // 这里初始化config对象，必须指定测试环境配置文件的绝对路径，否则会找不到配置文件
+            // 这里初始化config对象
             config = new ACConfiguration(&quot;cloudservice-conf.xml&quot;);
             ac = AC.getTestAc(config);          // 通过AC的接口获取用于测试的ac框架
 
             demoService = new DemoService();
             demoService.setEnv(ac, config);     // 需要调用该接口，将框架ac赋予demoService
-            demoService.init();                 // 初始化demoService，将marshshaller设置给ac
+            demoService.init();                 // 初始化demoService
 
             // 使用开发者权限创建一个测试账号
             account = ac.accountMgrForTest(ac.newContext()).register(&quot;test@ablecloud.cn&quot;, &quot;13100000000&quot;, &quot;pswd&quot;);
             // 使用注册的测试账号绑定一个虚拟的测试设备
-            light = ac.bindMgrForTest(ac.newContext(account.getUid())).bindDevice(&quot;11111111&quot;, &quot;light1&quot;);
+            light = ac.bindMgrForTest(ac.newContext()).bindDevice(config.getSubDomain(), &quot;11111111&quot;, &quot;light1&quot;, account.getUid());
         } catch (Exception e) {
             e.printStackTrace();
             fail(&quot;set up fail&quot;);
@@ -1267,7 +1144,7 @@ public class DemoServiceTest {
     @AfterClass
     public static void tearDown() throws Exception {
         // 执行完test后，需要解绑setUp绑定的测试设备，同时注销测试账号，确保下次单测能顺利通过
-        ac.bindMgrForTest(ac.newContext(account.getUid())).unbindDevice(light.getId());
+        ac.bindMgrForTest(ac.newContext()).unbindDevice(config.getSubDomain(), light.getId(), account.getUid());
         // 注意，这里需要传入开发者context
         ac.accountMgrForTest(ac.newContext()).deleteAccount(&quot;13100000000&quot;);
         // 清除store开关记录的所有数据
@@ -1299,10 +1176,13 @@ public class DemoServiceTest {
             assertEquals(&quot;success&quot;, resp.get(&quot;result&quot;));
             // 成功打开灯之后，模拟设备进行数据上报
             try {
-                ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new LightMsg(LightMsg.ON, LightMsg.FROM_APP));
+                ACDeviceMsg deviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new byte[]{LightMsg.ON, LightMsg.FROM_APP});
                 // 这里直接调用服务的设备消息处理handler，驱动测试
-                // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
-                demoService.handleDeviceMsg(ac.newContext(), light.getId(), light.getPhysicalId(), deviceMsg);
+                ACDeviceReportInfo reportInfo = new ACDeviceReportInfo();
+                reportInfo.setContext(ac.newContext());
+                reportInfo.setDeviceId(light.getId());
+                reportInfo.setPhysicalDeviceId(light.getPhysicalId());
+                demoService.handleDeviceMsg(reportInfo, deviceMsg);
             } catch (Exception e) {
                 e.printStackTrace();
                 fail(&quot;test light report fail&quot;);
@@ -1317,11 +1197,13 @@ public class DemoServiceTest {
     public void test2LightReportAndQuery() throws Exception {
         // 先测试智能灯上报消息，将上报数据写入云端存储中
         try {
-            LightMsg lightMsg = new LightMsg(LightMsg.ON, LightMsg.FROM_SWITCH);  // 1--on
-            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, lightMsg);
+            ACDeviceMsg acDeviceMsg = new ACDeviceMsg(LightMsg.REPORT_CODE, new byte[]{LightMsg.ON, LightMsg.FROM_SWITCH});
             // 这里直接调用服务的设备消息处理handler，驱动测试
-            // 这里由于设备汇报的消息中context没有用户id信息，随便填一个大于0的id即可
-            demoService.handleDeviceMsg(ac.newContext(1), light.getId(), light.getPhysicalId(), acDeviceMsg);
+            ACDeviceReportInfo reportInfo = new ACDeviceReportInfo();
+            reportInfo.setContext(ac.newContext());
+            reportInfo.setDeviceId(light.getId());
+            reportInfo.setPhysicalDeviceId(light.getPhysicalId());
+            demoService.handleDeviceMsg(reportInfo, acDeviceMsg);
         } catch (Exception e) {
             e.printStackTrace();
             fail(&quot;test light report fail&quot;);
@@ -1351,7 +1233,6 @@ public class DemoServiceTest {
         }
     }
 }
-
 </code></pre>
 
 <blockquote>
@@ -1395,8 +1276,8 @@ public class LightStub extends ACDeviceStub {
 <pre><code>/config
     /cloudservice-conf.xml
 /lib
-    /ablecloud-framework-1.1.0.jar
-    /ac-java-api-1.0.0.jar
+    /ablecloud-framework-1.4.0.jar
+    /ac-java-api-1.4.0.jar
     /commons-collections-3.2.1.jar
     /commons-configuration-1.10.jar
     /commons-lang-2.6.jar
@@ -1414,7 +1295,7 @@ start.cmd
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:301:doStart] - jetty-9.1.5.v20140505
 2015-09-08 17:37:47,047 INFO main:1 [AbstractConnector.java:266:doStart] - Started ServerConnector@4b27ad{HTTP/1.1}{0.0.0.0:8080}
 2015-09-08 17:37:47,047 INFO main:1 [Server.java:350:doStart] - Started @206ms
-2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service teddy ok.
+2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service DemoService ok.
 </code></pre>
 
 <h3 id="http">用任意客户端发送http请求</h3>
@@ -1435,6 +1316,53 @@ start.cmd
 <blockquote>
 <p><font color="red"><strong>注：</strong>若在handleMsg接口的处理中使用<code>req.getContext()</code>获取请求的用户信息，则在构造http请求的时候，需要使用<code>-H</code>增加如下三个头域：<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code></font>。</p>
 </blockquote>
+<h2 id="_16">单步调试</h2>
+<p>集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。</p>
+<blockquote>
+<p>注意：使用单步调试需要更新java sdk到1.4.0以上</p>
+</blockquote>
+<ol>
+<li>
+<p>点击上方的三角形按钮后，点击Edit Configurations...
+<img alt="debug" src="../../pic/develop_guide/debug/1.png" /></p>
+</li>
+<li>
+<p>出现如下小窗口后，点击左上角＋号，选择Application
+<img alt="debug" src="../../pic/develop_guide/debug/2.png" /></p>
+</li>
+<li>
+<p>可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入<strong><code>com.ablecloud.cloudservice.ACServer</code></strong>，最后确认Use classpath of module项为你的工程的module，点击OK按钮
+<img alt="debug" src="../../pic/develop_guide/debug/3.png" /></p>
+</li>
+<li>
+<p>下面可以开始debug你的工程了，首先在您的工程代码处设置断点
+<img alt="debug" src="../../pic/develop_guide/debug/4.png" /></p>
+</li>
+<li>
+<p>设置完断点后，点击上方小甲虫按钮，如下图所示
+<img alt="debug" src="../../pic/develop_guide/debug/5.png" /></p>
+</li>
+<li>
+<p>可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
+<img alt="debug" src="../../pic/develop_guide/debug/6.png" /></p>
+</li>
+<li>
+<p>进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
+<img alt="debug" src="../../pic/develop_guide/debug/7.png" /></p>
+</li>
+<li>
+<p>发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
+<img alt="debug" src="../../pic/develop_guide/debug/8.png" /></p>
+</li>
+<li>
+<p>Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
+<img alt="debug" src="../../pic/develop_guide/debug/9.png" /></p>
+</li>
+<li>
+<p>切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的<code>this.writeResp(reqMsg,resp)</code>后，可以看到终端会自动出现程序处理后的返回结果，调试结束
+<img alt="debug" src="../../pic/develop_guide/debug/10.png" /></p>
+</li>
+</ol>
 <h1 id="store">Store存储接口示例</h1>
 <p>以数据集<code>test_data</code>为例，假定其分区键为<code>deviceId</code>（字符串型）；主键为<code>deviceId</code>（字符串型）和<code>timestamp</code>（整型）；其他字段包括<code>status</code>（字符串型）、<code>mode</code>（字符串型）、<code>speed</code>（整型）和<code>pm25</code>（浮点型）等。</p>
 <h2 id="create">Create</h2>
@@ -1499,7 +1427,7 @@ Long speed = ao.get(&quot;speed&quot;);
                     .execute();
 </code></pre>
 
-<h3 id="_16">示例四：指定查询过滤器进行查询。</h3>
+<h3 id="_17">示例四：指定查询过滤器进行查询。</h3>
 <pre><code class="java">// 查询条件1：状态是正在运行并且转速大于等于300
 ACFilter f1 = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;)
                     .whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
@@ -1517,7 +1445,7 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_17">示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高。</h3>
+<h3 id="_18">示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高。</h3>
 <pre><code class="java">// 查询条件：状态是正在运行
 ACFilter f = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;);
 
@@ -1532,7 +1460,7 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_18">示例六：分组并进行简单的数值统计。</h3>
+<h3 id="_19">示例六：分组并进行简单的数值统计。</h3>
 <pre><code class="java">/*
  将设备ID为&quot;12345&quot;的设备在一段时间内的数据记录按照运行状态和控制模式分组，假设有四种情况：
  -------------------------
@@ -1559,7 +1487,7 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_19">示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求。</h3>
+<h3 id="_20">示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求。</h3>
 <pre><code class="java">// 将设备ID为&quot;12345&quot;的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
 ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
                     .whereLessThan(&quot;speed&quot;, 50L);
@@ -1631,7 +1559,7 @@ ac.store(&quot;test_data&quot;, context).batchDelete(&quot;deviceId&quot;, &quot
 <p><strong>基于SimpleFullScan和Scan的全表分页浏览</strong></p>
 <p><font color= "red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
 <p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
-<h3 id="_20">非分区数据集</h3>
+<h3 id="_21">非分区数据集</h3>
 <pre><code class="java">// limit是每个分页的最大数据条数，举例为50
 int limit = 50;
 List&lt;ACObject&gt; zos;
@@ -1653,7 +1581,7 @@ while (zos.size() &gt;= limit + 1) {
 
 </code></pre>
 
-<h3 id="_21">分区数据集</h3>
+<h3 id="_22">分区数据集</h3>
 <pre><code class="java">// limit是每个分页的最大数据条数，举例为50
 int limit = 50;
 
@@ -1669,7 +1597,7 @@ ACRowIterator it = ac.store(TEST_CLASS, context)
         .simpleFullScan()
         .where(f1)
         .and(f2)
-        .or(f3)
+        .or(f3) 
         .execute();
 
 // 注意这里可以直接使用每次期望获取的数据条数limit，不需要传入limit+1;同时每次迭代给定的limit可以不同
@@ -1680,7 +1608,7 @@ while ((zos = it.next(limit)) != null) {
 }
 </code></pre>
 
-<h2 id="_22">其它</h2>
+<h2 id="_23">其它</h2>
 <p><code>delete/update/replace</code>的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。</p>
 <h1 id="uds_2">UDS访问外网示例</h1>
 <p>UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的正向代理服务（由类ACHttpClient提供访问接口）访问外部网络。</p>

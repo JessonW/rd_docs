@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -251,6 +245,18 @@
         
     
         
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
         
             
                 
@@ -390,6 +396,18 @@
             
         
             
+            <li class="sub parent__4" style="display: none;"><a href="#acpm25">ACPM25</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#acaqi">ACAQI</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#acweather">ACWeather</a></li>
+            
+        
+            
             <li class="sub parent__4" style="display: none;"><a href="#acexception">ACException</a></li>
             
         
@@ -498,11 +516,11 @@
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_13">用户意见反馈</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_13">辅助功能</a></li>
             
         
             
-            <li class="sub parent_sdk" style="display: none;"><a href="#_14">桩模块</a></li>
+            <li class="sub parent_sdk" style="display: none;"><a href="#_16">桩模块</a></li>
             
         
     
@@ -542,39 +560,39 @@
         
         
         <li class="main">
-            <a href="#_17">适用蓝牙的接口<span class="main-set parent__17">+</span></a>
+            <a href="#_19">适用蓝牙的接口<span class="main-set parent__19">+</span></a>
         </li>
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#1">1、帐号管理</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#1">1、帐号管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#2">2、设备激活</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#2">2、设备激活</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#3">3、设备管理</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#3">3、设备管理</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#4ota">4、OTA</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#4ota">4、OTA</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#5">5、消息推送</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#5">5、消息推送</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#6">6、和云端通信</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#6">6、和云端通信</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#7">7、文件存储</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#7">7、文件存储</a></li>
             
         
             
-            <li class="sub parent__17" style="display: none;"><a href="#8">8、用户意见反馈</a></li>
+            <li class="sub parent__19" style="display: none;"><a href="#8">8、辅助功能</a></li>
             
         
     
@@ -787,11 +805,27 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 
     public ACDeviceMsg() {}
 
+    //初始化byte[]二进制数组（也支持json格式，通过&quot;jsonString&quot;.getBytes设置）
     public ACDeviceMsg(int code, byte[] content) {}
+
+    //初始化ACObject，本质上为json格式,与JSONObject用法相同
+    public ACDeviceMsg(int code, ACObject object) {}
+
+    //初始化ACKLVObject，使用klv通讯格式
+    public ACDeviceMsg(int code, ACKLVObject object) {}
+
+    /**
+     * 设置局域网通讯安全模式,默认为动态加密;不加密/静态加密在局域网控制模式下不要求必须先绑定该设备
+     * &lt;p/&gt;
+     * ACDeviceSecurityMode.NO_ENCRYPTED      不加密
+     * ACDeviceSecurityMode.STATIC_ENCRYPTED  静态加密,即使用默认秘钥
+     * ACDeviceSecurityMode.DYNAMIC_ENCRYPTED 动态加密,使用云端分配的秘钥,要求提前调用接口listDevice/listDeviceWithStatus
+     */
+    public void setSecurityMode(ACDeviceSecurityMode securityMode) {}
 
     public ACDeviceMsg(int code, byte[] content, String description) {}
 
-    public ACDeviceMsg(int code, ACKLVObject object) {}
+    public ACDeviceMsg(int code, ACObject object, String description) {}
 
     public ACDeviceMsg(int code, ACKLVObject object, String description) {}
 
@@ -802,6 +836,10 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public byte[] getContent() {}
 
     public void setContent(byte[] content) {}
+
+    public ACObject getObject() {}
+
+    public void setObject(ACObject object) {}
 
     public ACKLVObject getKLVObject() {}
 
@@ -933,6 +971,8 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     private long userId;
     //创建该用户的昵称
     private String nickName;
+    //任务名称
+    private String name;
     //任务描述
     private String description;
     //任务时区
@@ -1157,6 +1197,78 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public void addFeedbackPicture(String key, String value) {
         extend.add(key, value);
     }
+}
+</code></pre>
+
+<h4 id="acpm25">ACPM25</h4>
+<p>说明：用来表示pm25的信息，定义如下：</p>
+<pre><code class="java">public class ACPM25 {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新pm25时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    public String timestamp;
+    //pm25平均值
+    public int avg;
+    //pm25最小值
+    public int min;
+    //pm25最大值
+    public int max;
+
+    public ACPM25(String timestamp, int avg, int min, int max) {}
+}
+</code></pre>
+
+<h4 id="acaqi">ACAQI</h4>
+<p>说明：用来表示空气质量的信息，定义如下：</p>
+<pre><code class="java">public class ACAQI {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新空气质量时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    String timestamp;
+    //空气质量
+    int AQI;
+    //最低空气质量
+    int minAQI;
+    //最高空气质量
+    int maxAQI;
+
+    public ACAQI(int AQI, int minAQI, int maxAQI, String timestamp) {}
+}
+</code></pre>
+
+<h4 id="acweather">ACWeather</h4>
+<p>说明：用来表示温湿度的信息，定义如下：</p>
+<pre><code class="java">public class ACWeather {
+    /**
+     * 时间,字符串格式
+     *
+     * 获取最新天气时间格式为&quot;yyyy-MM-dd HH:mm:ss&quot;
+     * 获取最近几天时间格式为&quot;yyyy-MM-dd&quot;
+     * 获取最近几小时时间格式为&quot;yyyy-MM-dd HH&quot;
+     */
+    String timestamp;
+    //温度
+    double temperature;
+    //最低温度
+    double minTemperature;
+    //最高温度
+    double maxTemperature;
+    //湿度
+    int humidity;
+    //最低湿度
+    int minHumidity;
+    //最高湿度
+    int maxHumidity;
+
+    public ACWeather(String timestamp, double temperature, double minTemperature, double maxTemperature, int humidity, int minHumidity, int maxHumidity) {}
 }
 </code></pre>
 
@@ -1915,8 +2027,23 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      *                  AC.CLOUD_FIRST 优先通过云端给设备发消息
      * @param callback  返回结果的监听回调
      */
+    @Deprecated
     public void sendToDeviceWithOption(String subDomain, long deviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACDeviceMsg&gt; callback);
 }
+
+    /**
+     * 给设备发消息(建议使用该接口)
+     *
+     * @param subDomain        子域名，如djj（豆浆机）
+     * @param physicalDeviceId 设备物理id
+     * @param deviceMsg        具体的消息内容
+     * @param option           AC.ONLY_LOCAL  只通过局域网直连方式给设备发消息
+     *                         AC.ONLY_CLOUD  只通过云端给设备发消息
+     *                         AC.LOCAL_FIRST 优先通过局域网直连方式给设备发消息
+     *                         AC.CLOUD_FIRST 优先通过云端给设备发消息
+     * @param callback         返回结果的监听回调
+     */
+    public void sendToDeviceWithOption(String subDomain, String physicalDeviceId, ACDeviceMsg deviceMsg, int option, PayloadCallback&lt;ACDeviceMsg&gt; callback);
 </code></pre>
 
 <h2 id="home">Home模型</h2>
@@ -2149,9 +2276,8 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <h2 id="_8">设备定时任务</h2>
 <blockquote>
 <p><strong><font color="red">注意</font>：</strong></p>
-<p><strong>1、若与设备之间的通讯为二进制或json格式，则需要先设置序列化器（与发送到设备相同），若为klv格式则不需要设置，具体参考与云端通讯中的发送到设备</strong></p>
-<p><strong>2、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
-<p><strong>3、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
+<p><strong>1、timePoint的格式为<code>"yyyy-MM-dd HH:mm:ss"</code>，否则会失败</strong></p>
+<p><strong>2、timeCycle需要在timePoint时间点的基础上,选择循环方式</strong></p>
 <ul>
 <li>
 <p><strong>"once":</strong>单次循环</p>
@@ -2531,9 +2657,10 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback&lt;String&gt; callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback&lt;String&gt; callback);
 
     /**
      * 下载文件到内存里,适合小文件下载
@@ -2632,7 +2759,9 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 <blockquote>
 <p><font color="red"><strong>规则</strong>：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。</p>
 </blockquote>
-<h2 id="_13">用户意见反馈</h2>
+<h2 id="_13">辅助功能</h2>
+<p>除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。</p>
+<h4 id="_14">用户意见反馈</h4>
 <pre><code class="java">public interface ACFeedbackMgr {
 
     /**
@@ -2645,9 +2774,83 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h2 id="_14">桩模块</h2>
+<h4 id="_15">获取室外天气</h4>
+<p>SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.</p>
+<pre><code class="java">public interface ACWeatherMgr {
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public void getLatestPM25(String area, PayloadCallback&lt;ACPM25&gt; callback);
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysPM25(String area, int day, PayloadCallback&lt;List&lt;ACPM25&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursPM25(String area, int hour, PayloadCallback&lt;List&lt;ACPM25&gt;&gt; callback);
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public void getLatestAqi(String area, PayloadCallback&lt;ACAQI&gt; callback);
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysAqi(String area, int day, PayloadCallback&lt;List&lt;ACAQI&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursAqi(String area, int hour, PayloadCallback&lt;List&lt;ACAQI&gt;&gt; callback);
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public void getLatestWeather(String area, PayloadCallback&lt;ACWeather&gt; callback);
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysWeather(String area, int day, PayloadCallback&lt;List&lt;ACWeather&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursWeather(String area, int hour, PayloadCallback&lt;List&lt;ACWeather&gt;&gt; callback);
+}
+</code></pre>
+
+<h2 id="_16">桩模块</h2>
 <p>为了便于作单元、模块测试，我们通常不需要等待真正的设备制造好，真正的后端服务开发好。所以ablecloud提供了桩模块，让开发者能方便的模拟设备、服务。</p>
-<h4 id="_15">设备桩</h4>
+<h4 id="_17">设备桩</h4>
 <p>设备桩的定义非常简单，其目的是为了模拟设备，对服务发来的请求做出响应，因此只有一个处理请求并做出响应的接口，定义如下：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -2655,7 +2858,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
 }
 </code></pre>
 
-<h4 id="_16">服务桩</h4>
+<h4 id="_18">服务桩</h4>
 <p>服务桩用于模拟一个服务的处理，对于后端服务，ablecloud提供了基础类ACService，服务桩只需要继承该类，编写具体的处理handlMsg即可，其定义如下：</p>
 <pre><code class="java">public abstract class ACService {
     /**
@@ -2667,7 +2870,7 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
     public abstract void handleMsg(ACMsg req, ACMsg resp);
 </code></pre>
 
-<h1 id="_17">适用蓝牙的接口</h1>
+<h1 id="_19">适用蓝牙的接口</h1>
 <p>由于蓝牙设备和APP之间的通信协议比较简单，因此对于蓝牙设备和APP之间的通信协议，AbleCloud并未做任何处理。
 AbleCloud提供了适用于蓝牙设备的APP和云端的交互接口。接口功能包括：帐号登录注册、用户属性添加、设备绑定、设备扩展属性设置、推送、蓝牙设备OTA、文件存储等。</p>
 <p>对于蓝牙设备数据的存取，都是通过和云端通信的访问云端服务实现。目前所有的数据库的操作都需要经过云端服务进行，客户端的SDK中不能直接进行数据库访问。云端服务的开发参考<a href="../../develop_guide/cloud/">开发指导-云端服务</a></p>
@@ -3032,9 +3235,11 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
     /**
      * 获取下载url
      *
-     * @param fileInfo  文件下载信息
+     * @param fileInfo   文件下载信息
+     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
      */
-    public void getDownloadUrl(ACFileInfo fileInfo, PayloadCallback&lt;String&gt; callback);
+    public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback&lt;String&gt; callback);
+
 
     /**
      * 下载文件到内存里,适合小文件下载（如头像下载）
@@ -3133,7 +3338,9 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
 }
 </code></pre>
 
-<h2 id="8">8、用户意见反馈</h2>
+<h2 id="8">8、辅助功能</h2>
+<p>除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。</p>
+<h4 id="_20">用户意见反馈</h4>
 <pre><code class="java">public interface ACFeedbackMgr {
 
     /**
@@ -3143,6 +3350,80 @@ public void changeName(String subDomain, long deviceId, String name, VoidCallbac
      * @param callback 返回结果的监听回调
      */
     public void submitFeedback(ACFeedback feedback, VoidCallback callback);
+}
+</code></pre>
+
+<h4 id="_21">获取室外天气</h4>
+<p>SDK可以获取到室外的pm2.5, AQI(空气质量)以及天气状况.</p>
+<pre><code class="java">public interface ACWeatherMgr {
+    /**
+     * 获取最新的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     */
+    public void getLatestPM25(String area, PayloadCallback&lt;ACPM25&gt; callback);
+
+    /**
+     * 获取最近n天的PM25值
+     *
+     * @param area 地区,如北京,只支持地级市
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysPM25(String area, int day, PayloadCallback&lt;List&lt;ACPM25&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的PM25值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursPM25(String area, int hour, PayloadCallback&lt;List&lt;ACPM25&gt;&gt; callback);
+
+    /**
+     * 获取最新的空气质量值
+     *
+     * @param area 地区
+     */
+    public void getLatestAqi(String area, PayloadCallback&lt;ACAQI&gt; callback);
+
+    /**
+     * 获取最近n天的空气质量值
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysAqi(String area, int day, PayloadCallback&lt;List&lt;ACAQI&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的空气质量值
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursAqi(String area, int hour, PayloadCallback&lt;List&lt;ACAQI&gt;&gt; callback);
+
+    /**
+     * 获取最新的温湿度
+     *
+     * @param area 地区
+     */
+    public void getLatestWeather(String area, PayloadCallback&lt;ACWeather&gt; callback);
+
+    /**
+     * 获取最近n天的温湿度
+     *
+     * @param area 地区
+     * @param day  最近n天,n最大为7,0表示7天
+     */
+    public void getLastDaysWeather(String area, int day, PayloadCallback&lt;List&lt;ACWeather&gt;&gt; callback);
+
+    /**
+     * 获取最近n小时的温湿度
+     *
+     * @param area 地区
+     * @param hour 最近n个小时(0-24),0表示24小时
+     */
+    public void getLastHoursWeather(String area, int hour, PayloadCallback&lt;List&lt;ACWeather&gt;&gt; callback);
 }
 </code></pre>
 
