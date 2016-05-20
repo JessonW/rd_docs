@@ -740,6 +740,7 @@ public interface ACAccountMgr {
 
     /**
      * 查出所有用户的信息（基本信息+扩展信息）
+     *
      * @param offset
      * @param limit
      * @return
@@ -749,7 +750,9 @@ public interface ACAccountMgr {
 
     /**
      * 根据用户uid列表查找用户的信息（基本信息+扩展信息）
-     * @param userList
+     * 一次最多可查询1000个用户的信息
+     *
+     * @param userList 元素个数必须小于等于1000
      * @return
      * @throws Exception
      */
