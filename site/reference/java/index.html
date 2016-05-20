@@ -1360,6 +1360,14 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public List&lt;ACObject&gt; listUserProfiles(long offset, long limit) throws Exception;
 
     /**
+     * 根据用户uid列表查找用户的信息（基本信息+扩展信息）
+     * @param userList
+     * @return
+     * @throws Exception
+     */
+    public List&lt;ACObject&gt; getProfilesByUserList(List&lt;Long&gt; userList) throws Exception;
+
+    /**
      * 根据用户ID查找用户扩展信息
      *
      * @param accountId
@@ -3413,7 +3421,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 
     /**
      * 获取用于签名字符串
-     * 
+     *
      * @param developerId 开发者id
      * @param majorDomain 主域名
      * @param subDomain   子域名
