@@ -41,7 +41,7 @@ public abstract class ACConfig {
 	 * @return 开发者密钥对总的Secret Key。
 	 */
     public abstract String getAuthSecretKey();
-    
+
     /**
      * 取运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
      * @return 返回运行模式：ACConfig.TEST_MODE 或 ACConfig.PRODUCTION_MODE。
@@ -50,7 +50,7 @@ public abstract class ACConfig {
     //@}
 
 	// 下列方法均有默认实现，开发者可选择性地重载。
-	
+
     /**
      * 取服务所关联的子域的名字。
      * @return 缺省情况下返回空字符串。
@@ -173,14 +173,14 @@ public class ACObject {
      * @return
      */
     public <T> ACObject put(String key, T value) {}
-    
+
     /**
      * 添加一个参数，该参数添加到一个List中
      * @param key	参数所在List的名字
      * @param value	参数值
      */
     public ACObject add(String key, Object value) {}
-   
+
     /**
      * 获取一个参数值
      *
@@ -188,7 +188,7 @@ public class ACObject {
      * @return 参数值;如果不存在该参数值,返回null
      */
     public <T> T get(String key) {}
-     
+
     /**
      * @return 返回能被转化为Byte类型的值, 否则返回0
      */
@@ -223,7 +223,7 @@ public class ACObject {
      * @return 返回能被转化为String类型的字符串, 否则返回""
      */
     public String getString(String key) {}
-    
+
     /**
      * 检查某一key是否存在
      * @param key	参数名
@@ -257,49 +257,49 @@ public class ACMsg extends ACObject {
     private InputStream streamPayload;
 
     public ACMsg() {}
-    
+
     /**
      * 设置请求方法名，服务端将根据该方法名进行处理
      * @param name  方法名
      */
     public void setName(String name) {}
-    
+
     /**
      * 获取方法名
      * @return
      */
     public String getName() {}
-    
+
     /**
      * 获取交互上下文
      * @return
      */
     public ACContext getContext() {}
-    
+
     /**
      * 设置交互上下文
      * @param context
      */
     public void setContext(ACContext context) {}
-    
+
     /**
      * 获取负载格式
      * @return
      */
     public String getPayloadFormat() {}
-    
+
     /**
      * 获取二进制负载
      * @return
      */
     public byte[] getPayload() {}
-    
+
     /**
      * 获取负载大小
      * @return
      */
     public int getPayloadSize() {}
-    
+
     /**
      * 设置二进制负载
      * 通过put/add方式设置的负载要么框架将其序列化为json，
@@ -309,52 +309,52 @@ public class ACMsg extends ACObject {
      * @param format
      */
     public void setPayload(byte[] payload, String format) {}
-    
+
     /**
      * 设置流式负载，主要用于较大的数据传输，如上传文件等。
      * @param payload   负载内容
      * @param size      负载大小
      */
     public void setStreamPayload(InputStream payload, int size) {}
-    
+
     /**
      * 获取流式负载
      * @return
      */
     public InputStream getStreamPayload() {}
-    
+
     /**
      * 关闭流式负载。
      * 通过getStreamPayload拿到流式负载后，需要显示的关闭。
      * @throws IOException
      */
     public void closeStreamPayload() throws IOException {}
-    
+
     /**
      * 设置错误信息。在服务端处理错误时，需要显示的调用该结果设置错误信息
      * @param errCode   错误码
      * @param errMsg    错误信息
      */
     public void setErr(Integer errCode, String errMsg) {}
-    
+
     /**
      * 判断服务端响应的处理结果
      * @return  true-处理出错，false-处理成功
      */
     public boolean isErr() {}
-    
+
     /**
      * 获取错误码
      * @return
      */
     public Integer getErrCode() {}
-    
+
     /**
      * 获取错误信息
      * @return
      */
     public String getErrMsg() {}
-    
+
     /**
      * 服务端处理成功后，调用该方法
      */
@@ -402,18 +402,18 @@ public class ACDeviceMsg {
     private ACKLVObject object;
     //设备描述信息
     private String description;
-    
+
     public ACDeviceMsg() {}
-    
+
     //初始化byte[]二进制数组（也支持json格式，通过"jsonString".getBytes设置）
     public ACDeviceMsg(int code, byte[] content) {}
-    
+
     //初始化ACObject，本质上为json格式,与JSONObject用法相同
     public ACDeviceMsg(int code, ACObject object) {}
 
     //初始化ACKLVObject，使用klv通讯格式
     public ACDeviceMsg(int code, ACKLVObject object) {}
-    
+
     public ACDeviceMsg(int code, byte[] content, String description) {}
 
     public ACDeviceMsg(int code, ACObject object, String description) {}
@@ -746,6 +746,14 @@ public interface ACAccountMgr {
      * @throws Exception
      */
     public List<ACObject> listUserProfiles(long offset, long limit) throws Exception;
+
+    /**
+     * 根据用户uid列表查找用户的信息（基本信息+扩展信息）
+     * @param userList
+     * @return
+     * @throws Exception
+     */
+    public List<ACObject> getProfilesByUserList(List<Long> userList) throws Exception;
 
     /**
      * 根据用户ID查找用户扩展信息
@@ -2092,7 +2100,7 @@ public class ACNotification {
 
     // 用户自定义数据
     private Map<String, String> userData;
-    
+
     // 本地化自定义格式（用于多地域、多国语言推送功能）
     private String locKey;
 
@@ -2114,7 +2122,7 @@ public class ACNotification {
         this.locKey = "";
         this.locArgs = new ArrayList();
     }
-    
+
     // 初始化
     public ACNotification(String title, String content) {
         this.displayType = NOTIFICATION;
@@ -2567,7 +2575,7 @@ public class ACTimerTask {
     public String getModifyTime() {
         return this.modifyTime;
     }
-    
+
     /**
      * 设置是使用云端定时还是使用设备端定时。
      * @details 云端定时表示该任务由云端的定时器驱动；设备端定时表示该任务由设备端的定时器驱动。
@@ -2815,10 +2823,10 @@ public class ACSigner {
     private static final Logger logger = LoggerFactory.getLogger(ACSigner.class);
     private static final String ENCODING = "UTF-8";
     private static final String HASH = "HmacSHA256";
-    
+
     /**
      * 获取用于签名字符串
-     * 
+     *
      * @param developerId 开发者id
      * @param majorDomain 主域名
      * @param subDomain   子域名
@@ -2904,5 +2912,3 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 
 #Error Code
 参考[Reference-Error Code](./error_code.md)。
-
-
