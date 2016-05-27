@@ -1202,6 +1202,15 @@ while((zos = it.next()) != null) {
 }
 ```
 
+
+##Delete
+删除一行数据(至少指定主键)
+```java
+ac.store("test_data", context).delete("deviceId", "12345", "timestamp", 1L)
+                    .put("speed", 10L)
+                    .execute(); //删除主键为(deviceId: 12345, timestamp: 1L) 并且speed=10L的行
+```
+
 ##BatchDelete
 分区或者非分区的数据集都可以使用BatchDelete接口来批量删除数据记录。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。
 

@@ -378,6 +378,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#store">Store存储接口示例<span class="main-set parent_store">+</span></a>
@@ -405,6 +409,10 @@
         
             
             <li class="sub parent_store" style="display: none;"><a href="#fullscan">FullScan</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#delete">Delete</a></li>
             
         
             
@@ -1583,6 +1591,13 @@ while((zos = it.next()) != null) {
     // 处理当前分区中的数据
         ...
 }
+</code></pre>
+
+<h2 id="delete">Delete</h2>
+<p>删除一行数据(至少指定主键)</p>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).delete(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .put(&quot;speed&quot;, 10L)
+                    .execute(); //删除主键为(deviceId: 12345, timestamp: 1L) 并且speed=10L的行
 </code></pre>
 
 <h2 id="batchdelete">BatchDelete</h2>
