@@ -370,6 +370,14 @@
                 
             
         
+            
+                
+            
+        
+            
+                
+            
+        
         
         <li class="main">
             <a href="#store">Store存储接口示例<span class="main-set parent_store">+</span></a>
@@ -377,6 +385,14 @@
         
             
             <li class="sub parent_store" style="display: none;"><a href="#create">Create</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#update">Update</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#modify">Modify</a></li>
             
         
             
@@ -1384,6 +1400,36 @@ ac.store(&quot;test_data&quot;, context).create(pk)   // 这里是primary keys�
                     .put(&quot;mode&quot;, &quot;auto&quot;)
                     .put(&quot;speed&quot;, 45L)
                     .put(&quot;pm25&quot;, 35.5)
+                    .execute();
+</code></pre>
+
+<h2 id="update">Update</h2>
+<p>更新数据，如果对应的主键不存在，则插入这条数据。</p>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).update(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .put(&quot;status&quot;, &quot;run&quot;)
+                    .put(&quot;mode&quot;, &quot;auto&quot;)
+                    .put(&quot;speed&quot;, 45L)
+                    .put(&quot;pm25&quot;, 35.5)
+                    .execute();
+</code></pre>
+
+<h2 id="modify">Modify</h2>
+<p>更新已有数据，如果对应数据行不存在，则报错。</p>
+<h3 id="speed6">用法一：将speed设置为6，其它值不变</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .set(&quot;speed&quot;, 6L)
+                    .execute();
+</code></pre>
+
+<h3 id="2speed2">用法2：将speed增加2，其它值不变</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .inc(&quot;speed&quot;, 2)
+                    .execute();
+</code></pre>
+
+<h3 id="3speed2">用法3：将speed减少2，其它值不变</h3>
+<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+                    .dec(&quot;speed&quot;, 2)
                     .execute();
 </code></pre>
 
