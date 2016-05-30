@@ -2,7 +2,7 @@
 
 本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。
 
-下文是Java SDK (v1.4.x)的API说明。
+下文是Java SDK (v1.5.x)的API说明。
 
 #配置信息
 本SDK定义的配置信息如下：
@@ -122,6 +122,18 @@ public abstract class ACConfig {
     public String getSNServiceName();
 
     public int getSNServiceVersion();
+
+    public String getQueryEngineServiceName();
+
+    public int getQueryEngineServiceVersion();
+
+    public String getPM25ServiceName();
+
+    public int getPM25ServiceVersion();
+
+    public String getWarehouseServiceName();
+
+    public int getWarehouseServiceVersion();
     //@}
 }
 ```
@@ -592,7 +604,7 @@ public abstract class AC {
      * @param context 开发者的context
      * @return
      */
-    public abstract ACAnalysisMgr analysisMgr(ACContext context);
+    public abstract ACInspireMgr inspireMgr(ACContext context);
 
     /**
      * 获取文件管理器，可以上传下载文件。
@@ -612,6 +624,14 @@ public abstract class AC {
     public abstract ACWeatherMgr weatherMgr(ACContext context);
 
     /**
+     * 取设备管理器。
+     *
+     * @param context  开发者的context
+     * @return ACWarehouseMgr对象的实例。
+     */
+    public abstract ACWarehouseMgr warehouseMgr(ACContext context);
+
+    /**
      * 为便于测试，开发者可实现一个服务的桩
      * 在框架中添加一个服务桩
      *
@@ -627,7 +647,6 @@ public abstract class AC {
      * @param stub      设备桩
      */
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
-
 
     /**
      * 获取AC日志, 可以在打印日志时保存TraceId等信息, 便于调试
@@ -2779,6 +2798,131 @@ public class ACWeather {
         this.minHumidity = minHumidity;
         this.maxHumidity = maxHumidity;
     }
+}
+```
+
+#设备管理接口
+该服务提供了入库设备的查询接口。
+
+##获取方式
+```java
+ACWarehouseMgr warehouseMgr = ac.warehouseMgr(ACContext context);
+```
+><font color="red">注意</font>：此处使用开发者上下文即可，即`ac.newContext()`。
+
+##接口说明
+```java
+public interface ACWarehouseMgr {
+
+    /**
+     * 查询已入库设备的数目。
+     *
+     * @param subDomain 要查寻的设备所属的子域的名字。可以为NULL或空字符串，表示不区分子域。
+     * @return 返回设备数目。
+     * @throws Exception
+     */
+    public long getDeviceCount(String subDomain) throws Exception;
+
+    /**
+     * 批量查询设备信息。
+     *
+     * @param subDomain 要查寻的设备所属的子域的名字。可以为NULL或空字符串，表示不区分子域。
+     * @param offset    参数offset和limit用于指定查询的列表范围，实现“分页”的效果。
+     *                  offset是从0开始的偏移量，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @param limit     参数limit和offset用于指定查询的列表范围，实现“分页”的效果。
+     *                  limit是正整数，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @return          返回设备列表。
+     */
+    public List<ACDeviceInfo> listDevices(String subDomain, long offset, long limit) throws Exception;
+
+    /**
+     * 查询设备信息。
+     *
+     * @param physicalDeviceId  拟查询的设备的物理ID。
+     * @return 设备的信息。
+     * @throws Exception
+     */
+    public ACDeviceInfo getDeviceInfo(String physicalDeviceId) throws Exception;
+
+    /**
+     * 批量查询设备信息。
+     *
+     * @param physicalDeviceIds 拟查询的设备的物理ID组成的数组。
+     * @return 设备的信息。
+     * @throws Exception
+     */
+    public List<ACDeviceInfo> getDevicesInfo(List<String> physicalDeviceIds) throws Exception;
+}
+```
+
+##数据结构说明
+设备信息的数据结构。
+```java
+/**
+ * 设备的信息。
+ */
+public class ACDeviceInfo {
+
+    public ACDeviceInfo();
+
+    /// 设备所属的主域的ID。
+    public void setMajorDomain(String name);
+    public String getMajorDomain();
+
+    /// 设备所属的子域的ID。
+    public void setSubDomain(String name);
+    public String getSubDomain();
+
+    /// 设备的物理ID。
+    public void setPhysicalId(String id);
+    public String getPhysicalId();
+
+    public void setType(String t);
+    public String getType();
+
+    /// 设备的IP地址。
+    public void setIPAddress(String ip);
+    public String getIPAddress();
+
+    /// 设备的MAC地址。
+    public void setMacAddress(String mac);
+    public String getMacAddress();
+
+    /// 设备的MCU固件版本。
+    public void setDevVersion(String version);
+    public String getDevVersion();
+
+    /// 设备的通信模块版本。
+    public void setModVersion(String version);
+    public String getModVersion();
+
+    /// 设备的激活时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public void setActiveTime(String time);
+    public String getActiveTime();
+
+    /// 设备最近一次上线时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public void setLastOnlineTime(String time);
+    public String getLastOnlineTime();
+
+    /// 设备所处地理位置信息：所在国家。
+    public void setCountry(String name);
+    public String getCountry();
+
+    /// 设备所处地理位置信息：所在省份。
+    public void setProvince(String name);
+    public String getProvince();
+
+    /// 设备所处地理位置信息：所在城市。
+    public void setCity(String name);
+    public String getCity();
+
+    /// 设备所处地理位置信息：所在街道。
+    public void setStreet(String name);
+    public String getStreet();
+
+    /// 设备状态：0-不存在；1-未激活；2-激活。
+    public void setStatus(int status);
+    public int getStatus();
 }
 ```
 
