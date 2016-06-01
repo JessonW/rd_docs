@@ -254,15 +254,15 @@ public class ACDeviceMsg {
 #基本数据结构
 这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。
 
-####ACAccount
+####ACUserInfo
 用来表示AbleCloud的一个注册帐号信息，定义如下：
 
 ```java
 public class ACUserInfo {
-    private long userId;  //用户id
-    private String name;  //用户名
+    private long userId;      //用户id
+    private String nickName;  //用户昵称
 
-    public ACUserInfo(long uid, String token) {}
+    public ACUserInfo(long uid, String nickName) {}
 
 	// getter
 }
