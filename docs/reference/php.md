@@ -22,7 +22,7 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 
     本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.6.x)的API说明。
+下文是PHP SDK (v1.7.x)的API说明。
 
 #对接微信#
 
@@ -36,142 +36,173 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 class ACBridgeWeChat {
     /**
      * 构造函数。
-     * @param $accessToken 字符串，是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
-     * @param $jsTicket 字符串，是微信公众号的JS API Ticket。注意：微信公众号的JS API Ticket的有效期是有期限限制的。
+     * @param $accessToken  string	是微信公众号的Access Token。注意：微信的Access Token的有效期是有期限限制的。
+     * @param $jsTicket     string	字符串，是微信公众号的JS API Ticket。注意：微信公众号的JS API Ticket的有效期是有期限限制的。
      */
     function __construct($accessToken, $jsTicket);
-    
+
     /**
-     * 设置/更新微信公众号的Access Token。
-     * @param $accessToken 字符串，是新的Access Token。
-     */
-    public function setAccessToken($accessToken);
-    
+  	 * 设置/更新微信公众号的Access Token。
+  	 * @param $accessToken string	是新的Access Token。
+  	 */
+  	public function setAccessToken($accessToken);
+
     /**
-     * 设置/更新微信公众号的JS API Ticket。
-     * @param $jsTicket 字符串，是新的JS API Ticket。
-     */
-    public function setJsTicket($jsTicket);
-    
+  	 * 设置/更新微信公众号的JS API Ticket。
+  	 * @param $jsTicket    string	是新的JS API Ticket。
+  	 */
+  	public function setJsTicket($jsTicket);
+
     /// @name 微信推送的事件的处理方法
     //@{
     /**
-     * 微信推送消息：MsgType为"event"，Event为"subscribe"时的响应函数：将微信用户注册为开发者所提供服务的用户。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @param $unionId 字符串。是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
-     * @return 操作成功时返回ACUser对象，表示新注册的用户信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
-     */
-    public function onEventSubscribe($xmlMsg, $unionId = '');
-    
+  	 * 微信推送消息：MsgType为"event"，Event为"subscribe"时的响应函数：将微信用户注册为开发者所提供服务的用户。
+  	 * @param $xmlMsg    string	微信推送的原始XML消息内容。
+  	 * @param $unionId   string	字符串。是关注公众号的用户在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+  	 * @return           ACUser	操作成功时返回ACUser对象，表示新注册的用户信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onEventSubscribe($xmlMsg, $unionId = '');
+
     /**
-     * 微信推送消息：MsgType为"event"，Event为"unsubscribe"时的响应函数：在AbleCloud平台中解除该用户与所有设备的绑定关系。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @return 返回TRUE表示操作成功，否则返回FALSE。失败时，可调用getLastError()方法获取错误消息。
-     */
-    public function onEventUnsubscribe($xmlMsg);
-    
+  	 * 微信推送消息：MsgType为"event"，Event为"unsubscribe"时的响应函数：在AbleCloud平台中解除该用户与所有设备的绑定关系。
+  	 * @param $xmlMsg  string  微信推送的原始XML消息内容。
+  	 * @return         bool    返回TRUE表示操作成功，否则返回FALSE。失败时，可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onEventUnsubscribe($xmlMsg);
+
     /**
-     * 微信推送消息：MsgType为"device_event"，Event为"bind"时的响应函数：将微信记录的用户与设备的绑定关系同步到AbleCloud平台。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @param $deviceName 字符串，表示设备的显示名。
-     * @param $subDomain 字符串，是将要绑定的设备在AbleCloud平台上所属的子域的名字。如果设备的二维码信息中包含了其所属子域的名字，则以二维码中的信息为准。
-     * @param $isGateway 布尔值，为TRUE时表示设备是网关设备；为FALSE时表示设备是独立设备。
-     * @return 操作成功时返回ACDevice对象，表示绑定后设备的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
-     */
-    public function onDeviceEventBind($xmlMsg, $deviceName, $subDomain, $isGateway);
-    
+  	 * 微信推送消息：MsgType为"device_event"，Event为"bind"时的响应函数：将微信记录的用户与设备的绑定关系同步到AbleCloud平台。
+  	 * @param $xmlMsg      string  微信推送的原始XML消息内容。
+  	 * @param $deviceName  string  字符串，表示设备的显示名。
+  	 * @param $subDomain   string  字符串，是将要绑定的设备在AbleCloud平台上所属的子域的名字。如果设备的二维码信息中包含了其所属子域的名字，则以二维码中的信息为准。
+  	 * @param $isGateway   bool    布尔值，为TRUE时表示设备是网关设备；为FALSE时表示设备是独立设备。
+  	 * @return             ACDevice  操作成功时返回ACDevice对象，表示绑定后设备的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onDeviceEventBind($xmlMsg, $deviceName, $subDomain, $isGateway);
+
     /**
-     * 微信推送消息：MsgType为"device_event"，Event为"unbind"时的响应函数：将微信记录的用户与设备解除绑定的关系同步到AbleCloud平台。
-     * @details 本方法解绑设备后会自动通知微信平台执行额外的设备绑定关系同步。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @param $subDomain 字符串，是要解绑的设备在AbleCloud平台上所属的子域的名字。
-     * @param $isGateway 布尔值，为TRUE时表示该设备为网关设备，否则表示该设备为独立设备。
-     * @return 操作成功时返回TRUE；失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
-     */
-    public function onDeviceEventUnbind($xmlMsg, $subDomain, $isGateway);
-    
+  	 * 微信推送消息：MsgType为"device_event"，Event为"unbind"时的响应函数：将微信记录的用户与设备解除绑定的关系同步到AbleCloud平台。
+  	 * @details 本方法解绑设备后会自动通知微信平台执行额外的设备绑定关系同步。
+  	 * @param $xmlMsg      string  微信推送的原始XML消息内容。
+  	 * @param $subDomain   string  字符串，是要解绑的设备在AbleCloud平台上所属的子域的名字。
+  	 * @param $isGateway   bool    布尔值，为TRUE时表示该设备为网关设备，否则表示该设备为独立设备。
+  	 * @return             bool    操作成功时返回TRUE；失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onDeviceEventUnbind($xmlMsg, $subDomain, $isGateway);
+
     /**
-     * 微信推送消息：MsgType为"device_event"，Event为"subscribe_status"时的响应函数：微信订阅设备状态信息（目前微信仅查询WIFI设备的状态信息）。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @return 返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
-     */
-    public function onDeviceEventSubscribeStatus($xmlMsg);
-    
+  	 * 微信推送消息：MsgType为"device_event"，Event为"subscribe_status"时的响应函数：微信订阅设备状态信息（目前微信仅查询WIFI设备的状态信息）。
+  	 * @param $xmlMsg  string  微信推送的原始XML消息内容。
+  	 * @param $doSync  bool    标记是否执行设备绑定状态的同步操作。同步设备绑定状态是指同步该设备在AbleCloud平台与微信平台上分别记录的绑定状态。该过程可能需要耗费一定的时间。缺省值为TRUE，表示需要执行同步操作。
+  	 * @return         string  返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onDeviceEventSubscribeStatus($xmlMsg, $doSync = TRUE);
+
     /**
-     * 微信推送消息：MsgType为"device_event"，Event为"unsubscribe_status"时的响应函数：微信退订设备状态信息（目前微信仅查询WIFI设备的状态信息）。
-     * @param $xmlMsg 微信推送的原始XML消息内容。
-     * @return 返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
-     */
-    public function onDeviceEventUnsubscribeStatus($xmlMsg);
+  	 * 微信推送消息：MsgType为"device_event"，Event为"unsubscribe_status"时的响应函数：微信退订设备状态信息（目前微信仅查询WIFI设备的状态信息）。
+  	 * @param $xmlMsg  string  微信推送的原始XML消息内容。
+  	 * @param $doSync  bool    标记是否执行设备绑定状态的同步操作。同步设备绑定状态是指同步该设备在AbleCloud平台与微信平台上分别记录的绑定状态。该过程可能需要耗费一定的时间。缺省值为TRUE，表示需要执行同步操作。
+  	 * @return         string  返回XML格式的文本内容，表示可回复给微信的设备状态信息。返回空字符串表示操作失败，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function onDeviceEventUnsubscribeStatus($xmlMsg, $doSync = TRUE);
     //@}
-    
+
     /**
-     * 获取开发者用户信息。
-     * @param $openId 字符串，是要检查的微信用户的OpenID。
-     * @return 操作成功时返回ACUser对象，表示AbleCloud平台存储的用户信息。返回NULL表示失败，并且可调用getLastError()方法获取错误消息。
-     */
-    public function getUser($openId);
-    
+  	 * 获取开发者用户信息。
+  	 * @param $openId  string  字符串，是要检查的微信用户的OpenID。
+  	 * @return         ACUser  操作成功时返回ACUser对象，表示AbleCloud平台存储的用户信息。返回NULL表示失败，并且可调用getLastError()方法获取错误消息。
+  	 */
+  	public function getUser($openId);
+
     /**
-     * 获取用户的OpenId。
-     * @param $userId 整数，是用户在AbleCloud平台上的ID。
-     * @return 返回一个字符串，表示用户在微信系统中对应的OpenID。如果返回值为空字符串，表示操作失败。此时，可调用getLastError()方法获取错误信息。
-     */
-    public function getUserOpenId($userId);
-    
+  	 * 获取用户的OpenId。
+  	 * @param $userId  int     整数，是用户在AbleCloud平台上的ID。
+  	 * @return         string  返回一个字符串，表示用户在微信系统中对应的OpenID。如果返回值为空字符串，表示操作失败。此时，可调用getLastError()方法获取错误信息。
+  	 */
+  	public function getUserOpenId($userId);
+
     /**
-     * 设置用户的手机号。
-     * @param $openId 字符串，是微信用户的OpenID。
-     * @param $phone 字符串，是用户的新手机号。
-     * @param $verifyCode 字符串，是用户修改手机号码的验证码。
-     * @return 操作成功时返回TRUE；否则返回FALSE，并且可调用getLastError()获取错误信息。
-     */
-    public function setPhone($openId, $phone, $verifyCode);
-    
+  	 * 设置用户的手机号。
+  	 * @param $openId      string  字符串，是微信用户的OpenID。
+  	 * @param $phone       string  字符串，是用户的新手机号。
+  	 * @param $verifyCode  string  字符串，是用户修改手机号码的验证码。
+  	 * @return             bool    操作成功时返回TRUE；否则返回FALSE，并且可调用getLastError()获取错误信息。
+  	 */
+  	public function setPhone($openId, $phone, $verifyCode);
+
     /**
-     * 获取设备的二维码：微信二维码（附加设备在AbleCloud平台上所属的子域的信息），还可选择是否附加AbleCloud分享码。附加的信息是以JSON格式的字符串表示的。
-     * @param $physicalId 字符串，表示设备的物理ID。
-     * @param $subDomain 字符串，表示设备在AbleCloud平台中所属的子域的名字。如果值不为空字符串，则会以第三方自定义数据的方式在微信标准二维码的末尾附加该子域信息。
-     * @param $withACShareCode 布尔值，为TRUE时表示需要附加设备的AbleCloud分享码，否则表示不需附加该信息。
-     * @param $openId $withShareCode为TRUE时，需要指定获取该分享码的用户的微信OpenID。仅设备的管理员用户有权限获取设备的分享码。
-     * @param $timeout $withShareCode为TRUE时，需要指定分享码的有效时长。该参数的类型为整数，是以秒为单位指定分享码的有效时长。
-     * @return 操作成功时返回制作设备二维码的字符串。依据参数设置，该字符串中可能包含AbleCloud平台的分享码。操作失败时返回空字符串，此时可调用getLastError()方法获取错误消息。
-     */
-    public function getDeviceQRCode($physicalId, $subDomain, $withACShareCode = FALSE, $openId = '', $timeout = 300);
-    
+  	 * 获取设备的二维码：微信二维码（附加设备在AbleCloud平台上所属的子域的信息），还可选择是否附加AbleCloud分享码。附加的信息是以JSON格式的字符串表示的。
+  	 * @param $physicalId      string  表示设备的物理ID。
+  	 * @param $subDomain       string  表示设备在AbleCloud平台中所属的子域的名字。如果值不为空字符串，则会以第三方自定义数据的方式在微信标准二维码的末尾附加该子域信息。
+  	 * @param $withACShareCode bool    为TRUE时表示需要附加设备的AbleCloud分享码，否则表示不需附加该信息。
+  	 * @param $openId          string  $withShareCode为TRUE时，需要指定获取该分享码的用户的微信OpenID。仅设备的管理员用户有权限获取设备的分享码。
+  	 * @param $timeout         int     $withShareCode为TRUE时，需要指定分享码的有效时长。该参数的类型为整数，是以秒为单位指定分享码的有效时长。
+  	 * @return                 string  操作成功时返回制作设备二维码的字符串。依据参数设置，该字符串中可能包含AbleCloud平台的分享码。操作失败时返回空字符串，此时可调用getLastError()方法获取错误消息。
+  	 */
+  	public function getDeviceQRCode($physicalId, $subDomain, $withACShareCode = FALSE, $openId = '', $timeout = 300);
+
     /// @name 信息同步方法。
     //@{
     /**
-     * 针对指定用户，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
-     * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
-     * 会调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据，比如处理蓝牙设备绑定关系的同步，或者将用户从“家”或“房间”里移除之后。
-     * @param $openId 字符串，是待检查的用户的微信OpenID。
-     * @param $physicalIdOfStatus 字符串，是要查询其在线状态的设备的物理ID。
-     * @return 返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
-     */
-    public function syncBindings($openId, $physicalIdOfStatus = '');
-    
+  	 * 针对指定用户，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。同时检查指定设备的在线状态。
+  	 * @details 在响应微信硬件平台推送的subscribe_status/unsubscribe_status事件（比如用户打开/关闭公众号主界面）的方法 #onDeviceEventSubscribeStatus 及 #onDeviceEventUnsubscribeStatus 中，
+  	 * 可选择性地调用本方法同步数据。开发者也可根据实际情况主动调用本方法同步数据，比如处理蓝牙设备绑定关系的同步，或者将用户从“家”或“房间”里移除之后。
+  	 * @param $openId              string  待检查的用户的微信OpenID。
+  	 * @param $physicalIdOfStatus  string  是要查询其在线状态的设备的物理ID。
+  	 * @return                     bool    返回TRUE表示待查询的设备在线；返回FALSE表示待查询的设备不在线。
+  	 */
+  	public function syncBindings($openId, $physicalIdOfStatus = '');
+
     /**
-     * 针对指定设备，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。
-     * @details 在调用AbleCloud平台提供的API解除了某用户与设备的绑定关系后，或者将设备从“房间”或“家”中移除后，开发者需要调用本方法在AbleCloud平台与微信平台之间同步设备与用户的绑定关系。
-     * 在其它情况下，开发者也可根据实际情况主动调用本方法同步数据。
-     * @param $physicalId 字符串，是设备的物理ID。
-     * @param $deviceType 字符串，是本设备在微信公众号平台上的设备类型。
-     * @param $subDomain 字符串，是本设备在AbleCloud平台上所属的子域的名字。
-     * @return 操作成功时返回TRUE；操作失败时返回FALSE，同时可调用方法getLastError()获取错误信息。
-     */
-    public function syncBindingsByDevice($physicalId, $deviceType, $subDomain);
-    
+  	 * 针对指定设备，同步AbleCloud平台与微信硬件平台记录的用户-设备绑定信息。
+  	 * @details 在调用AbleCloud平台提供的API解除了某用户与设备的绑定关系后，或者将设备从“房间”或“家”中移除后，开发者需要调用本方法在AbleCloud平台与微信平台之间同步设备与用户的绑定关系。
+  	 * 在其它情况下，开发者也可根据实际情况主动调用本方法同步数据。
+  	 * @param $physicalId  string  是设备的物理ID。
+  	 * @param $deviceType  string  是本设备在微信公众号平台上的设备类型。
+  	 * @param $subDomain   string  是本设备在AbleCloud平台上所属的子域的名字。
+  	 * @return             bool    操作成功时返回TRUE；操作失败时返回FALSE，同时可调用方法getLastError()获取错误信息。
+  	 */
+  	public function syncBindingsByDevice($physicalId, $deviceType, $subDomain);
+
     /**
-     * 删除一个“家”对象。
-     * @details 微信公众号开发者应该通过本方法来删除“家”。本方法将在AbleCloud平台与微信平台之间同步因删除“家”而引起的用户-设备绑定关系的变更。
-     * @param $openId 字符串，是发起删除“家”这个操作的用户的OpenID。
-     * @param $homeId 整数，是要被删除的“家”的ID。
-     * @return 操作成功时返回TRUE，操作失败时返回FALSE。操作失败时，可以调用方法getLastError()获取错误信息。
-     */
-    public function deleteHome($openId, $homeId);
+  	 * 删除一个“家”对象。
+  	 * @details 微信公众号开发者应该通过本方法来删除“家”。本方法将在AbleCloud平台与微信平台之间同步因删除“家”而引起的用户-设备绑定关系的变更。
+  	 * @param $openId  string  是发起删除“家”这个操作的用户的OpenID。
+  	 * @param $homeId  int     是要被删除的“家”的ID。
+  	 * @return         bool    操作成功时返回TRUE，操作失败时返回FALSE。操作失败时，可以调用方法getLastError()获取错误信息。
+  	 */
+  	public function deleteHome($openId, $homeId);
+
+    /**
+  	 * 检查设备在微信平台的授权及绑定状态，并尝试绑定设备与指定的用户。
+  	 * @details 使用微信客户端扫描设备二维码绑定设备却无反应时，可能是因为：（1）设备未在微信平台授权；（2）或用户已经绑定了该设备。
+  	 * 本方法首先检查设备在微信平台的授权状态，其次检查设备是否已在微信平台绑定了该用户，之后尝试在AbleCloud平台绑定设备，并与微信平台同步用户绑定设备的信息。
+  	 * @param $openId      string  拟要绑定设备的用户在微信平台的OpenID。
+  	 * @param $physicalId  string  要检查其状态并被绑定的设备在微信平台上的ID，即设备的物理ID。
+  	 * @param $deviceName  string  绑定设备和用户时，设备的显示名称。
+  	 * @param $subDomain   string  设备在AbleCloud平台上所属的子域的名字。
+  	 * @param $isGateway   bool    为TRUE时表示设备是网关设备；为FALSE时表示设备是独立设备。
+  	 * @return             bool    操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()方法获取错误信息。
+  	 */
+  	public function checkAndBindDevice($openId, $physicalId, $deviceName, $subDomain, $isGateway);
     //@}
-    
+
+    /**
+  	 * 通知微信绑定设备与用户。普通绑定失败时尝试强制绑定。
+  	 * @param $openId      string	要绑定设备的用户的OpenID。
+  	 * @param $physicalId  string	要被绑定的设备在微信平台上的ID，即设备的物理ID。
+  	 * @return             bool   成功时返回TRUE，否则可调用getLastError()方法获取错误信息。
+  	 */
+  	public function wxBindDevice($openId, $physicalId);
+
+    /**
+  	 * 通知微信解绑设备。普通解绑失败时尝试强制解绑。
+  	 * @param $openId      string	要解绑设备的用户的OpenID。
+  	 * @param $physicalId	 string	要被解绑的设备在微信平台上的ID，即设备的物理ID。
+  	 * @return				     bool	  成功时返回TRUE，否则可调用getLastError()方法获取错误信息。
+  	 */
+  	public function wxUnbindDevice($openId, $physicalId)
+
     /**
      * 取最近一次错误消息。
      * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
@@ -199,31 +230,31 @@ class ACContext {
      * @param $routerAddress 字符串。AbleCloud远程服务的入口地址。
      */
     function __construct($developerId, $accessKey, $secretKey, $majorDomain, $runtimeMode, $routerAddress);
-    
+
     /**
      * 取AbleCloud开发者信息。
      * @return 返回ACDeveloper对象。
      */
     public function getDeveloper();
-    
+
     /**
      * 取本地服务对应的主域的名字。
      * @return 返回本地服务对应的主域的名字。
      */
     public function getMajorDomain();
-    
+
     /**
      * 取AbleCloud远程服务的访问入口地址。
      * @return 返回AbleCloud远程服务的访问入口地址。
      */
     public function getRouterAddress();
-    
+
     /**
      * 检查是否配置为生产环境。
      * @return 返回TRUE表示当前配置为生产环境，否则表示为测试环境。
      */
     public function isProductionMode();
-    
+
     /**
      * 设置用户控制设备时所使用的终端工具的信息。
      * @param $name 字符串，是终端工具所使用的应用的名字，如'weixin'（表示微信终端）等。
@@ -232,7 +263,7 @@ class ACContext {
      * @param $osName 字符串，是终端工具所使用的操作系统的名字，如android，ios等。
      */
     public function setHandset($name, $version = '', $id = '', $osName = '');
-    
+
     /**
      * 为发给AbleCloud云端的HTTP请求配置自定义的HTTP Header。
      * @param $header 字符串，是要配置的HTTP Header的名字。
@@ -240,25 +271,25 @@ class ACContext {
      * @return 无。
      */
     public function addExtHttpHeader($header, $value);
-    
+
     /**
      * 取自定义的HTTP Header信息。
      * @return 返回一个关联数组。数组的每一个键值对表示一项自定义的Header。
      */
     public function getExtHttpHeaders();
-    
+
     /**
      * 取当前的Trace-Id。
      * @return 当前的Trace-Id。
      */
     public function getTraceId();
-    
+
     /**
      * 设置Trace-Id。
      * @param $traceId 字符串。是符合RFC 4122 - Section 4.4规范的UUID的十六进制表示形式，用来作为请求的Trace-Id。
      */
     public function setTraceId($traceId);
-    
+
     /**
      * 生成一个Trace-ID。
      * @return string
@@ -281,19 +312,19 @@ class ACDeveloper {
      * @param $secretKey 开发者AK/SK密钥对中的SecretKey。
      */
     function __construct($id, $accessKey, $secretKey);
-    
+
     /**
      * 取开发者的ID。
      * @return 返回一个整数，表示开发者的ID。
      */
     public function getId();
-    
+
     /**
      * 取开发者的AK/SK密钥对中的AccessKey。
      * @return 返回一个字符串表示AccessKey。
      */
     public function getAccessKey();
-    
+
     /**
      * 取开发者的AK/SK密钥对中的SecretKey。
      * @return 返回一个字符串表示SecretKey。
@@ -338,14 +369,14 @@ class ACHttpClient {
      * @return 返回一个ACResponse对象，表示远程服务的响应消息。
      */
     public static function doRequest($request, $context);
-	
+
 	/**
      * 计算随机字符串。
      * @param $len 整数。表示要生成的字符串的长度。
      * @return 返回长度为$len的随机字符串。
      */
     public static function nonce($len);
-    
+
     /**
      * 计算AbleCloud服务的访问地址。
      * @param $request ACRequest对象，是访问AbleCloud服务的请求消息。
@@ -371,44 +402,44 @@ class ACRequest {
      * @param $subDomain 字符串。是拟访问的远程服务所属的子域的名字。缺省值为空字符串，表示访问主域级别的服务。不为空字符串时，表示访问该子域所对应的服务。
      */
     function __construct($serviceName, $methodName, $serviceVersion, $subDomain = '');
-    
+
     /**
      * 设置本次请求所关联的用户。该用户是AbleCloud平台中开发者所提供服务的用户。
      * @param $user ACUser对象或NULL。AbleCloud平台中开发者所提供服务的用户。NULL表示清除设置的用户信息。
      * @return 无
      */
     public function setUser($user);
-    
+
     /**
      * 取当前设置的用户信息。
      * @return 返回NULL或ACUser对象。
      */
     public function getUser();
-    
+
     /**
      * 取拟访问的远程服务的名字。
      * @return 返回拟访问的远程服务的名字。
      */
     public function getServiceName();
-    
+
     /**
      * 取拟访问的远程服务的主版本号。
      * @return 返回拟访问的远程服务的主版本号。
      */
     public function getServiceVersion();
-    
+
     /**
      * 取拟访问的远程服务的方法名。
      * @return 返回拟访问的远程服务的方法名。
      */
     public function getMethodName();
-    
+
     /**
      * 取拟访问的远程服务所属的子域的名字。
      * @return 返回拟访问的远程服务所属的子域的名字。
      */
     public function getSubDomain();
-    
+
     /**
      * 添加请求的参数。这些参数是键值对，将会以查询字符串的方式置于访问远程服务的URL中传递给远程服务。
      * @param $key 参数的名字。
@@ -416,46 +447,46 @@ class ACRequest {
      * @return 无
      */
     public function addParameter($key, $value);
-    
+
     /**
      * 取设置的所有参数的名字。
      * @return 返回参数名字所形成的数组。
      */
     public function getParameterKeys();
-    
+
     /**
      * 取参数的值。
      * @param $key 参数的名字。
      * @return 返回指定参数的值。参数不存在时返回NULL。
      */
     public function getParameterValue($key);
-    
+
     /**
      * 消息内容要么是JSON格式的要么是二进制格式的。取最后一次设置的内容为最终内容。本方法用于设置JSON格式的消息内容。
      * @param $payload 字符串。JSON格式的内容。
      * @return 无。
      */
     public function setPayloadAsJSON($payload);
-    
+
     /**
      * 消息内容要么是JSON格式的要么是二进制格式的。取最后一次设置的内容为最终内容。本方法用于设置二进制格式的消息内容。
      * @param $payload string类型的数据，表示二进制格式的内容。
      * @return 无。
      */
     public function setPayloadAsStream($payload);
-    
+
     /**
      * 取请求所包含的数据的格式：application/x-zc-object或application/octet-stream，分别表示JSON格式和二进制数据格式。
      * @return 返回请求所包含的数据的格式。
      */
     public function getPayloadFormat();
-    
+
     /**
      * 取请求所包含数据的大小。
      * @return 返回请求所包含数据的字节数。
      */
     public function getPayloadSize();
-    
+
     /**
      * 取设置的请求所包含的数据。
      * @return 返回以string数据类型表示的数据。
@@ -477,31 +508,31 @@ class ACResponse {
      * @param $errorMessage 字符串。远程服务返回的成功的响应消息或者错误消息。
      */
     function __construct($errorCode = 0, $errorMessage = '');
-    
+
     /**
      * 检查当前响应消息代表的状态：成功或出错。
      * @return 返回TRUE表示成功，否则表示出错。
      */
     public function isAck();
-    
+
     /**
      * 检查当前响应消息代表的状态：成功或出错。
      * @return 返回TRUE表示出错，否则表示成功。
      */
     public function isError();
-    
+
     /**
      * 取状态码。
      * @return 返回状态码。为0时表示成功，其它值表示出错。
      */
     public function getErrorCode();
-    
+
     /**
      * 取响应的错误消息。
      * @return 本方法返回的内容与getResponse()方法返回的内容是一致的。只是从概念上来看，本方法返回的是出错状态下的错误消息。
      */
     public function getErrorMessage();
-    
+
     /**
      * 取响应的内容。
      * @return 本方法返回的内容与getResponse()方法返回的内容是一致的。只是从概念上来看，本方法返回的是成功状态下的消息内容。
@@ -561,55 +592,61 @@ class ACClient {
      * @return 返回ACResponse对象，表示远程服务的应答消息。
      */
     public static function sendToService($request);
-    
+
     /**
      * AbleCloud帐号服务。
      * @return 返回ACAccountMgr对象。
      */
     public static function getAccountMgr();
-    
+
     /**
      * AbleCloud文件存储服务。
      * @return ACFileMgr	返回ACFileMgr对象。
      */
     public static function getFileMgr();
-    
+
     /**
      * AbleCloud设备管理服务。
      * @return 返回ACBindMgr对象。
      */
     public static function getBindMgr();
-    
+
     /**
      * AbleCloud设备OTA服务。
      * @return 返回ACOtaMgr对象。
      */
     public static function getOtaMgr();
-    
+
     /**
      * AbleCloud消息推送服务。
      * @return 返回ACNotificationMgr对象。
      */
     public static function getNotificationMgr();
-    
+
     /**
      * AbleCloud数据存储服务。
      * @return 返回ACStore对象。
      */
     public static function getStore();
-    
+
     /**
      * AbleCloud定时任务管理服务。
      * @return 返回ACTimerTaskMgr对象。
      */
     public static function getTimerTaskMgr();
-    
+
     /**
 	   * AbleCloud数分分析服务。
 	   * @return ACAnalysisMgr 返回ACAnalysisMgr对象。
 	   */
 	  public static function getAnalysisMgr();
-    
+
+    /**
+  	 * AbleCloud设备入库服务。
+  	 * @return ACWarehouseMgr 返回ACWarehouseMgr对象。
+  	 */
+  	public static function getWarehouseMgr();
+
     /**
      * 取访问AbleCloud远程服务的环境信息。
      * @return 返回ACContext对象，表示访问AbleCloud远程服务的环境信息。
@@ -632,25 +669,25 @@ class ACService {
      * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /**
      * 取服务的名字。
      * @return 返回服务的名字。
      */
     public function getName();
-    
+
     /**
      * 取服务的主版本值。
      * @return 返回一个整数，表示服务的主版本值。
      */
     public function getVersion();
-    
+
     /**
      * 取访问该服务所依赖的环境信息。
      * @return 返回ACContext对象，表示环境信息。
      */
     public function getContext();
-    
+
     /**
      * 取最近一次错误消息。
      * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
@@ -678,7 +715,7 @@ class ACUser {
      * @param $refreshTokenExpiration	string	用户的$refreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      */
     function __construct($id, $token, $name = '', $refreshToken = '', $tokenExpiration = '', $refreshTokenExpiration = '');
-    
+
     /**
      * 取用户的ID。
      * @return 返回用户的ID。整数。
@@ -696,7 +733,7 @@ class ACUser {
      * @return 返回用户的Token。字符串。
      */
     public function getToken();
-    
+
     /**
      * 取Token的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。
      * @return string	Token的过期时间。空字符串表示不过期。
@@ -740,147 +777,147 @@ class ACUser {
 class ACAccountMgr extends ACService {
     /**
      * 构造函数。
-     * @param $name AbleCloud帐号服务的名字。
-     * @param $version AbleCloud帐号服务的版本值。
-     * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
+     * @param $name    string    AbleCloud帐号服务的名字。
+     * @param $version int       AbleCloud帐号服务的主版本号。
+     * @param $context ACContext 表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /// @name 用户帐号注册与登录。
     //@{
     /**
      * 获取用户注册的验证码。
-     * @param $login 字符串，是用户的登录名：email地址或手机号。
-     * @param $timeout 整数，是验证码的有效时长。单位为秒。
-     * @return 操作成功时返回字符串形式的验证码。操作失败时返回空字符串，并且可以调用getLastError()方法获取错误信息。
+     * @param $login    string  是用户的登录名：email地址或手机号。
+     * @param $timeout  int     是验证码的有效时长。单位为秒。
+     * @return          string  操作成功时返回字符串形式的验证码。操作失败时返回空字符串，并且可以调用getLastError()方法获取错误信息。
      */
     public function getVerifyCode($login, $timeout);
-    
+
     /**
      * 注册用户帐号。
-     * @param $name 字符串。用户的显示名。
-     * @param $email 字符串。新用户的邮箱。$email与$phone不能都为空字符串。
-     * @param $phone 字符串。新用户的手机号码。$email与$phone不能都为空字符串。
-     * @param $password 字符串。新用户的登录密码。
-     * @param $verifyCode 字符串。注册新用户时所使用的验证码。
-     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
-     * @return 用户注册成功时返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $name       string 用户的显示名。
+     * @param $email      string 新用户的邮箱。$email与$phone不能都为空字符串。
+     * @param $phone      string 新用户的手机号码。$email与$phone不能都为空字符串。
+     * @param $password   string 新用户的登录密码。
+     * @param $verifyCode string 注册新用户时所使用的验证码。
+     * @param $enableTokenExpiration bool 是否使用用户TOKEN过期的机制。缺省为不使用。
+     * @return            ACUser|NULL 用户注册成功时返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function register($name, $email, $phone, $password, $verifyCode, $enableTokenExpiration = FALSE);
-    
+
     /**
      * 按登录名和密码登录，取用户的信息。
-     * @param $login 用户的登录名。
-     * @param $password 用户登录密码。
-     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
-     * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $login    string  用户的登录名。
+     * @param $password string  用户登录密码。
+     * @param $enableTokenExpiration  bool  是否使用用户TOKEN过期的机制。缺省为不使用。
+     * @return          ACUser|NULL 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function login($login, $password, $enableTokenExpiration = FALSE);
-    
+
     /**
      * 按登录名和密码取用户的信息。
-     * @param $login 用户的登录名。
-     * @param $password 用户登录密码。
-     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
-     * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $login    string  用户的登录名。
+     * @param $password string  用户登录密码。
+     * @param $enableTokenExpiration  bool  是否使用用户TOKEN过期的机制。缺省为不使用。
+     * @return          ACUser|NULL 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function getUser($login, $password, $enableTokenExpiration = FALSE);
-    
+
     /**
      * 检查帐号是否已经存在。
-     * @param $login 字符串，表示用户的登录名，如邮箱或者手机号。
-     * @return 返回TRUE表示存在该帐号；不存在该帐号时返回FALSE；操作失败时也返回FALSE。
+     * @param $login  string  表示用户的登录名，如邮箱或者手机号。
+     * @return        bool    返回TRUE表示存在该帐号；不存在该帐号时返回FALSE；操作失败时也返回FALSE。
      * 返回值为FALSE时，应该调用getLastError()方法获取错误信息，并检查其errCode值：errCode为0时，表示操作成功；否则表示操作失败。
      */
     public function checkAccountExist($login);
 
     /**
      * 检查用户的总数。
-     * @return int	返回用户总数。返回值小于0时表示操作失败，可调用getLastError()方法获取错误消息。
+     * @return int  返回用户总数。返回值小于0时表示操作失败，可调用getLastError()方法获取错误消息。
      */
     public function getAccountCount();
 
     /**
      * 查询用户列表。
-     * @param $offset	int	查询的记录偏移量。取值应该为非负整数。
-     * @param $limit	int	限制本次调用查询的记录的最大数目。取值范围是闭区间[1, 100]。
-     * @return			array	成功时返回ACUser对象的数组。失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @param $offset int   查询的记录偏移量。取值应该为非负整数。
+     * @param $limit  int   限制本次调用查询的记录的最大数目。取值范围是闭区间[1, 100]。
+     * @return        array|FALSE 成功时返回ACUser对象的数组。失败时返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function listAllAccounts($offset, $limit);
     //@}
-    
+
     /// @name 第三方平台用户
     //@{
     /**
      * 使用第三方帐号注册用户。
-     * @param $openId 第三方帐号的OpenID。
-     * @param $provider 第三方帐号的来源。如"weixin"。
-     * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
-     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
-     * @return 注册成功后返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $openId   string 第三方帐号的OpenID。
+     * @param $provider string 第三方帐号的来源。如"weixin"。
+     * @param $unionId  string 对来自微信平台的用户，是其在微信平台对应的UnionID。如果不提供该参数，则无法识别同一个用户关注开发者的多个微信公众号的情况。
+     * @param $enableTokenExpiration bool 是否使用用户TOKEN过期的机制。缺省为不使用。
+     * @return          ACUser|NULL 注册成功后返回一个ACUser对象，表示新用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function registerByOpenId($openId, $provider, $unionId = '', $enableTokenExpiration = FALSE);
-    
+
     /**
      * 按OpenID和帐号来源取用户的信息。
-     * @param $openId 用户的OpenID。
-     * @param $provider 用户的来源。如"weixin"等。
-     * @param $unionId 字符串。对来自微信平台的用户，是其在微信平台对应的UnionID。
-     * @param $enableTokenExpiration	bool	是否使用用户TOKEN过期的机制。缺省为不使用。
-     * @return 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     * @param $openId 	string 用户的OpenID。
+     * @param $provider	string 用户的来源。如"weixin"等。
+     * @param $unionId	string 对来自微信平台的用户，是其在微信平台对应的UnionID。
+     * @param $enableTokenExpiration bool 是否使用用户TOKEN过期的机制。缺省为不使用。
+     * @return          ACUser|NULL 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function getUserByOpenId($openId, $provider, $unionId = '', $enableTokenExpiration = FALSE);
-    
+
     /**
      * 获取用户在第三方平台上的OpenID。
-     * @param $userId 整数，是用户在AbleCloud平台上的ID。
-     * @param $provider 字符串，标识第三方平台。如'weixin'表示微信平台。
-     * @return 返回一个字符串，表示用户在指定的第三方平台中对应的OpenID。如果返回值为空字符串，表示操作失败。此时，可调用getLastError()方法获取错误信息。
+     * @param $userId	  int    是用户在AbleCloud平台上的ID。
+     * @param $provider string 标识第三方平台。如'weixin'表示微信平台。
+     * @return          string 返回一个字符串，表示用户在指定的第三方平台中对应的OpenID。如果返回值为空字符串，表示操作失败。此时，可调用getLastError()方法获取错误信息。
      */
     public function getUserOpenId($userId, $provider);
     //@}
-    
+
     /**
      * 向指定的手机号发送验证码。
-     * @param $phone 接收验证码的手机号。
-     * @param $template 整数，是短信模板的代码。
-     * @param $timeout 整数，是验证码的有效时长，单位是秒。
-     * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()后去错误信息。
+     * @param $phone    string 接收验证码的手机号。
+     * @param $template int    是短信模板的代码。
+     * @param $timeout  int    是验证码的有效时长，单位是秒。
+     * @return          bool   操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()后去错误信息。
      */
     public function sendVerifyCode($phone, $template, $timeout);
-    
+
     /**
-	   * 修改用户的手机号码。
-	   * @param $user       ACUser	是要修改手机号的用户。
-	   * @param $phone      string	字符串，是用户的新手机号码。
-	   * @param $verifyCode	string	是验证码。
-	   * @param $password	  string	是用户的密码。
-	   * @return            bool	操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
-	   */
-	  public function changePhone($user, $phone, $verifyCode, $password);
-    
+     * 修改用户的手机号码。
+     * @param $user       ACUser 是要修改手机号的用户。
+     * @param $phone      string 字符串，是用户的新手机号码。
+     * @param $verifyCode string 是验证码。
+     * @param $password   string 是用户的密码。
+     * @return            bool   操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+     */
+    public function changePhone($user, $phone, $verifyCode, $password);
+
     /**
-	   * 修改用户显示名称。
-	   * @param $user       ACUser	是要修改显示名的用户。
-	   * @param $nickName   string	用户的新名字。
-	   * @return            bool	操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
-	   */
-	  public function changeNickName($user, $nickName);
+     * 修改用户显示名称。
+     * @param $user     ACUser 是要修改显示名的用户。
+     * @param $nickName string 用户的新名字。
+     * @return          bool   操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+     */
+    public function changeNickName($user, $nickName);
 
     /**
      * 更新用户的Token。
-     * @param $user	ACUser	要更新其Token的用户。操作成功后直接更新该对象保存的信息。
-     * @return		bool	返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
+     * @param $user ACUser 要更新其Token的用户。操作成功后直接更新该对象保存的信息。
+     * @return      bool   返回TRUE表示操作成功，并且会更新$user对象的信息；返回FALSE表示操作失败，可以调用getLassError()获取错误信息。
      */
     public function updateUserToken($user);
 
     /**
      * 重设用户的密码。
-     * @param $userId		int		要更新其密码的用户的ID。
-     * @param $account		string	要更新其密码的用户的登录名。
-     * @param $password		string	用户的新密码。
-     * @param $verifyCode	string	更新用户密码的验证码。
-     * @return				bool	操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
+     * @param $userId     int    要更新其密码的用户的ID。
+     * @param $account    string 要更新其密码的用户的登录名。
+     * @param $password   string 用户的新密码。
+     * @param $verifyCode string 更新用户密码的验证码。
+     * @return            bool   操作成功返回TRUE；操作失败则返回FALSE，并且可调用getLastError()方法获取错误信息。
      */
     public function resetPassword($userId, $account, $password, $verifyCode);
 
@@ -888,31 +925,38 @@ class ACAccountMgr extends ACService {
     //@{
     /**
      * 设置用户的扩展属性。
-     * @param $user ACUser对象，表示要设置其扩展属性的用户。
-     * @param $profile 是由键值对组成的关联数组，表示用户的扩展属性值。
-     * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可以调用getLastError()方法获取错误信息。
+     * @param $user    ACUser ACUser对象，表示要设置其扩展属性的用户。
+     * @param $profile array  是由键值对组成的关联数组，表示用户的扩展属性值。
+     * @return         bool   操作成功时返回TRUE，否则返回FALSE。操作失败时可以调用getLastError()方法获取错误信息。
      */
     public function setUserProfile($user, $profile);
-    
+
     /**
      * 获取用户的扩展属性。
-     * @param $user ACUser对象，表示要获取其扩展属性的用户。
-     * @return 操作成功时返回一个由键值对组成的关联数组，表示该用户的扩展属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
+     * @param $user ACUser        表示要获取其扩展属性的用户。
+     * @return      array|NULL  操作成功时返回一个由键值对组成的关联数组，表示该用户的扩展属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
      */
     public function getUserProfile($user);
 
     /**
      * 获取用户的全部属性：包括基础属性及扩展属性。
-     * @param $uid		int		表示要获取其属性的用户的ID。参数$uid和$account至少需提供一个。
-     * @param $account	string	表示要获取其属性的用户的帐号名：Email地址或者电话。参数$uid和$account至少需提供一个。
-     * @return			array|NULL	操作成功时返回一个由键值对组成的关联数组，表示该用户的属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
+     * @param $uid     int    表示要获取其属性的用户的ID。参数$uid和$account至少需提供一个。
+     * @param $account string	表示要获取其属性的用户的帐号名：Email地址或者电话。参数$uid和$account至少需提供一个。
+     * @return         array|NULL 操作成功时返回一个由键值对组成的关联数组，表示该用户的属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
      */
     public function getUserWholeProfile($uid = 0, $account = '');
+
+    /**
+     * 根据用户uid列表查找用户的信息（基本信息+扩展信息）。一次最多可查询1000个用户的信息。
+     * @param $userIds  array 待查询的用户ID的数组。元素个数必须小于等于1000。
+     * @return          array 操作成功时返回用户属性数据的数组。数组中的每个元素是一个关联数组，对应于一个用户的属性。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
+     */
+    public function getProfilesByUserList($userIds);
     //@}
-    
+
     /**
      * 清除已注册的帐号信息。仅测试环境支持该方法。
-     * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
+     * @return bool 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function clearUsers();
 }
@@ -1019,25 +1063,25 @@ class ACDevice {
      * @param $subDomain 字符串，是设备所属的子域的名字。
      */
     function __construct($deviceId, $physicalId, $name = '', $ownerId = 0, $aesKey = '', $gatewayId = 0, $subDomainId = 0, $rootId = 0, $status = 0, $subDomain = '');
-    
+
     public function getId();
-    
+
     public function getPhysicalId();
-    
+
     public function getName();
-    
+
     public function getOwnerId();
-    
+
     public function getAesKey();
-    
+
     public function getGatewayId();
-    
+
     public function getSubDomainId();
-    
+
     public function getSubDomainName();
-    
+
     public function getRootId();
-    
+
     public function getStatus();
 }
 ```
@@ -1056,7 +1100,7 @@ class ACBindMgr extends ACService {
      * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /// @name 独立设备
     //@{
     /**
@@ -1068,7 +1112,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回ACDevice对象，表示被绑定的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function bindDevice($subDomain, $physicalId, $name, $user);
-    
+
     /**
      * 解除设备与用户的绑定关系。
      * @param $subDomain 字符串，是要被解绑的设备所属的子域的名字。
@@ -1077,7 +1121,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
      */
     public function unbindDevice($subDomain, $deviceId, $user);
-    
+
     /**
      * 设备的管理员用户获取设备的分享码。
      * @param $deviceId 要操作的对象的逻辑ID。整数。
@@ -1086,7 +1130,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功后返回分享码字符串。操作失败，则返回空字符串，并且可调用getLastError()方法获取错误消息。
      */
     public function getDeviceShareCode($deviceId, $user, $timeout);
-    
+
     /**
      * 将设备绑定至获取了分享码的用户。
      * @param $user ACUser对象，表示获取了分享码的用户。设备将被绑定至该用户。
@@ -1095,7 +1139,7 @@ class ACBindMgr extends ACService {
      */
     public function bindDeviceWithShareCode($user, $shareCode);
     //@}
-    
+
     /// @name 网关及其子设备
     //@{
     /**
@@ -1107,7 +1151,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACDeivce对象，表示被绑定设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function bindGateway($subDomain, $physicalId, $name, $user);
-    
+
     /**
      * 解除网关设备与用户的绑定关系。
      * @param $subDomain 字符串，是要被解绑的网关设备所属的子域的名字。
@@ -1116,7 +1160,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回TRUE，否则返回FALSE。失败时可调用getLastError()方法获取错误消息。
      */
     public function unbindGateway($subDomain, $deviceId, $user);
-    
+
     /**
      * 开启网关设备允许新的子设备接入的功能。开启该功能后，网关才能发现新的子设备。
      * @param $subDomain 字符串，是要被操作的网关设备所属的子域的名字。
@@ -1126,7 +1170,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回TRUE，否则返回FALSE。返回FALSE时，可以调用getLastError()获取错误信息。
      */
     public function openGatewayMatch($subDomain, $deviceId, $user, $timeout);
-    
+
     /**
      * 关闭网关设备允许新的子设备接入的功能。
      * @param $subDomain 字符串，是要操作的网关设备所属的子域的名字。
@@ -1135,7 +1179,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回TRUE，否则返回FALSE。返回FALSE时，可以调用getLastError()获取错误信息。
      */
     public function closeGatewayMatch($subDomain, $deviceId, $user);
-    
+
     /**
      * 将指定设备添加为网关设备的子设备。
      * @param $user ACUser对象，是网关设备的管理员用户。
@@ -1146,7 +1190,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回ACDevice对象，表示新添加的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function addSubDeviceToGateway($user, $gatewayId, $physicalId, $name, $subDomain);
-    
+
     /**
      * 删除网关设备的某个子设备。
      * @param $user ACUser对象，表示网关设备的管理员用户。
@@ -1154,14 +1198,14 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function deleteSubDeviceFromGateway($user, $deviceId);
-    
+
     /**
      * 查询用户绑定的网关设备。
      * @param $user ACUser对象，表示被查询的用户。
      * @return 返回由ACDevice对象组成的数组，表示该用户所绑定的网关设备。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listGateways($user);
-    
+
     /**
      * 查询某网关下用户所绑定的子设备。
      * @param $user ACUser对象，表示要查寻的用户。
@@ -1169,7 +1213,7 @@ class ACBindMgr extends ACService {
      * @return 返回由ACDevice对象组成的数组，表示该用户所绑定的子设备。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listSubDevicesFromGateway($user, $gatewayId);
-    
+
     /**
      * 查询某网关下新增的设备。这些设备尚未被用户正式绑定。
      * @param $user ACUser对象，表示要查询的用户。
@@ -1178,28 +1222,28 @@ class ACBindMgr extends ACService {
      */
     public function listNewSubDevicesFromGateway($user, $gatewayId);
     //@}
-    
+
     /**
      * 查询用户绑定的所有设备（包括网关及其子设备）。
      * @param $user ACUser对象，表示被查询的用户。
      * @return 返回由ACDevice对象组成的数组，表示该用户所绑定的全部设备。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listDevices($user);
-    
+
     /**
      * 查询某设备的所有用户。
      * @param $deviceId 整数，是拟查询的设备的逻辑ID。
      * @return 操作成功时返回一个由ACUser对象组成的数组，表示所有绑定了该设备的用户。操作失败时返回NULL，并且可调用getLastError()方法获取错误信息。
      */
     public function listUsers($deviceId);
-    
+
     /**
      * 通过设备逻辑ID查询设备的在线状态。
      * @param $deviceId 整数。设备的逻辑ID。
      * @return 返回TRUE表示设备在线；返回FALSE表示设备不在线或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备不在线；否则表示操作出错，设备的状态为未知。
      */
     public function isDeviceOnline($deviceId);
-    
+
     /**
      * 通过设备物理ID查询设备的在线状态。
      * @param $subDomain 字符串，是设备所属的子域的名字。
@@ -1207,7 +1251,7 @@ class ACBindMgr extends ACService {
      * @return 返回TRUE表示设备在线；返回FALSE表示设备不在线或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备不在线；否则表示操作出错，设备的状态为未知。
      */
     public function isDeviceOnlineByPhysicalId($subDomain, $physicalId);
-    
+
     /**
      * 取设备的逻辑ID。
      * @param $subDomain 字符串，是设备所属的子域的名字。
@@ -1215,7 +1259,7 @@ class ACBindMgr extends ACService {
      * @return 返回设备的逻辑ID。有效的逻辑ID是正整数。返回0表示操作失败。可调用getLastError()方法获取错误消息。
      */
     public function getDeviceId($subDomain, $physicalId);
-    
+
     /**
      * 向设备发送消息。
      * @param $user ACUser对象，表示向设备发送消息的用户。
@@ -1229,7 +1273,7 @@ class ACBindMgr extends ACService {
      * @return 返回ACResponse对象，表示设备或云端服务的响应。
      */
     public function sendToDevice($user, $deviceId, $subDomain, $messageCode, $message, $handset = '', $handsetVersion = '');
-    
+
     /**
      * 修改设备名称。
      * @param $user ACUser对象，表示要修改设备名字的用户。
@@ -1238,7 +1282,7 @@ class ACBindMgr extends ACService {
      * @return 返回TRUE表示操作成功；返回FALSE表示操作失败，此时可调用getLastError()获取错误信息。
      */
     public function changeName($user, $deviceId, $name);
-    
+
     /// @name 设备分组模型
     //@{
     /**
@@ -1248,7 +1292,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACHome对象；否则返回NULL。操作失败时可以调用getLastError()获取错误信息。
      */
     public function createHome($user, $name);
-    
+
     /**
      * 删除一个“家”对象。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1256,7 +1300,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
      */
     public function deleteHome($user, $homeId);
-    
+
     /**
      * 创建一个“房间”对象。
      * @param $user ACUser对象，是创建该“房间”的用户。
@@ -1265,7 +1309,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACRoom对象；否则返回NULL。操作失败时可以调用getLastError()获取错误信息。
      */
     public function createRoom($user, $homeId, $name);
-    
+
     /**
      * 删除一个“房间”对象。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1274,7 +1318,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
      */
     public function deleteRoom($user, $homeId, $roomId);
-    
+
     /**
      * 向“家”添加一个设备。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1286,7 +1330,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功返回ACDevice对象，表示被绑定的设备的信息。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function addDeviceToHome($user, $homeId, $name, $subDomain, $physicalId = '', $deviceId = 0);
-    
+
     /**
      * 从“家”中删除一个设备。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1295,7 +1339,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时，可调用getLastError()获取错误信息。
      */
     public function deleteDeviceFromHome($user, $homeId, $deviceId);
-    
+
     /**
      * 将设备移至指定“房间”。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1305,7 +1349,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时，可调用getLastError()获取错误信息。
      */
     public function moveDeviceToRoom($user, $deviceId, $roomId, $homeId);
-    
+
     /**
      * 从指定“房间”内删除设备。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1315,7 +1359,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时，可调用getLastError()获取错误信息。
      */
     public function removeDeviceFromRoom($user, $deviceId, $roomId, $homeId);
-    
+
     /**
      * 取“家”的分享码/邀请码。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1324,7 +1368,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回一个长度不为0的字符串，即生成的分享码。操作失败时返回空字符串，并且可调用getLastError()获取错误信息。
      */
     public function getHomeShareCode($user, $homeId, $timeout);
-    
+
     /**
      * 用户加入“家”对象。
      * @param $user ACUser对象，是要加入“家”的用户。
@@ -1332,7 +1376,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回一个ACHome对象，否则返回NULL。操作失败时可调用getLastError()获取错误信息。
      */
     public function joinHomeWithShareCode($user, $shareCode);
-    
+
     /**
      * 将指定的用户加入“家”对象。
      * @param $user ACUser对象，是“家”的管理员用户。该管理员用户可以将帐号名字为$login的用户添加至“家”中。
@@ -1341,7 +1385,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
      */
     public function addUserToHome($user, $homeId, $login);
-    
+
     /**
      * 将用户从“家”中删除。
      * @param $user ACUser对象，是“家”的管理员用户。
@@ -1350,14 +1394,14 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时，可调用getLastError()获取错误信息。
      */
     public function removeUserFromHome($user, $homeId, $userId);
-    
+
     /**
      * 查询某用户已创建的“家”对象。
      * @param $user ACUser对象，是待查询的用户。
      * @return 操作成功时返回ACHome对象组成的数组。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listHomes($user);
-    
+
     /**
      * 查询某用户的“家”中的“房间”列表。
      * @param $user ACUser对象，是待查询的用户。
@@ -1365,7 +1409,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACRoom对象组成的数组。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listRooms($user, $homeId);
-    
+
     /**
      * 查询某用户的“家”中已加入的设备。
      * @param $user ACUser对象，是待查询的用户。
@@ -1373,7 +1417,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACDevice对象组成的数组。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listHomeDevices($user, $homeId);
-    
+
     /**
      * 查询某用户的“房间”中已加入的设备。
      * @param $user ACUser对象，是待查询的用户。
@@ -1382,7 +1426,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACDevice对象组成的数组。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listRoomDevices($user, $homeId, $roomId);
-    
+
     /**
      * 查询“家”中的成员列表。
      * @param $user ACUser对象，是待查询的“家”的成员用户。
@@ -1390,7 +1434,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回ACUser对象组成的数组（但是用户的TOKEN为空）。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listHomeUsers($user, $homeId);
-    
+
     /**
      * 修改“家”的名字。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1399,7 +1443,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时，可调用getLastError()获取错误信息。
      */
     public function changeHomeName($user, $homeId, $name);
-    
+
     /**
      * 修改“房间”的名字。
      * @param $user ACUser对象，是发起该操作的用户。
@@ -1410,7 +1454,7 @@ class ACBindMgr extends ACService {
      */
     public function changeRoomName($user, $homeId, $roomId, $name);
     //@}
-    
+
     /// @name 设备的扩展属性
     //@{
     /**
@@ -1421,7 +1465,7 @@ class ACBindMgr extends ACService {
      * @return 操作成功时返回TRUE，否则返回FALSE。操作失败时可调用getLastError()获取错误信息。
      */
     public function setDeviceProfile($user, $deviceId, $profile);
-    
+
     /**
      * 取设备的扩展属性。
      * @param $deviceId 整数，是要查询其扩展属性的设备的逻辑ID。
@@ -1493,7 +1537,7 @@ class ACOtaMgr extends ACService {
      * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /**
      * 检查设备的固件升级信息。
      * @param $user ACUser对象，表示设备的用户。
@@ -1502,7 +1546,7 @@ class ACOtaMgr extends ACService {
      * @return 返回一个ACOtaVersion对象，表示版本信息。如果操作失败，则返回NULL。此时，可调用getLastError()获取错误信息。
      */
     public function checkUpdate($user, $deviceId, $subDomain);
-    
+
     /**
      * 确认升级设备的固件版本。
      * @param $user ACUser对象，表示执行该操作的用户。
@@ -1529,25 +1573,25 @@ class ACOtaVersion {
      * @param $updateLog 字符串，表示新版本的升级说明。
      */
     function __construct($currentVersion, $newVersion, $updateLog = '');
-    
+
     /**
      * 取当前版本信息。
      * @return 返回一个字符串，表示当前版本。
      */
     public function getCurrentVersion();
-    
+
     /**
      * 取新版本信息。
      * @return 返回一个字符串，表示新版本。
      */
     public function getNewVersion();
-    
+
     /**
      * 取新版本的更新信息。
      * @return 返回一个字符串，表示新版本的升级信息。
      */
     public function getUpdateLog();
-    
+
     /**
      * 检查是否可升级：检查新版本是否高于当前版本。
      * @return 返回TRUE表示新版本高于当前版本；否则返回FALSE。
@@ -1576,7 +1620,7 @@ class ACStoreClassColumn {
      * @param $length 列的值的长度。仅字符串类型的列需要指定长度：[1, 1024]。默认为255。
      */
     function __construct($name, $type, $length = 255);
-    
+
     /**
      * 取本列的数据类型的名字。
      * @return 返回本列的数据类型的名字。
@@ -1605,7 +1649,7 @@ class ACStoreClass {
      * @param $name 数据集的名字：字母、数字或下划线。
      */
     function __construct($domain, $name);
-	
+
     /**
      * 将本对象编码成JSON格式的字符串。
      * @return 返回JSON格式的字符串。
@@ -1629,7 +1673,7 @@ class ACStoreComplicatedFilter {
      * @param $filter ACStoreFitler对象，是初始化复杂查询条件的简单条件。
      */
     function __construct($filter);
-    
+
     /**
      * 将一个简单查询条件ACStoreFilter链接至本对象所包含的简单查询条件链表的末尾。
      * @param $filter     ACStoreFilter ACStoreFilter对象，表示要被连接的查询条件。
@@ -1637,13 +1681,13 @@ class ACStoreComplicatedFilter {
      * @return            ACStoreComplicatedFilter 本ACStoreComplicatedFilter对象。
      */
     public function appendFilter($filter, $logicalAnd = true);
-    
+
     /**
      * 计算本对象所含的简单查询对象（ACStoreFilter）链表中元素的数目。
      * @return 返回链表中的简单查询对象（ACStoreFilter）的数目。
      */
     public function countFilters();
-    
+
     /**
      * 将另一个复杂查询条件（ACStoreComplicatedFilter）链接至本对象所属复杂查询条件链表的末尾。
      * @param $complicatedFilter ACStoreComplicatedFilter对象，表示要链接的复杂查询条件。
@@ -1651,13 +1695,13 @@ class ACStoreComplicatedFilter {
      * @return 位于链表末尾的ACStoreComplicatedFilter对象。
      */
     public function linkTo($complicatedFilter, $logicalAnd);
-    
+
     /**
      * 假设以本复杂查询对象为链表的头，计算该链表中所包含的复杂查询条件对象（ACStoreComplicatedFilter）的数目。
      * @return 返回链表中复杂查询条件对象（ACStoreComplicatedFilter）的数目。
      */
     public function countComplicatedFilters();
-    
+
     /**
      * 将以本对象为头元素的复杂查询对象链表转化为数组结构。
      * @return 以数组结构表达的复杂查询条件。
@@ -1696,21 +1740,21 @@ class ACStoreFilter {
      * @param $value      整数、浮点数、字符串或布尔值，是查询条件中的目标值。
      */
     function __construct($columnName, $operator, $value);
-    
+
     /**
      * 将本对象以逻辑“与”的关系与另一个ACStoreFilter对象关联起来。
      * @param $filter ACStoreFilter对象，要关联的查询条件。
      * @return ACStoreFitler对象，是当前关联起来的查询条件的列表中处于末尾位置的ACStoreFilter对象。
      */
     public function andFilter($filter);
-    
+
     /**
      * 将本对象以逻辑“或”的关系与另一个ACStoreFilter对象关联起来。
      * @param $filter ACStoreFilter对象，要关联的查询条件。
      * @return ACStoreFitler对象，是当前关联起来的查询条件的列表中处于末尾位置的ACStoreFilter对象。
      */
     public function orFilter($filter);
-    
+
     /**
      * 生成本对象的一个拷贝：仅复制数据列名、操作符，以及目标值。
      * @return ACStoreFilter 是本对象的拷贝。
@@ -1741,7 +1785,7 @@ class ACStoreIterator extends ACService {
      * @param $scanner ACStoreScanner对象，表示查询条件。
      */
     function __construct($name, $version, $context, $scanner);
-    
+
     /**
      * 取查询结果集合中的下一批数据记录。返回NULL时表示已遍历完整个数据集。
      * @details 实际上，当前第一次调用本方法就返回所有符合条件的记录，因此不用多次调用来检查是否已取到了所有数据。
@@ -1766,13 +1810,13 @@ class ACStoreScanner {
      * @param $entityGroupKeyValues 以键值对的方式（如关联数组等）描述的查询数据集时所使用的分区键的值。如果数据集没有分区，则使用NULL。
      */
     function __construct($name, $entityGroupKeyValues = NULL);
-    
+
     /**
      * 取要查询的数据集的名字。
      * @return 要查询的数据集的名字。
      */
     public function getClassName();
-    
+
     /**
      * 设置要被查询的数据列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * 该方法的调用方式，如查询单列：$scanner->select('deviceId')；或查询多列：$scanner->select('deviceId', 'time', 'message')。
@@ -1786,21 +1830,21 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function clearSelection();
-    
+
     /**
      * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
      * @param $complicatedFilter ACStoreComplicatedFilter对象，表示查询的过滤条件。
      * @return 本ACStoreScanner对象。
      */
     public function where($complicatedFilter);
-    
+
     /**
      * 设置查询条件。该方法如果被多次调用，则后续调用传入的参数将覆盖之前设置的所有查询条件。
      * @param $filter ACStoreFilter或ACStoreComplicatedFilter对象，表示查询条件。如果是ACStoreFilter对象，将先生成一个组合条件，并将该对象放置在组合条件中，然后再设置为过滤条件。
      * @return 本ACStoreScanner对象。
      */
     public function whereExt($filter);
-    
+
     /**
      * 以逻辑“与”的关系添加一个查询条件或条件的组合。
      * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
@@ -1808,7 +1852,7 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function andWhere($filter);
-    
+
     /**
      * 以逻辑“或”的关系添加一个查询条件或条件的组合。
      * @details 该方法应该在调用了ACStoreScanner::where方法或ACStoreScanner::whereExt之后再调用。
@@ -1822,7 +1866,7 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function clearWhere();
-    
+
     /**
      * 增加对查询结果进行排序的列及方式。
      * @param $columnName 字符串，是用作排序的列的名字。如该名字与之前添加过的列重名，则以最后一次设置的排序方式为准。
@@ -1836,7 +1880,7 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function clearOrderBy();
-    
+
     /**
      * 设置查询结果集的分组数据列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnNames 字符串，是分组所依据的数据列的名字。
@@ -1869,41 +1913,41 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function clearOffsetAndLimit();
-    
+
     /**
      * 添加聚集函数COUNT()为查询结果列。
      * @return 本ACStoreScanner对象。
      */
     public function count();
-    
+
     /**
      * 添加聚集函数SUM()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName SUM()函数作用的目标数据列。
      * @return 本ACStoreScanner对象。
      */
     public function sum($columnName);
-    
+
     /**
      * 添加聚集函数AVG()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName AVG()函数作用的目标数据列。
      * @return 本ACStoreScanner对象。
      */
     public function avg($columnName);
-    
+
     /**
      * 添加聚集函数MAX()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName MAX()函数作用的目标数据列。
      * @return 本ACStoreScanner对象。
      */
     public function max($columnName);
-    
+
     /**
      * 添加聚集函数MIN()为查询结果列。该方法可被多次调用，每次调用指定的数据列将被添加至之前设置的集合中。
      * @param $columnName MIN()函数作用的目标数据列。
      * @return 本ACStoreScanner对象。
      */
     public function min($columnName);
-    
+
     /**
      * 执行查询，返回查询结果。
      * @return - 返回一个数组。数组中的每个元素是一个关联数组，表示一条数据记录。
@@ -1916,7 +1960,7 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function clearAggregates();
-    
+
     /**
      * 设置访问ACStore服务的参数。
      * @details 调用ACStoreScanner::execute之前需要调用本方法配置ACStore的访问信息。
@@ -1926,13 +1970,13 @@ class ACStoreScanner {
      * @return 本ACStoreScanner对象。
      */
     public function setACStore($serviceName, $serviceVersion, $acContext);
-    
+
     /**
      * 取最近一次错误消息。
      * @return 返回一个包含错误码和消息的关联数组：['errCode': 0, 'errMessage': '']。errCode为0时表示没有错误发生。
      */
     public function getLastError();
-    
+
     /**
      * 将本对象转换为AbleCloud存储服务的scanParam结构。
      * @return 返回一个关联数组，代表存储服务的scanParam参数。
@@ -2163,34 +2207,34 @@ class ACStore extends ACService {
      * @param $context	ACContext	ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /**
      * 创建数据集。仅测试环境支持该方法。
      * @param $classDef ACStoreClass	ACStoreClass对象，表示数据集的定义。
      * @return			bool			操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function createClass($classDef);
-    
+
     /**
      * 查询已创建的数据集。
      * @return array 返回ACStoreClass数组，表示已定义的数据集。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function listClasses();
-    
+
     /**
      * 删除指定的数据集。仅测试环境支持该方法。
      * @param $name string	字符串，表示要被删除的数据集的名字。
      * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function dropClass($name);
-    
+
     /**
      * 清除指定数据集中的数据。仅测试环境支持该方法。
      * @param $name string	要清除其数据的数据集的名字。
      * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function clearClass($name);
-    
+
     /**
      * 在数据集中添加一条数据记录。
      * @param $name string	要添加数据的数据集的名字。
@@ -2198,7 +2242,7 @@ class ACStore extends ACService {
      * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function create($name, $row);
-    
+
     /**
      * 从数据集中删除指定的记录。
      * @param $name string	要删除数据的数据集的名字。
@@ -2206,7 +2250,7 @@ class ACStore extends ACService {
      * @return 		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function delete($name, $row);
-    
+
     /**
      * 更新数据集中指定的记录。
      * @param $name string	要更新的数据所属的数据集的名字。
@@ -2214,7 +2258,7 @@ class ACStore extends ACService {
      * @return		bool	操作成功返回TRUE；否则返回FALSE，并且可调用getLastError()方法获取错误消息。
      */
     public function update($name, $row);
-    
+
     /**
      * 查询指定的记录。
      * @param $name				string	要查询的数据集的名字。
@@ -2223,14 +2267,14 @@ class ACStore extends ACService {
      * @return 					array	操作成功时返回一个关联数组，记录查询结果。操作失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function find($name, $primaryKeyValues, $select = NULL);
-    
+
     /**
      * 查询分区内的数据。兼容v1.3.x之前的版本。
      * @param $scanner	ACStoreScanner	ACStoreScanner对象，表示查询条件。
      * @return 			ACStoreIterator	返回一个ACStoreIterator对象，用于遍历查询结果集合中的数据。返回NULL时表示操作失败，此时可调用getLastError()方法获取错误消息。
      */
     public function scan($scanner);
-    
+
     /**
      * 查询数据。
      * @param $name					string	字符串。要被查询的数据集的名字。
@@ -2264,7 +2308,7 @@ class ACStore extends ACService {
 }
 ```
 
-#AbleCloud 定时任务#
+#AbleCloud定时任务#
 
 ##ACTimerTask##
 
@@ -2313,7 +2357,7 @@ class ACTimerTaskMgr extends ACService {
      * @param $context ACContext对象，表示访问该远程服务所依赖的环境信息。
      */
     function __construct($name, $version, $context);
-    
+
     /**
      * 添加一个新定时任务。
      * @param $task ACTimerTask对象，表示要新添加的任务。
@@ -2321,7 +2365,7 @@ class ACTimerTaskMgr extends ACService {
      * @return 返回TRUE表示操作成功，否则表示操作失败。失败时，可调用getLastError()获取错误信息。
      */
     public function addTask($task, $user);
-    
+
     /**
      * 修改指定的定时任务。
      * @param $taskId 整数，表示要被修改的任务的ID。
@@ -2330,7 +2374,7 @@ class ACTimerTaskMgr extends ACService {
      * @return 返回TRUE表示操作成功，否则表示操作失败。失败时，可调用getLastError()获取错误信息。
      */
     public function modifyTask($taskId, $task, $user);
-    
+
     /**
      * 查询用户针对某设备定制的定时任务。
      * @param $user ACUser对象，表示创建该定时任务的用户。
@@ -2338,7 +2382,7 @@ class ACTimerTaskMgr extends ACService {
      * @return 操作成功时，返回一个数组，数组的元素是ACTimerTask对象。操作失败时返回NULL，并且可调用getLastError()获取错误信息。
      */
     public function listTasks($user, $deviceId);
-    
+
     /**
      * 删除一个定时任务。
      * @param $user ACUser对象，是要被删除的任务所关联的用户。
@@ -2347,7 +2391,7 @@ class ACTimerTaskMgr extends ACService {
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()获取错误信息。
      */
     public function deleteTask($user, $deviceId, $taskId);
-    
+
     /**
      * 停止一个定时任务。
      * @param $user ACUser对象，是要被停止的任务所关联的用户。
@@ -2356,7 +2400,7 @@ class ACTimerTaskMgr extends ACService {
      * @return 操作成功时返回TRUE；操作失败时返回FALSE，并且可调用getLastError()获取错误信息。
      */
     public function stopTask($user, $deviceId, $taskId);
-    
+
     /**
      * 启动一个定时任务。
      * @param $user ACUser对象，是要被启动的任务所关联的用户。
@@ -2785,6 +2829,85 @@ class ACQETimeInterval {
      * @return string   以字符串记录的时间间隔参数。
      */
     public function toParamInArray();
+}
+```
+
+#Ablecloud设备管理服务#
+
+##ACDeviceInfo##
+```php
+/**
+ * 设备的元数据信息。
+ */
+class ACDeviceInfo {
+    public $domain = '';         ///< 字符串。设备所属的主域的ID。
+    public $subDomain = '';      ///< 字符串。设备所属的子域的ID。
+    public $physicalDeviceId = '';   ///< 字符串。设备的物理ID。
+    public $type = '';           ///< 字符串。
+    public $ipAddr = '';         ///< 字符串。设备的IP地址。
+    public $mac = '';            ///< 字符串。设备的MAC地址。
+    public $devVersion = '';     ///< 字符串。设备的MCU固件版本。
+    public $modVersion = '';     ///< 字符串。设备的通信模块版本。
+    public $activeTime = '';     ///< 字符串。设备的激活时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public $lastOnlineTime = ''; ///< 字符串。设备最近一次上线时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public $country = '';        ///< 字符串。设备所处地理位置信息：所在国家。
+    public $province = '';       ///< 字符串。设备所处地理位置信息：所在省份。
+    public $city = '';           ///< 字符串。设备所处地理位置信息：所在城市。
+    public $street = '';         ///< 字符串。设备所处地理位置信息：所在街道。
+    public $status = '';         ///< 整数。设备状态：0-不存在；1-未激活；2-激活。
+
+    /**
+     * 从关联数组对象构造ACDeviceInfo对象。
+     * @param $obj  array             保存了设备信息的对象。
+     * @return      ACDeviceInfo|NULL ACDeviceInfo对象或者NULL。
+     */
+    public static function fromObject($obj);
+}
+```
+
+##ACWarehouseMgr##
+```php
+/**
+ * AbleCloud设备入库管理服务。
+ */
+class ACWarehouseMgr extends ACService {
+    /**
+     * 构造函数。
+     * @param $name    string    AbleCloud设备入库管理服务的名字。
+     * @param $version int       AbleCloud设备入库管理服务的版本。
+     * @param $context ACContext ACContext对象，表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 查询已入库设备的数目。
+     * @param $subDomain string 指定要查寻的设备所属的子域的名字。如为NULL或空字符串表示不区分子域。
+     * @return           int     返回非负整数表示设备数目。返回负整数表示查询失败，可调用getLastError()方法获取错误信息。
+     */
+    public function getDeviceCount($subDomain = '');
+
+    /**
+     * 批量查询设备信息。
+     * @param $subDomain string     指定要查询的设备所属的子域的名字。如为NULL或空字符串表示不区分子域。
+     * @param $offset    int        $offset与$limit参数用于实现分页查询的效果。$offset是从0开始的偏移量，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @param $limit     int        $offset与$limit参数用于实现分页查询的效果。$limit是正整数，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @return           array|NULL 操作成功时返回ACDeviceInfo对象的数组，否则返回NULL。失败时可调用getLastError()方法获取错误信息。
+     */
+    public function listDevices($subDomain, $offset, $limit);
+
+    /**
+     * 查询设备信息。
+     * @param $physicalDeviceId string            拟查询的设备的物理ID。
+     * @return                  ACDeviceInfo|NULL 操作成功时返回ACDeviceInfo对象，失败时返回NULL。失败时可调用getLastError()方法获取错误信息。
+     */
+    public function getDeviceInfo($physicalDeviceId);
+
+    /**
+     * 批量查询设备信息。
+     * @param $physicalDeviceIds array      拟查询的设备的物理ID组成的数组。
+     * @return                   array|NULL 操作成功时返回ACDeviceInfo对象的数组，否则返回NULL。失败时可调用getLastError()方法获取错误信息。
+     */
+    public function getDevicesInfo($physicalDeviceIds);
 }
 ```
 

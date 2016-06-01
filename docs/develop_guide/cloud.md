@@ -1005,6 +1005,42 @@ ac.store("test_data", context).create(pk)	// 这里是primary keys的对象
                     .put("pm25", 35.5)
                     .execute();
 ```
+
+##Update
+更新数据，如果对应的主键不存在，则插入这条数据。
+```java
+ac.store("test_data", context).update("deviceId", "12345", "timestamp", 1L)
+                    .put("status", "run")
+                    .put("mode", "auto")
+                    .put("speed", 45L)
+                    .put("pm25", 35.5)
+                    .execute();
+```
+
+##Modify
+更新已有数据，如果对应数据行不存在，则报错。
+
+### 用法一：将speed设置为6，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .set("speed", 6L)
+                    .execute();
+```
+
+### 用法2：将speed增加2，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .inc("speed", 2)
+                    .execute();
+```
+
+### 用法3：将speed减少2，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .dec("speed", 2)
+                    .execute();
+```
+
 ##Find
 ```java
 ACObject ao = ac.store("test_data", context)
@@ -1164,6 +1200,15 @@ while((zos = it.next()) != null) {
 	// 处理当前分区中的数据
         ...
 }
+```
+
+
+##Delete
+删除一行数据(至少指定主键)
+```java
+ac.store("test_data", context).delete("deviceId", "12345", "timestamp", 1L)
+                    .put("speed", 10L)
+                    .execute(); //删除主键为(deviceId: 12345, timestamp: 1L) 并且speed=10L的行
 ```
 
 ##BatchDelete

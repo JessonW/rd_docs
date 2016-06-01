@@ -187,12 +187,6 @@
                     </li>
                 
                 
-                
-                    <li >
-                        <a href="../../QandA/" >Q&A</a>
-                    </li>
-                
-                
                 </ul>
             
 
@@ -651,7 +645,7 @@ $openId = $accountMgr-&gt;getUserOpenId($userId, 'weixin');
 <li>
 <p>采用非微信扫描二维码功能绑定设备后需要通知微信平台同步信息。</p>
 <p>使用微信终端时，推荐使用微信的“扫一扫”功能扫描设备的二维码（可以附加AbleCloud平台设备的管理员用户生成的分享码）来绑定设备。此时，微信平台会先完成设备绑定，然后推送消息给开发者的公众号后台。
-开发者可调用<strong>ACBridgeWeChat::onDeviceEventBind</strong>来处理该事件。该方法会调用AbleCloud平台的相关接口通知AbleCloud平台绑定用户与设备，开发者无需额外通知双方平台通许信息。
+开发者可调用<strong>ACBridgeWeChat::onDeviceEventBind</strong>来处理该事件。该方法会调用AbleCloud平台的相关接口通知AbleCloud平台绑定用户与设备，开发者无需额外通知双方平台同步信息。
 但是如果直接调用了AbleCloud平台提供的API绑定了设备，如子设备接入了网关、将设备加入了Home分组等，则需要通知微信平台同步信息。此时可调用<strong>ACBridgeWeChat::syncBindingsByDevice</strong>来同步信息。
 该方法是要求微信平台同步关于指定设备的信息。</p>
 </li>
@@ -683,8 +677,9 @@ $openId = $accountMgr-&gt;getUserOpenId($userId, 'weixin');
 </li>
 </ol>
 <p>此外，微信平台会定期向开发者的公众号后台推送消息"device_event" - "subscribe_status"来查询设备的连接状态（仅针对WiFi设备）。开发者可以调用<strong>ACBridgeWeChat::onDeviceEventSubscribeStatus</strong>来处理该事件。
-微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用<strong>ACBridgeWeChat::onDeviceEventUnsubscribeStatus</strong>来处理该事件。上述两个方法均调用了<strong>ACBridgeWeChat::syncBindings</strong>同步当前用户的信息。</p>
-<p>开发者也可根据实际需求调用<strong>ACBridgeWeChat::syncBindings</strong>及<strong>ACBridgeWeChat::syncBindingsByDevice</strong>方法来同步信息。</p>
+微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用<strong>ACBridgeWeChat::onDeviceEventUnsubscribeStatus</strong>来处理该事件。上述两个方法均支持选择性地调用<strong>ACBridgeWeChat::syncBindings</strong>同步当前用户的信息（同步数据的方法可能需要耗费一定的时间）。</p>
+<p>开发者也可根据实际需求调用<strong>ACBridgeWeChat::syncBindings</strong>及<strong>ACBridgeWeChat::syncBindingsByDevice</strong>方法来同步信息。比如，自定义的周期性地在两个平台间同步数据；或者在用户遇到扫码没有反应或者其它可能跟数据不同步有关的问题时，可以手工触发数据同步的操作。</p>
+<p>针对用户扫描设备二维码后微信系统没有反应的情况，<strong>ACBridgeWeChat::checkAndBindDevice</strong>方法可以检查设备是否已在微信平台授权（未授权的设备不能被绑定），以及微信平台是否已经记录了设备与用户的绑定关系，然后在AbleCloud平台绑定用户与设备，并与微信平台同步该用户的信息。</p>
 <h2 id="_10">独立设备</h2>
 <p>设备绑定的交互流程如下图所示：</p>
 <p><img alt="wechat_wifi" src="../../pic/develop_guide/DM_wechat_WiFi.png" /></p>

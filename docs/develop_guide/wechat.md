@@ -41,7 +41,7 @@
 + id
 
     设备的物理ID。AbleCloud要求非蓝牙设备的物理ID为16个字符，而蓝牙设备的物理ID为10个字符。
-    
+
 + auth_key, crypt_method, auth_ver
 
     用于指定设备与微信客户端或微信平台通信时采用的认证及数据加密方法。
@@ -208,7 +208,7 @@ $openId = $accountMgr->getUserOpenId($userId, 'weixin');
 1. 采用非微信扫描二维码功能绑定设备后需要通知微信平台同步信息。
 
     使用微信终端时，推荐使用微信的“扫一扫”功能扫描设备的二维码（可以附加AbleCloud平台设备的管理员用户生成的分享码）来绑定设备。此时，微信平台会先完成设备绑定，然后推送消息给开发者的公众号后台。
-    开发者可调用**ACBridgeWeChat::onDeviceEventBind**来处理该事件。该方法会调用AbleCloud平台的相关接口通知AbleCloud平台绑定用户与设备，开发者无需额外通知双方平台通许信息。
+    开发者可调用**ACBridgeWeChat::onDeviceEventBind**来处理该事件。该方法会调用AbleCloud平台的相关接口通知AbleCloud平台绑定用户与设备，开发者无需额外通知双方平台同步信息。
     但是如果直接调用了AbleCloud平台提供的API绑定了设备，如子设备接入了网关、将设备加入了Home分组等，则需要通知微信平台同步信息。此时可调用**ACBridgeWeChat::syncBindingsByDevice**来同步信息。
     该方法是要求微信平台同步关于指定设备的信息。
 
@@ -221,11 +221,11 @@ $openId = $accountMgr->getUserOpenId($userId, 'weixin');
 
     网关设备首次被用户绑定时除外（这时网关设备还没有接入子设备或者接入的子设备还没得到用户的确认），其他用户绑定网关设备时，会自动与网关所附带的子设备建立绑定关系。用户解除与网关的绑定关系时，也会自动解除与子设备的绑定关系。
     此时需调用**ACBridgeWeChat::syncBindings**来同步信息。该方法是要求微信平台同步关于指定用户的信息。如ACBridgeWeChat::onDeviceEventBind及onDeviceEventUnbind均调用了该方法来同步信息。
-    
+
 4. 确认网关子设备接入网关后或者从网关中删除子设备后需要通知微信平台同步信息。
 
     子设备加入网关或从网关中删除子设备时，会自动建立或解除与网关设备的所有用户的绑定关系。此时要调用**ACBridgeWeChat::syncBindingsByDevice**来同步信息。
-    
+
 5. 使用分组模型管理设备时，将设备添加进Home或者从Home中移除后需要通知微信平台同步信息。
 
     在这两种场景下，被操作的设备会自动与分组中的用户建立或解除绑定关系。开发者需要调用**ACBridgeWeChat::syncBindingsByDevice**来同步信息。
@@ -233,15 +233,17 @@ $openId = $accountMgr->getUserOpenId($userId, 'weixin');
 6. 使用分组模型管理设备时，将用户添加进Home或者从Home中移除后需要通知微信平台同步信息。
 
     在这两种场景下，用户会自动与Home内的设备建立或解除绑定关系。开发者需要调用**ACBridgeWeChat::syncBindings**来同步信息。
-    
+
 7. 使用分组模型管理设备时，删除Home对象后需要通知微信平台同步信息。
 
     删除Home对象时会批量解除设备与用户的绑定关系。开发者应直接调用**ACBridgeWeChat::deleteHome**来执行删除Home的操作，而不是调用ACBindMgr::deleteHome。
-    
-此外，微信平台会定期向开发者的公众号后台推送消息"device_event" - "subscribe_status"来查询设备的连接状态（仅针对WiFi设备）。开发者可以调用**ACBridgeWeChat::onDeviceEventSubscribeStatus**来处理该事件。
-微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用**ACBridgeWeChat::onDeviceEventUnsubscribeStatus**来处理该事件。上述两个方法均调用了**ACBridgeWeChat::syncBindings**同步当前用户的信息。
 
-开发者也可根据实际需求调用**ACBridgeWeChat::syncBindings**及**ACBridgeWeChat::syncBindingsByDevice**方法来同步信息。
+此外，微信平台会定期向开发者的公众号后台推送消息"device_event" - "subscribe_status"来查询设备的连接状态（仅针对WiFi设备）。开发者可以调用**ACBridgeWeChat::onDeviceEventSubscribeStatus**来处理该事件。
+微信平台推送消息"device_event" - "unsubscribe_status"时，开发者可调用**ACBridgeWeChat::onDeviceEventUnsubscribeStatus**来处理该事件。上述两个方法均支持选择性地调用**ACBridgeWeChat::syncBindings**同步当前用户的信息（同步数据的方法可能需要耗费一定的时间）。
+
+开发者也可根据实际需求调用**ACBridgeWeChat::syncBindings**及**ACBridgeWeChat::syncBindingsByDevice**方法来同步信息。比如，自定义的周期性地在两个平台间同步数据；或者在用户遇到扫码没有反应或者其它可能跟数据不同步有关的问题时，可以手工触发数据同步的操作。
+
+针对用户扫描设备二维码后微信系统没有反应的情况，**ACBridgeWeChat::checkAndBindDevice**方法可以检查设备是否已在微信平台授权（未授权的设备不能被绑定），以及微信平台是否已经记录了设备与用户的绑定关系，然后在AbleCloud平台绑定用户与设备，并与微信平台同步该用户的信息。
 
 ##独立设备##
 
@@ -311,7 +313,7 @@ $device = $wxBridge->onDeviceEventBind($xmlMsg, $deviceName, $subDomain, FALSE);
 
 AbleCloud将第一个绑定设备的用户作为该设备的管理员用户。其他用户只能在管理员用户的授权下才能绑定该设备。管理员可以提供设备的分享码，允许其它用户绑定设备。这个分享码可以作为扩展属性附属在微信的原始设备二维码中方便用户扫码提取。
 方法ACBridgeWeChat::onDeviceEventBind能自动处理用户扫描包含/不包含分享码的设备二维码来绑定设备的情况。
-   
+
 ###设备激活###
 
 此处，“设备激活”是指为WiFi设备配置WiFi网络，使设备连网，连接云端，从而提供在线服务能力。
