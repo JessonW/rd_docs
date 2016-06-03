@@ -582,17 +582,49 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
-            <a href="#_43">测试桩<span class="main-set parent__43">+</span></a>
+            <a href="#_43">设备管理接口<span class="main-set parent__43">+</span></a>
         </li>
         
             
-            <li class="sub parent__43" style="display: none;"><a href="#_44">设备桩</a></li>
+            <li class="sub parent__43" style="display: none;"><a href="#_44">获取方式</a></li>
             
         
             
-            <li class="sub parent__43" style="display: none;"><a href="#_45">服务桩</a></li>
+            <li class="sub parent__43" style="display: none;"><a href="#_45">接口说明</a></li>
+            
+        
+            
+            <li class="sub parent__43" style="display: none;"><a href="#_46">数据结构说明</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_47">测试桩<span class="main-set parent__47">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__47" style="display: none;"><a href="#_48">设备桩</a></li>
+            
+        
+            
+            <li class="sub parent__47" style="display: none;"><a href="#_49">服务桩</a></li>
             
         
     
@@ -604,11 +636,11 @@
         
         
         <li class="main">
-            <a href="#_46">附录<span class="main-set parent__46">+</span></a>
+            <a href="#_50">附录<span class="main-set parent__50">+</span></a>
         </li>
         
             
-            <li class="sub parent__46" style="display: none;"><a href="#_47">签名算法</a></li>
+            <li class="sub parent__50" style="display: none;"><a href="#_51">签名算法</a></li>
             
         
     
@@ -626,7 +658,7 @@
 
 <h1 id="_1">简介</h1>
 <p>本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。</p>
-<p>下文是Java SDK (v1.4.x)的API说明。</p>
+<p>下文是Java SDK (v1.5.x)的API说明。</p>
 <h1 id="_2">配置信息</h1>
 <p>本SDK定义的配置信息如下：</p>
 <pre><code class="java">/**
@@ -743,6 +775,18 @@ public abstract class ACConfig {
     public String getSNServiceName();
 
     public int getSNServiceVersion();
+
+    public String getQueryEngineServiceName();
+
+    public int getQueryEngineServiceVersion();
+
+    public String getPM25ServiceName();
+
+    public int getPM25ServiceVersion();
+
+    public String getWarehouseServiceName();
+
+    public int getWarehouseServiceVersion();
     //@}
 }
 </code></pre>
@@ -1202,7 +1246,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      * @param context 开发者的context
      * @return
      */
-    public abstract ACAnalysisMgr analysisMgr(ACContext context);
+    public abstract ACInspireMgr inspireMgr(ACContext context);
 
     /**
      * 获取文件管理器，可以上传下载文件。
@@ -1222,6 +1266,14 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     public abstract ACWeatherMgr weatherMgr(ACContext context);
 
     /**
+     * 取设备管理器。
+     *
+     * @param context  开发者的context
+     * @return ACWarehouseMgr对象的实例。
+     */
+    public abstract ACWarehouseMgr warehouseMgr(ACContext context);
+
+    /**
      * 为便于测试，开发者可实现一个服务的桩
      * 在框架中添加一个服务桩
      *
@@ -1237,7 +1289,6 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      * @param stub      设备桩
      */
     public abstract void addDeviceStub(String subDomain, ACDeviceStub stub);
-
 
     /**
      * 获取AC日志, 可以在打印日志时保存TraceId等信息, 便于调试
@@ -3382,14 +3433,137 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h1 id="_43">测试桩</h1>
+<h1 id="_43">设备管理接口</h1>
+<p>该服务提供了入库设备的查询接口。</p>
+<h2 id="_44">获取方式</h2>
+<pre><code class="java">ACWarehouseMgr warehouseMgr = ac.warehouseMgr(ACContext context);
+</code></pre>
+
+<blockquote>
+<p><font color="red">注意</font>：此处使用开发者上下文即可，即<code>ac.newContext()</code>。</p>
+</blockquote>
+<h2 id="_45">接口说明</h2>
+<pre><code class="java">public interface ACWarehouseMgr {
+
+    /**
+     * 查询已入库设备的数目。
+     *
+     * @param subDomain 要查寻的设备所属的子域的名字。可以为NULL或空字符串，表示不区分子域。
+     * @return 返回设备数目。
+     * @throws Exception
+     */
+    public long getDeviceCount(String subDomain) throws Exception;
+
+    /**
+     * 批量查询设备信息。
+     *
+     * @param subDomain 要查寻的设备所属的子域的名字。可以为NULL或空字符串，表示不区分子域。
+     * @param offset    参数offset和limit用于指定查询的列表范围，实现“分页”的效果。
+     *                  offset是从0开始的偏移量，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @param limit     参数limit和offset用于指定查询的列表范围，实现“分页”的效果。
+     *                  limit是正整数，表示返回设备列表中从第offset位置开始的共limit个设备的信息。
+     * @return          返回设备列表。
+     */
+    public List&lt;ACDeviceInfo&gt; listDevices(String subDomain, long offset, long limit) throws Exception;
+
+    /**
+     * 查询设备信息。
+     *
+     * @param physicalDeviceId  拟查询的设备的物理ID。
+     * @return 设备的信息。
+     * @throws Exception
+     */
+    public ACDeviceInfo getDeviceInfo(String physicalDeviceId) throws Exception;
+
+    /**
+     * 批量查询设备信息。
+     *
+     * @param physicalDeviceIds 拟查询的设备的物理ID组成的数组。
+     * @return 设备的信息。
+     * @throws Exception
+     */
+    public List&lt;ACDeviceInfo&gt; getDevicesInfo(List&lt;String&gt; physicalDeviceIds) throws Exception;
+}
+</code></pre>
+
+<h2 id="_46">数据结构说明</h2>
+<p>设备信息的数据结构。</p>
+<pre><code class="java">/**
+ * 设备的信息。
+ */
+public class ACDeviceInfo {
+
+    public ACDeviceInfo();
+
+    /// 设备所属的主域的ID。
+    public void setMajorDomain(String name);
+    public String getMajorDomain();
+
+    /// 设备所属的子域的ID。
+    public void setSubDomain(String name);
+    public String getSubDomain();
+
+    /// 设备的物理ID。
+    public void setPhysicalId(String id);
+    public String getPhysicalId();
+
+    public void setType(String t);
+    public String getType();
+
+    /// 设备的IP地址。
+    public void setIPAddress(String ip);
+    public String getIPAddress();
+
+    /// 设备的MAC地址。
+    public void setMacAddress(String mac);
+    public String getMacAddress();
+
+    /// 设备的MCU固件版本。
+    public void setDevVersion(String version);
+    public String getDevVersion();
+
+    /// 设备的通信模块版本。
+    public void setModVersion(String version);
+    public String getModVersion();
+
+    /// 设备的激活时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public void setActiveTime(String time);
+    public String getActiveTime();
+
+    /// 设备最近一次上线时间。格式为：YYYY-MM-DD HH:mm:ss。
+    public void setLastOnlineTime(String time);
+    public String getLastOnlineTime();
+
+    /// 设备所处地理位置信息：所在国家。
+    public void setCountry(String name);
+    public String getCountry();
+
+    /// 设备所处地理位置信息：所在省份。
+    public void setProvince(String name);
+    public String getProvince();
+
+    /// 设备所处地理位置信息：所在城市。
+    public void setCity(String name);
+    public String getCity();
+
+    /// 设备所处地理位置信息：所在街道。
+    public void setStreet(String name);
+    public String getStreet();
+
+    /// 设备状态：0-不存在；1-未激活；2-激活。
+    public void setStatus(int status);
+    public int getStatus();
+}
+</code></pre>
+
+<h1 id="_47">测试桩</h1>
 <p>在开发较大型项目时，通常会多个系统/模块并行开发。这多个系统/模块又相互依赖，例如上游程序相对简单，开发进度较快即将进入测试阶段，而其所依赖的下游服务还在开发之中。此时不能等着下游完全就绪后才开始测试。上游的开发人员一般会写桩程序（stub）用以模拟下游的简单实现，以使得上游程序能顺利的进行单元测试或模块测试。
 开发者基于AbleCloud的服务开发框架开发的服务既可能会和设备交互，也可能会和另外的服务交互，因此AbleCloud的服务开发框架支持两类桩：</p>
 <ul>
 <li><strong>设备桩：</strong>模拟一个智能设备，对服务发过来的命令/消息做出响应。</li>
 <li><strong>服务桩：</strong>模拟一个服务，对当前服务发过来的消息做出响应。</li>
 </ul>
-<h2 id="_44">设备桩</h2>
+<h2 id="_48">设备桩</h2>
 <p>设备桩的目的是为了模拟设备，对服务发来的请求做出响应，因此设备桩只定义了一个处理请求并做出响应的接口。如下所示：</p>
 <pre><code class="java">public abstract  class ACDeviceStub {
     public abstract void handleControlMsg(String majorDomain, String subDomain,
@@ -3397,7 +3571,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 }
 </code></pre>
 
-<h2 id="_45">服务桩</h2>
+<h2 id="_49">服务桩</h2>
 <p>服务桩的定义和真正的服务开发类似，开发者需要实现其中的<code>handleMsg(ACMsg req, ACMsg resp)</code>接口以模拟服务提供的功能。</p>
 <pre><code class="java">public abstract class ACServiceSub {
 
@@ -3415,8 +3589,8 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <blockquote>
 <p><font color="red"><strong>注：</strong>无论是设备桩，还是服务桩，仅在测试（<strong>test</strong>）模式生效，正式生产（<strong>production</strong>）环境无效。</font></p>
 </blockquote>
-<h1 id="_46">附录</h1>
-<h2 id="_47">签名算法</h2>
+<h1 id="_50">附录</h1>
+<h2 id="_51">签名算法</h2>
 <pre><code class="java">public class ACSigner {
     private static final Logger logger = LoggerFactory.getLogger(ACSigner.class);
     private static final String ENCODING = &quot;UTF-8&quot;;
