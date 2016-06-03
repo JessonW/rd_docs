@@ -163,6 +163,7 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 1. **设置工程**
 
   设置编码方式，建议将字符编码设置为UTF-8或GBK
+
     ![setting](../pic/reference/intellij/setting.png)
 
     ![fileencoding](../pic/reference/intellij/fileencoding.png)
