@@ -613,41 +613,24 @@ start.cmd
 </li>
 <li>
 <p><strong>设置工程</strong></p>
+<p>设置编码方式，建议将字符编码设置为UTF-8或GBK </p>
+<p><img alt="setting" src="../../pic/reference/intellij/setting.png" /> </p>
+<p><img alt="fileencoding" src="../../pic/reference/intellij/fileencoding.png" /> </p>
+<p>按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
+点击<strong>File</strong> -&gt; <strong>Project Structure...</strong></p>
+<p><img alt="setting" src="../../pic/reference/intellij/set_project_1_1.png" /></p>
+<p>首先设置工程所使用的JDK版本1.7和语言级别7.0。</p>
+<p><img alt="lib" src="../../pic/reference/intellij/set_project_1_2.png" /></p>
+<p>设置开发服务所要依赖的AbleCloud框架包：同上，打开<strong>Project Structure...</strong>,然后选择<strong>Libraries</strong>，点击右边的<strong>+</strong>号，选择<strong>Java</strong>，如下图所示。</p>
+<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_1.png" /></p>
+<p>在弹出的对话框中选择下载并解压后的AbleCloud中的lib目录，并点击<strong>OK</strong>。</p>
+<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_2.png" /></p>
+<p>回到上一个窗口后再次点击<strong>OK</strong>确认。</p>
+<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_3.png" /></p>
+<p>这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为<strong>ablecloud-libs</strong>。点击<strong>OK</strong>完成添加。</p>
+<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_4.png" /></p>
+<p>至此，UDS开发所依赖的AbleCloud开发框架库添加成功。</p>
 </li>
-</ol>
-<p>设置编码方式，建议将字符编码设置为UTF-8或GBK 
-    <img alt="setting" src="../../pic/reference/intellij/setting.png" /> </p>
-<pre><code>![fileencoding](../pic/reference/intellij/fileencoding.png)
-
-
-按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
-点击**File** -&gt; **Project Structure...**
-
-![setting](../pic/reference/intellij/set_project_1_1.png)
-
-首先设置工程所使用的JDK版本1.7和语言级别7.0。
-
-![lib](../pic/reference/intellij/set_project_1_2.png)
-
-设置开发服务所要依赖的AbleCloud框架包：同上，打开**Project Structure...**,然后选择**Libraries**，点击右边的**+**号，选择**Java**，如下图所示。
-
-![lib](../pic/reference/intellij/set_project_2_1.png)
-
-在弹出的对话框中选择下载并解压后的AbleCloud中的lib目录，并点击**OK**。
-
-![lib](../pic/reference/intellij/set_project_2_2.png)
-
-回到上一个窗口后再次点击**OK**确认。
-
-![lib](../pic/reference/intellij/set_project_2_3.png)
-
-这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为**ablecloud-libs**。点击**OK**完成添加。
-
-![lib](../pic/reference/intellij/set_project_2_4.png)
-
-至此，UDS开发所依赖的AbleCloud开发框架库添加成功。
-</code></pre>
-<ol>
 <li>
 <p><strong>修改pom.xml文件</strong></p>
 <p>下面是一个示例服务的完整pom.xml文件：</p>
