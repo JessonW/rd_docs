@@ -162,11 +162,11 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
    
 1. **设置工程**
 
-  设置编码方式，建议将字符编码设置为UTF-8或GBK
-
-    ![setting](../pic/reference/intellij/setting.png)
-
-    ![fileencoding](../pic/reference/intellij/fileencoding.png)
+  设置编码方式，建议将字符编码设置为UTF-8或GBK 
+    ![setting](../pic/reference/intellij/setting.png) 
+    
+    ![fileencoding](../pic/reference/intellij/fileencoding.png) 
+    
 
 	按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
     点击**File** -> **Project Structure...**
