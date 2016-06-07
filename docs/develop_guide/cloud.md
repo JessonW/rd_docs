@@ -161,8 +161,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     > package子目录的结构为config/、lib/、start.sh文件等
    
 1. **设置工程**
-
-	按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
+    
+    设置编码方式，建议将字符编码设置为UTF-8或GBK 
+    
+    ![setting](../pic/reference/intellij/setting.png) 
+    
+    ![fileencoding](../pic/reference/intellij/fileencoding.png) 
+    
+	  按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
     点击**File** -> **Project Structure...**
     
     ![setting](../pic/reference/intellij/set_project_1_1.png)
@@ -367,7 +373,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     ![info](../pic/reference/eclipse/new_project_1_3.png)
     
 1. **设置工程**
-	在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置。
+    
+    设置编码方式，建议将字符编码设置为UTF-8或GBK 
+    
+    ![setting](../pic/reference/eclipse/setting.png) 
+    
+    ![fileencoding](../pic/reference/eclipse/fileencoding.png) 
+    
+	  在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置。
     
     ![setting](../pic/reference/eclipse/set_project_1_1.png)
     

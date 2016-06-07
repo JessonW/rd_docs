@@ -1365,8 +1365,10 @@ class ACUser {
      * @param $refreshToken             string  用于更新用户Token的Token。
      * @param $tokenExpiration          string  用户Token的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      * @param $refreshTokenExpiration   string  用户的$refreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
+     * @param $email    string  用户注册的邮箱地址。
+       * @param $phone  string  用户注册的电话号码。
      */
-    function __construct($id, $token, $name = '', $refreshToken = '', $tokenExpiration = '', $refreshTokenExpiration = '');
+    function __construct($id, $token, $name = '', $refreshToken = '', $tokenExpiration = '', $refreshTokenExpiration = '', $email = '', $phone = '');
 
     /**
      * 取用户的ID。
@@ -1417,6 +1419,18 @@ class ACUser {
      * @param $refreshTokenExpiration   string  RefreshToken的过期时间（UTC）：YYYY-MM-DD hh:mm:ss。空字符串表示不过期。
      */
     public function setRefreshToken($refreshToken, $refreshTokenExpiration);
+
+    /**
+     * 取用户的注册邮箱地址。
+     * @return string   用户注册邮箱地址。
+     */
+    public function getEmail();
+
+    /**
+     * 取用户注册的电话。
+     * @return string   用户注册的电话。
+     */
+    public function getPhone();
 }
 </code></pre>
 
@@ -1472,6 +1486,13 @@ class ACAccountMgr extends ACService {
      * @return          ACUser|NULL 返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
      */
     public function getUser($login, $password, $enableTokenExpiration = FALSE);
+
+    /**
+     * 根据用户的Id查找用户信息。
+     * @param $userId int    用户的ID。
+     * @return        ACUser|NULL   返回一个ACUser对象，表示该用户的信息。失败时返回NULL，并且可调用getLastError()方法获取错误消息。
+     */
+    public function getAccountInfo($userId);
 
     /**
      * 检查帐号是否已经存在。
