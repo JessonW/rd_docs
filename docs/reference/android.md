@@ -2,7 +2,7 @@
 #简介
 
 SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
-><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。
+><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。默认接口超时时间为5s，可以通过设置全局变量`ACConfiguration.CONNECT_TIMEOUT = 5`以及`ACConfiguration.READ_TIMEOUT = 5`修改超时时间。
 
 #交互协议
 
