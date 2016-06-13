@@ -1307,7 +1307,7 @@ while ((zos = it.next(limit)) != null) {
 ##创建排行榜实例
 指定排行榜名字，所在时区，时间间隔和保留版本数
 
-![](../pic/develop_guide/runking_create.png)
+![](../pic/develop_guide/ranking_create.png)
 
 ##Insert
 插入一条数据，如果在同一个时间段内，下一条数据会覆盖上一条数据。
