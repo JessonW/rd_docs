@@ -2,7 +2,7 @@
 #简介
 
 SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。
-><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。
+><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。默认接口超时时间为5s，可以通过设置全局变量`ACConfiguration.CONNECT_TIMEOUT = 5`以及`ACConfiguration.READ_TIMEOUT = 5`修改超时时间。
 
 #交互协议
 
@@ -254,15 +254,15 @@ public class ACDeviceMsg {
 #基本数据结构
 这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。
 
-####ACAccount
+####ACUserInfo
 用来表示AbleCloud的一个注册帐号信息，定义如下：
 
 ```java
 public class ACUserInfo {
-    private long userId;  //用户id
-    private String name;  //用户名
+    private long userId;      //用户id
+    private String nickName;  //用户昵称
 
-    public ACUserInfo(long uid, String token) {}
+    public ACUserInfo(long uid, String nickName) {}
 
 	// getter
 }

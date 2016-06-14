@@ -161,8 +161,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     > package子目录的结构为config/、lib/、start.sh文件等
    
 1. **设置工程**
-
-	按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
+    
+    设置编码方式，建议将字符编码设置为UTF-8或GBK 
+    
+    ![setting](../pic/reference/intellij/setting.png) 
+    
+    ![fileencoding](../pic/reference/intellij/fileencoding.png) 
+    
+	  按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
     点击**File** -> **Project Structure...**
     
     ![setting](../pic/reference/intellij/set_project_1_1.png)
@@ -367,7 +373,14 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
     ![info](../pic/reference/eclipse/new_project_1_3.png)
     
 1. **设置工程**
-	在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置。
+    
+    设置编码方式，建议将字符编码设置为UTF-8或GBK 
+    
+    ![setting](../pic/reference/eclipse/setting.png) 
+    
+    ![fileencoding](../pic/reference/eclipse/fileencoding.png) 
+    
+	  在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏**Project-->Properties**进行设置。
     
     ![setting](../pic/reference/eclipse/set_project_1_1.png)
     
@@ -1005,6 +1018,42 @@ ac.store("test_data", context).create(pk)	// 这里是primary keys的对象
                     .put("pm25", 35.5)
                     .execute();
 ```
+
+##Update
+更新数据，如果对应的主键不存在，则插入这条数据。
+```java
+ac.store("test_data", context).update("deviceId", "12345", "timestamp", 1L)
+                    .put("status", "run")
+                    .put("mode", "auto")
+                    .put("speed", 45L)
+                    .put("pm25", 35.5)
+                    .execute();
+```
+
+##Modify
+更新已有数据，如果对应数据行不存在，则报错。
+
+### 用法一：将speed设置为6，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .set("speed", 6L)
+                    .execute();
+```
+
+### 用法2：将speed增加2，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .inc("speed", 2)
+                    .execute();
+```
+
+### 用法3：将speed减少2，其它值不变
+```java
+ac.store("test_data", context).modify("deviceId", "12345", "timestamp", 1L)
+                    .dec("speed", 2)
+                    .execute();
+```
+
 ##Find
 ```java
 ACObject ao = ac.store("test_data", context)
@@ -1166,6 +1215,15 @@ while((zos = it.next()) != null) {
 }
 ```
 
+
+##Delete
+删除一行数据(至少指定主键)
+```java
+ac.store("test_data", context).delete("deviceId", "12345", "timestamp", 1L)
+                    .put("speed", 10L)
+                    .execute(); //删除主键为(deviceId: 12345, timestamp: 1L) 并且speed=10L的行
+```
+
 ##BatchDelete
 分区或者非分区的数据集都可以使用BatchDelete接口来批量删除数据记录。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。
 
@@ -1241,6 +1299,129 @@ while ((zos = it.next(limit)) != null) {
 ```
 ##其它
 `delete/update/replace`的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。
+
+
+#排行榜接口示例
+以跑步步数排行榜run_set为例，需要每小时和每天统计用户的排行
+
+##创建排行榜实例
+指定排行榜名字，所在时区，时间间隔和保留版本数
+
+![](../pic/develop_guide/ranking_create.png)
+
+##Insert
+插入一条数据，如果在同一个时间段内，下一条数据会覆盖上一条数据。
+
+```java
+ac.rankingMgr(context, "run_set").insert("key1", 1, 1463732401);
+```
+
+##Inc
+更新一条数据，如果在同一个时间段内，下一条数据会累加到上一条数据。
+```java
+ac.rankingMgr(context, "run_set").inc("key1", 1, 1463732401);
+```
+
+##Get
+
+###用法一 
+查询2016-05-20 16:00:00~2016-05-20 17:00:00 key1的排名(反序)和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, "key1");
+```
+
+###用法二
+
+查询当前小时，key1的排名（反序）和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 0, ACRanking::DESC,  "key1");
+```
+
+###用法三
+查询上一个小时，key1的排名（反序）和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 1, ACRanking::DESC,  "key1");
+```
+
+##Scan
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00 前十名(反序)
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 10);
+```
+
+###用法二
+查询当前小时，前十名（反序）
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 10);
+```
+
+###用法三
+查询上一个小时，前十名（反序）
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 10);
+```
+
+##Ranks
+
+###用法一
+查询2016-05-20 16:00:00前3个小时(包含2016-05-20 16:00:00这个小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 3, "key1");
+```
+
+###用法二
+查询当前小时前3个小时(包含当前小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 3, "key1");
+```
+
+###用法三
+查询上一个小时前3个小时（包含上一个小时），keys在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 3, "key1");
+```
+
+##TotalCount
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0);
+```
+
+###用法二
+查询当前小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 0);
+```
+
+###用法三
+查询上一个小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 1);
+```
+
+##RangeCount
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时，值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0, 1, 3);
+```
+
+###用法二
+查询当前小时,值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 0, 1, 3);
+```
+
+###用法三
+查询上个小时,值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 1, 1, 3);
+```
 
 #UDS访问外网示例
 UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的正向代理服务（由类ACHttpClient提供访问接口）访问外部网络。

@@ -814,7 +814,7 @@ APP拿到这些信息后调用<code>bindDevice</code>接口绑定设备。</stro
         //获取分享码shareCode成功
     }];
 
-//普通用户通过分享码绑定设备
+    //普通用户通过分享码绑定设备
     [ACBindManager bindDeviceWithShareCode:&lt;#shareCode#&gt; callback:^(ACUserDevice *userDevice, NSError *error) {
         if (error) {
             //绑定失败, 错误处理
@@ -1281,7 +1281,7 @@ ACPushManager *pushManager = [[ACPushManager alloc] init];
 </code></pre>
 
 <h4 id="2_6">2、创建与服务器的连接</h4>
-<pre><code class="objc">    [manager connectWithCallback:^(NSError *error) {
+<pre><code class="objc">    [pushManager connectWithCallback:^(NSError *error) {
         if (error) {
             //建立连接失败, 错误处理
             return;
@@ -1298,7 +1298,7 @@ ACPushTable *table = [[ACPushTable alloc] init];
 //设置订阅的表名
 table.className = @&quot;&lt;#name#&gt;&quot;;
 //设置订阅的columns行
-table.cloumns = @[&lt;#Valve1#&gt;, &lt;#value2#&gt;,...];
+table.cloumns = @[&lt;#Valve1#&gt;, &lt;#value2#&gt;,...].mutableCopy;
 //设置监听类型，如以下为只要发生创建、删除、替换、更新数据集的时候即会推送数据
 table.opType =  OPTYPE_CREATE |OPTYPE_DELETE | OPTYPE_REPLACE | OPTYPE_UPDATE;
 //设置监听主键，此处对应添加数据集时的监控主键(监控主键必须是数据集主键的子集)

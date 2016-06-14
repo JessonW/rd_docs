@@ -332,7 +332,7 @@
         </li>
         
             
-            <li class="sub parent__4" style="display: none;"><a href="#acaccount">ACAccount</a></li>
+            <li class="sub parent__4" style="display: none;"><a href="#acuserinfo">ACUserInfo</a></li>
             
         
             
@@ -612,7 +612,7 @@
 <h1 id="_2">简介</h1>
 <p>SDK即Software Develop Kit，开发者将基于此，快速的开发出APP。本文详细介绍android平台的SDK。ablecloud为开发者提供了一些通用的云端服务。</p>
 <blockquote>
-<p><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。</p>
+<p><font color="red">注意:</font>SDK里所有与云端交互的接口均采用异步回调方式，避免阻塞主线程的执行。默认接口超时时间为5s，可以通过设置全局变量<code>ACConfiguration.CONNECT_TIMEOUT = 5</code>以及<code>ACConfiguration.READ_TIMEOUT = 5</code>修改超时时间。</p>
 </blockquote>
 <h1 id="_3">交互协议</h1>
 <p>首先，我们从基础的数据结构开始。我们知道，APP会与后端服务和设备交互，因此AbleCloud定义了两种格式的消息：</p>
@@ -855,13 +855,13 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <p><font color="red">注</font>：ACKLVObject与ACObject数据格式用法相似，不同的是ACKLVObject里key值的类型为Integer，这里不做具体介绍。</p>
 <h1 id="_4">基本数据结构</h1>
 <p>这里说的基本数据结构，是指设备管理、帐号管理等要用到的各个对象定义，比如帐号、设备等。</p>
-<h4 id="acaccount">ACAccount</h4>
+<h4 id="acuserinfo">ACUserInfo</h4>
 <p>用来表示AbleCloud的一个注册帐号信息，定义如下：</p>
 <pre><code class="java">public class ACUserInfo {
-    private long userId;  //用户id
-    private String name;  //用户名
+    private long userId;      //用户id
+    private String nickName;  //用户昵称
 
-    public ACUserInfo(long uid, String token) {}
+    public ACUserInfo(long uid, String nickName) {}
 
     // getter
 }
