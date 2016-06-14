@@ -892,7 +892,7 @@ ACDeviceMsg *klvMsg = [[ACDeviceMsg alloc] initWithCode:69 KLVObject:klvObj];
 
 ```objc
 #import "ACPushManager.h"
-ACPushManager *pushManager = [[ACPushManager alloc] init];
+ACPushManager *pushManager = [ACPushManager sharedManager];
 ```
 
 ####2、创建与服务器的连接
@@ -959,6 +959,13 @@ table.primaryKey = primaryKey;
             //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
             }
 }];
+
+```
+####6、断开与服务器链接
+建议在退出订阅以后断开与服务器的链接, 以免再次连接出现问题
+
+```objc
+[[ACPushManager sharedManager] disconnect];
 ```
 
 
