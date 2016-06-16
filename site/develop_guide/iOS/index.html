@@ -1277,7 +1277,7 @@ ACDeviceMsg *klvMsg = [[ACDeviceMsg alloc] initWithCode:69 KLVObject:klvObj];
 <p><img alt="cloud_syn" src="../../pic/develop_guide/cloud_syn.png" /></p>
 <h4 id="1_5">1、获取实时消息管理器</h4>
 <pre><code class="objc">#import &quot;ACPushManager.h&quot;
-ACPushManager *pushManager = [[ACPushManager alloc] init];
+ACPushManager *pushManager = [ACPushManager sharedManager];
 </code></pre>
 
 <h4 id="2_6">2、创建与服务器的连接</h4>
@@ -1336,6 +1336,12 @@ table.primaryKey = primaryKey;
             //取消订阅失败，请自行检查参数类型，表名以及监听主键是否与AbleCloud平台新建的数据集监听主键一致等是否有误。
             }
 }];
+
+</code></pre>
+
+<h4 id="6">6、断开与服务器链接</h4>
+<p>建议在退出订阅以后断开与服务器的链接, 以免再次连接出现问题</p>
+<pre><code class="objc">[[ACPushManager sharedManager] disconnect];
 </code></pre>
 
 <h1 id="_27">局域网通信</h1>

@@ -1030,6 +1030,39 @@ ac.store("test_data", context).update("deviceId", "12345", "timestamp", 1L)
                     .execute();
 ```
 
+##BatchUpdate
+根据适合条件批量更新数据。
+
+###用法一:将deviceId为"12345"并且speed=5L的speed改为6L
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .set("speed", 6L)
+                    .execute();
+```
+
+###用法二:将deviceId为"12345"并且speed=5L的speed加2
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .inc("speed", 2L)
+                    .execute();
+```
+
+###用法三:将deviceId为"12345"并且speed=5L的speed减2
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .dec("speed", 2L)
+                    .execute();
+```
+
 ##Modify
 更新已有数据，如果对应数据行不存在，则报错。
 
