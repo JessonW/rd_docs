@@ -382,6 +382,10 @@
                 
             
         
+            
+                
+            
+        
         
         <li class="main">
             <a href="#store">Store存储接口示例<span class="main-set parent_store">+</span></a>
@@ -393,6 +397,10 @@
         
             
             <li class="sub parent_store" style="display: none;"><a href="#update">Update</a></li>
+            
+        
+            
+            <li class="sub parent_store" style="display: none;"><a href="#batchupdate">BatchUpdate</a></li>
             
         
             
@@ -1496,6 +1504,35 @@ ac.store(&quot;test_data&quot;, context).create(pk)   // 这里是primary keys�
                     .put(&quot;mode&quot;, &quot;auto&quot;)
                     .put(&quot;speed&quot;, 45L)
                     .put(&quot;pm25&quot;, 35.5)
+                    .execute();
+</code></pre>
+
+<h2 id="batchupdate">BatchUpdate</h2>
+<p>根据适合条件批量更新数据。</p>
+<h3 id="deviceid12345speed5lspeed6l">用法一:将deviceId为"12345"并且speed=5L的speed改为6L</h3>
+<pre><code class="java">ACFilter f1 = ac.filter().whereEqualTo(&quot;speed&quot;, 5L);
+
+ac.store(&quot;test_data&quot;, context).batchUpdate(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .where(f1)
+                    .set(&quot;speed&quot;, 6L)
+                    .execute();
+</code></pre>
+
+<h3 id="deviceid12345speed5lspeed2">用法二:将deviceId为"12345"并且speed=5L的speed加2</h3>
+<pre><code class="java">ACFilter f1 = ac.filter().whereEqualTo(&quot;speed&quot;, 5L);
+
+ac.store(&quot;test_data&quot;, context).batchUpdate(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .where(f1)
+                    .inc(&quot;speed&quot;, 2L)
+                    .execute();
+</code></pre>
+
+<h3 id="deviceid12345speed5lspeed2_1">用法三:将deviceId为"12345"并且speed=5L的speed减2</h3>
+<pre><code class="java">ACFilter f1 = ac.filter().whereEqualTo(&quot;speed&quot;, 5L);
+
+ac.store(&quot;test_data&quot;, context).batchUpdate(&quot;deviceId&quot;, &quot;12345&quot;)
+                    .where(f1)
+                    .dec(&quot;speed&quot;, 2L)
                     .execute();
 </code></pre>
 
