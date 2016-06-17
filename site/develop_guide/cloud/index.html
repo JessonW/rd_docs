@@ -1,203 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>云端服务 - AbleCloud 开发文档</title>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../css/highlight.css">
+		<link rel="shortcut icon" href="../../img/favicon.ico">
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
+		<title>云端服务 - AbleCloud 开发文档</title>
+
+		<link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+		<link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+		<link href="../../css/base.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../css/highlight.css">
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-        
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
-    <div class="container container-ac">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+			<div class="container container-ac">
 
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<!-- Collapsed navigation -->
+				<div class="navbar-header">
+
+					<!-- Expander button -->
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            
 
-            <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
-        </div>
+					<!-- Main title -->
+					<a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+				</div>
 
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse" style="margin-left:293px;">
-            
-                <!-- Main navigation -->
-                <ul class="nav navbar-nav nav-ac">
-                
-                
-                    <li >
-                        <a href="../../introduction/" >基本介绍</a>
-                    </li>
-                
-                
-                
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../features/concepts/">基本概念</a>
-</li>
+				<!-- Expanded navigation -->
+				<div class="navbar-collapse collapse" style="margin-left:293px;">
 
-                        
-                            
-<li >
-    <a href="../../features/functions/">功能介绍</a>
-</li>
+					<!-- Main navigation -->
+					<ul class="nav navbar-nav nav-ac">
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../android/">客户端-安卓</a>
-</li>
+						<li>
+							<a href="../../introduction/">基本介绍</a>
+						</li>
 
-                        
-                            
-<li >
-    <a href="../iOS/">客户端-iOS</a>
-</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                            
-<li >
-    <a href="../wechat/">客户端-微信</a>
-</li>
+								<li>
+									<a href="../../features/concepts/">基本概念</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../device/">设备-嵌入式系统</a>
-</li>
+								<li>
+									<a href="../../features/functions/">功能介绍</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../device_android/">设备-安卓系统</a>
-</li>
+							</ul>
+						</li>
 
-                        
-                            
-<li class="active">
-    <a href="./">云端服务</a>
-</li>
+						<li class="dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../reference/android/">客户端-安卓</a>
-</li>
+								<li>
+									<a href="../android/">客户端-安卓</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/iOS/">客户端-iOS</a>
-</li>
+								<li>
+									<a href="../iOS/">客户端-iOS</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/wechat/">客户端-微信</a>
-</li>
+								<li>
+									<a href="../wechat/">客户端-微信</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/device/">设备-嵌入式系统</a>
-</li>
+								<li>
+									<a href="../device/">设备-嵌入式系统</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/device_android/">设备-安卓系统</a>
-</li>
+								<li>
+									<a href="../device_android/">设备-安卓系统</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/cloud/">云端服务</a>
-</li>
+								<li class="active">
+									<a href="./">云端服务</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/php/">PHP SDK</a>
-</li>
+							</ul>
+						</li>
 
-                        
-                            
-<li >
-    <a href="../../reference/java/">Java SDK</a>
-</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                            
-<li >
-    <a href="../../reference/error_code/">Error Code</a>
-</li>
+								<li>
+									<a href="../../reference/android/">客户端-安卓</a>
+								</li>
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                </ul>
-            
+								<li>
+									<a href="../../reference/iOS/">客户端-iOS</a>
+								</li>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
-            </ul>
-        </div>
+								<li>
+									<a href="../../reference/wechat/">客户端-微信</a>
+								</li>
 
-    </div>
+								<li>
+									<a href="../../reference/device/">设备-嵌入式系统</a>
+								</li>
 
-</div>
+								<li>
+									<a href="../../reference/device_android/">设备-安卓系统</a>
+								</li>
+
+								<li>
+									<a href="../../reference/cloud/">云端服务</a>
+								</li>
+
+								<li>
+									<a href="../../reference/php/">PHP SDK</a>
+								</li>
+
+								<li>
+									<a href="../../reference/java/">Java SDK</a>
+								</li>
+
+								<li>
+									<a href="../../reference/error_code/">Error Code</a>
+								</li>
+
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
+								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
+								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
+								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
+								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
+								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
+							</ul>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
 
         <div class="container container-ac">
             
@@ -544,14 +508,14 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-<h1 id="_1">云端自定义服务开发指导</h1>
-<h1 id="_2">开发准备</h1>
-<p>本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。</p>
-<h2 id="uds">UDS发布说明</h2>
-<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（子域）级别的UDS来处理。
-其它请求（包括设备或其它客户端发起的）可由请求发起方选择由产品（或子域）级别或者主域级别的UDS来处理：请求中指定了子域名字时表示由对应产品（或子域）级别的UDS处理；请求中不包含子域名子（或子域名字为空）时表示由主域级别的UDS处理。</p>
-<p>开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的Java版本服务开发框架一致，如下所示。</p>
-<pre><code class="java">/config
+				<h1 id="_1">云端自定义服务开发指导</h1>
+				<h1 id="_2">开发准备</h1>
+				<p>本章先介绍UDS（User Defined Service）在AbleCloud平台上的发布要求，然后以官网上发布的DemoService为基础，介绍如何在本地运行UDS服务，以及如何开发自己的UDS服务。</p>
+				<h2 id="uds">UDS发布说明</h2>
+				<p>在AbleCloud管理控制台中，开发者可创建<strong>产品（子域）级别</strong>的UDS，也可以创建<strong>主域级别</strong>的UDS。设备向AbleCloud云端上报数据的请求必须由对应产品（子域）级别的UDS来处理。 其它请求（包括设备或其它客户端发起的）可由请求发起方选择由产品（或子域）级别或者主域级别的UDS来处理：请求中指定了子域名字时表示由对应产品（或子域）级别的UDS处理；请求中不包含子域名子（或子域名字为空）时表示由主域级别的UDS处理。
+				</p>
+				<p>开发者可通过AbleCloud开发者管理控制台提交、运行UDS。提交和运行UDS时，要求其目录结构与AbleCloud发布的Java版本服务开发框架一致，如下所示。</p>
+				<pre><code class="java">/config
     /cloudservice-conf.xml
 /lib
     /ablecloud-framework-1.4.0.jar
@@ -565,27 +529,29 @@ start.sh
 start.cmd
 </code></pre>
 
-<blockquote>
-<p><font color=red>注意事项：</font></p>
-<ol>
-<li>
-<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.4.0.jar</code>和<code>ac-java-api-1.4.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
-</li>
-<li>
-<p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
-</li>
-<li>
-<p>按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。</p>
-</li>
-<li>
-<p>在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。</p>
-</li>
-</ol>
-</blockquote>
-<h2 id="uds_1">本机运行UDS</h2>
-<p><strong>本机运行UDS要求已安装Java的运行时环境JRE（推荐1.7或更新版本）。</strong></p>
-<p>1、首先，从AbleCloud官网下载栏目下载DemoService.zip，解压后进入package目录，修改config文件夹下的cloudservice-conf.xml文件。</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+				<blockquote>
+					<p>
+						<font color=red>注意事项：</font>
+					</p>
+					<ol>
+						<li>
+							<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.4.0.jar</code>和<code>ac-java-api-1.4.0.jar</code>。根据SDK的发行状态，各jar包的版本号可能不同。</p>
+						</li>
+						<li>
+							<p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
+						</li>
+						<li>
+							<p>按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。</p>
+						</li>
+						<li>
+							<p>在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。</p>
+						</li>
+					</ol>
+				</blockquote>
+				<h2 id="uds_1">本机运行UDS</h2>
+				<p><strong>本机运行UDS要求已安装Java的运行时环境JRE（推荐1.7或更新版本）。</strong></p>
+				<p>1、首先，从AbleCloud官网下载栏目下载DemoService.zip，解压后进入package目录，修改config文件夹下的cloudservice-conf.xml文件。</p>
+				<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;configuration&gt;
     &lt;developer&gt;
         &lt;!-- 对应“个人信息-&gt;个人信息-&gt;开发者ID” --&gt;
@@ -609,112 +575,116 @@ start.cmd
 &lt;/configuration&gt;
 </code></pre>
 
-<blockquote>
-<p><font color="brown"><strong>注：</strong>开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。其它项不需要修改。</font></p>
-</blockquote>
-<p>2、随后，通过开发者管理控制台提供的界面新建数据集“light-action-data”。数据集的结构如下所示：</p>
-<p><img alt="demoservice_class" src="../../pic/develop_guide/DemoService_Class.png" /></p>
-<p>3、启动终端，进入package目录下，接下来就可以在本地启动服务并进行测试。</p>
-<p><b><em>linux</em></b>下在终端运行如下命令启动服务：</p>
-<pre><code class="sh">sh start.sh
+				<blockquote>
+					<p>
+						<font color="brown"><strong>注：</strong>开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。其它项不需要修改。</font>
+					</p>
+				</blockquote>
+				<p>2、随后，通过开发者管理控制台提供的界面新建数据集“light-action-data”。数据集的结构如下所示：</p>
+				<p><img alt="demoservice_class" src="../../pic/develop_guide/DemoService_Class.png" /></p>
+				<p>3、启动终端，进入package目录下，接下来就可以在本地启动服务并进行测试。</p>
+				<p><b><em>linux</em></b>下在终端运行如下命令启动服务：</p>
+				<pre><code class="sh">sh start.sh
 </code></pre>
 
-<p><b><em>windows</em></b>下在cmd中运行如下命令启动服务：</p>
-<pre><code class="cmd">start.cmd 
+				<p><b><em>windows</em></b>下在cmd中运行如下命令启动服务：</p>
+				<pre><code class="cmd">start.cmd 
 </code></pre>
 
-<p>本地启动成功后，可使用curl命令进行开灯测试。</p>
-<p><b><em>linux</em></b>下使用curl命令：</p>
-<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot;  -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; -d '{&quot;deviceId&quot;:1,&quot;action&quot;:&quot;on&quot;}' 'http://localHost:8080/controlLight'
+				<p>本地启动成功后，可使用curl命令进行开灯测试。</p>
+				<p><b><em>linux</em></b>下使用curl命令：</p>
+				<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot;  -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; -d '{&quot;deviceId&quot;:1,&quot;action&quot;:&quot;on&quot;}' 'http://localHost:8080/controlLight'
 </code></pre>
 
-<p><b><em>windows</em></b>下使用curl命令请求：</p>
-<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot; -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; --data-ascii &quot;{\&quot;deviceId\&quot;:1,\&quot;action\&quot;:\&quot;on\&quot;}&quot; &quot;http://localHost:8080/controlLight&quot;
+				<p><b><em>windows</em></b>下使用curl命令请求：</p>
+				<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot; -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; --data-ascii &quot;{\&quot;deviceId\&quot;:1,\&quot;action\&quot;:\&quot;on\&quot;}&quot; &quot;http://localHost:8080/controlLight&quot;
 </code></pre>
 
-<blockquote>
-<p><font color="red"><strong>注：</strong></font></p>
-<ol>
-<li>
-<p>请按实际情况修改<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code>和<code>deviceId</code>的值。
-<code>X-Zc-Major-Domain</code>是开发者帐号的主域的名字；<code>X-Zc-Sub-Domain</code>是要访问的服务所关联的子域的名字；<code>deviceId</code>是要被控制的设备的逻辑ID；<code>X-Zc-User-Id</code>是对设备发起控制指令的用户的ID。
-前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。</p>
-</li>
-<li>
-<p>若返回<code>{"error":"device not exist","errorCode":3802}</code>,说明这个设备<code>deviceId</code>没有被<code>X-Zc-User-Id</code>用户绑定。但是至少说明本地测试已经成功了，能测试该接口的返回结果了。</p>
-</li>
-<li>
-<p>例子中访问的controlLight方法需要参数<code>X-Zc-User-Id</code>、<code>deviceId</code>、<code>action</code>，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。</p>
-</li>
-</ol>
-</blockquote>
-<h2 id="_3">开发工具设置</h2>
-<p>熟悉上述流程之后，可以开始开发自己的UDS程序。以下从新建maven工程开始逐步介绍开发步骤。</p>
-<h4 id="_4">系统准备</h4>
-<p>在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如JDK、maven等。</p>
-<ul>
-<li>
-<p><strong>JDK</strong> </p>
-<p>安装JDK，建议采用1.7版本JDK。</p>
-</li>
-<li>
-<p><strong>maven</strong></p>
-<p>安装maven，建议采用3.2以上版本。</p>
-</li>
-<li>
-<p><strong>AbleCloud SDK</strong></p>
-</li>
-</ul>
-<p><a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ablecloud-framework-1.4.0.zip">点此下载</a> AbleCloud云端服务开发框架</p>
-<h4 id="intellij">Intellij</h4>
-<ol>
-<li>
-<p><strong>新建工程</strong></p>
-<p>选择新建maven工程，JDK选择正确的版本。</p>
-<p><img alt="new project" src="../../pic/reference/intellij/new_project_1_1.png" /></p>
-<p>选择<strong>maven</strong>工程。</p>
-<p><img alt="info" src="../../pic/reference/intellij/new_project_1_2.png" /></p>
-<p>注意JDK版本选择安装的1.7。点击<strong>next</strong>即可。</p>
-<p><img alt="next" src="../../pic/reference/intellij/next.png" /></p>
-<p>进入下一个页面，根据情况填写groupid/artifactid/version等信息。</p>
-<p><img alt="info" src="../../pic/reference/intellij/new_project_1_3.png" /></p>
-<p>填好后点击<strong>next</strong>，进入下一步，填写工程名以及存放路径。</p>
-<p><img alt="name" src="../../pic/reference/intellij/new_project_1_4.png" /></p>
-<p>然后点击<strong>finish</strong>完成新建工程向导。</p>
-<p><img alt="finish" src="../../pic/reference/intellij/new_project_1_5.png" /></p>
-<p>至此，新建工程完成。</p>
-</li>
-<li>
-<p><strong>部署AbleCloud框架便于本机测试以及提交版本</strong></p>
-<p>新建package目录，将ablecloud-framework-1.4.0.zip解压到package目录下。</p>
-<blockquote>
-<p>package子目录的结构为config/、lib/、start.sh文件等</p>
-</blockquote>
-</li>
-<li>
-<p><strong>设置工程</strong></p>
-<p>设置编码方式，建议将字符编码设置为UTF-8或GBK </p>
-<p><img alt="setting" src="../../pic/reference/intellij/setting.png" /> </p>
-<p><img alt="fileencoding" src="../../pic/reference/intellij/fileencoding.png" /> </p>
-<p>按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。
-点击<strong>File</strong> -&gt; <strong>Project Structure...</strong></p>
-<p><img alt="setting" src="../../pic/reference/intellij/set_project_1_1.png" /></p>
-<p>首先设置工程所使用的JDK版本1.7和语言级别7.0。</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_1_2.png" /></p>
-<p>设置开发服务所要依赖的AbleCloud框架包：同上，打开<strong>Project Structure...</strong>,然后选择<strong>Libraries</strong>，点击右边的<strong>+</strong>号，选择<strong>Java</strong>，如下图所示。</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_1.png" /></p>
-<p>在弹出的对话框中选择下载并解压后的AbleCloud中的lib目录，并点击<strong>OK</strong>。</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_2.png" /></p>
-<p>回到上一个窗口后再次点击<strong>OK</strong>确认。</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_3.png" /></p>
-<p>这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为<strong>ablecloud-libs</strong>。点击<strong>OK</strong>完成添加。</p>
-<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_4.png" /></p>
-<p>至此，UDS开发所依赖的AbleCloud开发框架库添加成功。</p>
-</li>
-<li>
-<p><strong>修改pom.xml文件</strong></p>
-<p>下面是一个示例服务的完整pom.xml文件：</p>
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+				<blockquote>
+					<p>
+						<font color="red"><strong>注：</strong></font>
+					</p>
+					<ol>
+						<li>
+							<p>请按实际情况修改<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code>和<code>deviceId</code>的值。
+								<code>X-Zc-Major-Domain</code>是开发者帐号的主域的名字；<code>X-Zc-Sub-Domain</code>是要访问的服务所关联的子域的名字；<code>deviceId</code>是要被控制的设备的逻辑ID；<code>X-Zc-User-Id</code>是对设备发起控制指令的用户的ID。 前两个参数是开发者在AbleCloud平台开通开发者帐号，并创建产品后就生成的信息。后两个参数要求有用户绑定了开发者所提供的产品。
+							</p>
+						</li>
+						<li>
+							<p>若返回<code>{"error":"device not exist","errorCode":3802}</code>,说明这个设备<code>deviceId</code>没有被<code>X-Zc-User-Id</code>用户绑定。但是至少说明本地测试已经成功了，能测试该接口的返回结果了。</p>
+						</li>
+						<li>
+							<p>例子中访问的controlLight方法需要参数<code>X-Zc-User-Id</code>、<code>deviceId</code>、<code>action</code>，但这两个参数并不是访问所有方法都必须的。需要根据开发者的UDS的具体实现提供不同的参数。</p>
+						</li>
+					</ol>
+				</blockquote>
+				<h2 id="_3">开发工具设置</h2>
+				<p>熟悉上述流程之后，可以开始开发自己的UDS程序。以下从新建maven工程开始逐步介绍开发步骤。</p>
+				<h4 id="_4">系统准备</h4>
+				<p>在进行开发前，需要对系统以及环境进行设置。目前框架只支持java语言，因此系统准备基本都是和java相关，如JDK、maven等。</p>
+				<ul>
+					<li>
+						<p><strong>JDK</strong> </p>
+						<p>安装JDK，建议采用1.7版本JDK。</p>
+					</li>
+					<li>
+						<p><strong>maven</strong></p>
+						<p>安装maven，建议采用3.2以上版本。</p>
+					</li>
+					<li>
+						<p><strong>AbleCloud SDK</strong></p>
+					</li>
+				</ul>
+				<p><a href="https://www.ablecloud.cn/download/SDK&amp;Demo/ablecloud-framework-1.4.0.zip">点此下载</a> AbleCloud云端服务开发框架</p>
+				<h4 id="intellij">Intellij</h4>
+				<ol>
+					<li>
+						<p><strong>新建工程</strong></p>
+						<p>选择新建maven工程，JDK选择正确的版本。</p>
+						<p><img alt="new project" src="../../pic/reference/intellij/new_project_1_1.png" /></p>
+						<p>选择<strong>maven</strong>工程。</p>
+						<p><img alt="info" src="../../pic/reference/intellij/new_project_1_2.png" /></p>
+						<p>注意JDK版本选择安装的1.7。点击<strong>next</strong>即可。</p>
+						<p><img alt="next" src="../../pic/reference/intellij/next.png" /></p>
+						<p>进入下一个页面，根据情况填写groupid/artifactid/version等信息。</p>
+						<p><img alt="info" src="../../pic/reference/intellij/new_project_1_3.png" /></p>
+						<p>填好后点击<strong>next</strong>，进入下一步，填写工程名以及存放路径。</p>
+						<p><img alt="name" src="../../pic/reference/intellij/new_project_1_4.png" /></p>
+						<p>然后点击<strong>finish</strong>完成新建工程向导。</p>
+						<p><img alt="finish" src="../../pic/reference/intellij/new_project_1_5.png" /></p>
+						<p>至此，新建工程完成。</p>
+					</li>
+					<li>
+						<p><strong>部署AbleCloud框架便于本机测试以及提交版本</strong></p>
+						<p>新建package目录，将ablecloud-framework-1.4.0.zip解压到package目录下。</p>
+						<blockquote>
+							<p>package子目录的结构为config/、lib/、start.sh文件等</p>
+						</blockquote>
+					</li>
+					<li>
+						<p><strong>设置工程</strong></p>
+						<p>设置编码方式，建议将字符编码设置为UTF-8或GBK </p>
+						<p><img alt="setting" src="../../pic/reference/intellij/setting.png" /> </p>
+						<p><img alt="fileencoding" src="../../pic/reference/intellij/fileencoding.png" /> </p>
+						<p>按照步骤1完成了工程的新建，还需对工程属性进行一些设置以方便后续的编译、单测。 点击
+							<strong>File</strong> -&gt; <strong>Project Structure...</strong></p>
+						<p><img alt="setting" src="../../pic/reference/intellij/set_project_1_1.png" /></p>
+						<p>首先设置工程所使用的JDK版本1.7和语言级别7.0。</p>
+						<p><img alt="lib" src="../../pic/reference/intellij/set_project_1_2.png" /></p>
+						<p>设置开发服务所要依赖的AbleCloud框架包：同上，打开<strong>Project Structure...</strong>,然后选择<strong>Libraries</strong>，点击右边的<strong>+</strong>号，选择<strong>Java</strong>，如下图所示。</p>
+						<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_1.png" /></p>
+						<p>在弹出的对话框中选择下载并解压后的AbleCloud中的lib目录，并点击<strong>OK</strong>。</p>
+						<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_2.png" /></p>
+						<p>回到上一个窗口后再次点击<strong>OK</strong>确认。</p>
+						<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_3.png" /></p>
+						<p>这个过程中，我们可以对添加的lib库重命名（可选），例如这里重命名为<strong>ablecloud-libs</strong>。点击<strong>OK</strong>完成添加。</p>
+						<p><img alt="lib" src="../../pic/reference/intellij/set_project_2_4.png" /></p>
+						<p>至此，UDS开发所依赖的AbleCloud开发框架库添加成功。</p>
+					</li>
+					<li>
+						<p><strong>修改pom.xml文件</strong></p>
+						<p>下面是一个示例服务的完整pom.xml文件：</p>
+						<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
@@ -795,18 +765,18 @@ start.cmd
     &lt;/build&gt;
 &lt;/project&gt;
 </code></pre>
-<p>完整拷贝该示例pom.xml文件内容，其中绝大部分内容都无须修改，开发者仅需修改如下几个配置项即可：</p>
-<pre><code>&lt;project&gt;
+						<p>完整拷贝该示例pom.xml文件内容，其中绝大部分内容都无须修改，开发者仅需修改如下几个配置项即可：</p>
+						<pre><code>&lt;project&gt;
     &lt;groupId&gt;your service group id&lt;/groupId&gt;
     &lt;artifactId&gt;your service artifact id&lt;/artifactId&gt;
     &lt;version&gt;your service version&lt;/version&gt;
 &lt;/project&gt;
 </code></pre>
-</li>
-<li>
-<p><strong>修改配置文件</strong></p>
-<p>配置文件位于AbleCloud发行库的config文件夹下，名字为cloudservice-conf.xml。</p>
-<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+					</li>
+					<li>
+						<p><strong>修改配置文件</strong></p>
+						<p>配置文件位于AbleCloud发行库的config文件夹下，名字为cloudservice-conf.xml。</p>
+						<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;configuration&gt;
     &lt;developer&gt;
         &lt;!-- 对应“个人信息-&gt;个人信息-&gt;开发者ID” --&gt;
@@ -842,108 +812,110 @@ start.cmd
     &lt;/service&gt;
 &lt;/configuration&gt;
 </code></pre>
-<blockquote>
-<p><font color="brown"><strong>注:</strong></font>开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。除了<strong>service.class</strong>配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。</p>
-</blockquote>
-<p>至此，即完成了新建一个工程所需的所有准备工作以及环境配置，接下来可以开始UDS的业务逻辑开发。</p>
-</li>
-<li>
-<p><strong>新建Class并继承ACService</strong></p>
-<p>参照DemoService或者<a href="../../reference/cloud/">云端服务开发参考</a>里关于ACSevice的介绍。</p>
-</li>
-<li>
-<p><strong>编译单测</strong></p>
-<p>在IDE的终端（terminal）或系统终端中运行命令<code>mvn package</code>即可完整的执行编译、单元测试（如果写了单测代码的话）。</p>
-</li>
-<li>
-<p><strong>本地运行</strong></p>
-<p>如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下。之后，在AbleCloud的框架主目录执行AbleCloud提供的脚本<code>sh start.sh</code>或<code>start.cmd</code>，即可在您的开发机上启动您编写好的服务程序。</p>
-<blockquote>
-<p><font color="brown"><strong>注：</strong></font>服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。</p>
-</blockquote>
-</li>
-<li>
-<p><strong>提交到平台</strong></p>
-<p>将AbleCloud的config目录、lib目录（含编译好的UDS服务jar包），以及start.sh文件等压缩、打包为一个zip文件，通过AbleCloud的Web管理控制台提交。</p>
-</li>
-</ol>
-<h4 id="eclipse">Eclipse</h4>
-<ol>
-<li>
-<p><strong>新建工程</strong></p>
-<p>选择<strong>File--&gt;New--&gt;Project...</strong>。</p>
-<p><img alt="new project" src="../../pic/reference/eclipse/new_project_1_1.png" /></p>
-<p>选择<strong>maven</strong>工程。</p>
-<p><img alt="new project" src="../../pic/reference/eclipse/new_project_1_2.png" /></p>
-<p>点击<strong>Next</strong>进入下一步。</p>
-<p><img alt="next" src="../../pic/reference/eclipse/next.png" /></p>
-<p>填写groupId,artifactId,version等信息，并点击<strong>Finish</strong>完成新建工程。</p>
-<p><img alt="info" src="../../pic/reference/eclipse/new_project_1_3.png" /></p>
-</li>
-<li>
-<p><strong>设置工程</strong></p>
-<p>设置编码方式，建议将字符编码设置为UTF-8或GBK </p>
-<p><img alt="setting" src="../../pic/reference/eclipse/setting.png" /> </p>
-<p><img alt="fileencoding" src="../../pic/reference/eclipse/fileencoding.png" /> </p>
-<p>在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏<strong>Project--&gt;Properties</strong>进行设置。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_1.png" /></p>
-<p>首先设置工程对AbleCloud发行库的依赖。如图选择<strong>Java Build Path</strong>的<strong>Libaries</strong>标签页，点击<strong>Add Library...</strong>。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_2.png" /></p>
-<p>在<strong>Add Library</strong>页选择<strong>User Library</strong>。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_3.png" /></p>
-<p>继续点击<strong>User Libraries...</strong>按钮。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_4.png" /></p>
-<p>然后点击<strong>New...</strong>新建一个用户library文件夹。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_5.png" /></p>
-<p>这里可以给该用户lib重命名，如图中命名为ablecloud-libs，点击<strong>OK</strong>完成。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_6.png" /></p>
-<p>回到<strong>User Libraries</strong>页面，点击右方的<strong>Add External JARs...</strong>按钮，选择下载并解压的AbleCloud发行库中的<strong>lib</strong>目录，将该目录中所有的jar文件添加到新建的user library中。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_7.png" /></p>
-<p>勾选上新建的user library，并点击<strong>Finish</strong>将AbleCloud的jar文件添加到新建的工程中。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_8.png" /></p>
-<p>下面进行java语言的设置，类似上面的设置，先进入<strong>Properties</strong>窗口，选择<strong>Java Compiler</strong>，<strong>去掉</strong>默认的<em>Use compliance from execution environment...</em>，并且选择<em>Compiler compliance level</em>为<strong>1.7</strong>。</p>
-<p><img alt="setting" src="../../pic/reference/eclipse/set_project_2_1.png" /></p>
-</li>
-<li>
-<p><strong>修改pom.xml文件</strong></p>
-<p>同<strong>intellij</strong>章节。</p>
-</li>
-<li>
-<p><strong>修改配置文件</strong></p>
-<p>同<strong>intellij</strong>章节。</p>
-</li>
-<li>
-<p><strong>编译单测</strong></p>
-<p>TBD</p>
-</li>
-<li>
-<p><strong>本地运行</strong></p>
-<p>同<strong>intellij</strong>章节。</p>
-</li>
-<li>
-<p><strong>提交到平台</strong></p>
-<p>同<strong>intellij</strong>章节。</p>
-</li>
-</ol>
-<h1 id="uds-demo">UDS Demo</h1>
-<p>这里我们以一个完整的demo程序做示例，通过真实代码介绍如何基于ACService开发用户自己的服务程序。demo场景不一定完全符合常识，其目的是为了尽量简单而全面的演示服务框架提供的功能。</p>
-<h2 id="_5">场景介绍</h2>
-<p>本示例场景有一智能灯，可以通过手机端向云端发消息远程控制灯的开/关，云端服务把这些APP发来的控制行为记录到AbleCloud提供的云存储中。同时，智能灯也可能由用户通过机械开关起停，智能灯将这类开/关事件也主动汇报到服务端，我们写的服务程序将这类主动汇报的开/关数据也存到云存储中。所有存储在云存储中的数据，可提供给APP查询，比如可用于统计用户的作息习惯等。</p>
-<h2 id="_6">实现步骤</h2>
-<p>先简单分析下需求，然后梳理出实现步骤。</p>
-<blockquote>
-<ol>
-<li>要开发服务程序，需从<code>ACService</code>派生子类来实现自己的服务框架。本示例中，<code>DemoService</code>就是继承自<code>ACService</code>的子类；</li>
-<li>服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为<code>handleMsg</code>提供具体的实现handler；</li>
-<li>服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式<code>LightMsg</code>；</li>
-<li>服务要接收智能灯汇报的开/关消息，因此必须为<code>handleDeviceMsg</code>提供具体的实现handler。</li>
-</ol>
-</blockquote>
-<h2 id="_7">具体实现</h2>
-<h3 id="demoservice">DemoService</h3>
-<p><code>DemoService</code>为自定义服务的主要逻辑处理类，通过<code>handleMsg</code>处理APP端发来的消息，通过<code>handleDeviceMsg</code>处理设备上报上来的消息。
-当前为了简单，在<code>DemoService</code>中实现了两个具体的处理函数<code>handleControlLight</code>和<code>handleQueryData</code>。在<code>DemoService</code>中只实现了一个具体的处理函数<code>handleLightReport</code>。开发者可以根据业务需求任意扩展handler。</p>
-<pre><code class="java">package com.ablecloud.demo;
+						<blockquote>
+							<p>
+								<font color="brown"><strong>注:</strong></font>开发者ID，access-key，secret-key等信息，均能登录AbleCloud网站（开发者管理控制台）获取。除了<strong>service.class</strong>配置项在本地测试环境和AbleCloud云端环境均生效外，其它配置项只在本地测试环境有效，而AbleCloud云端环境将忽略这些配置项。</p>
+						</blockquote>
+						<p>至此，即完成了新建一个工程所需的所有准备工作以及环境配置，接下来可以开始UDS的业务逻辑开发。</p>
+					</li>
+					<li>
+						<p><strong>新建Class并继承ACService</strong></p>
+						<p>参照DemoService或者<a href="../../reference/cloud/">云端服务开发参考</a>里关于ACSevice的介绍。</p>
+					</li>
+					<li>
+						<p><strong>编译单测</strong></p>
+						<p>在IDE的终端（terminal）或系统终端中运行命令<code>mvn package</code>即可完整的执行编译、单元测试（如果写了单测代码的话）。</p>
+					</li>
+					<li>
+						<p><strong>本地运行</strong></p>
+						<p>如果编译、单测都没有问题，则将编译出来的服务jar包（在服务工程主目录下的target/lib目录下）拷贝到AbleCloud框架的lib目录下。之后，在AbleCloud的框架主目录执行AbleCloud提供的脚本<code>sh start.sh</code>或<code>start.cmd</code>，即可在您的开发机上启动您编写好的服务程序。</p>
+						<blockquote>
+							<p>
+								<font color="brown"><strong>注：</strong></font>服务启动所需的参数，如域名、版本、端口等信息均在xml的配置文件中设置。</p>
+						</blockquote>
+					</li>
+					<li>
+						<p><strong>提交到平台</strong></p>
+						<p>将AbleCloud的config目录、lib目录（含编译好的UDS服务jar包），以及start.sh文件等压缩、打包为一个zip文件，通过AbleCloud的Web管理控制台提交。</p>
+					</li>
+				</ol>
+				<h4 id="eclipse">Eclipse</h4>
+				<ol>
+					<li>
+						<p><strong>新建工程</strong></p>
+						<p>选择<strong>File--&gt;New--&gt;Project...</strong>。</p>
+						<p><img alt="new project" src="../../pic/reference/eclipse/new_project_1_1.png" /></p>
+						<p>选择<strong>maven</strong>工程。</p>
+						<p><img alt="new project" src="../../pic/reference/eclipse/new_project_1_2.png" /></p>
+						<p>点击<strong>Next</strong>进入下一步。</p>
+						<p><img alt="next" src="../../pic/reference/eclipse/next.png" /></p>
+						<p>填写groupId,artifactId,version等信息，并点击<strong>Finish</strong>完成新建工程。</p>
+						<p><img alt="info" src="../../pic/reference/eclipse/new_project_1_3.png" /></p>
+					</li>
+					<li>
+						<p><strong>设置工程</strong></p>
+						<p>设置编码方式，建议将字符编码设置为UTF-8或GBK </p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/setting.png" /> </p>
+						<p><img alt="fileencoding" src="../../pic/reference/eclipse/fileencoding.png" /> </p>
+						<p>在工程视窗右键点击步骤1中新建的工程进行工程设置。或者点击菜单栏<strong>Project--&gt;Properties</strong>进行设置。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_1.png" /></p>
+						<p>首先设置工程对AbleCloud发行库的依赖。如图选择<strong>Java Build Path</strong>的<strong>Libaries</strong>标签页，点击<strong>Add Library...</strong>。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_2.png" /></p>
+						<p>在<strong>Add Library</strong>页选择<strong>User Library</strong>。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_3.png" /></p>
+						<p>继续点击<strong>User Libraries...</strong>按钮。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_4.png" /></p>
+						<p>然后点击<strong>New...</strong>新建一个用户library文件夹。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_5.png" /></p>
+						<p>这里可以给该用户lib重命名，如图中命名为ablecloud-libs，点击<strong>OK</strong>完成。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_6.png" /></p>
+						<p>回到<strong>User Libraries</strong>页面，点击右方的<strong>Add External JARs...</strong>按钮，选择下载并解压的AbleCloud发行库中的<strong>lib</strong>目录，将该目录中所有的jar文件添加到新建的user library中。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_7.png" /></p>
+						<p>勾选上新建的user library，并点击<strong>Finish</strong>将AbleCloud的jar文件添加到新建的工程中。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_1_8.png" /></p>
+						<p>下面进行java语言的设置，类似上面的设置，先进入<strong>Properties</strong>窗口，选择<strong>Java Compiler</strong>，<strong>去掉</strong>默认的<em>Use compliance from execution environment...</em>，并且选择<em>Compiler compliance level</em>为<strong>1.7</strong>。</p>
+						<p><img alt="setting" src="../../pic/reference/eclipse/set_project_2_1.png" /></p>
+					</li>
+					<li>
+						<p><strong>修改pom.xml文件</strong></p>
+						<p>同<strong>intellij</strong>章节。</p>
+					</li>
+					<li>
+						<p><strong>修改配置文件</strong></p>
+						<p>同<strong>intellij</strong>章节。</p>
+					</li>
+					<li>
+						<p><strong>编译单测</strong></p>
+						<p>TBD</p>
+					</li>
+					<li>
+						<p><strong>本地运行</strong></p>
+						<p>同<strong>intellij</strong>章节。</p>
+					</li>
+					<li>
+						<p><strong>提交到平台</strong></p>
+						<p>同<strong>intellij</strong>章节。</p>
+					</li>
+				</ol>
+				<h1 id="uds-demo">UDS Demo</h1>
+				<p>这里我们以一个完整的demo程序做示例，通过真实代码介绍如何基于ACService开发用户自己的服务程序。demo场景不一定完全符合常识，其目的是为了尽量简单而全面的演示服务框架提供的功能。</p>
+				<h2 id="_5">场景介绍</h2>
+				<p>本示例场景有一智能灯，可以通过手机端向云端发消息远程控制灯的开/关，云端服务把这些APP发来的控制行为记录到AbleCloud提供的云存储中。同时，智能灯也可能由用户通过机械开关起停，智能灯将这类开/关事件也主动汇报到服务端，我们写的服务程序将这类主动汇报的开/关数据也存到云存储中。所有存储在云存储中的数据，可提供给APP查询，比如可用于统计用户的作息习惯等。</p>
+				<h2 id="_6">实现步骤</h2>
+				<p>先简单分析下需求，然后梳理出实现步骤。</p>
+				<blockquote>
+					<ol>
+						<li>要开发服务程序，需从<code>ACService</code>派生子类来实现自己的服务框架。本示例中，<code>DemoService</code>就是继承自<code>ACService</code>的子类；</li>
+						<li>服务要接收来自APP对灯的远程控制命令，也会接收来自APP的数据查询请求，因此必须为<code>handleMsg</code>提供具体的实现handler；</li>
+						<li>服务要向智能灯发送控制命令，因此我们需要和灯以及APP端定义具体的控制消息格式<code>LightMsg</code>；</li>
+						<li>服务要接收智能灯汇报的开/关消息，因此必须为<code>handleDeviceMsg</code>提供具体的实现handler。</li>
+					</ol>
+				</blockquote>
+				<h2 id="_7">具体实现</h2>
+				<h3 id="demoservice">DemoService</h3>
+				<p><code>DemoService</code>为自定义服务的主要逻辑处理类，通过<code>handleMsg</code>处理APP端发来的消息，通过<code>handleDeviceMsg</code>处理设备上报上来的消息。 当前为了简单，在
+					<code>DemoService</code>中实现了两个具体的处理函数<code>handleControlLight</code>和<code>handleQueryData</code>。在<code>DemoService</code>中只实现了一个具体的处理函数<code>handleLightReport</code>。开发者可以根据业务需求任意扩展handler。</p>
+				<pre><code class="java">package com.ablecloud.demo;
 
 import com.ablecloud.common.*;
 
@@ -1110,9 +1082,9 @@ public class DemoService extends ACService {
 }
 </code></pre>
 
-<h3 id="lightmsg">LightMsg</h3>
-<p><code>LightMsg</code>是控制灯开/关的消息（命令），需要设备/APP/服务三方共同确定。如果服务需要和其它类型的智能设备交互，则再定义其它的message即可。</p>
-<pre><code class="java">package com.ablecloud.demo;
+				<h3 id="lightmsg">LightMsg</h3>
+				<p><code>LightMsg</code>是控制灯开/关的消息（命令），需要设备/APP/服务三方共同确定。如果服务需要和其它类型的智能设备交互，则再定义其它的message即可。</p>
+				<pre><code class="java">package com.ablecloud.demo;
 
 class LightMsg {
     public static final int CODE = 68;
@@ -1145,33 +1117,33 @@ class LightMsg {
 }
 </code></pre>
 
-<p>前文的代码实现了本示例的全部功能。在终端运行<code>mvn package</code>即可编译成jar包。你可以开发更多好玩的逻辑，比如多设备联动：当某些设备上报的数据达到设置的规则时，触发另外的设备做出响应。
-对该服务的测试见后文的相关章节。</p>
-<h1 id="demo">后台任务Demo</h1>
-<p>本小结介绍一个AbleCloud云端定时任务示例。</p>
-<p>一个完整的云端定时任务由两部分组成：</p>
-<ol>
-<li>
-<p><strong>定时规则</strong>：定义任务的执行时间。</p>
-<p>AbleCloud支持Crontab格式的时间定义（详见：<a href="../../reference/cloud/#crontab">Crontab定时规则</a>）。</p>
-</li>
-<li>
-<p><strong>定时任务可执行程序</strong></p>
-</li>
-</ol>
-<p>其中，定时规则是由开发者在AbleCloud控制台中创建定时任务时设置。本小结介绍的示例是开发定时任务的可执行程序。</p>
-<h3 id="_8">场景介绍</h3>
-<p>本示例的可执行程序完成的任务仅是打印一条日志：任务执行的实际时间。</p>
-<p>在AbleCloud控制台中创建该定时任务时，设置的定时规则是“*/2 * * * *”，表示每隔2分钟执行一次本任务。</p>
-<h3 id="_9">实现思路</h3>
-<ol>
-<li>按要求从ACCronJob派生子类型，在派生类中实现父类定义的抽象方法ACCronJob::run；</li>
-<li>通过AbleCloud控制台创建定时任务，设置任务的定时规则；</li>
-<li>通过AbleCloud控制台上传任务的可执行程序，创建定时任务的版本，然后“上线”该版本以启动该定时任务。</li>
-</ol>
-<h3 id="_10">可执行程序的具体实现</h3>
-<p>下文示例中，DemoCronJob是ACCronJob的派生类型，并且实现了父类定义的抽象方法ACCronJob::run。</p>
-<pre><code>package  com.ablecloud.demo;
+				<p>前文的代码实现了本示例的全部功能。在终端运行<code>mvn package</code>即可编译成jar包。你可以开发更多好玩的逻辑，比如多设备联动：当某些设备上报的数据达到设置的规则时，触发另外的设备做出响应。 对该服务的测试见后文的相关章节。
+				</p>
+				<h1 id="demo">后台任务Demo</h1>
+				<p>本小结介绍一个AbleCloud云端定时任务示例。</p>
+				<p>一个完整的云端定时任务由两部分组成：</p>
+				<ol>
+					<li>
+						<p><strong>定时规则</strong>：定义任务的执行时间。</p>
+						<p>AbleCloud支持Crontab格式的时间定义（详见：<a href="../../reference/cloud/#crontab">Crontab定时规则</a>）。</p>
+					</li>
+					<li>
+						<p><strong>定时任务可执行程序</strong></p>
+					</li>
+				</ol>
+				<p>其中，定时规则是由开发者在AbleCloud控制台中创建定时任务时设置。本小结介绍的示例是开发定时任务的可执行程序。</p>
+				<h3 id="_8">场景介绍</h3>
+				<p>本示例的可执行程序完成的任务仅是打印一条日志：任务执行的实际时间。</p>
+				<p>在AbleCloud控制台中创建该定时任务时，设置的定时规则是“*/2 * * * *”，表示每隔2分钟执行一次本任务。</p>
+				<h3 id="_9">实现思路</h3>
+				<ol>
+					<li>按要求从ACCronJob派生子类型，在派生类中实现父类定义的抽象方法ACCronJob::run；</li>
+					<li>通过AbleCloud控制台创建定时任务，设置任务的定时规则；</li>
+					<li>通过AbleCloud控制台上传任务的可执行程序，创建定时任务的版本，然后“上线”该版本以启动该定时任务。</li>
+				</ol>
+				<h3 id="_10">可执行程序的具体实现</h3>
+				<p>下文示例中，DemoCronJob是ACCronJob的派生类型，并且实现了父类定义的抽象方法ACCronJob::run。</p>
+				<pre><code>package  com.ablecloud.demo;
 
 import com.ablecloud.service.ACCronJob;
 import org.slf4j.Logger;
@@ -1190,19 +1162,20 @@ public class DemoCronJob extends ACCronJob {
 }
 </code></pre>
 
-<h1 id="_11">测试简介</h1>
-<p>上一章节，我们一步步开发了一个完整的服务程序<code>DemoService</code>。代码是写完了，如何验证我们写的代码是否正常工作呢？<code>DemoService</code>能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。</p>
-<h2 id="_12">单元测试</h2>
-<p>准备工作做好后，就可以开始我们的测试了，我们的单元测试采用org.apache.maven.surefire插件结合junit来完成。</p>
-<blockquote>
-<p><font color="red"><strong>注：</strong></font>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</p>
-</blockquote>
-<h3 id="demoservice_1">测试DemoService</h3>
-<p>具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，详细介绍如下。</p>
-<h4 id="demo_1">测试demo</h4>
-<p>通过前面的介绍，UDS的大部分功能是由<code>handleMsg</code>或<code>handleDeviceMsg</code>的各个handler提供的，因此测试工作也集中于对各个handler的测试。在单元测试过程中，无须通过任何client工具驱动，即可完成自动化的单元测试。</p>
-<p>这里通过一个完整的测试代码演示如何对DemoService进行测试。测试代码中有详细的注释。</p>
-<pre><code class="java">package com.ablecloud.demo;
+				<h1 id="_11">测试简介</h1>
+				<p>上一章节，我们一步步开发了一个完整的服务程序<code>DemoService</code>。代码是写完了，如何验证我们写的代码是否正常工作呢？<code>DemoService</code>能否正确处理APP的请求，能否正确控制智能灯，能否正确接收智能灯的汇报消息，能否将汇报数据写入云端存储等，都少不了测试。测试根据阶段分为多种，比如单元测试、模块测试、集成测试等。考虑到后端服务的复杂性，AbleCloud提供了多种测试方案，下面会一一介绍。</p>
+				<h2 id="_12">单元测试</h2>
+				<p>准备工作做好后，就可以开始我们的测试了，我们的单元测试采用org.apache.maven.surefire插件结合junit来完成。</p>
+				<blockquote>
+					<p>
+						<font color="red"><strong>注：</strong></font>测试用例的执行，也是通过<code>mvn package</code>来驱动并查看测试结果。在AbleCloud提供的示例pom.xml中，配置了该命令除了将开发的服务打包成jar文件外，也会执行单元测试代码——如果开发者编写了单元测试代码。</p>
+				</blockquote>
+				<h3 id="demoservice_1">测试DemoService</h3>
+				<p>具体的服务代码测试相对复杂，一方面其依赖的云端服务比较多；另一方面作为服务框架，在没有client，没有设备的情况下驱动测试，需要一些技巧。为此，AbleCloud为开发者提供了一系列便于测试用的功能，详细介绍如下。</p>
+				<h4 id="demo_1">测试demo</h4>
+				<p>通过前面的介绍，UDS的大部分功能是由<code>handleMsg</code>或<code>handleDeviceMsg</code>的各个handler提供的，因此测试工作也集中于对各个handler的测试。在单元测试过程中，无须通过任何client工具驱动，即可完成自动化的单元测试。</p>
+				<p>这里通过一个完整的测试代码演示如何对DemoService进行测试。测试代码中有详细的注释。</p>
+				<pre><code class="java">package com.ablecloud.demo;
 
 import com.ablecloud.common.*;
 import com.ablecloud.service.AC;
@@ -1345,14 +1318,15 @@ public class DemoServiceTest {
 }
 </code></pre>
 
-<blockquote>
-<p><font color="red"><strong>注意：</strong></font>可以看到，所有的单元测试用例均是直接调用<code>handleMsg</code>或<code>handleDeviceMsg</code>驱动测试，无需编写或使用client工具。</p>
-<p>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签<strong>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</strong>固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</p>
-</blockquote>
-<h4 id="_13">测试桩</h4>
-<p>从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中定义了设备桩<code>ACDeviceStub</code>的接口，开发者只需要依照此接口实现具体的设备桩即可。
-示例的桩处理很简单，实际上你可以任意扩展，比如在桩中模拟灯的各种状态。示例代码如下：</p>
-<pre><code class="java">package com.ablecloud.demo;
+				<blockquote>
+					<p>
+						<font color="red"><strong>注意：</strong></font>可以看到，所有的单元测试用例均是直接调用<code>handleMsg</code>或<code>handleDeviceMsg</code>驱动测试，无需编写或使用client工具。</p>
+					<p>此外，非常重要的一点，我们需要使用4.11及以上的junit，并且使用标签<strong>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</strong>固定测试用例的执行顺序，因为我们的用例可能前后依赖。比如在test1ControlLight中写入数据，在后面的test case中会读取。因此，在为测试函数命名的时候，如果有前后依赖关系，需要考虑按ASCII字典序的命名规则。</p>
+				</blockquote>
+				<h4 id="_13">测试桩</h4>
+				<p>从前面的场景分析我们知道，开发的DemoService会和灯交互，但是我们在开发服务的过程，很可能智能灯也在研发之中，还没有发布硬件产品。我们后端服务开发者不需要也不应该等待硬件设备开发完毕才做相应的功能测试。为此，AbleCloud在服务开发框架中定义了设备桩<code>ACDeviceStub</code>的接口，开发者只需要依照此接口实现具体的设备桩即可。 示例的桩处理很简单，实际上你可以任意扩展，比如在桩中模拟灯的各种状态。示例代码如下：
+				</p>
+				<pre><code class="java">package com.ablecloud.demo;
 
 import com.ablecloud.service.ACDeviceMsg;
 import com.ablecloud.service.ACDeviceStub;
@@ -1376,14 +1350,16 @@ public class LightStub extends ACDeviceStub {
 }
 </code></pre>
 
-<h2 id="_14">集成测试</h2>
-<p>单元测试通过后，我们还需要进行集成测试，因为单元测试的过程，我们并没有真正启动开发的服务，某些场景或代码路径不一定覆盖全，比如网络通信部分、服务框架部分等。
-由于大部分逻辑在单元测试阶段均做了，因此集成测试相对简单，大致步骤如下：</p>
-<h3 id="_15">在本地机器或任意开发机上启动服务</h3>
-<p>按照<a href="#uds_1">本机启动DemoService</a>小结的说明，通过运行<code>start.cmd</code>或<code>start.sh</code>启动服务。</p>
-<p><font color="red"><strong>注意</strong></font></p>
-<p>1、运行<code>start.cmd</code>或<code>start.sh</code>的条件。执行启动命令的目录的子目录的结构要求如下所示：</p>
-<pre><code>/config
+				<h2 id="_14">集成测试</h2>
+				<p>单元测试通过后，我们还需要进行集成测试，因为单元测试的过程，我们并没有真正启动开发的服务，某些场景或代码路径不一定覆盖全，比如网络通信部分、服务框架部分等。 由于大部分逻辑在单元测试阶段均做了，因此集成测试相对简单，大致步骤如下：
+				</p>
+				<h3 id="_15">在本地机器或任意开发机上启动服务</h3>
+				<p>按照<a href="#uds_1">本机启动DemoService</a>小结的说明，通过运行<code>start.cmd</code>或<code>start.sh</code>启动服务。</p>
+				<p>
+					<font color="red"><strong>注意</strong></font>
+				</p>
+				<p>1、运行<code>start.cmd</code>或<code>start.sh</code>的条件。执行启动命令的目录的子目录的结构要求如下所示：</p>
+				<pre><code>/config
     /cloudservice-conf.xml
 /lib
     /ablecloud-framework-1.4.0.jar
@@ -1397,8 +1373,8 @@ start.sh
 start.cmd
 </code></pre>
 
-<p>2、服务启动成功后，会在根目录下生成<code>log</code>的文件夹，进入该文件夹查看<code>service.log</code>文件。若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。</p>
-<pre><code>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...
+				<p>2、服务启动成功后，会在根目录下生成<code>log</code>的文件夹，进入该文件夹查看<code>service.log</code>文件。若能看到如下日志，说明服务已经启动成功，可以进入下一个步骤了。</p>
+				<pre><code>2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:41:main] - Starting service...
 2015-09-08 17:37:47,047 INFO main:1 [ACConfiguration.java:331:dumpConfig] - get config item[mode] value[test]
 ...
 2015-09-08 17:37:47,047 INFO main:1 [Log.java:178:initialized] - Logging initialized @147ms
@@ -1408,76 +1384,79 @@ start.cmd
 2015-09-08 17:37:47,047 INFO main:1 [ACServer.java:80:main] - Start service DemoService ok.
 </code></pre>
 
-<h3 id="http">用任意客户端发送http请求</h3>
-<p>使用任意客户端发送http请求测试自己的接口正确性，例如用curl或自己开发的客户端都可以。以下详细介绍如何使用curl命令进行进一步测试。</p>
-<blockquote>
-<p><font color="brown"><strong>注：</strong>AbleCloud提供的多种服务，其client和service之间的通信，底层采用http协议，方法为POST，因此任何能发送http请求的工具均可以用作服务测试的客户端。</font></p>
-</blockquote>
-<p>如：向我们开发的<code>DemoService</code>发送开灯命令：</p>
-<h4 id="linuxcurl">linux下使用curl命令</h4>
-<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot;  -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; -d '{&quot;deviceId&quot;:1,&quot;action&quot;:&quot;on&quot;}' 'http://localHost:8080/controlLight'
+				<h3 id="http">用任意客户端发送http请求</h3>
+				<p>使用任意客户端发送http请求测试自己的接口正确性，例如用curl或自己开发的客户端都可以。以下详细介绍如何使用curl命令进行进一步测试。</p>
+				<blockquote>
+					<p>
+						<font color="brown"><strong>注：</strong>AbleCloud提供的多种服务，其client和service之间的通信，底层采用http协议，方法为POST，因此任何能发送http请求的工具均可以用作服务测试的客户端。</font>
+					</p>
+				</blockquote>
+				<p>如：向我们开发的<code>DemoService</code>发送开灯命令：</p>
+				<h4 id="linuxcurl">linux下使用curl命令</h4>
+				<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot;  -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; -d '{&quot;deviceId&quot;:1,&quot;action&quot;:&quot;on&quot;}' 'http://localHost:8080/controlLight'
 </code></pre>
 
-<h4 id="windowscurl">windows下使用curl命令请求</h4>
-<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot; -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; --data-ascii &quot;{\&quot;deviceId\&quot;:1,\&quot;action\&quot;:\&quot;on\&quot;}&quot; &quot;http://localHost:8080/controlLight&quot;
+				<h4 id="windowscurl">windows下使用curl命令请求</h4>
+				<pre><code class="curl">curl -v -X POST -H &quot;Content-Type:application/x-zc-object&quot; -H &quot;X-Zc-Major-Domain:ablecloud&quot; -H &quot;X-Zc-Sub-Domain:test&quot; -H &quot;X-Zc-User-Id:1&quot; --data-ascii &quot;{\&quot;deviceId\&quot;:1,\&quot;action\&quot;:\&quot;on\&quot;}&quot; &quot;http://localHost:8080/controlLight&quot;
 </code></pre>
 
-<p>其中<code>-H</code>指定头域ACContext的信息；<code>-d</code>指定的内容，是构造的ACMsg中的请求参数；<code>http://localHost:8080/controlLight</code>中的<code>ip:port</code>是你启动DemoService的主机和端口号；<code>controlLight</code>即为具体的方法，对应ACMsg设置的名字。</p>
-<blockquote>
-<p><font color="red"><strong>注：</strong>若在handleMsg接口的处理中使用<code>req.getContext()</code>获取请求的用户信息，则在构造http请求的时候，需要使用<code>-H</code>增加如下三个头域：<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code></font>。</p>
-</blockquote>
-<h2 id="_16">单步调试</h2>
-<p>集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。</p>
-<blockquote>
-<p>注意：使用单步调试需要更新java sdk到1.4.0以上</p>
-</blockquote>
-<ol>
-<li>
-<p>点击上方的三角形按钮后，点击Edit Configurations...
-<img alt="debug" src="../../pic/develop_guide/debug/1.png" /></p>
-</li>
-<li>
-<p>出现如下小窗口后，点击左上角＋号，选择Application
-<img alt="debug" src="../../pic/develop_guide/debug/2.png" /></p>
-</li>
-<li>
-<p>可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入<strong><code>com.ablecloud.cloudservice.ACServer</code></strong>，最后确认Use classpath of module项为你的工程的module，点击OK按钮
-<img alt="debug" src="../../pic/develop_guide/debug/3.png" /></p>
-</li>
-<li>
-<p>下面可以开始debug你的工程了，首先在您的工程代码处设置断点
-<img alt="debug" src="../../pic/develop_guide/debug/4.png" /></p>
-</li>
-<li>
-<p>设置完断点后，点击上方小甲虫按钮，如下图所示
-<img alt="debug" src="../../pic/develop_guide/debug/5.png" /></p>
-</li>
-<li>
-<p>可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
-<img alt="debug" src="../../pic/develop_guide/debug/6.png" /></p>
-</li>
-<li>
-<p>进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
-<img alt="debug" src="../../pic/develop_guide/debug/7.png" /></p>
-</li>
-<li>
-<p>发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
-<img alt="debug" src="../../pic/develop_guide/debug/8.png" /></p>
-</li>
-<li>
-<p>Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
-<img alt="debug" src="../../pic/develop_guide/debug/9.png" /></p>
-</li>
-<li>
-<p>切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的<code>this.writeResp(reqMsg,resp)</code>后，可以看到终端会自动出现程序处理后的返回结果，调试结束
-<img alt="debug" src="../../pic/develop_guide/debug/10.png" /></p>
-</li>
-</ol>
-<h1 id="store">Store存储接口示例</h1>
-<p>以数据集<code>test_data</code>为例，假定其分区键为<code>deviceId</code>（字符串型）；主键为<code>deviceId</code>（字符串型）和<code>timestamp</code>（整型）；其他字段包括<code>status</code>（字符串型）、<code>mode</code>（字符串型）、<code>speed</code>（整型）和<code>pm25</code>（浮点型）等。</p>
-<h2 id="create">Create</h2>
-<h3 id="primary-keysk-v">方式一：显示地传入primary keys的k-v对</h3>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).create(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L) // 这里是k-v对
+				<p>其中<code>-H</code>指定头域ACContext的信息；<code>-d</code>指定的内容，是构造的ACMsg中的请求参数；<code>http://localHost:8080/controlLight</code>中的<code>ip:port</code>是你启动DemoService的主机和端口号；<code>controlLight</code>即为具体的方法，对应ACMsg设置的名字。</p>
+				<blockquote>
+					<p>
+						<font color="red"><strong>注：</strong>若在handleMsg接口的处理中使用<code>req.getContext()</code>获取请求的用户信息，则在构造http请求的时候，需要使用<code>-H</code>增加如下三个头域：<code>X-Zc-Major-Domain</code>、<code>X-Zc-Sub-Domain</code>、<code>X-Zc-User-Id</code></font>。</p>
+				</blockquote>
+				<h2 id="_16">单步调试</h2>
+				<p>集成测试过程中，你可能还需要对UDS服务进行单步调试以解决定位到更具体的问题，此处截图以Intellij idea为例。</p>
+				<blockquote>
+					<p>注意：使用单步调试需要更新java sdk到1.4.0以上</p>
+				</blockquote>
+				<ol>
+					<li>
+						<p>点击上方的三角形按钮后，点击Edit Configurations...
+							<img alt="debug" src="../../pic/develop_guide/debug/1.png" /></p>
+					</li>
+					<li>
+						<p>出现如下小窗口后，点击左上角＋号，选择Application
+							<img alt="debug" src="../../pic/develop_guide/debug/2.png" /></p>
+					</li>
+					<li>
+						<p>可以看到如下页面，Name默认为Unnamed，修改为工程名字，如DemoService，同时编辑Main Class，输入<strong><code>com.ablecloud.cloudservice.ACServer</code></strong>，最后确认Use classpath of module项为你的工程的module，点击OK按钮
+							<img alt="debug" src="../../pic/develop_guide/debug/3.png" /></p>
+					</li>
+					<li>
+						<p>下面可以开始debug你的工程了，首先在您的工程代码处设置断点
+							<img alt="debug" src="../../pic/develop_guide/debug/4.png" /></p>
+					</li>
+					<li>
+						<p>设置完断点后，点击上方小甲虫按钮，如下图所示
+							<img alt="debug" src="../../pic/develop_guide/debug/5.png" /></p>
+					</li>
+					<li>
+						<p>可以看到IntelliJ下方出现的Debug工具栏，并有"Connected to the target VM,address..."字样，说明该工程已经进入debug模式
+							<img alt="debug" src="../../pic/develop_guide/debug/6.png" /></p>
+					</li>
+					<li>
+						<p>进入debug模式后，您需要通过终端发送指令驱动您的工程，进入接口测试
+							<img alt="debug" src="../../pic/develop_guide/debug/7.png" /></p>
+					</li>
+					<li>
+						<p>发送控制指令成功后，可以看到Debug工具栏会自动进入到断点处，可以看到终端发送请求的参数等，如下图所示，点击Debug栏的向下执行按钮（或快捷键F8）继续往下执行
+							<img alt="debug" src="../../pic/develop_guide/debug/8.png" /></p>
+					</li>
+					<li>
+						<p>Debug过程中，可以看到终端阻塞着等待程序的处理结果，如下图
+							<img alt="debug" src="../../pic/develop_guide/debug/9.png" /></p>
+					</li>
+					<li>
+						<p>切换到IntelliJ，继续点击向下执行，进入ACServletHandler.class的<code>this.writeResp(reqMsg,resp)</code>后，可以看到终端会自动出现程序处理后的返回结果，调试结束
+							<img alt="debug" src="../../pic/develop_guide/debug/10.png" /></p>
+					</li>
+				</ol>
+				<h1 id="store">Store存储接口示例</h1>
+				<p>以数据集<code>test_data</code>为例，假定其分区键为<code>deviceId</code>（字符串型）；主键为<code>deviceId</code>（字符串型）和<code>timestamp</code>（整型）；其他字段包括<code>status</code>（字符串型）、<code>mode</code>（字符串型）、<code>speed</code>（整型）和<code>pm25</code>（浮点型）等。</p>
+				<h2 id="create">Create</h2>
+				<h3 id="primary-keysk-v">方式一：显示地传入primary keys的k-v对</h3>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).create(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L) // 这里是k-v对
                     .put(&quot;status&quot;, &quot;run&quot;)
                     .put(&quot;mode&quot;, &quot;auto&quot;)
                     .put(&quot;speed&quot;, 45L)
@@ -1485,8 +1464,8 @@ start.cmd
                     .execute();
 </code></pre>
 
-<h3 id="primary-keys">方式二：传入primary keys的对象</h3>
-<pre><code class="java">ACObject pk = new ACObject();
+				<h3 id="primary-keys">方式二：传入primary keys的对象</h3>
+				<pre><code class="java">ACObject pk = new ACObject();
 pk.put(&quot;deviceId&quot;, &quot;12345&quot;);
 pk.put(&quot;timestamp&quot;, 1L);
 ac.store(&quot;test_data&quot;, context).create(pk)   // 这里是primary keys的对象
@@ -1497,9 +1476,9 @@ ac.store(&quot;test_data&quot;, context).create(pk)   // 这里是primary keys�
                     .execute();
 </code></pre>
 
-<h2 id="update">Update</h2>
-<p>更新数据，如果对应的主键不存在，则插入这条数据。</p>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).update(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+				<h2 id="update">Update</h2>
+				<p>更新数据，如果对应的主键不存在，则插入这条数据。</p>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).update(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
                     .put(&quot;status&quot;, &quot;run&quot;)
                     .put(&quot;mode&quot;, &quot;auto&quot;)
                     .put(&quot;speed&quot;, 45L)
@@ -1544,20 +1523,20 @@ ac.store(&quot;test_data&quot;, context).batchUpdate(&quot;deviceId&quot;, &quot
                     .execute();
 </code></pre>
 
-<h3 id="2speed2">用法2：将speed增加2，其它值不变</h3>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+				<h3 id="2speed2">用法2：将speed增加2，其它值不变</h3>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
                     .inc(&quot;speed&quot;, 2)
                     .execute();
 </code></pre>
 
-<h3 id="3speed2">用法3：将speed减少2，其它值不变</h3>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+				<h3 id="3speed2">用法3：将speed减少2，其它值不变</h3>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).modify(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
                     .dec(&quot;speed&quot;, 2)
                     .execute();
 </code></pre>
 
-<h2 id="find">Find</h2>
-<pre><code class="java">ACObject ao = ac.store(&quot;test_data&quot;, context)
+				<h2 id="find">Find</h2>
+				<pre><code class="java">ACObject ao = ac.store(&quot;test_data&quot;, context)
                     .find(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
                     .execute();
 String status = ao.get(&quot;status&quot;);
@@ -1565,39 +1544,41 @@ String mode = ao.get(&quot;mode&quot;);
 Long speed = ao.get(&quot;speed&quot;);
 </code></pre>
 
-<h2 id="scan">Scan</h2>
-<p>由于是分区数据集，在Scan时需要传入分区键值对，这里是<code>deviceId</code>及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如<code>ac.store("test_data", context).scan()...</code></p>
-<blockquote>
-<p><font color=red>务必注意</font>：
-1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。
-2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题</p>
-</blockquote>
-<h3 id="startlimitstartlimit">示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列</h3>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+				<h2 id="scan">Scan</h2>
+				<p>由于是分区数据集，在Scan时需要传入分区键值对，这里是<code>deviceId</code>及其值。注意如果是非分区的数据集，则调用scan接口时不需要传入参数，如<code>ac.store("test_data", context).scan()...</code></p>
+				<blockquote>
+					<p>
+						<font color=red>务必注意</font>： 1.存储服务为了保证服务整体可用性，限制单次查询最多返回1000条结果。 2.scan在使用orderBy,groupBy,sum,count,filter,max,min等操作符时，最好设定start和end，否则容易造成性能问题
+					</p>
+				</blockquote>
+				<h3 id="startlimitstartlimit">示例一：设定start和limit，由start开始正向扫描，返回limit数量的结果集，其中各数据记录按主键自然正序排列</h3>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
                     .start(&quot;timestamp&quot;, 1L)
                     .limit(10)
                     .execute();
 </code></pre>
 
-<h3 id="startendstartendstartend">示例二：设定start和end，由start开始正向扫描到end，返回start和end之间的结果集，其中各数据记录按主键自然正序排列</h3>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+				<h3 id="startendstartendstartend">示例二：设定start和end，由start开始正向扫描到end，返回start和end之间的结果集，其中各数据记录按主键自然正序排列</h3>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
                     .start(&quot;timestamp&quot;, 1L)
                     .end(&quot;timestamp&quot;, 10L)
                     .execute();
 </code></pre>
 
-<h3 id="endlimitendlimit">示例三：设定end和limit，由end开始逆向扫描，返回limit数量的数据集，注意其中各数据记录按主键倒序排列。</h3>
-<blockquote>
-<p><font color="brown"><strong>注：</strong>我们经常遇到的获取设备最新的n条数据的需求就可以用这个接口组合来实现。</font></p>
-</blockquote>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
+				<h3 id="endlimitendlimit">示例三：设定end和limit，由end开始逆向扫描，返回limit数量的数据集，注意其中各数据记录按主键倒序排列。</h3>
+				<blockquote>
+					<p>
+						<font color="brown"><strong>注：</strong>我们经常遇到的获取设备最新的n条数据的需求就可以用这个接口组合来实现。</font>
+					</p>
+				</blockquote>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&quot;)
                     .end(&quot;timestamp&quot;, 10L)
                     .limit(10)
                     .execute();
 </code></pre>
 
-<h3 id="_17">示例四：指定查询过滤器进行查询。</h3>
-<pre><code class="java">// 查询条件1：状态是正在运行并且转速大于等于300
+				<h3 id="_17">示例四：指定查询过滤器进行查询。</h3>
+				<pre><code class="java">// 查询条件1：状态是正在运行并且转速大于等于300
 ACFilter f1 = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;)
                     .whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
 
@@ -1614,8 +1595,8 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_18">示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高。</h3>
-<pre><code class="java">// 查询条件：状态是正在运行
+				<h3 id="_18">示例五：指定查询过滤器进行查询并排序，注意排序的各字段之间有优先级关系，在参数列表中越靠前优先级越高。</h3>
+				<pre><code class="java">// 查询条件：状态是正在运行
 ACFilter f = ac.filter().whereEqualTo(&quot;status&quot;, &quot;running&quot;);
 
 // 查询设备ID为&quot;12345&quot;的设备在一段时间内所有满足条件的数据记录并按照转速（正序）、PM2.5监控值（倒序）以及时间戳（倒序）排序
@@ -1629,8 +1610,8 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_19">示例六：分组并进行简单的数值统计。</h3>
-<pre><code class="java">/*
+				<h3 id="_19">示例六：分组并进行简单的数值统计。</h3>
+				<pre><code class="java">/*
  将设备ID为&quot;12345&quot;的设备在一段时间内的数据记录按照运行状态和控制模式分组，假设有四种情况：
  -------------------------
  | status    |    mode   |
@@ -1656,8 +1637,8 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h3 id="_20">示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求。</h3>
-<pre><code class="java">// 将设备ID为&quot;12345&quot;的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
+				<h3 id="_20">示例七：复杂示例，各接口之间限制比较少，可以灵活组合来满足需求。</h3>
+				<pre><code class="java">// 将设备ID为&quot;12345&quot;的设备在一段时间内满足查询条件的数据记录进行分组、排序和聚合
 ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
                     .whereLessThan(&quot;speed&quot;, 50L);
 ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
@@ -1676,11 +1657,12 @@ ac.store(&quot;test_data&quot;, context).scan(&quot;deviceId&quot;, &quot;12345&
                     .execute();
 </code></pre>
 
-<h2 id="fullscan">FullScan</h2>
-<p><font color= "red">注意：</font>fullscan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
-<p>分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！
-同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。</p>
-<pre><code class="java">// 延续Scan示例七中的查询条件进行全表所有分区的扫描
+				<h2 id="fullscan">FullScan</h2>
+				<p>
+					<font color="red">注意：</font>fullscan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
+				<p>分区数据集还可以调用FullScan接口得到全表扫描的Iterator，每次调用Iterator的next()方法得到下一个有数据记录存在的分区中的数据，注意各分区间不保证有序！ 同时注意全表扫描过程中Iterator会自动跳过没有数据的分区，整个扫描结束的条件是next()方法的返回值为空（null）。
+				</p>
+				<pre><code class="java">// 延续Scan示例七中的查询条件进行全表所有分区的扫描
 ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
                     .whereLessThan(&quot;speed&quot;, 50L);
 
@@ -1708,16 +1690,16 @@ while((zos = it.next()) != null) {
 }
 </code></pre>
 
-<h2 id="delete">Delete</h2>
-<p>删除一行数据(至少指定主键)</p>
-<pre><code class="java">ac.store(&quot;test_data&quot;, context).delete(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
+				<h2 id="delete">Delete</h2>
+				<p>删除一行数据(至少指定主键)</p>
+				<pre><code class="java">ac.store(&quot;test_data&quot;, context).delete(&quot;deviceId&quot;, &quot;12345&quot;, &quot;timestamp&quot;, 1L)
                     .put(&quot;speed&quot;, 10L)
                     .execute(); //删除主键为(deviceId: 12345, timestamp: 1L) 并且speed=10L的行
 </code></pre>
 
-<h2 id="batchdelete">BatchDelete</h2>
-<p>分区或者非分区的数据集都可以使用BatchDelete接口来批量删除数据记录。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。</p>
-<pre><code class="java">ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
+				<h2 id="batchdelete">BatchDelete</h2>
+				<p>分区或者非分区的数据集都可以使用BatchDelete接口来批量删除数据记录。对于分区数据集，类似scan接口，每次的批量删除操作也是在某个分区键的范围内进行的，同时可以定义一个或几个ACFilter作为删除的条件；对于非分区数据集，同样类似于scan接口，batchDelete接口也是无参的，同时必须定义一个或几个ACFilter进行条件删除。</p>
+				<pre><code class="java">ACFilter f1 = ac.filter().whereGreaterThan(&quot;speed&quot;, 0L)
                     .whereLessThan(&quot;speed&quot;, 50L);
 
 ACFilter f2 = ac.filter().whereGreaterThanOrEqualTo(&quot;speed&quot;, 300L);
@@ -1731,12 +1713,13 @@ ac.store(&quot;test_data&quot;, context).batchDelete(&quot;deviceId&quot;, &quot
                     .execute();
 </code></pre>
 
-<h2 id="simplefullscanscan">SimpleFullScan和Scan</h2>
-<p><strong>基于SimpleFullScan和Scan的全表分页浏览</strong></p>
-<p><font color= "red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
-<p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
-<h3 id="_21">非分区数据集</h3>
-<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
+				<h2 id="simplefullscanscan">SimpleFullScan和Scan</h2>
+				<p><strong>基于SimpleFullScan和Scan的全表分页浏览</strong></p>
+				<p>
+					<font color="red">注意：</font>SimpleFullScan会对数据库产生很大的压力，因此只允许在后台任务中使用。严禁在UDS中调用该接口。如果要在UDS中使用类似功能，请使用“scan”接口。</p>
+				<p>全表的分页浏览也是一个重要的需求。本需求可以通过SimpleFullScan和Scan接口来实现，下面分别给出分区数据集和非分区数据集的实现示例。</p>
+				<h3 id="_21">非分区数据集</h3>
+				<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
 int limit = 50;
 List&lt;ACObject&gt; zos;
 
@@ -1757,8 +1740,8 @@ while (zos.size() &gt;= limit + 1) {
 
 </code></pre>
 
-<h3 id="_22">分区数据集</h3>
-<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
+				<h3 id="_22">分区数据集</h3>
+				<pre><code class="java">// limit是每个分页的最大数据条数，举例为50
 int limit = 50;
 
 // 可以定义一些查询条件的过滤器
@@ -1912,8 +1895,8 @@ public void testGet() {
 }
 </code></pre>
 
-<h2 id="post">POST</h2>
-<pre><code class="java">@Test
+				<h2 id="post">POST</h2>
+				<pre><code class="java">@Test
 public void testPost() {
     ACHttpClient client = null;
     try {
@@ -1945,48 +1928,49 @@ public void testPost() {
 }
 </code></pre>
 
-<h1 id="error-code">Error Code</h1>
-<p>参考<a href="../../reference/error_code/">Reference - Error Code</a>。</p></div>
-            
-        </div>
+				<h1 id="error-code">Error Code</h1>
+				<p>参考<a href="../../reference/error_code/">Reference - Error Code</a>。</p>
+			</div>
 
-        <footer class="col-md-12">
-            <hr>
-            
-            <div class="clear footer">
-                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
-            </div>
-        </footer>
+		</div>
 
-        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
-        <script type="text/javascript" src="../../js/base.js"></script>
+		<footer class="col-md-12">
+			<hr>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            From here you can search these documents. Enter
-                            your search terms below.
-                        </p>
-                        <form role="form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                            </div>
-                        </form>
-                        <div id="mkdocs-search-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="clear footer">
+				&copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+			</div>
+		</footer>
 
-    </body>
+		<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../js/highlight.pack.js"></script>
+		<script type="text/javascript" src="../../js/base.js"></script>
+
+		<div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="exampleModalLabel">Search</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							From here you can search these documents. Enter your search terms below.
+						</p>
+						<form role="form">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+							</div>
+						</form>
+						<div id="mkdocs-search-results"></div>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
 </html>

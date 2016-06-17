@@ -1,348 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>设备-嵌入式系统 - AbleCloud 开发文档</title>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../css/highlight.css">
+		<link rel="shortcut icon" href="../../img/favicon.ico">
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
+		<title>设备-嵌入式系统 - AbleCloud 开发文档</title>
+
+		<link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+		<link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+		<link href="../../css/base.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../css/highlight.css">
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-        
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
-    <div class="container container-ac">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+			<div class="container container-ac">
 
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<!-- Collapsed navigation -->
+				<div class="navbar-header">
+
+					<!-- Expander button -->
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            
 
-            <!-- Main title -->
-            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
-        </div>
+					<!-- Main title -->
+					<a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+				</div>
 
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse" style="margin-left:293px;">
-            
-                <!-- Main navigation -->
-                <ul class="nav navbar-nav nav-ac">
-                
-                
-                    <li >
-                        <a href="../../introduction/" >基本介绍</a>
-                    </li>
-                
-                
-                
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../features/concepts/">基本概念</a>
-</li>
+				<!-- Expanded navigation -->
+				<div class="navbar-collapse collapse" style="margin-left:293px;">
 
-                        
-                            
-<li >
-    <a href="../../features/functions/">功能介绍</a>
-</li>
+					<!-- Main navigation -->
+					<ul class="nav navbar-nav nav-ac">
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../../develop_guide/android/">客户端-安卓</a>
-</li>
+						<li>
+							<a href="../../introduction/">基本介绍</a>
+						</li>
 
-                        
-                            
-<li >
-    <a href="../../develop_guide/iOS/">客户端-iOS</a>
-</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                            
-<li >
-    <a href="../../develop_guide/wechat/">客户端-微信</a>
-</li>
+								<li>
+									<a href="../../features/concepts/">基本概念</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../develop_guide/device/">设备-嵌入式系统</a>
-</li>
+								<li>
+									<a href="../../features/functions/">功能介绍</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../../develop_guide/device_android/">设备-安卓系统</a>
-</li>
+							</ul>
+						</li>
 
-                        
-                            
-<li >
-    <a href="../../develop_guide/cloud/">云端服务</a>
-</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        
-                            
-<li >
-    <a href="../android/">客户端-安卓</a>
-</li>
+								<li>
+									<a href="../../develop_guide/android/">客户端-安卓</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../iOS/">客户端-iOS</a>
-</li>
+								<li>
+									<a href="../../develop_guide/iOS/">客户端-iOS</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../wechat/">客户端-微信</a>
-</li>
+								<li>
+									<a href="../../develop_guide/wechat/">客户端-微信</a>
+								</li>
 
-                        
-                            
-<li class="active">
-    <a href="./">设备-嵌入式系统</a>
-</li>
+								<li>
+									<a href="../../develop_guide/device/">设备-嵌入式系统</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../device_android/">设备-安卓系统</a>
-</li>
+								<li>
+									<a href="../../develop_guide/device_android/">设备-安卓系统</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../cloud/">云端服务</a>
-</li>
+								<li>
+									<a href="../../develop_guide/cloud/">云端服务</a>
+								</li>
 
-                        
-                            
-<li >
-    <a href="../php/">PHP SDK</a>
-</li>
+							</ul>
+						</li>
 
-                        
-                            
-<li >
-    <a href="../java/">Java SDK</a>
-</li>
+						<li class="dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+							<ul class="dropdown-menu">
 
-                        
-                            
-<li >
-    <a href="../error_code/">Error Code</a>
-</li>
+								<li>
+									<a href="../android/">客户端-安卓</a>
+								</li>
 
-                        
-                        </ul>
-                    </li>
-                
-                
-                </ul>
-            
+								<li>
+									<a href="../iOS/">客户端-iOS</a>
+								</li>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
-            </ul>
-        </div>
+								<li>
+									<a href="../wechat/">客户端-微信</a>
+								</li>
 
-    </div>
+								<li class="active">
+									<a href="./">设备-嵌入式系统</a>
+								</li>
 
-</div>
+								<li>
+									<a href="../device_android/">设备-安卓系统</a>
+								</li>
 
-        <div class="container container-ac">
-            
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-    
-        
-        
-        
-        <li class="main active">
-            <a href="#_1">嵌入式设备开发参考</a>
-        </li>
-        
-    
-        
-        
-            
-                
-            
-        
-            
-                
-            
-        
-        
-        <li class="main">
-            <a href="#_2">设备应用开发框架<span class="main-set parent__2">+</span></a>
-        </li>
-        
-            
-            <li class="sub parent__2" style="display: none;"><a href="#_3">公共消息头格式说明</a></li>
-            
-        
-            
-            <li class="sub parent__2" style="display: none;"><a href="#ac_messagepayload">AC_MessagePayload</a></li>
-            
-        
-    
-        
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-            
-                
-            
-        
-        
-        <li class="main">
-            <a href="#_4">设备接口定义<span class="main-set parent__4">+</span></a>
-        </li>
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#_5">数据发送接口</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#_6">协议消息组包接口</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#klv">KLV协议解析包接口</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#klv_1">KLV协议内存分配接口</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#klv_2">KLV协议内存释放接口</a></li>
-            
-        
-            
-            <li class="sub parent__4" style="display: none;"><a href="#klv_3">KLV协议组包接口</a></li>
-            
-        
-    
-    </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+								<li>
+									<a href="../cloud/">云端服务</a>
+								</li>
 
-<h1 id="_1">嵌入式设备开发参考</h1>
-<h1 id="_2">设备应用开发框架</h1>
-<p>对于嵌入式WiFi设备，AbleCloud提供了设备主控MCU的SDK，SDK软件逻辑框图如下所示：</p>
-<p><img alt="device_arch" src="../../pic/reference/device_arch.png" /></p>
-<p>在使用SDK开发时，软件逻辑分如下三层：</p>
-<ol>
-<li>APP层：该层实现设备的控制过程，此部分由厂商自行实现。</li>
-<li>HAL层：该层属于硬件抽象层，它向上为APP提供控制逻辑接口，同时为API层提供回调函数，访问硬件资源。</li>
-<li>API层：负责协议控制逻辑的实现，协议报文的解析，协议报文的组装等。</li>
-</ol>
-<p>设备通过联网模块给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图</p>
-<p><img alt="device_message_arch" src="../../pic/reference/device_message_arch.png" /> </p>
-<p>说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AC_MessageHead</td>
-<td>公共消息头，所有消息都要包含此头</td>
-</tr>
-<tr>
-<td>AC_MessageOptHead</td>
-<td>可选消息控制头（Option项），提供扩展定义功能，此头是可选存在项，是否存在由AC_MessageHead中的OptNum字段指示</td>
-</tr>
-<tr>
-<td>AC_MessageOption</td>
-<td>可选消息控制体，用以提供可选消息的具体内容，和AC_MessageOptHead配对出现</td>
-</tr>
-<tr>
-<td>AC_MessagePayload</td>
-<td>具体的消息内容</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="_3">公共消息头格式说明</h2>
-<p><img alt="device_AC_MessageHead" src="../../pic/reference/device_AC_MessageHead.png" /> </p>
-<p>格式定义如下所示： </p>
-<pre><code>typedef struct
+								<li>
+									<a href="../php/">PHP SDK</a>
+								</li>
+
+								<li>
+									<a href="../java/">Java SDK</a>
+								</li>
+
+								<li>
+									<a href="../error_code/">Error Code</a>
+								</li>
+
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
+								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
+								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
+								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
+								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
+								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
+							</ul>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="container container-ac">
+
+			<div class="col-md-3">
+				<div class="bs-sidebar hidden-print affix well" role="complementary">
+					<ul class="nav bs-sidenav">
+
+						<li class="main active">
+							<a href="#_1">嵌入式设备开发参考</a>
+						</li>
+
+						<li class="main">
+							<a href="#_2">设备应用开发框架<span class="main-set parent__2">+</span></a>
+						</li>
+
+						<li class="sub parent__2" style="display: none;"><a href="#_3">公共消息头格式说明</a></li>
+
+						<li class="sub parent__2" style="display: none;"><a href="#ac_messagepayload">AC_MessagePayload</a></li>
+
+						<li class="main">
+							<a href="#_4">设备接口定义<span class="main-set parent__4">+</span></a>
+						</li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#_5">数据发送接口</a></li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#_6">协议消息组包接口</a></li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#klv">KLV协议解析包接口</a></li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#klv_1">KLV协议内存分配接口</a></li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#klv_2">KLV协议内存释放接口</a></li>
+
+						<li class="sub parent__4" style="display: none;"><a href="#klv_3">KLV协议组包接口</a></li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-9" role="main">
+
+				<h1 id="_1">嵌入式设备开发参考</h1>
+				<h1 id="_2">设备应用开发框架</h1>
+				<p>对于嵌入式WiFi设备，AbleCloud提供了设备主控MCU的SDK，SDK软件逻辑框图如下所示：</p>
+				<p><img alt="device_arch" src="../../pic/reference/device_arch.png" /></p>
+				<p>在使用SDK开发时，软件逻辑分如下三层：</p>
+				<ol>
+					<li>APP层：该层实现设备的控制过程，此部分由厂商自行实现。</li>
+					<li>HAL层：该层属于硬件抽象层，它向上为APP提供控制逻辑接口，同时为API层提供回调函数，访问硬件资源。</li>
+					<li>API层：负责协议控制逻辑的实现，协议报文的解析，协议报文的组装等。</li>
+				</ol>
+				<p>设备通过联网模块给云端发送的消息由消息头和消息payload构成。每个消息的构成说明见下图</p>
+				<p><img alt="device_message_arch" src="../../pic/reference/device_message_arch.png" /> </p>
+				<p>说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>AC_MessageHead</td>
+							<td>公共消息头，所有消息都要包含此头</td>
+						</tr>
+						<tr>
+							<td>AC_MessageOptHead</td>
+							<td>可选消息控制头（Option项），提供扩展定义功能，此头是可选存在项，是否存在由AC_MessageHead中的OptNum字段指示</td>
+						</tr>
+						<tr>
+							<td>AC_MessageOption</td>
+							<td>可选消息控制体，用以提供可选消息的具体内容，和AC_MessageOptHead配对出现</td>
+						</tr>
+						<tr>
+							<td>AC_MessagePayload</td>
+							<td>具体的消息内容</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="_3">公共消息头格式说明</h2>
+				<p><img alt="device_AC_MessageHead" src="../../pic/reference/device_AC_MessageHead.png" /> </p>
+				<p>格式定义如下所示： </p>
+				<pre><code>typedef struct
 {
     u8  Version;
     u8  MsgId;        //消息ID
@@ -353,307 +259,307 @@
 } AC_MessageHead;
 </code></pre>
 
-<p>AC_MessageHead中各个字段的说明：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Version</td>
-<td>协议版本号，AbleCloud的SDK已经自动填写</td>
-</tr>
-<tr>
-<td>MsgId</td>
-<td>消息序号，上报时填0；响应云端指令时必须填写云端指令携带的MsgId</td>
-</tr>
-<tr>
-<td>MsgCode</td>
-<td>消息类型，云端根据对应的代码区分设备上报的AC_MessagePayload的消息的类型。所有的消息类型定义见“消息类型表”</td>
-</tr>
-<tr>
-<td>OptNum</td>
-<td>用以指示AC_MessagePayload中AC_MessageOptHead和AC_MessageOption项的个数。OptNum大于等于0。</td>
-</tr>
-<tr>
-<td>Payloadlen</td>
-<td>AC_MessagePayload消息体的总长度，不包括AC_MessageHead。</td>
-</tr>
-<tr>
-<td>TotalMsgCrc</td>
-<td>消息内容AC_MessagePayload的CRC校验。采用16bit CRC-CCITT</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>消息类型表（MsgCode）如下：</p>
-<table>
-<thead>
-<tr>
-<th>MsgCode</th>
-<th>消息类型</th>
-<th>消息类型说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>AC_CODE_EQ_BEGIN</td>
-<td>设备启动通知</td>
-</tr>
-<tr>
-<td>1</td>
-<td>AC_CODE_EQ_DONE</td>
-<td>Wifi回应设备启动通知</td>
-</tr>
-<tr>
-<td>2</td>
-<td>AC_CODE_WIFI_CONNECTED</td>
-<td>Wifi链接成功通知</td>
-</tr>
-<tr>
-<td>3</td>
-<td>AC_CODE_WIFI_DISCONNECTED</td>
-<td>Wifi断链通知</td>
-</tr>
-<tr>
-<td>4</td>
-<td>AC_CODE_CLOUD_CONNECTED</td>
-<td>云端链接成功通知</td>
-</tr>
-<tr>
-<td>5</td>
-<td>AC_CODE_CLOUD_DISCONNECTED</td>
-<td>云端链接断链通知</td>
-</tr>
-<tr>
-<td>7</td>
-<td>AC_CODE_REGSITER</td>
-<td>注册接入请求</td>
-</tr>
-<tr>
-<td>8</td>
-<td>AC_CODE_REST</td>
-<td>重置wifi密码设置</td>
-</tr>
-<tr>
-<td>15</td>
-<td>AC_CODE_ACK</td>
-<td>回应消息</td>
-</tr>
-<tr>
-<td>16</td>
-<td>AC_CODE_ERR</td>
-<td>错误消息</td>
-</tr>
-<tr>
-<td>17</td>
-<td>AC_CODE_OTA_BEGIN</td>
-<td>OTA启动消息</td>
-</tr>
-<tr>
-<td>18</td>
-<td>AC_CODE_OTA_FILE_BEGIN</td>
-<td>OTA文件传输消息</td>
-</tr>
-<tr>
-<td>19</td>
-<td>AC_CODE_OTA_FILE_CHUNK</td>
-<td>OTA文件传输</td>
-</tr>
-<tr>
-<td>20</td>
-<td>AC_CODE_OTA_FILE_END</td>
-<td>OTA文件传输结束</td>
-</tr>
-<tr>
-<td>21</td>
-<td>AC_CODE_OTA_END</td>
-<td>OTA结束</td>
-</tr>
-<tr>
-<td>35</td>
-<td>AC_CODE_OTA_CONFIRM</td>
-<td>OTA确认升级</td>
-</tr>
-<tr>
-<td>36</td>
-<td>AC_CODE_UNBIND</td>
-<td>解除设备的绑定</td>
-</tr>
-<tr>
-<td>45</td>
-<td>AC_CODE_GATEWAY_CTRL</td>
-<td>网关控制消息</td>
-</tr>
-<tr>
-<td>46</td>
-<td>AC_CODE_LIST_SUBDEVICES_REQ</td>
-<td>查询所有子设备列表请求</td>
-</tr>
-<tr>
-<td>47</td>
-<td>AC_CODE_LIST_SUBDEVICES_RSP</td>
-<td>查询所有子设备列表请求</td>
-</tr>
-<tr>
-<td>48</td>
-<td>AC_CODE_IS_DEVICEONLINE_REQ</td>
-<td>查询子设备是否在线请求</td>
-</tr>
-<tr>
-<td>49</td>
-<td>AC_CODE_IS_DEVICEONLINE_RSP</td>
-<td>查询子设备是否在线响应</td>
-</tr>
-<tr>
-<td>50</td>
-<td>AC_CODE_LEAVE_DEVICE</td>
-<td>从网络中移除子设备</td>
-</tr>
-<tr>
-<td>60</td>
-<td>AC_CODE_KLV_RSP</td>
-<td>KLV响应消息</td>
-</tr>
-<tr>
-<td>61</td>
-<td>AC_CODE_JSON_RSP</td>
-<td>JSON响应消息</td>
-</tr>
-<tr>
-<td>63</td>
-<td>AC_CODE_EXT</td>
-<td>扩展消息</td>
-</tr>
-<tr>
-<td>64</td>
-<td>AC_EVENT_BASE</td>
-<td>设备自定义控制消息基址</td>
-</tr>
-<tr>
-<td>(64,200)</td>
-<td>AC_EVENT_CONTROL_AND_RESPONSE</td>
-<td>由服务或APP发给设备的控制消息以及设备的应答消息</td>
-</tr>
-<tr>
-<td>[200,255]</td>
-<td>AC_EVENT_DEVICE_REPORT</td>
-<td>设备上报信息</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="ac_messagepayload">AC_MessagePayload</h2>
-<p><img alt="device_AC_MessagePayload" src="../../pic/reference/device_AC_MessagePayload.png" /> </p>
-<p>AC_MessagePayload中的AC_MessageOptHead和AC_MessageOption是成对出现的可选项。由AC_MessageHead中的OptNum来定义这对可选项的数目。当OptNum为0时，AC_MessagePayload中就不存在此可选项。当OptNum大于0时，AC_MessageOptHead和AC_MessageOption在AC_MessagePayload中按照顺序依次排列。</p>
-<h3 id="ac_messageopthead">AC_MessageOptHead</h3>
-<p><img alt="device_AC_MessageOptHead" src="../../pic/reference/device_AC_MessageOptHead.png" /> </p>
-<p>格式定义如下所示：</p>
-<pre><code>typedef struct
+				<p>AC_MessageHead中各个字段的说明：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Version</td>
+							<td>协议版本号，AbleCloud的SDK已经自动填写</td>
+						</tr>
+						<tr>
+							<td>MsgId</td>
+							<td>消息序号，上报时填0；响应云端指令时必须填写云端指令携带的MsgId</td>
+						</tr>
+						<tr>
+							<td>MsgCode</td>
+							<td>消息类型，云端根据对应的代码区分设备上报的AC_MessagePayload的消息的类型。所有的消息类型定义见“消息类型表”</td>
+						</tr>
+						<tr>
+							<td>OptNum</td>
+							<td>用以指示AC_MessagePayload中AC_MessageOptHead和AC_MessageOption项的个数。OptNum大于等于0。</td>
+						</tr>
+						<tr>
+							<td>Payloadlen</td>
+							<td>AC_MessagePayload消息体的总长度，不包括AC_MessageHead。</td>
+						</tr>
+						<tr>
+							<td>TotalMsgCrc</td>
+							<td>消息内容AC_MessagePayload的CRC校验。采用16bit CRC-CCITT</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>消息类型表（MsgCode）如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>MsgCode</th>
+							<th>消息类型</th>
+							<th>消息类型说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>0</td>
+							<td>AC_CODE_EQ_BEGIN</td>
+							<td>设备启动通知</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>AC_CODE_EQ_DONE</td>
+							<td>Wifi回应设备启动通知</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>AC_CODE_WIFI_CONNECTED</td>
+							<td>Wifi链接成功通知</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>AC_CODE_WIFI_DISCONNECTED</td>
+							<td>Wifi断链通知</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>AC_CODE_CLOUD_CONNECTED</td>
+							<td>云端链接成功通知</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>AC_CODE_CLOUD_DISCONNECTED</td>
+							<td>云端链接断链通知</td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>AC_CODE_REGSITER</td>
+							<td>注册接入请求</td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>AC_CODE_REST</td>
+							<td>重置wifi密码设置</td>
+						</tr>
+						<tr>
+							<td>15</td>
+							<td>AC_CODE_ACK</td>
+							<td>回应消息</td>
+						</tr>
+						<tr>
+							<td>16</td>
+							<td>AC_CODE_ERR</td>
+							<td>错误消息</td>
+						</tr>
+						<tr>
+							<td>17</td>
+							<td>AC_CODE_OTA_BEGIN</td>
+							<td>OTA启动消息</td>
+						</tr>
+						<tr>
+							<td>18</td>
+							<td>AC_CODE_OTA_FILE_BEGIN</td>
+							<td>OTA文件传输消息</td>
+						</tr>
+						<tr>
+							<td>19</td>
+							<td>AC_CODE_OTA_FILE_CHUNK</td>
+							<td>OTA文件传输</td>
+						</tr>
+						<tr>
+							<td>20</td>
+							<td>AC_CODE_OTA_FILE_END</td>
+							<td>OTA文件传输结束</td>
+						</tr>
+						<tr>
+							<td>21</td>
+							<td>AC_CODE_OTA_END</td>
+							<td>OTA结束</td>
+						</tr>
+						<tr>
+							<td>35</td>
+							<td>AC_CODE_OTA_CONFIRM</td>
+							<td>OTA确认升级</td>
+						</tr>
+						<tr>
+							<td>36</td>
+							<td>AC_CODE_UNBIND</td>
+							<td>解除设备的绑定</td>
+						</tr>
+						<tr>
+							<td>45</td>
+							<td>AC_CODE_GATEWAY_CTRL</td>
+							<td>网关控制消息</td>
+						</tr>
+						<tr>
+							<td>46</td>
+							<td>AC_CODE_LIST_SUBDEVICES_REQ</td>
+							<td>查询所有子设备列表请求</td>
+						</tr>
+						<tr>
+							<td>47</td>
+							<td>AC_CODE_LIST_SUBDEVICES_RSP</td>
+							<td>查询所有子设备列表请求</td>
+						</tr>
+						<tr>
+							<td>48</td>
+							<td>AC_CODE_IS_DEVICEONLINE_REQ</td>
+							<td>查询子设备是否在线请求</td>
+						</tr>
+						<tr>
+							<td>49</td>
+							<td>AC_CODE_IS_DEVICEONLINE_RSP</td>
+							<td>查询子设备是否在线响应</td>
+						</tr>
+						<tr>
+							<td>50</td>
+							<td>AC_CODE_LEAVE_DEVICE</td>
+							<td>从网络中移除子设备</td>
+						</tr>
+						<tr>
+							<td>60</td>
+							<td>AC_CODE_KLV_RSP</td>
+							<td>KLV响应消息</td>
+						</tr>
+						<tr>
+							<td>61</td>
+							<td>AC_CODE_JSON_RSP</td>
+							<td>JSON响应消息</td>
+						</tr>
+						<tr>
+							<td>63</td>
+							<td>AC_CODE_EXT</td>
+							<td>扩展消息</td>
+						</tr>
+						<tr>
+							<td>64</td>
+							<td>AC_EVENT_BASE</td>
+							<td>设备自定义控制消息基址</td>
+						</tr>
+						<tr>
+							<td>(64,200)</td>
+							<td>AC_EVENT_CONTROL_AND_RESPONSE</td>
+							<td>由服务或APP发给设备的控制消息以及设备的应答消息</td>
+						</tr>
+						<tr>
+							<td>[200,255]</td>
+							<td>AC_EVENT_DEVICE_REPORT</td>
+							<td>设备上报信息</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="ac_messagepayload">AC_MessagePayload</h2>
+				<p><img alt="device_AC_MessagePayload" src="../../pic/reference/device_AC_MessagePayload.png" /> </p>
+				<p>AC_MessagePayload中的AC_MessageOptHead和AC_MessageOption是成对出现的可选项。由AC_MessageHead中的OptNum来定义这对可选项的数目。当OptNum为0时，AC_MessagePayload中就不存在此可选项。当OptNum大于0时，AC_MessageOptHead和AC_MessageOption在AC_MessagePayload中按照顺序依次排列。</p>
+				<h3 id="ac_messageopthead">AC_MessageOptHead</h3>
+				<p><img alt="device_AC_MessageOptHead" src="../../pic/reference/device_AC_MessageOptHead.png" /> </p>
+				<p>格式定义如下所示：</p>
+				<pre><code>typedef struct
 {
     u16 OptCode;
     u16 OptLen;
 }AC_MessageOptHead;
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OptCode</td>
-<td>定义AC_MessageOption中的消息类型。参考OptCode表</td>
-</tr>
-<tr>
-<td>OptLen</td>
-<td>可选Option的消息长度</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>可选Option类型定义表（OptCode表）：</p>
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>消息类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>AC_OPT_TRANSPORT</td>
-<td>设备ID透传</td>
-</tr>
-<tr>
-<td>1</td>
-<td>AC_OPT_SSESSION</td>
-<td>链接SSESSION</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="ac_messageoption">AC_MessageOption</h3>
-<p><img alt="device_AC_MessageOption" src="../../pic/reference/device_AC_MessageOption.png" /> </p>
-<p>AC_MessageOption是由AC_MessageOptHead定义的Option的内容。</p>
-<p><strong>AC_OPT_TRANSPORT消息</strong></p>
-<p>该消息用于将设备消息和消息一并上传，用来进行针对指定设备的控制管理。网关设备或子设备收到云端下发的子设备控制消息后，发送对应的回应消息时，也要包含该可选字段，消息定义如下：</p>
-<pre><code>typedef struct{
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>OptCode</td>
+							<td>定义AC_MessageOption中的消息类型。参考OptCode表</td>
+						</tr>
+						<tr>
+							<td>OptLen</td>
+							<td>可选Option的消息长度</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>可选Option类型定义表（OptCode表）：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>值</th>
+							<th>消息类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>0</td>
+							<td>AC_OPT_TRANSPORT</td>
+							<td>设备ID透传</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>AC_OPT_SSESSION</td>
+							<td>链接SSESSION</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ac_messageoption">AC_MessageOption</h3>
+				<p><img alt="device_AC_MessageOption" src="../../pic/reference/device_AC_MessageOption.png" /> </p>
+				<p>AC_MessageOption是由AC_MessageOptHead定义的Option的内容。</p>
+				<p><strong>AC_OPT_TRANSPORT消息</strong></p>
+				<p>该消息用于将设备消息和消息一并上传，用来进行针对指定设备的控制管理。网关设备或子设备收到云端下发的子设备控制消息后，发送对应的回应消息时，也要包含该可选字段，消息定义如下：</p>
+				<pre><code>typedef struct{
     u8 DomainId[8]; //子设备域名信息
     u8 DeviceId[16];//子设备物理id
 } AC_TransportInfo;
 </code></pre>
 
-<p><strong>AC_OPT_SSESSION消息</strong></p>
-<p>在APP和wifi模块直连模式下，会包含此字段，用以区分是链接SSESSION控制。设备收到直连控制消息后，发送对应的回应消息时，也要包含该可选字段。 消息定义如下：</p>
-<pre><code>typedef struct{
+				<p><strong>AC_OPT_SSESSION消息</strong></p>
+				<p>在APP和wifi模块直连模式下，会包含此字段，用以区分是链接SSESSION控制。设备收到直连控制消息后，发送对应的回应消息时，也要包含该可选字段。 消息定义如下：</p>
+				<pre><code>typedef struct{
     u32 u32SsessionId;
 }AC_SsessionInfo;
 AC_MessagePayload
 </code></pre>
 
-<h3 id="ac_messagepayload_1">AC_MessagePayload</h3>
-<p><img alt="device_AC_MessagePayload2" src="../../pic/reference/device_AC_MessagePayload2.png" /> </p>
-<p>是由AC_MessageHead中的MsgCode定义的消息类型的具体内容。各个类型的消息的具体内容如下：</p>
-<p><strong><em>Message code 0:  AC_CODE_EQ_BEGIN</em></strong> </p>
-<p>设备启动消息，无实际消息内容。设备启动后，择机发送该消息，用以探测wifi模块是否启动完成。</p>
-<p><strong><em>Message code 1:  AC_CODE_EQ_DONE</em></strong></p>
-<p>wifi启动回应，无实际消息内容。Wifi收到AC_CODE_EQ_BEGIN消息后，回复该消息。</p>
-<p><strong><em>Message code 2:  AC_CODE_WIFI_CONNECTED</em></strong></p>
-<p>Wifi链接成功通知回应，无实际消息内容。</p>
-<p><strong><em>Message code 3:  AC_CODE_WIFI_DISCONNECTED</em></strong></p>
-<p>Wifi断链通知，无实际消息内容。</p>
-<p><strong><em>Message code 4:  AC_CODE_CLOUD_CONNECTED</em></strong> </p>
-<p>Wifi链接云端成功通知，无实际消息内容。</p>
-<p><strong><em>Message code 5:  AC_CODE_CLOUD_DISCONNECTED</em></strong></p>
-<p>云端断链通知，无实际消息内容。</p>
-<p><strong><em>Message code 7:  AC_CODE_REGSITER</em></strong></p>
-<p>设备接入请求消息，用以设备发起接入云端的请求，wifi模块收到后，立即开始云端接入。 消息格式定义如下：</p>
-<pre><code>typedef struct 
+				<h3 id="ac_messagepayload_1">AC_MessagePayload</h3>
+				<p><img alt="device_AC_MessagePayload2" src="../../pic/reference/device_AC_MessagePayload2.png" /> </p>
+				<p>是由AC_MessageHead中的MsgCode定义的消息类型的具体内容。各个类型的消息的具体内容如下：</p>
+				<p><strong><em>Message code 0:  AC_CODE_EQ_BEGIN</em></strong> </p>
+				<p>设备启动消息，无实际消息内容。设备启动后，择机发送该消息，用以探测wifi模块是否启动完成。</p>
+				<p><strong><em>Message code 1:  AC_CODE_EQ_DONE</em></strong></p>
+				<p>wifi启动回应，无实际消息内容。Wifi收到AC_CODE_EQ_BEGIN消息后，回复该消息。</p>
+				<p><strong><em>Message code 2:  AC_CODE_WIFI_CONNECTED</em></strong></p>
+				<p>Wifi链接成功通知回应，无实际消息内容。</p>
+				<p><strong><em>Message code 3:  AC_CODE_WIFI_DISCONNECTED</em></strong></p>
+				<p>Wifi断链通知，无实际消息内容。</p>
+				<p><strong><em>Message code 4:  AC_CODE_CLOUD_CONNECTED</em></strong> </p>
+				<p>Wifi链接云端成功通知，无实际消息内容。</p>
+				<p><strong><em>Message code 5:  AC_CODE_CLOUD_DISCONNECTED</em></strong></p>
+				<p>云端断链通知，无实际消息内容。</p>
+				<p><strong><em>Message code 7:  AC_CODE_REGSITER</em></strong></p>
+				<p>设备接入请求消息，用以设备发起接入云端的请求，wifi模块收到后，立即开始云端接入。 消息格式定义如下：</p>
+				<pre><code>typedef struct 
 {
     u8  u8EqVersion[4];
     u8  u8ModuleKey[112];
@@ -662,85 +568,85 @@ AC_MessagePayload
 }AC_RegisterReq
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u8EqVersion</td>
-<td>设备版本信息，目前使用后3个字节确定目前设备版本，用于后续OTA升级。版本信息设备需要自行存储</td>
-</tr>
-<tr>
-<td>u8ModuleKey</td>
-<td>设备的秘钥Key，不同设备Key是唯一的</td>
-</tr>
-<tr>
-<td>u8Domain</td>
-<td>设备域信息，不同设备类型不一样</td>
-</tr>
-<tr>
-<td>u8DeviceId</td>
-<td>设备唯一标示</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>以上信息，都是在设备在出厂前进行相关的注册，注册成功后，自行存储。当设备启动后，先发送请求信息给wifi模块，wifi用来进行和云端认证。
-另外设备版本信息需要云端后台填写的版本号一致，否则云端会反复进行ota升级。</p>
-<p><strong><em>Message code 8:  AC_CODE_REST</em></strong></p>
-<p>Wifi密码重置情况，消息体为空，当局域网的wifi AP更换，或者密码更换后，重置密码。</p>
-<p><strong><em>Message code 15:  AC_CODE_ACK</em></strong></p>
-<p>OTA消息的正确回应，msgid要和请求消息一一对应。</p>
-<p><strong><em>Message code 16:  AC_CODE_ERR</em></strong></p>
-<p>OTA消息的错误回应，msgid要和请求消息一一对应。</p>
-<pre><code>typedef struct{
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>u8EqVersion</td>
+							<td>设备版本信息，目前使用后3个字节确定目前设备版本，用于后续OTA升级。版本信息设备需要自行存储</td>
+						</tr>
+						<tr>
+							<td>u8ModuleKey</td>
+							<td>设备的秘钥Key，不同设备Key是唯一的</td>
+						</tr>
+						<tr>
+							<td>u8Domain</td>
+							<td>设备域信息，不同设备类型不一样</td>
+						</tr>
+						<tr>
+							<td>u8DeviceId</td>
+							<td>设备唯一标示</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>以上信息，都是在设备在出厂前进行相关的注册，注册成功后，自行存储。当设备启动后，先发送请求信息给wifi模块，wifi用来进行和云端认证。 另外设备版本信息需要云端后台填写的版本号一致，否则云端会反复进行ota升级。
+				</p>
+				<p><strong><em>Message code 8:  AC_CODE_REST</em></strong></p>
+				<p>Wifi密码重置情况，消息体为空，当局域网的wifi AP更换，或者密码更换后，重置密码。</p>
+				<p><strong><em>Message code 15:  AC_CODE_ACK</em></strong></p>
+				<p>OTA消息的正确回应，msgid要和请求消息一一对应。</p>
+				<p><strong><em>Message code 16:  AC_CODE_ERR</em></strong></p>
+				<p>OTA消息的错误回应，msgid要和请求消息一一对应。</p>
+				<pre><code>typedef struct{
     u8 ErrorCode;
 }AC_ErrorMsg;
 </code></pre>
 
-<p><strong><em>Message code 17:  AC_CODE_OTA_BEGIN</em></strong></p>
-<p>OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 收到该消息后，设备端需要记录需要升级的文件数目，用于升级前的校验，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：</p>
-<pre><code>typedef struct
+				<p><strong><em>Message code 17:  AC_CODE_OTA_BEGIN</em></strong></p>
+				<p>OTA升级启动请求。其后按照每个文件的顺序，云端依次发送AC_CODE_OTA_FILE_BEGIN消息，若干AC_CODE_OTA_FILE_CHUNK消息，AC_CODE_OTA_FILE_END消息给设备。所有文件升级完成后，云端发送 AC_CODE_OTA_END。 收到该消息后，设备端需要记录需要升级的文件数目，用于升级前的校验，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。 消息格式定义如下：</p>
+				<pre><code>typedef struct
 {
     u8 u8FileNum;
     u8 u8Pad[3];
 }AC_OtaBeginReq;
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u8FileNum</td>
-<td>用以指示本次升级时文件个数</td>
-</tr>
-<tr>
-<td>u8Pad</td>
-<td>填充位，无意义</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong><em>Message code 18:  AC_CODE_OTA_FILE_BEGIN</em></strong></p>
-<p>OTA 文件传输启动请求，设备端需要记录本次升级文件的信息，用于升级前的文件校验,该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
-<pre><code>typedef struct
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>u8FileNum</td>
+							<td>用以指示本次升级时文件个数</td>
+						</tr>
+						<tr>
+							<td>u8Pad</td>
+							<td>填充位，无意义</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p><strong><em>Message code 18:  AC_CODE_OTA_FILE_BEGIN</em></strong></p>
+				<p>OTA 文件传输启动请求，设备端需要记录本次升级文件的信息，用于升级前的文件校验,该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+				<pre><code>typedef struct
 {
     u8 u8FileType;
     u8 u8FileVersion;
@@ -749,145 +655,145 @@ AC_MessagePayload
 }AC_OtaFileBeginReq;
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u8FileType</td>
-<td>文件类型</td>
-</tr>
-<tr>
-<td>u8FileVersion</td>
-<td>文件版本号</td>
-</tr>
-<tr>
-<td>u16TotalFileCrc</td>
-<td>整个文件的CRC</td>
-</tr>
-<tr>
-<td>u32FileTotalLen</td>
-<td>文件长度</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong><em>Message code 19:  AC_CODE_OTA_FILE_CHUNK</em></strong></p>
-<p>OTA 文件块传输请求，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
-<pre><code>typedef struct
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>u8FileType</td>
+							<td>文件类型</td>
+						</tr>
+						<tr>
+							<td>u8FileVersion</td>
+							<td>文件版本号</td>
+						</tr>
+						<tr>
+							<td>u16TotalFileCrc</td>
+							<td>整个文件的CRC</td>
+						</tr>
+						<tr>
+							<td>u32FileTotalLen</td>
+							<td>文件长度</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p><strong><em>Message code 19:  AC_CODE_OTA_FILE_CHUNK</em></strong></p>
+				<p>OTA 文件块传输请求，该消息执行成功需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。整个升级文件后，会被拆分成若干文件块进行传输。一次升级会有若干文件块。</p>
+				<pre><code>typedef struct
 {
     u32 u32Offset;
 }AC_OtaFileChunkReq;
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u32Offset</td>
-<td>文件偏移</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong><em>Message code 20:  AC_CODE_OTA_FILE_END</em></strong></p>
-<p>OTA升级文件传输结束消息，收到该消息后处理如下：</p>
-<p>1.校验已接收到的文件长度与AC_CODE_OTA_FILE_BEGIN消息存储的文件长度匹配</p>
-<p>2.校验已接收到的文件CRC与AC_CODE_OTA_FILE_BEGIN消息存储的文件CRC匹配  </p>
-<p>上述1、2 如果都执行成功，需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
-<p><strong><em>Message code 21:  AC_CODE_OTA_END </em></strong></p>
-<p>OTA升级结束消息，收到该消息后需要校验已收到的文件数目与AC_CODE_OTA_BEGIN是否对应，如果对应则给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
-<p><strong><em>Message code 23:  AC_CODE_ZOTA_FILE_BEGIN</em></strong></p>
-<p>关于wifi模块，目前支持两种方式的wifi模块的升级方式，一种方式是wifi模块和云端直接进行OTA交互，一种方式是设备先和云端进行交互，获得wifi模块的文件，然后再由设备触发wifi模块升级。 该消息用在第二种方式下wifi模块升级。 消息格式同AC_CODE_OTA_FILE_BEGIN。</p>
-<p><strong><em>Message code 24:  AC_CODE_ZOTA_FILE_CHUNK </em></strong></p>
-<p>消息格式同AC_CODE_OTA_FILE_CHUNK。</p>
-<p><strong><em>Message code 25:  AC_CODE_ZOTA_FILE_END</em></strong></p>
-<p>消息格式同AC_CODE_OTA_FILE_END。</p>
-<p><strong><em>Message code 26:  AC_CODE_ZOTA_END</em></strong></p>
-<p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。
-<strong><em>Message code 35:  AC_CODE_OTA_CONFIRM</em></strong></p>
-<p>OTA确认升级消息，收到该消息设备侧启动设备内部更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
-<strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
-<p>该消息用以设备解除自己绑定。相当于管理员删除设备。
-消息格式定义如下：</p>
-<pre><code>typedef struct
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>u32Offset</td>
+							<td>文件偏移</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p><strong><em>Message code 20:  AC_CODE_OTA_FILE_END</em></strong></p>
+				<p>OTA升级文件传输结束消息，收到该消息后处理如下：</p>
+				<p>1.校验已接收到的文件长度与AC_CODE_OTA_FILE_BEGIN消息存储的文件长度匹配</p>
+				<p>2.校验已接收到的文件CRC与AC_CODE_OTA_FILE_BEGIN消息存储的文件CRC匹配 </p>
+				<p>上述1、2 如果都执行成功，需要给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+				<p><strong><em>Message code 21:  AC_CODE_OTA_END </em></strong></p>
+				<p>OTA升级结束消息，收到该消息后需要校验已收到的文件数目与AC_CODE_OTA_BEGIN是否对应，如果对应则给云端回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+				<p><strong><em>Message code 23:  AC_CODE_ZOTA_FILE_BEGIN</em></strong></p>
+				<p>关于wifi模块，目前支持两种方式的wifi模块的升级方式，一种方式是wifi模块和云端直接进行OTA交互，一种方式是设备先和云端进行交互，获得wifi模块的文件，然后再由设备触发wifi模块升级。 该消息用在第二种方式下wifi模块升级。 消息格式同AC_CODE_OTA_FILE_BEGIN。</p>
+				<p><strong><em>Message code 24:  AC_CODE_ZOTA_FILE_CHUNK </em></strong></p>
+				<p>消息格式同AC_CODE_OTA_FILE_CHUNK。</p>
+				<p><strong><em>Message code 25:  AC_CODE_ZOTA_FILE_END</em></strong></p>
+				<p>消息格式同AC_CODE_OTA_FILE_END。</p>
+				<p><strong><em>Message code 26:  AC_CODE_ZOTA_END</em></strong></p>
+				<p>该消息用以wifi OTA升级完成后，通知设备，设备收到后，择机复位wifi模块，建议收到后，尽快断电复位wifi。
+					<strong><em>Message code 35:  AC_CODE_OTA_CONFIRM</em></strong></p>
+				<p>OTA确认升级消息，收到该消息设备侧启动设备内部更新固件流程，该消息需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。
+					<strong><em>Message code 36: AC_CODE_UNBIND</em></strong></p>
+				<p>该消息用以设备解除自己绑定。相当于管理员删除设备。 消息格式定义如下：
+				</p>
+				<pre><code>typedef struct
 {   
     u8 UnbindFlag;//0:解绑，1：重置wifi密码并解绑
     u8 Pad[3]; 
 }AC_GateWay_Ctrl;
 </code></pre>
 
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>UnbindFlag</td>
-<td>解绑功能标志位，0:解绑，1：重置wifi密码并解绑</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><strong><em>Message code 45:  AC_CODE_GATEWAY_CTRL</em></strong></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
-<p>消息格式定义如下：</p>
-<pre><code>typedef struct
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>UnbindFlag</td>
+							<td>解绑功能标志位，0:解绑，1：重置wifi密码并解绑</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><strong><em>Message code 45:  AC_CODE_GATEWAY_CTRL</em></strong></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p>该消息执行成功需要给回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+				<p>消息格式定义如下：</p>
+				<pre><code>typedef struct
 {   
 u32 timeWindows;
 }AC_GateWay_Ctrl;
 </code></pre>
 
-<p>字段说明如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>timeWindows</td>
-<td>打开网络，时间窗的单位和含义开发者自己定义</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p><strong><em>Message code 46:  AC_CODE_LIST_SUBDEVICES_REQ消息</em></strong></p>
-<p>云端下发到网关，请求罗列所有子设备。</p>
-<p><strong><em>Message code 47:  AC_CODE_LIST_SUBDEVICES_RSP</em></strong></p>
-<p>网关响应到云端所有子设备信息。</p>
-<pre><code>typedef struct
+				<p>字段说明如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>作用</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>timeWindows</td>
+							<td>打开网络，时间窗的单位和含义开发者自己定义</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<p><strong><em>Message code 46:  AC_CODE_LIST_SUBDEVICES_REQ消息</em></strong></p>
+				<p>云端下发到网关，请求罗列所有子设备。</p>
+				<p><strong><em>Message code 47:  AC_CODE_LIST_SUBDEVICES_RSP</em></strong></p>
+				<p>网关响应到云端所有子设备信息。</p>
+				<pre><code>typedef struct
 {
     u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
     u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
@@ -900,310 +806,311 @@ typedef struct
 }ZC_SubDeviceList;
 </code></pre>
 
-<p><strong><em>Message code 48:  AC_CODE_IS_DEVICEONLINE_REQ</em></strong></p>
-<p>云端下发到网关，查询子设备是否在线。</p>
-<pre><code>typedef struct
+				<p><strong><em>Message code 48:  AC_CODE_IS_DEVICEONLINE_REQ</em></strong></p>
+				<p>云端下发到网关，查询子设备是否在线。</p>
+				<pre><code>typedef struct
 {
     u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
     u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 }ZC_SubDeviceInfo;
 </code></pre>
 
-<p><strong><em>Message code 49:  AC_CODE_IS_DEVICEONLINE_RSP</em></strong></p>
-<p>网关响应到云端子设备在线信息。</p>
-<pre><code>typedef struct
+				<p><strong><em>Message code 49:  AC_CODE_IS_DEVICEONLINE_RSP</em></strong></p>
+				<p>网关响应到云端子设备在线信息。</p>
+				<pre><code>typedef struct
 {
     u8 u8DeviceOnline;  //Online ?
     u8 u8Pad[3];
 }ZC_DeviceOnline;
 </code></pre>
 
-<p><strong><em>Message code 50:   AC_CODE_LEAVE_DEVICE信息</em></strong></p>
-<p>云端下发给网关，将指定的子设备移除对应的网络。</p>
-<p>该消息成功需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
-<pre><code>typedef struct
+				<p><strong><em>Message code 50:   AC_CODE_LEAVE_DEVICE信息</em></strong></p>
+				<p>云端下发给网关，将指定的子设备移除对应的网络。</p>
+				<p>该消息成功需要回应AC_CODE_ACK消息，失败回应AC_CODE_ERR消息。</p>
+				<pre><code>typedef struct
 {
     u8 DomainId[AC_DOMAIN_LEN]; //用户ID，定长ZC_HS_DEVICE_ID_LEN（8字节），子设备域名信息
     u8 DeviceId[AC_HS_DEVICE_ID_LEN];//用户ID，定长ZC_HS_DEVICE_ID_LEN（16字节），子设备id
 }ZC_SubDeviceInfo;
 </code></pre>
 
-<p><strong><em>Message code 63:  AC_CODE_EXT </em></strong></p>
-<p>设备下发给联网模块，消息定义如下：</p>
-<pre><code>typedef struct
+				<p><strong><em>Message code 63:  AC_CODE_EXT </em></strong></p>
+				<p>设备下发给联网模块，消息定义如下：</p>
+				<pre><code>typedef struct
 {
     u8  ExtMsgCode;//扩展消息号
     u8  Pad[3];            
 }AC_ExtMessageHead;
 </code></pre>
 
-<p>扩展消息类型表（ExtMsgCode）如下：</p>
-<table>
-<thead>
-<tr>
-<th>ExtMsgCode</th>
-<th>消息类型</th>
-<th>消息类型说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>AC_CODE_EXT_REGSITER</td>
-<td>使用mac地址注册接入请求</td>
-</tr>
-<tr>
-<td>1</td>
-<td>AC_CODE_EXT_REBOOT</td>
-<td>WIFI设备重启</td>
-</tr>
-</tbody>
-</table>
-<p>AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体</p>
-<p><strong><em>Message code 64:  AC_EVENT_BASE </em></strong></p>
-<p>除了上述公共控制消息外，设备可以自行定义消息内容，所有消息类型的基址为AC_EVENT_BASE，根据需要进行累加，最多支持到255。</p>
-<p><font color="red">说明</font>：
-开区间(64,200)内的代码表示由服务或APP发给设备的控制消息以及设备的应答消息, 注意控制消息和应答消息使用不同的消息类型；闭区间[200,255]内的代码表示设备上报信息。</p>
-<h1 id="_4">设备接口定义</h1>
-<h2 id="_5">数据发送接口</h2>
-<p>函数定义</p>
-<pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
+				<p>扩展消息类型表（ExtMsgCode）如下：</p>
+				<table>
+					<thead>
+						<tr>
+							<th>ExtMsgCode</th>
+							<th>消息类型</th>
+							<th>消息类型说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>0</td>
+							<td>AC_CODE_EXT_REGSITER</td>
+							<td>使用mac地址注册接入请求</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>AC_CODE_EXT_REBOOT</td>
+							<td>WIFI设备重启</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>AC_CODE_EXT_REGSITER消息体同AC_CODE_REGSITER，AC_CODE_EXT_REBOOT无消息体</p>
+				<p><strong><em>Message code 64:  AC_EVENT_BASE </em></strong></p>
+				<p>除了上述公共控制消息外，设备可以自行定义消息内容，所有消息类型的基址为AC_EVENT_BASE，根据需要进行累加，最多支持到255。</p>
+				<p>
+					<font color="red">说明</font>： 开区间(64,200)内的代码表示由服务或APP发给设备的控制消息以及设备的应答消息, 注意控制消息和应答消息使用不同的消息类型；闭区间[200,255]内的代码表示设备上报信息。</p>
+				<h1 id="_4">设备接口定义</h1>
+				<h2 id="_5">数据发送接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">void AC_SendMessage(u8 *pu8Msg, u16 u16DataLen);
 </code></pre>
 
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pu8Msg</td>
-<td>u8 *</td>
-<td>待发送的数据缓存</td>
-</tr>
-<tr>
-<td>u16DataLen</td>
-<td>u16</td>
-<td>待发送的数据长度</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_6">协议消息组包接口</h2>
-<p>函数定义</p>
-<pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
+				<p>参数</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>pu8Msg</td>
+							<td>u8 *</td>
+							<td>待发送的数据缓存</td>
+						</tr>
+						<tr>
+							<td>u16DataLen</td>
+							<td>u16</td>
+							<td>待发送的数据长度</td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="_6">协议消息组包接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">void AC_BuildMessage(u8 u8MsgCode, u8 u8MsgId, 
     u8 *pu8Payload, u16 u16PayloadLen,
     AC_OptList *pstruOptList,
     u8 *pu8Msg, u16 *pu16Len);
 </code></pre>
 
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>u8MsgCode</td>
-<td>u8</td>
-<td>消息类型</td>
-</tr>
-<tr>
-<td>u8MsgId</td>
-<td>u8</td>
-<td>消息ID，上报写0，响应填写云端指令填写的msgid</td>
-</tr>
-<tr>
-<td>pu8Payload</td>
-<td>u8</td>
-<td>消息实际内容</td>
-</tr>
-<tr>
-<td>u16PayloadLen</td>
-<td>u16</td>
-<td>消息实际长度</td>
-</tr>
-<tr>
-<td>pstruOptList</td>
-<td>AC_OptList *</td>
-<td>Option项列表</td>
-</tr>
-<tr>
-<td>pu8Msg</td>
-<td>u8 *</td>
-<td>组好的消息数据的存储buffer</td>
-</tr>
-<tr>
-<td>pu16Len</td>
-<td>u8 *</td>
-<td>组好的数据长度</td>
-</tr>
-</tbody>
-</table>
-<h2 id="klv">KLV协议解析包接口</h2>
-<p>函数定义</p>
-<pre><code class="c">s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
+				<p>参数</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>u8MsgCode</td>
+							<td>u8</td>
+							<td>消息类型</td>
+						</tr>
+						<tr>
+							<td>u8MsgId</td>
+							<td>u8</td>
+							<td>消息ID，上报写0，响应填写云端指令填写的msgid</td>
+						</tr>
+						<tr>
+							<td>pu8Payload</td>
+							<td>u8</td>
+							<td>消息实际内容</td>
+						</tr>
+						<tr>
+							<td>u16PayloadLen</td>
+							<td>u16</td>
+							<td>消息实际长度</td>
+						</tr>
+						<tr>
+							<td>pstruOptList</td>
+							<td>AC_OptList *</td>
+							<td>Option项列表</td>
+						</tr>
+						<tr>
+							<td>pu8Msg</td>
+							<td>u8 *</td>
+							<td>组好的消息数据的存储buffer</td>
+						</tr>
+						<tr>
+							<td>pu16Len</td>
+							<td>u8 *</td>
+							<td>组好的数据长度</td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="klv">KLV协议解析包接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">s8 AC_GetKeyValue(u8 *pu8Playload, u16 u16PayloadLen, u8 u8Key,void *pValue,u16 *pu16Length,u8 *pu8Type)
 </code></pre>
 
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pu8Playload</td>
-<td>u8 *</td>
-<td>待解析的消息</td>
-</tr>
-<tr>
-<td>u16PayloadLen</td>
-<td>u16</td>
-<td>待解析的消息长度</td>
-</tr>
-<tr>
-<td>u8Key</td>
-<td>u8</td>
-<td>传入的键值</td>
-</tr>
-<tr>
-<td>pValue</td>
-<td>void *</td>
-<td>该键值对应的数据</td>
-</tr>
-<tr>
-<td>pu16Length</td>
-<td>u16 *</td>
-<td>该键值对应的数据长度</td>
-</tr>
-<tr>
-<td>pu8Type</td>
-<td>u8 *</td>
-<td>该键值对应的数据类型</td>
-</tr>
-</tbody>
-</table>
-<h2 id="klv_1">KLV协议内存分配接口</h2>
-<p>函数定义</p>
-<pre><code class="c">AC_KLV * AC_CreateObj()
+				<p>参数</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>pu8Playload</td>
+							<td>u8 *</td>
+							<td>待解析的消息</td>
+						</tr>
+						<tr>
+							<td>u16PayloadLen</td>
+							<td>u16</td>
+							<td>待解析的消息长度</td>
+						</tr>
+						<tr>
+							<td>u8Key</td>
+							<td>u8</td>
+							<td>传入的键值</td>
+						</tr>
+						<tr>
+							<td>pValue</td>
+							<td>void *</td>
+							<td>该键值对应的数据</td>
+						</tr>
+						<tr>
+							<td>pu16Length</td>
+							<td>u16 *</td>
+							<td>该键值对应的数据长度</td>
+						</tr>
+						<tr>
+							<td>pu8Type</td>
+							<td>u8 *</td>
+							<td>该键值对应的数据类型</td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="klv_1">KLV协议内存分配接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">AC_KLV * AC_CreateObj()
 </code></pre>
 
-<p>返回值： 申请出来的内存指针。</p>
-<h2 id="klv_2">KLV协议内存释放接口</h2>
-<p>函数定义</p>
-<pre><code class="c">void AC_FreeObj(AC_KLV * pOut);
+				<p>返回值： 申请出来的内存指针。</p>
+				<h2 id="klv_2">KLV协议内存释放接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">void AC_FreeObj(AC_KLV * pOut);
 </code></pre>
 
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pOut</td>
-<td>AC_KLV *</td>
-<td>需要释放的内存指针</td>
-</tr>
-</tbody>
-</table>
-<h2 id="klv_3">KLV协议组包接口</h2>
-<p>函数定义</p>
-<pre><code class="c">s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
+				<p>参数</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>pOut</td>
+							<td>AC_KLV *</td>
+							<td>需要释放的内存指针</td>
+						</tr>
+					</tbody>
+				</table>
+				<h2 id="klv_3">KLV协议组包接口</h2>
+				<p>函数定义</p>
+				<pre><code class="c">s8 AC_SetKeyValue(AC_KLV *pOut,u8 u8Key,u16 u16Length,u8 u8Type, void *pValue);
 </code></pre>
 
-<p>参数</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pOut</td>
-<td>AC_KLV *</td>
-<td>待组包数据的消息</td>
-</tr>
-<tr>
-<td>u8Key</td>
-<td>u8</td>
-<td>传入的键值</td>
-</tr>
-<tr>
-<td>pu16Length</td>
-<td>u16 *</td>
-<td>该键值对应的数据长度</td>
-</tr>
-<tr>
-<td>pu8Type</td>
-<td>u8 *</td>
-<td>该键值对应的数据类型</td>
-</tr>
-<tr>
-<td>pValue</td>
-<td>void *</td>
-<td>该键值对应的数据</td>
-</tr>
-</tbody>
-</table></div>
-            
-        </div>
+				<p>参数</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>pOut</td>
+							<td>AC_KLV *</td>
+							<td>待组包数据的消息</td>
+						</tr>
+						<tr>
+							<td>u8Key</td>
+							<td>u8</td>
+							<td>传入的键值</td>
+						</tr>
+						<tr>
+							<td>pu16Length</td>
+							<td>u16 *</td>
+							<td>该键值对应的数据长度</td>
+						</tr>
+						<tr>
+							<td>pu8Type</td>
+							<td>u8 *</td>
+							<td>该键值对应的数据类型</td>
+						</tr>
+						<tr>
+							<td>pValue</td>
+							<td>void *</td>
+							<td>该键值对应的数据</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-        <footer class="col-md-12">
-            <hr>
-            
-            <div class="clear footer">
-                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
-            </div>
-        </footer>
+		</div>
 
-        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
-        <script type="text/javascript" src="../../js/base.js"></script>
+		<footer class="col-md-12">
+			<hr>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            From here you can search these documents. Enter
-                            your search terms below.
-                        </p>
-                        <form role="form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                            </div>
-                        </form>
-                        <div id="mkdocs-search-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="clear footer">
+				&copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+			</div>
+		</footer>
 
-    </body>
+		<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../js/highlight.pack.js"></script>
+		<script type="text/javascript" src="../../js/base.js"></script>
+
+		<div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="exampleModalLabel">Search</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							From here you can search these documents. Enter your search terms below.
+						</p>
+						<form role="form">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+							</div>
+						</form>
+						<div id="mkdocs-search-results"></div>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
 </html>
