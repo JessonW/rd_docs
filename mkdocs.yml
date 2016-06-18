@@ -28,12 +28,19 @@ pages:
     - PHP SDK: reference/php.md
     - Java SDK: reference/java.md
     - Error Code: reference/error_code.md
+- 平台更新:
+    - 更新通知: updatelog/updateNotice.md
+    - APP SDK: updatelog/AppSDK.md
+    - 设备SDK: updatelog/deviceSDK.md
+    - 云对接SDK: updatelog/cloudDocingSDK.md
+    - 云端服务SDK: updatelog/cloudServerSDK.md
+    - 工具&文档: updatelog/tools_docs.md
 #- Q&A: QandA.md
 
 
 
-
-
+                  
+                                        
 
 #- 开发指导:
 #    - 安卓客户端: develop_guide/android.md
