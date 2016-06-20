@@ -1,215 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>云端服务 - AbleCloud 开发文档</title>
 
-		<link rel="shortcut icon" href="../../img/favicon.ico">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
-		<title>云端服务 - AbleCloud 开发文档</title>
-
-		<link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-		<link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-		<link href="../../css/base.css" rel="stylesheet">
-		<link rel="stylesheet" href="../../css/highlight.css">
-
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-	</head>
+        
+    </head>
 
-	<body>
+    <body>
 
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
-			<div class="container container-ac">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
-				<!-- Collapsed navigation -->
-				<div class="navbar-header">
-
-					<!-- Expander button -->
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
 
-					<!-- Main title -->
-					<a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
-				</div>
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+        </div>
 
-				<!-- Expanded navigation -->
-				<div class="navbar-collapse collapse" style="margin-left:293px;">
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
+                
+                
+                    <li >
+                        <a href="../../introduction/" >基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../features/concepts/">基本概念</a>
+</li>
 
-					<!-- Main navigation -->
-					<ul class="nav navbar-nav nav-ac">
+                        
+                            
+<li >
+    <a href="../../features/functions/">功能介绍</a>
+</li>
 
-						<li>
-							<a href="../../introduction/">基本介绍</a>
-						</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/android/">客户端-安卓</a>
+</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/iOS/">客户端-iOS</a>
+</li>
 
-								<li>
-									<a href="../../features/concepts/">基本概念</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/wechat/">客户端-微信</a>
+</li>
 
-								<li>
-									<a href="../../features/functions/">功能介绍</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/device/">设备-嵌入式系统</a>
+</li>
 
-							</ul>
-						</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/device_android/">设备-安卓系统</a>
+</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/cloud/">云端服务</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/android/">客户端-安卓</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../android/">客户端-安卓</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/iOS/">客户端-iOS</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../iOS/">客户端-iOS</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/wechat/">客户端-微信</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../wechat/">客户端-微信</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/device/">设备-嵌入式系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../device/">设备-嵌入式系统</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/device_android/">设备-安卓系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../device_android/">设备-安卓系统</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/cloud/">云端服务</a>
-								</li>
+                        
+                            
+<li class="active">
+    <a href="./">云端服务</a>
+</li>
 
-							</ul>
-						</li>
+                        
+                            
+<li >
+    <a href="../php/">PHP SDK</a>
+</li>
 
-						<li class="dropdown active">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../java/">Java SDK</a>
+</li>
 
-								<li>
-									<a href="../android/">客户端-安卓</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../error_code/">Error Code</a>
+</li>
 
-								<li>
-									<a href="../iOS/">客户端-iOS</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
 
-								<li>
-									<a href="../wechat/">客户端-微信</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
 
-								<li>
-									<a href="../device/">设备-嵌入式系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
 
-								<li>
-									<a href="../device_android/">设备-安卓系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
 
-								<li class="active">
-									<a href="./">云端服务</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
 
-								<li>
-									<a href="../php/">PHP SDK</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
 
-								<li>
-									<a href="../java/">Java SDK</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
 
-								<li>
-									<a href="../error_code/">Error Code</a>
-								</li>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
+            </ul>
+        </div>
 
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
-								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
-								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
-								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
-								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
-								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
-							</ul>
-						</li>
-					</ul>
+    </div>
 
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
-					</ul>
-				</div>
+</div>
 
-			</div>
+        <div class="container container-ac">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">云端服务开发参考</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_2">简介</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_3">服务框架发布库</a>
+        </li>
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_4">服务开发框架<span class="main-set parent__4">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#acserviceuds">ACService：UDS</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#accronjob">ACCronJob：后台任务</a></li>
+            
+        
+            
+            <li class="sub parent__4" style="display: none;"><a href="#ac">AC</a></li>
+            
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#_5">内嵌云端服务</a>
+        </li>
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#error-code">Error Code</a>
+        </li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
 
-		</div>
-
-		<div class="container container-ac">
-
-			<div class="col-md-3">
-				<div class="bs-sidebar hidden-print affix well" role="complementary">
-					<ul class="nav bs-sidenav">
-
-						<li class="main active">
-							<a href="#_1">云端服务开发参考</a>
-						</li>
-
-						<li class="main">
-							<a href="#_2">简介</a>
-						</li>
-
-						<li class="main">
-							<a href="#_3">服务框架发布库</a>
-						</li>
-
-						<li class="main">
-							<a href="#_4">服务开发框架<span class="main-set parent__4">+</span></a>
-						</li>
-
-						<li class="sub parent__4" style="display: none;"><a href="#acserviceuds">ACService：UDS</a></li>
-
-						<li class="sub parent__4" style="display: none;"><a href="#accronjob">ACCronJob：后台任务</a></li>
-
-						<li class="sub parent__4" style="display: none;"><a href="#ac">AC</a></li>
-
-						<li class="main">
-							<a href="#_5">内嵌云端服务</a>
-						</li>
-
-						<li class="main">
-							<a href="#error-code">Error Code</a>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-9" role="main">
-
-				<h1 id="_1">云端服务开发参考</h1>
-				<h1 id="_2">简介</h1>
-				<p>为了快速开发和业务逻辑相关的服务端程序，提高开发者效率，提高企业产品研发/上线的效率，AbleCloud提供了统一的服务开发框架，并内嵌了一系列由AbleCloud提供的云端服务。该框架支持开发者开发可运行于AbleCloud云端的自定义后端服务（UDS：User Defined Service）以及定时任务。AbleCloud的服务框架提供了高度封装的RPC服务，client与server通信时，client只需要知道service的名字，并提供相应的访问参数即可。当前AbleCloud提供Java版本的服务编程框架。本章介绍该框架提供的API。</p>
-				<h1 id="_3">服务框架发布库</h1>
-				<p>AbleCloud一期发布Java版本服务开发框架，其发布目录、文件如下所示</p>
-				<pre><code>/config
+<h1 id="_1">云端服务开发参考</h1>
+<h1 id="_2">简介</h1>
+<p>为了快速开发和业务逻辑相关的服务端程序，提高开发者效率，提高企业产品研发/上线的效率，AbleCloud提供了统一的服务开发框架，并内嵌了一系列由AbleCloud提供的云端服务。该框架支持开发者开发可运行于AbleCloud云端的自定义后端服务（UDS：User Defined Service）以及定时任务。AbleCloud的服务框架提供了高度封装的RPC服务，client与server通信时，client只需要知道service的名字，并提供相应的访问参数即可。当前AbleCloud提供Java版本的服务编程框架。本章介绍该框架提供的API。</p>
+<h1 id="_3">服务框架发布库</h1>
+<p>AbleCloud一期发布Java版本服务开发框架，其发布目录、文件如下所示</p>
+<pre><code>/config
     /cloudservice-conf.xml
 /lib
     /ablecloud-framework-1.4.0.jar
@@ -223,30 +344,28 @@ start.sh
 start.cmd
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color=red>注意事项：</font>
-					</p>
-					<ol>
-						<li>
-							<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.4.0.jar</code>和<code>ac-java-api-1.4.0.jar</code>。根据AbleCloud的发行状态，各jar包的版本号可能不同。</p>
-						</li>
-						<li>
-							<p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
-						</li>
-						<li>
-							<p>按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。</p>
-						</li>
-						<li>
-							<p>在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。</p>
-						</li>
-					</ol>
-				</blockquote>
-				<h1 id="_4">服务开发框架</h1>
-				<p>开发者在使用AbleCloud框架开发服务时，仅需简单的使用前文介绍的基础数据结构，将精力集中在实现应用的业务逻辑上，快速完成服务程序的开发/测试/发布。</p>
-				<h2 id="acserviceuds">ACService：UDS</h2>
-				<p>AbleCloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:</p>
-				<pre><code class="java">public abstract class ACService {
+<blockquote>
+<p><font color=red>注意事项：</font></p>
+<ol>
+<li>
+<p>所有依赖的第三方jar包，均放在lib文件夹下。其中包括AbleCloud的服务框架<code>ablecloud-framework-1.4.0.jar</code>和<code>ac-java-api-1.4.0.jar</code>。根据AbleCloud的发行状态，各jar包的版本号可能不同。</p>
+</li>
+<li>
+<p>开发者开发的自定义服务也编译成jar包，并置于lib文件夹下。同时，还要在pom.xml里的<code>&lt;additionalClasspathElement&gt;</code>标签下添加测试依赖。</p>
+</li>
+<li>
+<p>按上述目录结构将所有文件压缩、打包成一个ZIP文件（文件名可自取）。要求ZIP文件解压缩后能直接得到上述目录或文件，不能存在其它中间层次的目录。</p>
+</li>
+<li>
+<p>在开发者管理控制台中提交压缩后的ZIP文件，之后即可通过“上线”/“下线”功能管理UDS的运行状态。</p>
+</li>
+</ol>
+</blockquote>
+<h1 id="_4">服务开发框架</h1>
+<p>开发者在使用AbleCloud框架开发服务时，仅需简单的使用前文介绍的基础数据结构，将精力集中在实现应用的业务逻辑上，快速完成服务程序的开发/测试/发布。</p>
+<h2 id="acserviceuds">ACService：UDS</h2>
+<p>AbleCloud定义了抽象基类ACService，开发者只需要继承该类，并实现各个handler即可。定义如下:</p>
+<pre><code class="java">public abstract class ACService {
     // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
     protected AC ac;
 
@@ -377,8 +496,8 @@ start.cmd
 }
 </code></pre>
 
-				<p>ACDeviceReportInfo为设备上报的属性信息，包含如下：</p>
-				<pre><code class="java">public class ACDeviceReportInfo {
+<p>ACDeviceReportInfo为设备上报的属性信息，包含如下：</p>
+<pre><code class="java">public class ACDeviceReportInfo {
     //设备上下文
     private ACContext context;
     //设备逻辑id
@@ -390,15 +509,14 @@ start.cmd
 }
 </code></pre>
 
-				<p>在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。</p>
-				<blockquote>
-					<p>
-						<font color="red"><strong>注：</strong></font>通常情况下，开发者只需要重点实现<strong>handleMsg</strong>即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现<strong>handleDeviceMsg</strong>并根据不同code做不同处理 。</p>
-				</blockquote>
-				<h2 id="accronjob">ACCronJob：后台任务</h2>
-				<h4 id="accronjob_1">ACCronJob</h4>
-				<p>AbleCloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：</p>
-				<pre><code class="java">public abstract class ACCronJob {
+<p>在上述抽象类中，对开发者来说，总共有七个公共接口，其中init提供了默认实现。如果开发者实现的某一服务不需要和设备直接交互，则直接重载handleDeviceMsg为空实现即可。开发者可以将精力集中在handleMsg接口的实现中，该接口处理客户端请求，并作出响应。下文会对该抽象类进行详细介绍。</p>
+<blockquote>
+<p><font color="red"><strong>注：</strong></font>通常情况下，开发者只需要重点实现<strong>handleMsg</strong>即可。当然如果需要处理复杂的设备上报数据，则还需要重点实现<strong>handleDeviceMsg</strong>并根据不同code做不同处理 。</p>
+</blockquote>
+<h2 id="accronjob">ACCronJob：后台任务</h2>
+<h4 id="accronjob_1">ACCronJob</h4>
+<p>AbleCloud定义了云端定时任务的抽象基类ACCronJob。开发者需要继承该类，并实现其定义的抽象方法ACCronJob::run，即能完成定时任务的开发。ACCronJob的定义如下：</p>
+<pre><code class="java">public abstract class ACCronJob {
     // 开发者可以调用ac的相关接口直接调用AbleCloud提供的云服务。
     protected AC ac;
 
@@ -443,74 +561,74 @@ start.cmd
 }
 </code></pre>
 
-				<p>上述抽象类共定义了三个公共方法：ACCronJob::setEnv，ACCronJob::getAC，以及ACCronJob::run。其中，ACCronJob::run是定时任务的执行函数，要求开发者提供具体实现。</p>
-				<h4 id="crontab">Crontab</h4>
-				<p>Crontab定时规则由五部分组成，由左至右分别表示分、时、日、月、周。每个部分之间以空格字符分隔。如“30 12 * * *”表示“每天的12:30”。其中，第一个部分的“30”表示30分，第二个部分的“12”表示12点，后面三个部分的“*”分别表示每天、每月及一星期内的每一天。 规则中各部分的取值范围如下（参考http://linux.vbird.org/linux_basic/0430cron.php）：
-				</p>
-				<table>
-					<thead>
-						<tr>
-							<th>代表意义</th>
-							<th>分钟</th>
-							<th>小时</th>
-							<th>日期</th>
-							<th>月份</th>
-							<th>周</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>数字范围</td>
-							<td>0-59</td>
-							<td>0-23</td>
-							<td>1-31</td>
-							<td>1-12</td>
-							<td>0-7</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<p>其中，“周”的取值为0或7时都表示“星期天”。除此之外，还有如下辅助字符可用于定义时间规则。</p>
-				<table>
-					<thead>
-						<tr>
-							<th>辅助字符</th>
-							<th>代表意义</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>*（星号）</td>
-							<td>代表任何时刻。例如“30 12 * * *”中日、月、周都是*， 表示“不论何月、何日、星期几的 12:30”。</td>
-						</tr>
-						<tr>
-							<td>,（英文逗号）</td>
-							<td>用于指定确定的多个值。如果要定义“每天的3:10及6:10”可使用如下规则：“10 3,6 * * *”。</td>
-						</tr>
-						<tr>
-							<td>-（连字符）</td>
-							<td>用于指定时间范围。如果定义“每天的8点至12点之间每小时的20分钟”可使用如下规则：“20 8-12 * * *”。</td>
-						</tr>
-						<tr>
-							<td>/n（斜杠后跟数字）</td>
-							<td>表示每个n个单位。例如定义“每5分钟”时可使用如下规则：“*/5 * * * *”。</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<h2 id="ac">AC</h2>
-				<p>在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是AbleCloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：</p>
-				<pre><code class="java">public abstract class AC {
+<p>上述抽象类共定义了三个公共方法：ACCronJob::setEnv，ACCronJob::getAC，以及ACCronJob::run。其中，ACCronJob::run是定时任务的执行函数，要求开发者提供具体实现。</p>
+<h4 id="crontab">Crontab</h4>
+<p>Crontab定时规则由五部分组成，由左至右分别表示分、时、日、月、周。每个部分之间以空格字符分隔。如“30 12 * * *”表示“每天的12:30”。其中，第一个部分的“30”表示30分，第二个部分的“12”表示12点，后面三个部分的“*”分别表示每天、每月及一星期内的每一天。
+规则中各部分的取值范围如下（参考http://linux.vbird.org/linux_basic/0430cron.php）：</p>
+<table>
+<thead>
+<tr>
+<th>代表意义</th>
+<th>分钟</th>
+<th>小时</th>
+<th>日期</th>
+<th>月份</th>
+<th>周</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数字范围</td>
+<td>0-59</td>
+<td>0-23</td>
+<td>1-31</td>
+<td>1-12</td>
+<td>0-7</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其中，“周”的取值为0或7时都表示“星期天”。除此之外，还有如下辅助字符可用于定义时间规则。</p>
+<table>
+<thead>
+<tr>
+<th>辅助字符</th>
+<th>代表意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*（星号）</td>
+<td>代表任何时刻。例如“30 12 * * *”中日、月、周都是*， 表示“不论何月、何日、星期几的 12:30”。</td>
+</tr>
+<tr>
+<td>,（英文逗号）</td>
+<td>用于指定确定的多个值。如果要定义“每天的3:10及6:10”可使用如下规则：“10 3,6 * * *”。</td>
+</tr>
+<tr>
+<td>-（连字符）</td>
+<td>用于指定时间范围。如果定义“每天的8点至12点之间每小时的20分钟”可使用如下规则：“20 8-12 * * *”。</td>
+</tr>
+<tr>
+<td>/n（斜杠后跟数字）</td>
+<td>表示每个n个单位。例如定义“每5分钟”时可使用如下规则：“*/5 * * * *”。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ac">AC</h2>
+<p>在介绍ACService和ACCronJob的时候提到过重要的成员变量ac，ac实际上是AbleCloud对抽象服务框架AC的具体实现，其实现过程对开发者透明。通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。AC的定义如下：</p>
+<pre><code class="java">public abstract class AC {
     protected ACConfiguration config;
 
     /**
@@ -675,56 +793,54 @@ start.cmd
 }
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如<code>ac.accountMgrForTest(ac.newContext())</code></p>
-				</blockquote>
-				<h1 id="_5">内嵌云端服务</h1>
-				<p>顾名思义，内嵌云端服务，是指AbleCloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象可通过上节介绍的服务框架AC的相关接口获取。</p>
-				<p>API说明请参考<a href="../java/">Java SDK开发参考</a>。</p>
-				<h1 id="error-code">Error Code</h1>
-				<p>参考<a href="../error_code/">Reference-Error Code</a>。</p>
-			</div>
+<blockquote>
+<p><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如<code>ac.accountMgrForTest(ac.newContext())</code></p>
+</blockquote>
+<h1 id="_5">内嵌云端服务</h1>
+<p>顾名思义，内嵌云端服务，是指AbleCloud抽象并实现的多种通用后端服务，避免开发者重复开发这些基础设施。开发者可直接使用这些服务，降低应用服务程序的开发代价，提高开发效率。各个云端服务的对象可通过上节介绍的服务框架AC的相关接口获取。</p>
+<p>API说明请参考<a href="../java/">Java SDK开发参考</a>。</p>
+<h1 id="error-code">Error Code</h1>
+<p>参考<a href="../error_code/">Reference-Error Code</a>。</p></div>
+            
+        </div>
 
-		</div>
+        <footer class="col-md-12">
+            <hr>
+            
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
+        </footer>
 
-		<footer class="col-md-12">
-			<hr>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
-			<div class="clear footer">
-				&copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
-			</div>
-		</footer>
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../../js/highlight.pack.js"></script>
-		<script type="text/javascript" src="../../js/base.js"></script>
-
-		<div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h4 class="modal-title" id="exampleModalLabel">Search</h4>
-					</div>
-					<div class="modal-body">
-						<p>
-							From here you can search these documents. Enter your search terms below.
-						</p>
-						<form role="form">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-							</div>
-						</form>
-						<div id="mkdocs-search-results"></div>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</body>
-
+    </body>
 </html>
