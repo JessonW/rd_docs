@@ -1388,9 +1388,16 @@ ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:<#name#> bucket:<#bucket#> C
 
 ```objc
 //上传小型文件(图片, 视频)
-    UIImage *image = [UIImage imageNamed:@"1.pic_hd.jpg"];
+    UIImage *image = [UIImage imageNamed:<#imageName#>];
     NSData *data = UIImagePNGRepresentation(image);
-    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:@"image" bucket:@"bucket" CheckSum:0];
+    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:<#name#> bucket:<#bucket#> CheckSum:0];
+    /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * <p/>
+     * true:上传文件到Public空间，下载该文件时获取的url是永久有效的;
+     * false:上传文件到Private空间，获取的url是有有效期的，并且带有签名信息
+     */
+    fileInfo.isPublic = <#isPublic#>
     fileInfo.data = data;
     [[[ACFileManager alloc] init] uploadFileWithfileInfo:fileInfo progressCallback:^(float progress) {
         //上传进度
@@ -1457,9 +1464,17 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 ###二 代码示例
 
 ####1. 设置要上传图片的fileInfo
+
 ```objc
     ACFileManager *manager = [[ACFileManager alloc] init];
     ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:<#fileName#> bucket:<#bucket#> CheckSum:0];
+     /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * <p/>
+     * YES :上传文件到Public空间，下载该文件时获取的url是永久有效的;
+     * NO  :上传文件到Private空间，获取的url是有有效期的，并且带有签名信息
+     */
+    fileInfo.isPublic = YES;
     //开发者自行选择以下两种上传方式
     //大文件, 提供filePath, 支持断点续传
     fileInfo.filePath = [[NSBundle mainBundle] pathForResource:@"xxx.jpg" ofType:nil];
@@ -1479,8 +1494,17 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
     }];
 ```
 ####3. 获取上传的图片的url
+
 ```objc
-    //expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为永久有效，国外环境暂时不支持长期有效
+
+	 /**
+     * 获取下载url
+     *
+     * @param fileInfo   文件下载信息
+     * @param expireTime 如果文件上传到 public 空间，则expireTime这个参数无效，获取的url是永久有效的，且不带签名信息;
+     *  如果文件上传到 private 空间，所获取的访问/下载URL的有效时长。单位为秒。
+     *  如果取值为小于或等于0,国内环境表示80年，国外环境表示7天。
+     */
     [manager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error) {
         if (error) {
             //错误处理
