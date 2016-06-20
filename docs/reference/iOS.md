@@ -1121,6 +1121,16 @@ ablecloud提供了激活器供你使用，定义如下：
  */
 +(void)networkChangeHanderWithTimeout:(NSInteger)timeout SubDomainId:(NSInteger)subDomainId  Callback:(void(^)(NSArray * deviceArray,NSError *error))callback;
 
+/**
+ * 更新设备的密钥accessKey
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback  返回结果的监听回调
+ */
++ (void)updateAccessKeyWithSubDomain:(NSString *)subDomain
+                            deviceId:(NSInteger)deviceId
+                            callback:(void(^)(NSError *error))callback;
 @end
 
 ```

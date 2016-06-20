@@ -53,16 +53,16 @@
 							<a href="../../introduction/">基本介绍</a>
 						</li>
 
-						<li class="dropdown active">
+						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 
-								<li class="active">
-									<a href="./">基本概念</a>
+								<li>
+									<a href="../../features/concepts/">基本概念</a>
 								</li>
 
 								<li>
-									<a href="../functions/">功能介绍</a>
+									<a href="../../features/functions/">功能介绍</a>
 								</li>
 
 							</ul>
@@ -144,15 +144,15 @@
 						
 						
 						
-						<li class="dropdown">
+						<li class="dropdown active">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
-								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
-								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
-								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
-								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
-								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
+								<li><a href="../updateNotice/index.html">更新通知</a></li>
+								<li><a href="../AppSDK/index.html">APP SDK</a></li>
+								<li><a href="../deviceSDK/index.html">设备SDK</a></li>
+								<li><a href="../cloudDockingSDK/index.html">云对接SDK</a></li>
+								<li><a href="../cloudServerSDK/index.html">云端服务SDK</a></li>
+								<li><a href="../tools&docs/index.html">工具&文档</a></li>
 							</ul>
 						</li>
 
@@ -174,38 +174,119 @@
 					<ul class="nav bs-sidenav">
 
 						<li class="main active">
-							<a href="#_1">智能硬件架构模型</a>
+							<a href="#_key">密钥生成工具<span class="main-set parent__1">+</span></a>
 						</li>
+						<li class="sub parent__1" style="display: none;"><a href="#1_key_20">V2.0</a></li>
+						<li class="sub parent__1" style="display: none;"><a href="#2_key_12">V1.2</a></li>
+						<li class="sub parent__1" style="display: none;"><a href="#3_key_11">V1.1</a></li>
+						<li class="main">
+							<a href="#_online">产品上线操作说明<span class="main-set parent__2">+</span></a>
+						</li>
+						<li class="sub parent__2" style="display: none;"><a href="#1_online_20">V2.0</a></li>
+						<li class="sub parent__2" style="display: none;"><a href="#2_online_12">V1.2</a></li>
+						<li class="sub parent__2" style="display: none;"><a href="#3_online_11">V1.1</a></li>
 
 						<li class="main">
-							<a href="#ablecloud">AbleCloud的功能模块</a>
+							<a href="#_debug">调试工具<span class="main-set parent__3">+</span></a>
 						</li>
+						<li class="sub parent__3" style="display: none;"><a href="#1_debug_20">V2.0</a></li>
+						<li class="sub parent__3" style="display: none;"><a href="#2_debug_12">V1.2</a></li>
+						<li class="sub parent__3" style="display: none;"><a href="#3_debug_11">V1.1</a></li>
+
 
 					</ul>
 				</div>
 			</div>
 			<div class="col-md-9" role="main">
 
-				<h1 id="_1">智能硬件架构模型</h1>
-				<p><img alt="arch" src="../../pic/features/architecture.png" /> </p>
-				<p>上图是目前常见的智能硬件联网解决方案，从图中可以看到，整个硬件联网闭环存在三条消息流，分别表示不同的消息传递方式。</p>
-				<p><strong>远程控制 --</strong> 如图中绿色箭头所示，用户在终端(如智能手机上)，发送控制命令到AbleCloud的云端，云端再将消息发往具体的某一设备，实现远程控制。 比如在酷热的夏天，下班回家前，您可以提前通过手机将家里的空调打开，并及时的查看家里温度情况，当您回到家时即可享受一片清凉。
-				</p>
-				<p><strong>局域网通信 --</strong> 如图中棕色箭头所示，当用户和设备在同一局域网内时，用户可以通过终端直接向设备发送控制命令实现直连，从而实现更加可靠的控制。设备直连的优势在于，当家里的公网访问出现故障时，您的智能设备仍然具备可用性。
-				</p>
-				<p><strong>事件上报 --</strong> 如图中紫色箭头所示，设备可以将运行中的状态、传感器采集到的各类数据上传到云端进行数据存储，供厂商进行数据分析和设备管理，也可以将上报的消息推送数据给用户。例如，当家里的安防系统出现异常时，发送报警数据到云端，云端再将该消息通过设定好的方式推送给客户，让用户及时了解家里所发生的情况，方便及时处理和应对。
-				</p>
-				<h1 id="ablecloud">AbleCloud的功能模块</h1>
-				<p><strong>1. 联网固件</strong></p>
-				<p>智能设备需要连接到云端，因此需要联网模块实现和互联网的连接。目前最主流的和互联网连接的联网模块是WiFi模块。除此之外还有蜂窝网络、以太网等联网方式。使用AbleCloud云服务的设备需要保证能够正常连接到AbleCloud的云端。因此，对于主流的WiFi模块，AbleCloud提供了联网固件，只要将这些联网固件烧入这些厂商的WiFi模块，就能够实现设备到云端的连接。对于目前AbleCloud尚未适配的联网模块，AbleCloud提供模块和云端握手的SDK，厂商只需要对SDK中的底层驱动部分进行适配即可实现设备到云端的连接。对于安卓设备、linux设备等自带网卡的设备，AbleCloud提供了SDK，只要使用SDK开发，即可让设备连接到AbleCloud的云端。</p>
-				<p><strong>2. 客户端SDK</strong></p>
-				<p>为了帮助开发者快速开发智能设备的客户端应用，我们提供Android、iOS和微信三大平台的SDK。厂商可利用AbleCloud提供的SDK快速开发控制智能硬件的APP。SDK提供了”帐号管理”、“设备管理”、“局域网通信”、“定时任务”、“和云端通信”、“实时消息同步”、”OTA管理”、“推送服务”等功能。 </p>
-				<p><strong>3. 云服务引擎</strong></p>
-				<p>云服务引擎，是我们提供的PaaS平台，包括开发、测试框架以及完整的运行平台。云服务引擎上提供通用服务和开发运行平台。通用服务包括：帐号管理、设备管理、定时任务、实时消息同步、OTA、推送服务、第三方云对接、存储管理、虚拟设备、设备调试等。对于通用服务，只需要调用SDK相关的接口或者在管理后台页面上操作即可使用，不需要在云端进行任何开发。</p>
-				<p>通用服务能满足智能联网设备的通用需求。对于个性化、定制化需求，我们提供云端服务开发引擎和运行平台,厂商也可以快速开发出自己的定制云端服务。</p>
-				<p><strong><em>云服务开发引擎</em></strong> AbleCloud封装了开发Web服务的框架，厂商的开发人员利用这个开发框架，可以完全不用关注服务和APP端、和设备端RPC交互的细节，而是将全部精力集中在服务具体业务逻辑的实现上。开发框架提供了完整的web service框架，让您用很少的代码即可实现一个服务，并提供了完备的单元测试、集成测试方案和工具包。</p>
-				<p><strong><em>云服务运行平台</em></strong> 当厂商的自定义云端服务开发完毕并测试完成后，开发人员只需要将服务可执行程序提交到AbleCloud提供的PaaS平台，之后AbleCloud将自动完成发布、运维、日志收集、故障自动修复、服务监控报警、定时任务等工作。
-				</p>
+				<p><h1 id="_key">密钥生成工具</h1></p>                                   
+                                                                                        
+				<p><h2 id="1_key_20">V2.0</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+
+				<p><h2 id="2_key_12">V1.2</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+
+				<p><h2 id="3_key_11">V1.1</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+                                                                                  
+				<p><h1 id="_online">产品上线操作说明</h1></p>                                     
+				                                                                  
+				<p><h2 id="1_online_20">V2.0</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+				
+				<p><h2 id="2_online_12">V1.2</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+
+				<p><h2 id="3_online_11">V1.1</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+				
+                                                                                  
+				<p><h1 id="_debug">调试工具</h1></p>                                    
+				                                                                  
+				<p><h2 id="1_debug_20">V2.0</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+				
+				<p><h2 id="2_debug_12">V1.2</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+
+				<p><h2 id="3_debug_11">V1.1</h2><span class="flr">2016年6月6日</span></p>
+				<p>功能更新：</p>
+				<p>1.功能1</p>
+				<p>2.功能2</p>
+				<p>接口更新：</p>
+				<p>1.接口1</p>
+				<p>2.接口2</p>
+				<hr />
+			
 			</div>
 
 		</div>

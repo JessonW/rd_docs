@@ -372,3 +372,15 @@ li {
     line-height: 1.6em;
 	font-size: 16px;
 }
+a{color:#000;text-decoration:none;vertical-align:baseline;background:transparent;}
+a:hover{cursor:pointer;}
+.flr{
+	float:right;
+}
+.updateLog .title {font-size:18px;color:#317eac; margin-bottom:5px; display:block}
+.updateLog p{ line-height:1.2em; margin::5px 0 5px 0px}
+
+
+
+
+

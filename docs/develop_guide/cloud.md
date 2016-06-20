@@ -1030,6 +1030,39 @@ ac.store("test_data", context).update("deviceId", "12345", "timestamp", 1L)
                     .execute();
 ```
 
+##BatchUpdate
+根据适合条件批量更新数据。
+
+###用法一:将deviceId为"12345"并且speed=5L的speed改为6L
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .set("speed", 6L)
+                    .execute();
+```
+
+###用法二:将deviceId为"12345"并且speed=5L的speed加2
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .inc("speed", 2L)
+                    .execute();
+```
+
+###用法三:将deviceId为"12345"并且speed=5L的speed减2
+```java
+ACFilter f1 = ac.filter().whereEqualTo("speed", 5L);
+
+ac.store("test_data", context).batchUpdate("deviceId", "12345")
+                    .where(f1)
+                    .dec("speed", 2L)
+                    .execute();
+```
+
 ##Modify
 更新已有数据，如果对应数据行不存在，则报错。
 
@@ -1299,6 +1332,129 @@ while ((zos = it.next(limit)) != null) {
 ```
 ##其它
 `delete/update/replace`的接口使用请参见上面的接口说明，使用方式类似，这里不一一举例了。
+
+
+#排行榜接口示例
+以跑步步数排行榜run_set为例，需要每小时和每天统计用户的排行
+
+##创建排行榜实例
+指定排行榜名字，所在时区，时间间隔和保留版本数
+
+![](../pic/develop_guide/ranking_create.png)
+
+##Insert
+插入一条数据，如果在同一个时间段内，下一条数据会覆盖上一条数据。
+
+```java
+ac.rankingMgr(context, "run_set").insert("key1", 1, 1463732401);
+```
+
+##Inc
+更新一条数据，如果在同一个时间段内，下一条数据会累加到上一条数据。
+```java
+ac.rankingMgr(context, "run_set").inc("key1", 1, 1463732401);
+```
+
+##Get
+
+###用法一 
+查询2016-05-20 16:00:00~2016-05-20 17:00:00 key1的排名(反序)和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, "key1");
+```
+
+###用法二
+
+查询当前小时，key1的排名（反序）和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 0, ACRanking::DESC,  "key1");
+```
+
+###用法三
+查询上一个小时，key1的排名（反序）和值
+```java
+ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 1, ACRanking::DESC,  "key1");
+```
+
+##Scan
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00 前十名(反序)
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 10);
+```
+
+###用法二
+查询当前小时，前十名（反序）
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 10);
+```
+
+###用法三
+查询上一个小时，前十名（反序）
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 10);
+```
+
+##Ranks
+
+###用法一
+查询2016-05-20 16:00:00前3个小时(包含2016-05-20 16:00:00这个小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 3, "key1");
+```
+
+###用法二
+查询当前小时前3个小时(包含当前小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 3, "key1");
+```
+
+###用法三
+查询上一个小时前3个小时（包含上一个小时），keys在各个小时的排名，如果值不存在，则排名为-1
+```java
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 3, "key1");
+```
+
+##TotalCount
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0);
+```
+
+###用法二
+查询当前小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 0);
+```
+
+###用法三
+查询上一个小时的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 1);
+```
+
+##RangeCount
+
+###用法一
+查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时，值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0, 1, 3);
+```
+
+###用法二
+查询当前小时,值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 0, 1, 3);
+```
+
+###用法三
+查询上个小时,值在1和3这个范围的数据总量
+```java
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 1, 1, 3);
+```
 
 #UDS访问外网示例
 UDS运行于AbleCloud云端的内部环境中，可以使用AbleCloud提供的正向代理服务（由类ACHttpClient提供访问接口）访问外部网络。
