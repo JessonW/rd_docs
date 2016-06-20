@@ -187,6 +187,51 @@
                     </li>
                 
                 
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -1523,6 +1568,16 @@ typedef NS_ENUM(NSUInteger, ACLoudLibRegion) {
  */
 +(void)networkChangeHanderWithTimeout:(NSInteger)timeout SubDomainId:(NSInteger)subDomainId  Callback:(void(^)(NSArray * deviceArray,NSError *error))callback;
 
+/**
+ * 更新设备的密钥accessKey
+ *
+ * @param subDomain 子域名，如djj（豆浆机）
+ * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+ * @param callback  返回结果的监听回调
+ */
++ (void)updateAccessKeyWithSubDomain:(NSString *)subDomain
+                            deviceId:(NSInteger)deviceId
+                            callback:(void(^)(NSError *error))callback;
 @end
 
 </code></pre>

@@ -187,6 +187,51 @@
                     </li>
                 
                 
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -1020,6 +1065,13 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
 <h4 id="acfileinfo">ACFileInfo</h4>
 <p>说明：文件管理中获取下载url或上传文件时用来表示文件信息，定义如下：</p>
 <pre><code class="java">public class ACFileInfo {
+    /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * &lt;p/&gt;
+     * true:上传文件到 Public 空间，下载该文件时获取的url是永久有效的;
+     * false:上传文件到 Private 空间，获取的url是有有效期的，并且带有签名信息
+     */
+    private boolean isPublic;
     //自定义文件目录，如ota
     private String bucket;
     //文件名
@@ -1031,8 +1083,10 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
     //权限管理
     private ACACL acl;
 
-    public ACFileInfo(String bucket, String filename) {
-    }
+    //默认上传到 Private空间，isPublic＝false
+    public ACFileInfo(String bucket, String filename) {}
+
+    public ACFileInfo(boolean isPublic, String bucket, String filename) {}
 }
 </code></pre>
 
@@ -1875,7 +1929,7 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      *
      * @param subDomain        子域名，如djj（豆浆机）
      * @param deviceId         设备id（这里的id，是调用list接口返回的id，不是制造商提供的id），不提供时传0
-     * @param physicalDeviceId 设备物理id（制造商提供的）
+     * @param physicalDeviceId 设备物理id（制造商提供的）,不提供时传&quot;&quot;
      * @param callback         返回结果的监听回调
      */
     public void isDeviceOnline(String subDomain, long deviceId, String physicalDeviceId, PayloadCallback&lt;Boolean&gt; callback);
@@ -1891,10 +1945,19 @@ ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发�
      * 查询设备是否被绑定
      *
      * @param subDomain        子域名，如djj（豆浆机）
-     * @param physicalDeviceId 设备id（制造商提供的），不提供时传“”
+     * @param physicalDeviceId 设备id（制造商提供的）
      * @param callback         返回结果的监听回调
      */
     public void isDeviceBound(String subDomain, String physicalDeviceId, PayloadCallback&lt;Boolean&gt; callback);
+
+    /**
+     * 更新设备的密钥accessKey
+     *
+     * @param subDomain 子域名，如djj（豆浆机）
+     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param callback  返回结果的监听回调
+     */
+    public void resetDeviceToken(String subDomain, long deviceId, VoidCallback callback);
 
     /**
      * 绑定网关
@@ -2658,7 +2721,9 @@ public static void findLocalDevice(int timeout, PaylodCallback&lt;List&lt;ACDevi
      * 获取下载url
      *
      * @param fileInfo   文件下载信息
-     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
+     * @param expireTime 如果文件上传到 public 空间，则expireTime这个参数无效，获取的url是永久有效的，且不带签名信息;
+     *                   如果文件上传到 private 空间，所获取的访问/下载URL的有效时长。单位为秒。
+     *                   如果取值为小于或等于0,国内环境表示80年，国外环境表示7天。
      */
     public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback&lt;String&gt; callback);
 

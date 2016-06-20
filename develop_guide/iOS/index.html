@@ -187,6 +187,51 @@
                     </li>
                 
                 
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -1681,9 +1726,16 @@ table.primaryKey = primaryKey;
 
 <h4 id="2_9">2)、上传</h4>
 <pre><code class="objc">//上传小型文件(图片, 视频)
-    UIImage *image = [UIImage imageNamed:@&quot;1.pic_hd.jpg&quot;];
+    UIImage *image = [UIImage imageNamed:&lt;#imageName#&gt;];
     NSData *data = UIImagePNGRepresentation(image);
-    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:@&quot;image&quot; bucket:@&quot;bucket&quot; CheckSum:0];
+    ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:&lt;#name#&gt; bucket:&lt;#bucket#&gt; CheckSum:0];
+    /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * &lt;p/&gt;
+     * true:上传文件到Public空间，下载该文件时获取的url是永久有效的;
+     * false:上传文件到Private空间，获取的url是有有效期的，并且带有签名信息
+     */
+    fileInfo.isPublic = &lt;#isPublic#&gt;
     fileInfo.data = data;
     [[[ACFileManager alloc] init] uploadFileWithfileInfo:fileInfo progressCallback:^(float progress) {
         //上传进度
@@ -1749,6 +1801,13 @@ table.primaryKey = primaryKey;
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
 <pre><code class="objc">    ACFileManager *manager = [[ACFileManager alloc] init];
     ACFileInfo *fileInfo = [ACFileInfo fileInfoWithName:&lt;#fileName#&gt; bucket:&lt;#bucket#&gt; CheckSum:0];
+     /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * &lt;p/&gt;
+     * YES :上传文件到Public空间，下载该文件时获取的url是永久有效的;
+     * NO  :上传文件到Private空间，获取的url是有有效期的，并且带有签名信息
+     */
+    fileInfo.isPublic = YES;
     //开发者自行选择以下两种上传方式
     //大文件, 提供filePath, 支持断点续传
     fileInfo.filePath = [[NSBundle mainBundle] pathForResource:@&quot;xxx.jpg&quot; ofType:nil];
@@ -1769,7 +1828,15 @@ table.primaryKey = primaryKey;
 </code></pre>
 
 <h4 id="3-url">3. 获取上传的图片的url</h4>
-<pre><code class="objc">    //expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为永久有效，国外环境暂时不支持长期有效
+<pre><code class="objc">
+     /**
+     * 获取下载url
+     *
+     * @param fileInfo   文件下载信息
+     * @param expireTime 如果文件上传到 public 空间，则expireTime这个参数无效，获取的url是永久有效的，且不带签名信息;
+     *  如果文件上传到 private 空间，所获取的访问/下载URL的有效时长。单位为秒。
+     *  如果取值为小于或等于0,国内环境表示80年，国外环境表示7天。
+     */
     [manager getDownloadUrlWithfile:fileInfo ExpireTime:0 payloadCallback:^(NSString *urlString, NSError *error) {
         if (error) {
             //错误处理

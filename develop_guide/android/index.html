@@ -187,6 +187,51 @@
                     </li>
                 
                 
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
                 </ul>
             
 
@@ -2188,8 +2233,9 @@ fileMgr.uploadFile(fileInfo, new ProgressCallback() {
 </ol>
 <h3 id="_50">二 代码示例</h3>
 <h4 id="1-fileinfo">1. 设置要上传图片的fileInfo</h4>
-<pre><code class="java">//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
-ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+<pre><code class="java">//true:上传文件到Public空间，下载该文件时获取的url是永久有效的;
+//bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
+ACFileInfo fileInfo = new ACFileInfo(true, bucket, name);
 //开发者自行选择以下两种上传方式
 //从内存里读取图片流
 fileInfo.setData(photoBytes);
@@ -2213,8 +2259,8 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 </code></pre>
 
 <h4 id="3-url">3. 获取上传的图片的url</h4>
-<pre><code class="java">    //建议ExpireTime=0，国内环境下url永久有效
-    fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback&lt;String&gt;() {
+<pre><code class="java">    //因为上传文件到Public空间，下载该文件时获取的url是永久有效的;所以ExpireTime=0的参数设置无效
+    fileMgr.getDownloadUrl(fileInfo, 0，new PayloadCallback&lt;String&gt;() {
     @Override
     public void success(String url) {
         //成功获取文件url
