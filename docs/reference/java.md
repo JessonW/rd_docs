@@ -2009,7 +2009,7 @@ public interface ACStoreForTest {
      * @param className     要创建的class名
      * @return
      */
-    public abstract ACStoreForTest.CreateClass createClass(String className);
+    public andbstract ACStoreForTest.CreateClass createClass(String className);
 
     /**
      * 删除一个class
@@ -2032,6 +2032,98 @@ ACRankigMgr ranking = ac.rankingMgr(ACContext context, String name);
 ><font color="red">注意</font>：此处传开发者上下文，即`ac.newContext()`。
 
 ##接口说明
+
+###ACRankingMgr
+排行榜接口
+
+```java
+public interface ACRankingMgr {
+    /**
+     * 插入数据，会覆盖已有数据
+     *
+     * @param key       key
+     * @param value     value
+     * @param timestamp UTC时间戳，相对于1970年的秒数
+     * @throws Exception
+     */
+    void insert(String key, double value, long timestamp) throws Exception;
+
+    /**
+     * 数据值增加或减少
+     *
+     * @param key       key
+     * @param value     value
+     * @param timestamp UTC时间戳，相对于1970间的秒数
+     * @throws Exception
+     */
+    void inc(String key, double value, long timestamp) throws Exception;
+
+    /**
+     * 具体时间段的数据总量
+     *
+     * @param interval  时间间隔（minute,hour,day,week,month)
+     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
+     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @return          指定时间段内的数据总量
+     * @throws Exception
+     */
+    ACRankingCount totalCount(String interval, String timestamp, int offset) throws Exception;
+
+    /**
+     * 具体时间段内指定范围内的数据总量
+     *
+     * @param interval  时间间隔（minute,hour,day,week,month)
+     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
+     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @param start     开始值，包含start
+     * @param end       结束值，包含end
+     * @return          具体时间段内指定范围内的数据总量
+     * @throws Exception
+     */
+    ACRankingCount rangeCount(String interval, String timestamp, int offset, double start, double end) throws Exception;
+
+    /**
+     * 获取某个key在具体时间段内的value和排名
+     *
+     * @param interval  时间间隔（minute,hour,day,week,month)
+     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
+     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
+     * @param key
+     * @return          某个key在具体时间段内的value和排名
+     * @throws Exception
+     */
+    ACRankingValue get(String interval, String timestamp, int offset, String order, String key) throws Exception;
+
+    /**
+     * 获取具体时间段内，某个排名范围内的数据
+     *
+     * @param interval  时间间隔（minute,hour,day,week,month)
+     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
+     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
+     * @param start     开始排名
+     * @param end       结束排名
+     * @return          具体时间段内，某个排名范围内的数据
+     * @throws Exception
+     */
+    List<ACRankingValue> scan(String interval, String timestamp, int offset, String order, int start, int end) throws Exception;
+
+    /**
+     * 获取某个key在连续多个时间段内的value和排名
+     *
+     * @param inteval   时间间隔（minute,hour,day,week,month)
+     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
+     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
+     * @param count     基于(timestamp, offset)向前取count个值
+     * @return          某个key在连续多个时间段内的value和排名
+     * @throws Exception
+     */
+    List<ACRankingValue> ranks(String inteval, String timestamp, int offset, String order, int count, String key) throws Exception;
+}
+```
+
 ###ACRankingValue
 排行榜中某个key在特定时间段的一条记录
 
@@ -2106,97 +2198,6 @@ public class ACRanking {
     // 排行榜排序顺序
     public static final String ASC = "ASC";
     public static final String DESC = "DESC";
-}
-```
-
-###ACRankingMgr
-排行榜接口
-
-```java
-public interface ACRankingMgr {
-    /**
-     * 插入数据，会覆盖已有数据
-     *
-     * @param key       key
-     * @param value     value
-     * @param timestamp UTC时间戳，相对于1970间的秒数
-     * @throws Exception
-     */
-    void insert(String key, double value, long timestamp) throws Exception;
-
-    /**
-     * 数据值增加或减少
-     *
-     * @param key       key
-     * @param value     value
-     * @param timestamp UTC时间戳，相对于1970间的秒数
-     * @throws Exception
-     */
-    void inc(String key, double value, long timestamp) throws Exception;
-
-    /**
-     * 具体时间段的数据总量
-     *
-     * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @return          指定时间段内的数据总量
-     * @throws Exception
-     */
-    ACRankingCount totalCount(String interval, String timestamp, int offset) throws Exception;
-
-    /**
-     * 具体时间段内指定范围内的数据总量
-     *
-     * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @param start     开始值，包含start
-     * @param end       结束值，包含end
-     * @return          具体时间段内指定范围内的数据总量
-     * @throws Exception
-     */
-    ACRankingCount rangeCount(String interval, String timestamp, int offset, double start, double end) throws Exception;
-
-    /**
-     * 获取某个key在具体时间段内的value和排名
-     *
-     * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
-     * @param key
-     * @return          某个key在具体时间段内的value和排名
-     * @throws Exception
-     */
-    ACRankingValue get(String interval, String timestamp, int offset, String order, String key) throws Exception;
-
-    /**
-     * 获取具体时间段内，某个排名范围内的数据
-     *
-     * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
-     * @param start     开始排名
-     * @param end       结束排名
-     * @return          具体时间段内，某个排名范围内的数据
-     * @throws Exception
-     */
-    List<ACRankingValue> scan(String interval, String timestamp, int offset, String order, int start, int end) throws Exception;
-
-    /**
-     * 获取某个key在连续多个时间段内的value和排名
-     *
-     * @param inteval   时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为nil，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
-     * @param count     基于(timestamp, offset)向前取count个值
-     * @return          某个key在连续多个时间段内的value和排名
-     * @throws Exception
-     */
-    List<ACRankingValue> ranks(String inteval, String timestamp, int offset, String order, int count, String key) throws Exception;
 }
 ```
 
@@ -3239,3 +3240,5 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 
 #Error Code
 参考[Reference-Error Code](./error_code.md)。
+
+

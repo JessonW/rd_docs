@@ -1912,8 +1912,9 @@ AbleCloud提供APP端的用户意见反馈接口。开发者可以开发用户�
 
 ####1. 设置要上传图片的fileInfo
 ```java
+//true:上传文件到Public空间，下载该文件时获取的url是永久有效的;
 //bucket可理解为文件目录，name为文件名，开发者自己维护。另外可通过这两个参数获取到下载url，注意不同文件不能重目录重名，不然会覆盖原文件
-ACFileInfo fileInfo = new ACFileInfo(bucket, name);
+ACFileInfo fileInfo = new ACFileInfo(true, bucket, name);
 //开发者自行选择以下两种上传方式
 //从内存里读取图片流
 fileInfo.setData(photoBytes);
@@ -1937,8 +1938,8 @@ fileMgr.uploadFile(fileInfo, null, new VoidCallback() {
 ```
 ####3. 获取上传的图片的url
 ```java
-    //建议ExpireTime=0，国内环境下url永久有效
-    fileMgr.getDownloadUrl(fileInfo, 0 ，new PayloadCallback<String>() {
+    //因为上传文件到Public空间，下载该文件时获取的url是永久有效的;所以ExpireTime=0的参数设置无效
+    fileMgr.getDownloadUrl(fileInfo, 0，new PayloadCallback<String>() {
     @Override
     public void success(String url) {
         //成功获取文件url

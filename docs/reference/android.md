@@ -437,6 +437,13 @@ public class ACPushTable {
 
 ```java
 public class ACFileInfo {
+    /**
+     * 上传文件的空间(不同空间获取下载链接getDownloadUrl时具有不同时效性)
+     * <p/>
+     * true:上传文件到 Public 空间，下载该文件时获取的url是永久有效的;
+     * false:上传文件到 Private 空间，获取的url是有有效期的，并且带有签名信息
+     */
+    private boolean isPublic;
     //自定义文件目录，如ota
     private String bucket;
     //文件名
@@ -448,8 +455,10 @@ public class ACFileInfo {
     //权限管理
     private ACACL acl;
 
-    public ACFileInfo(String bucket, String filename) {
-    }
+    //默认上传到 Private空间，isPublic＝false
+    public ACFileInfo(String bucket, String filename) {}
+    
+    public ACFileInfo(boolean isPublic, String bucket, String filename) {}
 }
 ```
 >data与file二选其一上传数据，一同赋值情况下，以data为准
@@ -2123,7 +2132,9 @@ public interface ACFileMgr {
      * 获取下载url
      *
      * @param fileInfo   文件下载信息
-     * @param expireTime URL有效期，单位秒，国内环境下若小于等于0则默认为int32的最大值≈80年，国外环境暂时不支持长期有效
+     * @param expireTime 如果文件上传到 public 空间，则expireTime这个参数无效，获取的url是永久有效的，且不带签名信息;
+     *                   如果文件上传到 private 空间，所获取的访问/下载URL的有效时长。单位为秒。
+     *                   如果取值为小于或等于0,国内环境表示80年，国外环境表示7天。
      */
     public void getDownloadUrl(ACFileInfo fileInfo, long expireTime, PayloadCallback<String> callback);
 
