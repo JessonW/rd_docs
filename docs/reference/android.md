@@ -1314,7 +1314,7 @@ public interface ACBindMgr {
      *
      * @param subDomain        子域名，如djj（豆浆机）
      * @param deviceId         设备id（这里的id，是调用list接口返回的id，不是制造商提供的id），不提供时传0
-     * @param physicalDeviceId 设备物理id（制造商提供的）
+     * @param physicalDeviceId 设备物理id（制造商提供的）,不提供时传""
      * @param callback         返回结果的监听回调
      */
     public void isDeviceOnline(String subDomain, long deviceId, String physicalDeviceId, PayloadCallback<Boolean> callback);
@@ -1330,11 +1330,20 @@ public interface ACBindMgr {
      * 查询设备是否被绑定
      *
      * @param subDomain        子域名，如djj（豆浆机）
-     * @param physicalDeviceId 设备id（制造商提供的），不提供时传“”
+     * @param physicalDeviceId 设备id（制造商提供的）
      * @param callback         返回结果的监听回调
      */
     public void isDeviceBound(String subDomain, String physicalDeviceId, PayloadCallback<Boolean> callback);
 
+    /**
+     * 更新设备的密钥accessKey
+     *
+     * @param subDomain 子域名，如djj（豆浆机）
+     * @param deviceId  设备id（这里的id，是调用list接口返回的id，不是制造商提供的id）
+     * @param callback  返回结果的监听回调
+     */
+    public void resetDeviceToken(String subDomain, long deviceId, VoidCallback callback);
+    
     /**
      * 绑定网关
      *
