@@ -730,16 +730,16 @@ public class ACRankingCount {
 
 ```java
 public class ACRankingValue {
-    // 时间段的起始时间戳
+   // 时间段的起始时间戳
     private long timestamp;
-    // 用户ID
-    private String key;
-    // 用户的value
-    private double value;
-    // 用户的排名 -1代表在这个时间段内不存在数据
+    // key
+    private String userId;
+    // value
+    private double score;
+    // 排名 -1代表在这个时间段内不存在数据
     private long place;
 
-    public ACRankingValue(String key, double value, long place, long timestamp) {}
+    public ACRankingValue(String userId, double score, long place, long timestamp) {}
 }
 ```
 
