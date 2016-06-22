@@ -1,353 +1,758 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PHP SDK - AbleCloud 开发文档</title>
 
-		<link rel="shortcut icon" href="../../img/favicon.ico">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
-		<title>PHP SDK - AbleCloud 开发文档</title>
-
-		<link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-		<link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-		<link href="../../css/base.css" rel="stylesheet">
-		<link rel="stylesheet" href="../../css/highlight.css">
-
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-	</head>
+        
+    </head>
 
-	<body>
+    <body>
 
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
-			<div class="container container-ac">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
-				<!-- Collapsed navigation -->
-				<div class="navbar-header">
-
-					<!-- Expander button -->
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-					<!-- Main title -->
-					<a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
-				</div>
-
-				<!-- Expanded navigation -->
-				<div class="navbar-collapse collapse" style="margin-left:293px;">
-
-					<!-- Main navigation -->
-					<ul class="nav navbar-nav nav-ac">
-
-						<li>
-							<a href="../../introduction/">基本介绍</a>
-						</li>
-
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-
-								<li>
-									<a href="../../features/concepts/">基本概念</a>
-								</li>
-
-								<li>
-									<a href="../../features/functions/">功能介绍</a>
-								</li>
-
-							</ul>
-						</li>
-
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-
-								<li>
-									<a href="../../develop_guide/android/">客户端-安卓</a>
-								</li>
-
-								<li>
-									<a href="../../develop_guide/iOS/">客户端-iOS</a>
-								</li>
-
-								<li>
-									<a href="../../develop_guide/wechat/">客户端-微信</a>
-								</li>
-
-								<li>
-									<a href="../../develop_guide/device/">设备-嵌入式系统</a>
-								</li>
-
-								<li>
-									<a href="../../develop_guide/device_android/">设备-安卓系统</a>
-								</li>
-
-								<li>
-									<a href="../../develop_guide/cloud/">云端服务</a>
-								</li>
-
-							</ul>
-						</li>
-
-						<li class="dropdown active">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-
-								<li>
-									<a href="../android/">客户端-安卓</a>
-								</li>
-
-								<li>
-									<a href="../iOS/">客户端-iOS</a>
-								</li>
-
-								<li>
-									<a href="../wechat/">客户端-微信</a>
-								</li>
-
-								<li>
-									<a href="../device/">设备-嵌入式系统</a>
-								</li>
-
-								<li>
-									<a href="../device_android/">设备-安卓系统</a>
-								</li>
-
-								<li>
-									<a href="../cloud/">云端服务</a>
-								</li>
-
-								<li class="active">
-									<a href="./">PHP SDK</a>
-								</li>
-
-								<li>
-									<a href="../java/">Java SDK</a>
-								</li>
-
-								<li>
-									<a href="../error_code/">Error Code</a>
-								</li>
-
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
-								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
-								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
-								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
-								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
-								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
-							</ul>
-						</li>
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
-					</ul>
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class="container container-ac">
-
-			<div class="col-md-3">
-				<div class="bs-sidebar hidden-print affix well" role="complementary">
-					<ul class="nav bs-sidenav">
-
-						<li class="main active">
-							<a href="#_1">简介</a>
-						</li>
-
-						<li class="main">
-							<a href="#_2">对接微信<span class="main-set parent__2">+</span></a>
-						</li>
-
-						<li class="sub parent__2" style="display: none;"><a href="#acbridgewechat">ACBridgeWeChat</a></li>
-
-						<li class="main">
-							<a href="#_3">基础工具<span class="main-set parent__3">+</span></a>
-						</li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#accontext">ACContext</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#acdeveloper">ACDeveloper</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#acdevelopersignature">ACDeveloperSignature</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#achttpclient">ACHttpClient</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#acrequest">ACRequest</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#acresponse">ACResponse</a></li>
-
-						<li class="sub parent__3" style="display: none;"><a href="#acusersignature">ACUserSignature</a></li>
-
-						<li class="main">
-							<a href="#ablecloud">AbleCloud配置<span class="main-set parent_ablecloud">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud" style="display: none;"><a href="#acconfig">ACConfig</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_1">AbleCloud客户端<span class="main-set parent_ablecloud_1">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_1" style="display: none;"><a href="#acclient">ACClient</a></li>
-
-						<li class="sub parent_ablecloud_1" style="display: none;"><a href="#acservice">ACService</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_2">AbleCloud帐号服务<span class="main-set parent_ablecloud_2">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_2" style="display: none;"><a href="#acuser">ACUser</a></li>
-
-						<li class="sub parent_ablecloud_2" style="display: none;"><a href="#acaccountmgr">ACAccountMgr</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_3">AbleCloud文件存储服务<span class="main-set parent_ablecloud_3">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_3" style="display: none;"><a href="#acacl">ACACL</a></li>
-
-						<li class="sub parent_ablecloud_3" style="display: none;"><a href="#acfilemgr">ACFileMgr</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_4">AbleCloud设备管理服务<span class="main-set parent_ablecloud_4">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_4" style="display: none;"><a href="#acdevice">ACDevice</a></li>
-
-						<li class="sub parent_ablecloud_4" style="display: none;"><a href="#acbindmgr">ACBindMgr</a></li>
-
-						<li class="sub parent_ablecloud_4" style="display: none;"><a href="#acroom">ACRoom</a></li>
-
-						<li class="sub parent_ablecloud_4" style="display: none;"><a href="#achome">ACHome</a></li>
-
-						<li class="main">
-							<a href="#ablecloud-ota">AbleCloud OTA服务<span class="main-set parent_ablecloud-ota">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud-ota" style="display: none;"><a href="#acotamgr">ACOtaMgr</a></li>
-
-						<li class="sub parent_ablecloud-ota" style="display: none;"><a href="#acotaversion">ACOtaVersion</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_5">AbleCloud数据库服务<span class="main-set parent_ablecloud_5">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreclasscolumn">ACStoreClassColumn</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreclass">ACStoreClass</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorecomplicatedfilter">ACStoreComplicatedFilter</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorefilter">ACStoreFilter</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreiterator">ACStoreIterator</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorescanner">ACStoreScanner</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorebatchdelete">ACStoreBatchDelete</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorebatchupdate">ACStoreBatchUpdate</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoremodify">ACStoreModify</a></li>
-
-						<li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstore">ACStore</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_6">AbleCloud定时任务<span class="main-set parent_ablecloud_6">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_6" style="display: none;"><a href="#actimertask">ACTimerTask</a></li>
-
-						<li class="sub parent_ablecloud_6" style="display: none;"><a href="#actimertaskmgr">ACTimerTaskMgr</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_7">AbleCloud数据分析服务<span class="main-set parent_ablecloud_7">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acanalysismgr">ACAnalysisMgr</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqeaggfilters">ACQEAggFilters</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqecount">ACQECount</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqecountunique">ACQECountUnique</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqedistribution">ACQEDistribution</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqefilter">ACQEFilter</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqepropertyfilters">ACQEPropertyFilters</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqereadinterface">ACQEReadInterface</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqetimeframe">ACQETimeframe</a></li>
-
-						<li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqetimeinterval">ACQETimeInterval</a></li>
-
-						<li class="main">
-							<a href="#ablecloud_8">Ablecloud设备管理服务<span class="main-set parent_ablecloud_8">+</span></a>
-						</li>
-
-						<li class="sub parent_ablecloud_8" style="display: none;"><a href="#acdeviceinfo">ACDeviceInfo</a></li>
-
-						<li class="sub parent_ablecloud_8" style="display: none;"><a href="#acwarehousemgr">ACWarehouseMgr</a></li>
-
-						<li class="main">
-							<a href="#error-code">Error Code</a>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-9" role="main">
-
-				<h1 id="_1">简介</h1>
-				<p>AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以及AbleCloud与微信公众号对接的API。</p>
-				<ul>
-					<li>
-						<p>子目录 lib/ablecloud</p>
-						<p>AbleCloud云端服务API。</p>
-					</li>
-					<li>
-						<p>子目录 lib/bridge</p>
-						<p>AbleCloud与第三方云平台对接的工具。与微信对接：ACBridgeWeChat。</p>
-					</li>
-					<li>
-						<p>子目录 demo</p>
-						<p>微信公众号与AbleCloud对接demo。</p>
-					</li>
-					<li>
-						<p>子目录 docs</p>
-						<p>API参考文档。首页名字：index.html。</p>
-					</li>
-					<li>
-						<p>适用PHP版本</p>
-						<p>本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。</p>
-					</li>
-				</ul>
-				<p>下文是PHP SDK (v1.7.x)的API说明。</p>
-				<h1 id="_2">对接微信</h1>
-				<h2 id="acbridgewechat">ACBridgeWeChat</h2>
-				<pre><code class="php">/**
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
+                
+                
+                    <li >
+                        <a href="../../introduction/" >基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../features/concepts/">基本概念</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../features/functions/">功能介绍</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../develop_guide/cloud/">云端服务</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../android/">客户端-安卓</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../iOS/">客户端-iOS</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../wechat/">客户端-微信</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../device/">设备-嵌入式系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../device_android/">设备-安卓系统</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../cloud/">云端服务</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">PHP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java/">Java SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../error_code/">Error Code</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+        <div class="container container-ac">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        
+        
+        
+        <li class="main active">
+            <a href="#_1">简介</a>
+        </li>
+        
+    
+        
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_2">对接微信<span class="main-set parent__2">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__2" style="display: none;"><a href="#acbridgewechat">ACBridgeWeChat</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#_3">基础工具<span class="main-set parent__3">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#accontext">ACContext</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acdeveloper">ACDeveloper</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acdevelopersignature">ACDeveloperSignature</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#achttpclient">ACHttpClient</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acrequest">ACRequest</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acresponse">ACResponse</a></li>
+            
+        
+            
+            <li class="sub parent__3" style="display: none;"><a href="#acusersignature">ACUserSignature</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud">AbleCloud配置<span class="main-set parent_ablecloud">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud" style="display: none;"><a href="#acconfig">ACConfig</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_1">AbleCloud客户端<span class="main-set parent_ablecloud_1">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_1" style="display: none;"><a href="#acclient">ACClient</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_1" style="display: none;"><a href="#acservice">ACService</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_2">AbleCloud帐号服务<span class="main-set parent_ablecloud_2">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_2" style="display: none;"><a href="#acuser">ACUser</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_2" style="display: none;"><a href="#acaccountmgr">ACAccountMgr</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_3">AbleCloud文件存储服务<span class="main-set parent_ablecloud_3">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_3" style="display: none;"><a href="#acacl">ACACL</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_3" style="display: none;"><a href="#acfilemgr">ACFileMgr</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_4">AbleCloud设备管理服务<span class="main-set parent_ablecloud_4">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_4" style="display: none;"><a href="#acdevice">ACDevice</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_4" style="display: none;"><a href="#acbindmgr">ACBindMgr</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_4" style="display: none;"><a href="#acroom">ACRoom</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_4" style="display: none;"><a href="#achome">ACHome</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud-ota">AbleCloud OTA服务<span class="main-set parent_ablecloud-ota">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud-ota" style="display: none;"><a href="#acotamgr">ACOtaMgr</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud-ota" style="display: none;"><a href="#acotaversion">ACOtaVersion</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_5">AbleCloud数据库服务<span class="main-set parent_ablecloud_5">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreclasscolumn">ACStoreClassColumn</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreclass">ACStoreClass</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorecomplicatedfilter">ACStoreComplicatedFilter</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorefilter">ACStoreFilter</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoreiterator">ACStoreIterator</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorescanner">ACStoreScanner</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorebatchdelete">ACStoreBatchDelete</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstorebatchupdate">ACStoreBatchUpdate</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstoremodify">ACStoreModify</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_5" style="display: none;"><a href="#acstore">ACStore</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_6">AbleCloud定时任务<span class="main-set parent_ablecloud_6">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_6" style="display: none;"><a href="#actimertask">ACTimerTask</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_6" style="display: none;"><a href="#actimertaskmgr">ACTimerTaskMgr</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_7">AbleCloud数据分析服务<span class="main-set parent_ablecloud_7">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acanalysismgr">ACAnalysisMgr</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqeaggfilters">ACQEAggFilters</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqecount">ACQECount</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqecountunique">ACQECountUnique</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqedistribution">ACQEDistribution</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqefilter">ACQEFilter</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqepropertyfilters">ACQEPropertyFilters</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqereadinterface">ACQEReadInterface</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqetimeframe">ACQETimeframe</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_7" style="display: none;"><a href="#acqetimeinterval">ACQETimeInterval</a></li>
+            
+        
+    
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+        
+        <li class="main">
+            <a href="#ablecloud_8">Ablecloud设备管理服务<span class="main-set parent_ablecloud_8">+</span></a>
+        </li>
+        
+            
+            <li class="sub parent_ablecloud_8" style="display: none;"><a href="#acdeviceinfo">ACDeviceInfo</a></li>
+            
+        
+            
+            <li class="sub parent_ablecloud_8" style="display: none;"><a href="#acwarehousemgr">ACWarehouseMgr</a></li>
+            
+        
+    
+        
+        
+        
+        <li class="main">
+            <a href="#error-code">Error Code</a>
+        </li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="_1">简介</h1>
+<p>AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以及AbleCloud与微信公众号对接的API。</p>
+<ul>
+<li>
+<p>子目录 lib/ablecloud</p>
+<p>AbleCloud云端服务API。</p>
+</li>
+<li>
+<p>子目录 lib/bridge</p>
+<p>AbleCloud与第三方云平台对接的工具。与微信对接：ACBridgeWeChat。</p>
+</li>
+<li>
+<p>子目录 demo</p>
+<p>微信公众号与AbleCloud对接demo。</p>
+</li>
+<li>
+<p>子目录 docs</p>
+<p>API参考文档。首页名字：index.html。</p>
+</li>
+<li>
+<p>适用PHP版本</p>
+<p>本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。</p>
+</li>
+</ul>
+<p>下文是PHP SDK (v1.7.x)的API说明。</p>
+<h1 id="_2">对接微信</h1>
+<h2 id="acbridgewechat">ACBridgeWeChat</h2>
+<pre><code class="php">/**
  * AbleCloud-微信公众号服务接口。
  * 主要用于同步用户信息及用户与设备的绑定关系。
  */
@@ -529,9 +934,9 @@ class ACBridgeWeChat {
 }
 </code></pre>
 
-				<h1 id="_3">基础工具</h1>
-				<h2 id="accontext">ACContext</h2>
-				<pre><code class="php">/**
+<h1 id="_3">基础工具</h1>
+<h2 id="accontext">ACContext</h2>
+<pre><code class="php">/**
  * 访问AbleCloud服务时的环境信息。
  */
 class ACContext {
@@ -613,8 +1018,8 @@ class ACContext {
 }
 </code></pre>
 
-				<h2 id="acdeveloper">ACDeveloper</h2>
-				<pre><code class="php">/**
+<h2 id="acdeveloper">ACDeveloper</h2>
+<pre><code class="php">/**
  * AbleCloud开发者。
  */
 class ACDeveloper {
@@ -646,8 +1051,8 @@ class ACDeveloper {
 }
 </code></pre>
 
-				<h2 id="acdevelopersignature">ACDeveloperSignature</h2>
-				<pre><code class="php">/**
+<h2 id="acdevelopersignature">ACDeveloperSignature</h2>
+<pre><code class="php">/**
  * 开发者签名工具。
  */
 class ACDeveloperSignature {
@@ -666,8 +1071,8 @@ class ACDeveloperSignature {
 }
 </code></pre>
 
-				<h2 id="achttpclient">ACHttpClient</h2>
-				<pre><code class="php">/**
+<h2 id="achttpclient">ACHttpClient</h2>
+<pre><code class="php">/**
  * 访问AbleCloud远程服务的HTTP客户端。
  */
 class ACHttpClient {
@@ -696,8 +1101,8 @@ class ACHttpClient {
 }
 </code></pre>
 
-				<h2 id="acrequest">ACRequest</h2>
-				<pre><code class="php">/**
+<h2 id="acrequest">ACRequest</h2>
+<pre><code class="php">/**
  * 访问AbleCloud远程服务的请求消息。
  */
 class ACRequest {
@@ -802,8 +1207,8 @@ class ACRequest {
 }
 </code></pre>
 
-				<h2 id="acresponse">ACResponse</h2>
-				<pre><code class="php">/**
+<h2 id="acresponse">ACResponse</h2>
+<pre><code class="php">/**
  * AbleCloud服务的响应消息。
  */
 class ACResponse {
@@ -846,8 +1251,8 @@ class ACResponse {
 }
 </code></pre>
 
-				<h2 id="acusersignature">ACUserSignature</h2>
-				<pre><code class="php">/**
+<h2 id="acusersignature">ACUserSignature</h2>
+<pre><code class="php">/**
  * 非开发者用户的签名工具。
  */
 class ACUserSignature {
@@ -862,9 +1267,9 @@ class ACUserSignature {
 }
 </code></pre>
 
-				<h1 id="ablecloud">AbleCloud配置</h1>
-				<h2 id="acconfig">ACConfig</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud">AbleCloud配置</h1>
+<h2 id="acconfig">ACConfig</h2>
+<pre><code class="php">/**
  * AbleCloud服务配置信息。
  */
 class ACConfig {
@@ -877,9 +1282,9 @@ class ACConfig {
 }
 </code></pre>
 
-				<h1 id="ablecloud_1">AbleCloud客户端</h1>
-				<h2 id="acclient">ACClient</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_1">AbleCloud客户端</h1>
+<h2 id="acclient">ACClient</h2>
+<pre><code class="php">/**
  * AbleCloud服务的客户端。
  */
 class ACClient {
@@ -952,8 +1357,8 @@ class ACClient {
 }
 </code></pre>
 
-				<h2 id="acservice">ACService</h2>
-				<pre><code class="php">/**
+<h2 id="acservice">ACService</h2>
+<pre><code class="php">/**
  * AbleCloud服务。
  */
 class ACService {
@@ -991,9 +1396,9 @@ class ACService {
 }
 </code></pre>
 
-				<h1 id="ablecloud_2">AbleCloud帐号服务</h1>
-				<h2 id="acuser">ACUser</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_2">AbleCloud帐号服务</h1>
+<h2 id="acuser">ACUser</h2>
+<pre><code class="php">/**
  * 用户信息。
  */
 class ACUser {
@@ -1074,8 +1479,8 @@ class ACUser {
 }
 </code></pre>
 
-				<h2 id="acaccountmgr">ACAccountMgr</h2>
-				<pre><code class="php">/**
+<h2 id="acaccountmgr">ACAccountMgr</h2>
+<pre><code class="php">/**
  * AbleCloud帐号服务。
  */
 class ACAccountMgr extends ACService {
@@ -1273,9 +1678,9 @@ class ACAccountMgr extends ACService {
 }
 </code></pre>
 
-				<h1 id="ablecloud_3">AbleCloud文件存储服务</h1>
-				<h2 id="acacl">ACACL</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_3">AbleCloud文件存储服务</h1>
+<h2 id="acacl">ACACL</h2>
+<pre><code class="php">/**
  * AbleCloud文件存储服务中文件的访问权限。
  */
 class ACACL {
@@ -1314,8 +1719,8 @@ class ACACL {
 }
 </code></pre>
 
-				<h2 id="acfilemgr">ACFileMgr</h2>
-				<pre><code class="php">/**
+<h2 id="acfilemgr">ACFileMgr</h2>
+<pre><code class="php">/**
  * AbleCloud文件存储服务。
  */
 class ACFileMgr extends ACService {
@@ -1348,9 +1753,9 @@ class ACFileMgr extends ACService {
 }
 </code></pre>
 
-				<h1 id="ablecloud_4">AbleCloud设备管理服务</h1>
-				<h2 id="acdevice">ACDevice</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_4">AbleCloud设备管理服务</h1>
+<h2 id="acdevice">ACDevice</h2>
+<pre><code class="php">/**
  * 设备信息。
  */
 class ACDevice {
@@ -1391,8 +1796,8 @@ class ACDevice {
 }
 </code></pre>
 
-				<h2 id="acbindmgr">ACBindMgr</h2>
-				<pre><code class="php">/**
+<h2 id="acbindmgr">ACBindMgr</h2>
+<pre><code class="php">/**
  * AbleCloud设备管理服务。
  */
 class ACBindMgr extends ACService {
@@ -1780,8 +2185,8 @@ class ACBindMgr extends ACService {
 }
 </code></pre>
 
-				<h2 id="acroom">ACRoom</h2>
-				<pre><code class="php">/**
+<h2 id="acroom">ACRoom</h2>
+<pre><code class="php">/**
  * 房间。
  */
 class ACRoom {
@@ -1801,8 +2206,8 @@ class ACRoom {
 }
 </code></pre>
 
-				<h2 id="achome">ACHome</h2>
-				<pre><code class="php">/**
+<h2 id="achome">ACHome</h2>
+<pre><code class="php">/**
  * 家。
  */
 class ACHome {
@@ -1820,9 +2225,9 @@ class ACHome {
 }
 </code></pre>
 
-				<h1 id="ablecloud-ota">AbleCloud OTA服务</h1>
-				<h2 id="acotamgr">ACOtaMgr</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud-ota">AbleCloud OTA服务</h1>
+<h2 id="acotamgr">ACOtaMgr</h2>
+<pre><code class="php">/**
  * AbleCloud设备OTA服务。
  */
 class ACOtaMgr extends ACService {
@@ -1855,8 +2260,8 @@ class ACOtaMgr extends ACService {
 }
 </code></pre>
 
-				<h2 id="acotaversion">ACOtaVersion</h2>
-				<pre><code class="php">/**
+<h2 id="acotaversion">ACOtaVersion</h2>
+<pre><code class="php">/**
  * OTA版本信息。
  */
 class ACOtaVersion {
@@ -1894,9 +2299,9 @@ class ACOtaVersion {
 }
 </code></pre>
 
-				<h1 id="ablecloud_5">AbleCloud数据库服务</h1>
-				<h2 id="acstoreclasscolumn">ACStoreClassColumn</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_5">AbleCloud数据库服务</h1>
+<h2 id="acstoreclasscolumn">ACStoreClassColumn</h2>
+<pre><code class="php">/**
  * AlbeCloud数据存储服务的数据集中数据列的定义。
  */
 class ACStoreClassColumn {
@@ -1920,8 +2325,8 @@ class ACStoreClassColumn {
 }
 </code></pre>
 
-				<h2 id="acstoreclass">ACStoreClass</h2>
-				<pre><code class="php">/**
+<h2 id="acstoreclass">ACStoreClass</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务的数据集。
  */
 class ACStoreClass {
@@ -1947,8 +2352,8 @@ class ACStoreClass {
 }
 </code></pre>
 
-				<h2 id="acstorecomplicatedfilter">ACStoreComplicatedFilter</h2>
-				<pre><code class="php">/**
+<h2 id="acstorecomplicatedfilter">ACStoreComplicatedFilter</h2>
+<pre><code class="php">/**
  * 复杂查询条件：单个或多个ACStoreFilter通过逻辑操作符组合起来形成复杂查询条件。如：“time &lt; 1436170756857177”，“time &gt; 1436170756857177 AND name = '张三'”等都是复杂查询条件。
  * 多个复杂条件连接在一起时，同一个复杂条件内的条件会被包括在一个括弧内，如：(time &gt; 1436170756857177 AND name = '张三') OR (deviceId = 12 AND name = '张三')。
  * 其中，条件“time &gt; 1436170756857177 AND name = '张三'”是一个负载查询条件的内容，“deviceId = 12 AND name = '张三'”是另一个复杂查询条件的内容。
@@ -1997,8 +2402,8 @@ class ACStoreComplicatedFilter {
 }
 </code></pre>
 
-				<h2 id="acstorefilter">ACStoreFilter</h2>
-				<pre><code class="php">/**
+<h2 id="acstorefilter">ACStoreFilter</h2>
+<pre><code class="php">/**
  * AbleCloud存储服务的查询条件，如：time &gt; 1436170756857177。
  */
 class ACStoreFilter {
@@ -2055,8 +2460,8 @@ class ACStoreFilter {
 }
 </code></pre>
 
-				<h2 id="acstoreiterator">ACStoreIterator</h2>
-				<pre><code class="php">/**
+<h2 id="acstoreiterator">ACStoreIterator</h2>
+<pre><code class="php">/**
  * AbleCloud存储服务查询结果集合的迭代器。
  */
 class ACStoreIterator extends ACService {
@@ -2080,8 +2485,8 @@ class ACStoreIterator extends ACService {
 }
 </code></pre>
 
-				<h2 id="acstorescanner">ACStoreScanner</h2>
-				<pre><code class="php">/**
+<h2 id="acstorescanner">ACStoreScanner</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务的查询工具。
  */
 class ACStoreScanner {
@@ -2266,8 +2671,8 @@ class ACStoreScanner {
 }
 </code></pre>
 
-				<h2 id="acstorebatchdelete">ACStoreBatchDelete</h2>
-				<pre><code class="php">/**
+<h2 id="acstorebatchdelete">ACStoreBatchDelete</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务的批量删除工具。
  */
 class ACStoreBatchDelete extends ACService {
@@ -2324,8 +2729,8 @@ class ACStoreBatchDelete extends ACService {
 }
 </code></pre>
 
-				<h2 id="acstorebatchupdate">ACStoreBatchUpdate</h2>
-				<pre><code class="php">/**
+<h2 id="acstorebatchupdate">ACStoreBatchUpdate</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务的批量更新工具。
  */
 class ACStoreBatchUpdate extends ACService {
@@ -2412,8 +2817,8 @@ class ACStoreBatchUpdate extends ACService {
 }
 </code></pre>
 
-				<h2 id="acstoremodify">ACStoreModify</h2>
-				<pre><code class="php">/**
+<h2 id="acstoremodify">ACStoreModify</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务的修改单条数据记录的方法。
  * 本方法先检查符合条件的记录是否存在。如存在则更新该记录，否则不执行操作。
  */
@@ -2468,8 +2873,8 @@ class ACStoreModify extends ACService {
 }
 </code></pre>
 
-				<h2 id="acstore">ACStore</h2>
-				<pre><code class="php">/**
+<h2 id="acstore">ACStore</h2>
+<pre><code class="php">/**
  * AbleCloud数据存储服务。
  */
 class ACStore extends ACService {
@@ -2581,9 +2986,9 @@ class ACStore extends ACService {
 }
 </code></pre>
 
-				<h1 id="ablecloud_6">AbleCloud定时任务</h1>
-				<h2 id="actimertask">ACTimerTask</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_6">AbleCloud定时任务</h1>
+<h2 id="actimertask">ACTimerTask</h2>
+<pre><code class="php">/**
  * APP端定时任务。
  */
 class ACTimerTask {
@@ -2613,8 +3018,8 @@ class ACTimerTask {
 }
 </code></pre>
 
-				<h2 id="actimertaskmgr">ACTimerTaskMgr</h2>
-				<pre><code class="php">/**
+<h2 id="actimertaskmgr">ACTimerTaskMgr</h2>
+<pre><code class="php">/**
  * APP端定时任务服务。
  */
 class ACTimerTaskMgr extends ACService {
@@ -2680,9 +3085,9 @@ class ACTimerTaskMgr extends ACService {
 }
 </code></pre>
 
-				<h1 id="ablecloud_7">AbleCloud数据分析服务</h1>
-				<h2 id="acanalysismgr">ACAnalysisMgr</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_7">AbleCloud数据分析服务</h1>
+<h2 id="acanalysismgr">ACAnalysisMgr</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务。
  */
 class ACAnalysisMgr extends ACService {
@@ -2714,8 +3119,8 @@ class ACAnalysisMgr extends ACService {
 }
 </code></pre>
 
-				<h2 id="acqeaggfilters">ACQEAggFilters</h2>
-				<pre><code class="php">/**
+<h2 id="acqeaggfilters">ACQEAggFilters</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的查询条件集合：ACQEPropertyFilters对象的集合。
  */
 class ACQEAggFilters {
@@ -2741,8 +3146,8 @@ class ACQEAggFilters {
 }
 </code></pre>
 
-				<h2 id="acqecount">ACQECount</h2>
-				<pre><code class="php">/**
+<h2 id="acqecount">ACQECount</h2>
+<pre><code class="php">/**
  * * AbleCloud数据分析服务的数据查询类方法的基类。
  */
 class ACQECount extends ACQEReadInterface {
@@ -2763,8 +3168,8 @@ class ACQECount extends ACQEReadInterface {
 }
 </code></pre>
 
-				<h2 id="acqecountunique">ACQECountUnique</h2>
-				<pre><code class="php">/**
+<h2 id="acqecountunique">ACQECountUnique</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的Count_unique方法。
  */
 class ACQECountUnique extends ACQEReadInterface {
@@ -2792,8 +3197,8 @@ class ACQECountUnique extends ACQEReadInterface {
 }
 </code></pre>
 
-				<h2 id="acqedistribution">ACQEDistribution</h2>
-				<pre><code class="php">/**
+<h2 id="acqedistribution">ACQEDistribution</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的distribution方法。
  */
 class ACQEDistribution extends ACQEReadInterface {
@@ -2828,8 +3233,8 @@ class ACQEDistribution extends ACQEReadInterface {
 }
 </code></pre>
 
-				<h2 id="acqefilter">ACQEFilter</h2>
-				<pre><code class="php">/**
+<h2 id="acqefilter">ACQEFilter</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的过滤条件，如：temperature &gt;= 38.5。
  */
 class ACQEFilter {
@@ -2882,8 +3287,8 @@ class ACQEFilter {
 }
 </code></pre>
 
-				<h2 id="acqepropertyfilters">ACQEPropertyFilters</h2>
-				<pre><code class="php">/**
+<h2 id="acqepropertyfilters">ACQEPropertyFilters</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的查询条件集合：ACQEFilter对象的集合。
  */
 class ACQEPropertyFilters {
@@ -2909,8 +3314,8 @@ class ACQEPropertyFilters {
 }
 </code></pre>
 
-				<h2 id="acqereadinterface">ACQEReadInterface</h2>
-				<pre><code class="php">/**
+<h2 id="acqereadinterface">ACQEReadInterface</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的Count方法。
  */
 abstract class ACQEReadInterface extends ACService {
@@ -2983,8 +3388,8 @@ abstract class ACQEReadInterface extends ACService {
 }
 </code></pre>
 
-				<h2 id="acqetimeframe">ACQETimeframe</h2>
-				<pre><code class="php">/**
+<h2 id="acqetimeframe">ACQETimeframe</h2>
+<pre><code class="php">/**
  * AbleCloud数据分析服务的时间段参数。可以是绝对时间，或者是相对时间。
  */
 class ACQETimeframe {
@@ -3049,8 +3454,8 @@ class ACQETimeframe {
 }
 </code></pre>
 
-				<h2 id="acqetimeinterval">ACQETimeInterval</h2>
-				<pre><code class="php">/**
+<h2 id="acqetimeinterval">ACQETimeInterval</h2>
+<pre><code class="php">/**
  * AC-QueryEngine的时间区间参数。
  */
 class ACQETimeInterval {
@@ -3080,9 +3485,9 @@ class ACQETimeInterval {
 }
 </code></pre>
 
-				<h1 id="ablecloud_8">Ablecloud设备管理服务</h1>
-				<h2 id="acdeviceinfo">ACDeviceInfo</h2>
-				<pre><code class="php">/**
+<h1 id="ablecloud_8">Ablecloud设备管理服务</h1>
+<h2 id="acdeviceinfo">ACDeviceInfo</h2>
+<pre><code class="php">/**
  * 设备的元数据信息。
  */
 class ACDeviceInfo {
@@ -3111,8 +3516,8 @@ class ACDeviceInfo {
 }
 </code></pre>
 
-				<h2 id="acwarehousemgr">ACWarehouseMgr</h2>
-				<pre><code class="php">/**
+<h2 id="acwarehousemgr">ACWarehouseMgr</h2>
+<pre><code class="php">/**
  * AbleCloud设备入库管理服务。
  */
 class ACWarehouseMgr extends ACService {
@@ -3156,49 +3561,48 @@ class ACWarehouseMgr extends ACService {
 }
 </code></pre>
 
-				<h1 id="error-code">Error Code</h1>
-				<p>参考<a href="../error_code/">reference-Error Code</a>。</p>
-			</div>
+<h1 id="error-code">Error Code</h1>
+<p>参考<a href="../error_code/">reference-Error Code</a>。</p></div>
+            
+        </div>
 
-		</div>
+        <footer class="col-md-12">
+            <hr>
+            
+            <div class="clear footer">
+                &copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
+            </div>
+        </footer>
 
-		<footer class="col-md-12">
-			<hr>
+        <script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+        <script type="text/javascript" src="../../js/base.js"></script>
 
-			<div class="clear footer">
-				&copy;2015&nbsp;&nbsp;北京智云奇点科技有限公司&nbsp;&nbsp;<a href="http://www.miit.gov.cn/" target="_blank">京ICP备14010946号-1</a>
-			</div>
-		</footer>
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../../js/highlight.pack.js"></script>
-		<script type="text/javascript" src="../../js/base.js"></script>
-
-		<div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h4 class="modal-title" id="exampleModalLabel">Search</h4>
-					</div>
-					<div class="modal-body">
-						<p>
-							From here you can search these documents. Enter your search terms below.
-						</p>
-						<form role="form">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-							</div>
-						</form>
-						<div id="mkdocs-search-results"></div>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</body>
-
+    </body>
 </html>

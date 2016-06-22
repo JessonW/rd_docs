@@ -1,167 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Java SDK - AbleCloud 开发文档</title>
 
-		<link rel="shortcut icon" href="../../img/favicon.ico">
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
 
-		<title>Java SDK - AbleCloud 开发文档</title>
-
-		<link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-		<link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-		<link href="../../css/base.css" rel="stylesheet">
-		<link rel="stylesheet" href="../../css/highlight.css">
-
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-	</head>
+        
+    </head>
 
-	<body>
+    <body>
 
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
-			<div class="container container-ac">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#00b5f1;border:0px solid transparent;height:50px;">
+    <div class="container container-ac">
 
-				<!-- Collapsed navigation -->
-				<div class="navbar-header">
-
-					<!-- Expander button -->
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
 
-					<!-- Main title -->
-					<a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
-				</div>
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../introduction/"><img src="../../img/logo.png" /><span style="margin-left:20px; margin-right:20px;">|</span>开发文档</a>
+        </div>
 
-				<!-- Expanded navigation -->
-				<div class="navbar-collapse collapse" style="margin-left:293px;">
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse" style="margin-left:293px;">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav nav-ac">
+                
+                
+                    <li >
+                        <a href="../../introduction/" >基本介绍</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../features/concepts/">基本概念</a>
+</li>
 
-					<!-- Main navigation -->
-					<ul class="nav navbar-nav nav-ac">
+                        
+                            
+<li >
+    <a href="../../features/functions/">功能介绍</a>
+</li>
 
-						<li>
-							<a href="../../introduction/">基本介绍</a>
-						</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/android/">客户端-安卓</a>
+</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">功能说明 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/iOS/">客户端-iOS</a>
+</li>
 
-								<li>
-									<a href="../../features/concepts/">基本概念</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/wechat/">客户端-微信</a>
+</li>
 
-								<li>
-									<a href="../../features/functions/">功能介绍</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/device/">设备-嵌入式系统</a>
+</li>
 
-							</ul>
-						</li>
+                        
+                            
+<li >
+    <a href="../../develop_guide/device_android/">设备-安卓系统</a>
+</li>
 
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">开发指导 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../develop_guide/cloud/">云端服务</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/android/">客户端-安卓</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../android/">客户端-安卓</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/iOS/">客户端-iOS</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../iOS/">客户端-iOS</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/wechat/">客户端-微信</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../wechat/">客户端-微信</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/device/">设备-嵌入式系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../device/">设备-嵌入式系统</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/device_android/">设备-安卓系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../device_android/">设备-安卓系统</a>
+</li>
 
-								<li>
-									<a href="../../develop_guide/cloud/">云端服务</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../cloud/">云端服务</a>
+</li>
 
-							</ul>
-						</li>
+                        
+                            
+<li >
+    <a href="../php/">PHP SDK</a>
+</li>
 
-						<li class="dropdown active">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-							<ul class="dropdown-menu">
+                        
+                            
+<li class="active">
+    <a href="./">Java SDK</a>
+</li>
 
-								<li>
-									<a href="../android/">客户端-安卓</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../error_code/">Error Code</a>
+</li>
 
-								<li>
-									<a href="../iOS/">客户端-iOS</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../updatelog/updateNotice/">更新通知</a>
+</li>
 
-								<li>
-									<a href="../wechat/">客户端-微信</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/AppSDK/">APP SDK</a>
+</li>
 
-								<li>
-									<a href="../device/">设备-嵌入式系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/deviceSDK/">设备SDK</a>
+</li>
 
-								<li>
-									<a href="../device_android/">设备-安卓系统</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudDocingSDK/">云对接SDK</a>
+</li>
 
-								<li>
-									<a href="../cloud/">云端服务</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/cloudServerSDK/">云端服务SDK</a>
+</li>
 
-								<li>
-									<a href="../php/">PHP SDK</a>
-								</li>
+                        
+                            
+<li >
+    <a href="../../updatelog/tools_docs/">工具&文档</a>
+</li>
 
-								<li class="active">
-									<a href="./">Java SDK</a>
-								</li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
 
-								<li>
-									<a href="../error_code/">Error Code</a>
-								</li>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
+            </ul>
+        </div>
 
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">平台更新 <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="../../updatelog/updateNotice/index.html">更新通知</a></li>
-								<li><a href="../../updatelog/AppSDK/index.html">APP SDK</a></li>
-								<li><a href="../../updatelog/deviceSDK/index.html">设备SDK</a></li>
-								<li><a href="../../updatelog/cloudDockingSDK/index.html">云对接SDK</a></li>
-								<li><a href="../../updatelog/cloudServerSDK/index.html">云端服务SDK</a></li>
-								<li><a href="../../updatelog/tools&docs/index.html">工具&文档</a></li>
-							</ul>
-						</li>
-					</ul>
+    </div>
 
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="http://docs.ablecloud.cn/1.0/introduction/" style="font-size:0.9em;">旧版文档</a></li>
-					</ul>
-				</div>
-
-			</div>
-
-		</div>
+</div>
 
         <div class="container container-ac">
             
@@ -644,12 +725,12 @@
 </div></div>
                 <div class="col-md-9" role="main">
 
-				<h1 id="_1">简介</h1>
-				<p>本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。</p>
-				<p>下文是Java SDK (v1.5.x)的API说明。</p>
-				<h1 id="_2">配置信息</h1>
-				<p>本SDK定义的配置信息如下：</p>
-				<pre><code class="java">/**
+<h1 id="_1">简介</h1>
+<p>本SDK适用于使用Java语言访问AbleCloud云端服务API的场景。</p>
+<p>下文是Java SDK (v1.5.x)的API说明。</p>
+<h1 id="_2">配置信息</h1>
+<p>本SDK定义的配置信息如下：</p>
+<pre><code class="java">/**
  * AbleCloud Java API配置信息。
  * @details ACConfig是一个抽象类。开发者应依据具体应用场景的需求，提供本抽象类的实现。
  */
@@ -779,13 +860,13 @@ public abstract class ACConfig {
 }
 </code></pre>
 
-				<p>ACConfig是抽象类，要求开发者在实际应用中提供关于ACConfig的具体实现。 如，针对AbleCloud云端服务（UDS）以及微信公众号功能等场景，AbleCloud提供的相应SDK中均实现了ACConfig定义的方法。
-				</p>
-				<h1 id="_3">基础数据结构</h1>
-				<h2 id="accontext">ACContext</h2>
-				<p>ACContext即上下文，用于标记每一次交互（比如发起者、发起时间、签名等）、追踪通信事件。AbleCloud服务之间的交互消息中均需要带有上下文信息。 ACContext定义的内容如下：
-				</p>
-				<pre><code class="java">public class ACContext {
+<p>ACConfig是抽象类，要求开发者在实际应用中提供关于ACConfig的具体实现。
+如，针对AbleCloud云端服务（UDS）以及微信公众号功能等场景，AbleCloud提供的相应SDK中均实现了ACConfig定义的方法。</p>
+<h1 id="_3">基础数据结构</h1>
+<h2 id="accontext">ACContext</h2>
+<p>ACContext即上下文，用于标记每一次交互（比如发起者、发起时间、签名等）、追踪通信事件。AbleCloud服务之间的交互消息中均需要带有上下文信息。
+ACContext定义的内容如下：</p>
+<pre><code class="java">public class ACContext {
     private String majorDomain;         // 服务所属主域ID
     private String subDomain;           // 服务所属子域ID
     private String majorDomainName;     // 服务所属主域名
@@ -802,19 +883,18 @@ public abstract class ACConfig {
 }
 </code></pre>
 
-				<p>通过ACContext的定义我们可以看出，其中包含两种用户信息：</p>
-				<ul>
-					<li><strong>userId：</strong>设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。使用示例：<code>ac.newContext(userId)</code></li>
-					<li><strong>developerId：</strong>开发者id。UDS服务一方面接收APP或设备发来的消息，另一方面可能需要自主的访问云端通用服务或执行例行巡检任务，当对AbleCloud后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。使用示例：<code>ac.newContext()</code></li>
-				</ul>
-				<blockquote>
-					<p>
-						<font color="brown"><strong>注：</strong></font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。 开发者不应该直接用ACContext的构造函数构造上下文对象，而应使用AC框架的相关接口创建上下文对象，后面会有详细描述。
-					</p>
-				</blockquote>
-				<h2 id="acobject">ACObject</h2>
-				<p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。ACObject数据内部结构以HashMap来存放，通过put存入ACObject的数据内部以json方式处理，因此ACObject中的value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
-				<pre><code class="java">public class ACObject {
+<p>通过ACContext的定义我们可以看出，其中包含两种用户信息：</p>
+<ul>
+<li><strong>userId：</strong>设备的终端（普通）用户id，比如用户在手机上通过app控制某一设备时，context中需要带上该用户的id，后台用于认证等之用。当用户通过云服务发起远程控制时，云服务程序透传用户的context。使用示例：<code>ac.newContext(userId)</code></li>
+<li><strong>developerId：</strong>开发者id。UDS服务一方面接收APP或设备发来的消息，另一方面可能需要自主的访问云端通用服务或执行例行巡检任务，当对AbleCloud后台服务发起请求时，context中并不会有userId等终端用户的信息，此时服务创建的context需要填充developerId的值。使用示例：<code>ac.newContext()</code></li>
+</ul>
+<blockquote>
+<p><font color="brown"><strong>注：</strong></font>上下文context有一个重要的特性是，在其生成后的所有交互中，都不能更改其已有字段的值，可以添加还没有赋值的字段。比如有终端用户发起的请求中带有userId，请求到达云服务端时，云服务可以往该context中设置developerId的值，但不能修改其它值。否则就失去了追踪每一次交互的意义了。
+开发者不应该直接用ACContext的构造函数构造上下文对象，而应使用AC框架的相关接口创建上下文对象，后面会有详细描述。</p>
+</blockquote>
+<h2 id="acobject">ACObject</h2>
+<p>ACObject用于承载交互的具体数据，我们称之为payload（负载）。ACObject数据内部结构以HashMap来存放，通过put存入ACObject的数据内部以json方式处理，因此ACObject中的value也可以是嵌套的ACObject，能满足大部分需求场景。</p>
+<pre><code class="java">public class ACObject {
     private HashMap&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
 
     /**
@@ -884,20 +964,18 @@ public abstract class ACConfig {
 }
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color="brown"><strong>注：</strong>最常用的三个接口是put/add/get。通过<strong>add</strong>接口保存在ACObject中的数据实际为List；相应的，get出来也是一个List。</font>
-					</p>
-				</blockquote>
-				<h1 id="_4">交互消息</h1>
-				<p>多个模块、服务之间都通过<em>消息</em><code>message</code>来通信。AbleCloud定义了两种格式的消息：</p>
-				<ul>
-					<li><strong>ACMsg：</strong>APP与service，service与service之间的交互消息。</li>
-					<li><strong>ACDeviceMsg：</strong>APP与device，service与device之间的交互消息。</li>
-				</ul>
-				<h2 id="acmsg">ACMsg</h2>
-				<p>ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name、交互的上下文context以及<strong>其它形式</strong>的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的<strong>ACMsg.OBJECT_PAYLOAD</strong>格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进解析。</p>
-				<pre><code class="java">public class ACMsg extends ACObject {
+<blockquote>
+<p><font color="brown"><strong>注：</strong>最常用的三个接口是put/add/get。通过<strong>add</strong>接口保存在ACObject中的数据实际为List；相应的，get出来也是一个List。</font></p>
+</blockquote>
+<h1 id="_4">交互消息</h1>
+<p>多个模块、服务之间都通过<em>消息</em><code>message</code>来通信。AbleCloud定义了两种格式的消息：</p>
+<ul>
+<li><strong>ACMsg：</strong>APP与service，service与service之间的交互消息。</li>
+<li><strong>ACDeviceMsg：</strong>APP与device，service与device之间的交互消息。</li>
+</ul>
+<h2 id="acmsg">ACMsg</h2>
+<p>ACMsg继承自ACObject，扩展了一些功能，比如设置了交互的方法名name、交互的上下文context以及<strong>其它形式</strong>的负载payload信息。通常采用ACMsg进行数据交互，较多的使用默认的<strong>ACMsg.OBJECT_PAYLOAD</strong>格式，该格式只需要使用ACObject提供的put、add、get接口进行数据操作即可。因为在使用OBJECT_PAYLOAD格式时，框架会对数据进行序列化/反序列化。ACMsg也提供另外的数据交互格式，如json、stream等。如果用json格式，则通过setPayload/getPayload设置/获取序列化后的json数据并设置对应的payloadFormat，开发者后续可自行对payload进解析。</p>
+<pre><code class="java">public class ACMsg extends ACObject {
     public static final String OBJECT_PAYLOAD = &quot;application/x-zc-object&quot;;
     public static final String JSON_PAYLOAD = &quot;text/json&quot;;
     public static final String STREAM_PAYLOAD = &quot;application/octet-stream&quot;;
@@ -1015,13 +1093,12 @@ public abstract class ACConfig {
 }
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color="red"><strong>注：</strong></font>开发者在本地测试或联调时，需要设置context的相关信息。客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。</p>
-				</blockquote>
-				<h3 id="_5">使用示例</h3>
-				<p>client端发起请求（伪代码，完整代码请参看各部分demo）：</p>
-				<pre><code class="java">ACContext context = ac.newContext(account.getUid());    // 通过框架构造一个用户context
+<blockquote>
+<p><font color="red"><strong>注：</strong></font>开发者在本地测试或联调时，需要设置context的相关信息。客户端往后端服务发送消息，服务向另一服务发送消息的时候，均需要对所发请求进行签名，具体的签名算法见附录。</p>
+</blockquote>
+<h3 id="_5">使用示例</h3>
+<p>client端发起请求（伪代码，完整代码请参看各部分demo）：</p>
+<pre><code class="java">ACContext context = ac.newContext(account.getUid());    // 通过框架构造一个用户context
 ACMsg req = new ACMsg();                                // 创建一个空请求消息
 req.setContext(context);                                // 设置请求上下文
 req.setName(&quot;controlLight&quot;);                            // 设置请求消息名
@@ -1030,19 +1107,19 @@ req.put(&quot;action&quot;, &quot;on&quot;);                                // �
 ACMsg resp = client.send(req);                          // 发送请求并返回服务端响应
 </code></pre>
 
-				<p>服务端处理请求（伪代码，完整代码请参看各部分demo）：</p>
-				<pre><code class="java">private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
+<p>服务端处理请求（伪代码，完整代码请参看各部分demo）：</p>
+<pre><code class="java">private void handleControlLight(ACMsg req, ACMsg resp) throws Exception {
     Long lightId = req.get(&quot;deviceId&quot;);     // 从请求中获取“设备id”
     String action = req.get(&quot;action&quot;);      // 从请求中获取“动作”
     // do something
 }
 </code></pre>
 
-				<h2 id="acdevicemsg">ACDeviceMsg</h2>
-				<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的处理响应。 ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。
-				</p>
-				<p>ACDeviceMsg定义如下：</p>
-				<pre><code class="java">public class ACDeviceMsg {
+<h2 id="acdevicemsg">ACDeviceMsg</h2>
+<p>该消息用于处理服务和设备之间的交互，框架会将ACDeviceMsg中的code部分解析出来，开发者可根据code来区分设备消息类型。并根据code的不同值执行不同的处理响应。
+ACDeviceMsg的content部分即发送给设备的具体消息内容，由开发者解释，框架透传。除此之外，KLV是由AbleCloud规定的一种数据格式，可以理解为content部分的一种特殊解释，具体开发需要到AbleCloud平台填写数据点和数据包。</p>
+<p>ACDeviceMsg定义如下：</p>
+<pre><code class="java">public class ACDeviceMsg {
     //消息码，用于区分消息类型
     private int code;
     //设备消息的具体内容,使用二进制与json格式
@@ -1071,10 +1148,10 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h1 id="_6">基础框架</h1>
-				<h2 id="ac">AC</h2>
-				<p>通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。</p>
-				<pre><code class="java">public abstract class AC {
+<h1 id="_6">基础框架</h1>
+<h2 id="ac">AC</h2>
+<p>通过AC，开发者可以根据需要获取一系列内嵌服务的功能接口。</p>
+<pre><code class="java">public abstract class AC {
     /**
      * 构建一个开发者上下文
      *
@@ -1308,22 +1385,20 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如<code>ac.accountMgrForTest(ac.newContext())</code></p>
-				</blockquote>
-				<h1 id="_7">账号相关接口</h1>
-				<p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
-				<h2 id="_8">获取方式</h2>
-				<pre><code class="java">ACAccountMgr accountMgr = ac.accountMgr(ac.newContext());
+<blockquote>
+<p><font color=red>注意</font>：由于开发者具有超级权限，所以AbleCloud除了提供正常的服务管理器接口外，还提供一些用于单元测试的管理器接口，如<code>ac.accountMgrForTest(ac.newContext())</code></p>
+</blockquote>
+<h1 id="_7">账号相关接口</h1>
+<p>该服务用于管理和某一智能设备相关的用户，比如查看用户的基本信息/状态等。发现异常用户时，服务程序能及时做出相应操作。</p>
+<h2 id="_8">获取方式</h2>
+<pre><code class="java">ACAccountMgr accountMgr = ac.accountMgr(ac.newContext());
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color="red">注意</font>：此处传开发者上下文，即<code>ac.newContext()</code>。</p>
-				</blockquote>
-				<h2 id="_9">接口说明</h2>
-				<pre><code class="java">public interface ACAccountMgr {
+<blockquote>
+<p><font color="red">注意</font>：此处传开发者上下文，即<code>ac.newContext()</code>。</p>
+</blockquote>
+<h2 id="_9">接口说明</h2>
+<pre><code class="java">public interface ACAccountMgr {
 
     /**
      * 为某用户获取注册帐号的验证码。
@@ -1539,9 +1614,9 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h2 id="_10">单元测试接口说明</h2>
-				<p>服务框架接收的命令大部分来自于APP端，因此需要创建一些<em>测试用户</em>，以便模拟客户发起的请求。该单元测试类即用于此类场景。需要注意的是，该测试接口只在测试环境中正常工作，具体定义如下：</p>
-				<pre><code class="java">public interface ACAccountMgrForTest extends ACAccountMgr {
+<h2 id="_10">单元测试接口说明</h2>
+<p>服务框架接收的命令大部分来自于APP端，因此需要创建一些<em>测试用户</em>，以便模拟客户发起的请求。该单元测试类即用于此类场景。需要注意的是，该测试接口只在测试环境中正常工作，具体定义如下：</p>
+<pre><code class="java">public interface ACAccountMgrForTest extends ACAccountMgr {
 
     /**
      * 注册一个用户
@@ -1570,18 +1645,17 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h1 id="_11">绑定相关接口</h1>
-				<p>该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。</p>
-				<h2 id="_12">获取方式</h2>
-				<pre><code class="java">ACBindMgr bindMgr = ac.bindMgr(ACContext context);
+<h1 id="_11">绑定相关接口</h1>
+<p>该服务接口主要用于用户和设备绑定关系管理，可以获取设备的详细信息，给设备发送消息等，定制化自己开发的服务。</p>
+<h2 id="_12">获取方式</h2>
+<pre><code class="java">ACBindMgr bindMgr = ac.bindMgr(ACContext context);
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>(仅调用listUsers方法时，可以使用<code>ac.newContext()</code>)。</p>
-				</blockquote>
-				<h2 id="_13">接口说明</h2>
-				<pre><code class="java">public interface ACBindMgr {
+<blockquote>
+<p><font color="red">注意</font>：此处应该传用户上下文，即<code>req.getContext()</code>，单测中使用<code>ac.newContext(userId)</code>(仅调用listUsers方法时，可以使用<code>ac.newContext()</code>)。</p>
+</blockquote>
+<h2 id="_13">接口说明</h2>
+<pre><code class="java">public interface ACBindMgr {
 
     /**
      * 列举用户绑定的所有设备（包括独立设备与网关设备等）。
@@ -2056,9 +2130,9 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h2 id="_14">单元测试接口说明</h2>
-				<p>为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外该类还提供了cleanAll和unbindUser接口，用于清理单元测试中产生的数据，在单元测试中可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：</p>
-				<pre><code class="java">public interface ACBindMgrForTest extends ACBindMgr {
+<h2 id="_14">单元测试接口说明</h2>
+<p>为了便于对UDS进行单元测试，可以模拟APP的基本操作，包括设备绑定，解绑，更改设备的owner等。另外该类还提供了cleanAll和unbindUser接口，用于清理单元测试中产生的数据，在单元测试中可重复执行。需要注意的是，该类接口只在测试环境中正常工作，具体定义如下：</p>
+<pre><code class="java">public interface ACBindMgrForTest extends ACBindMgr {
 
     /**
      * 管理员接口，更改一个逻辑ID对应的物理设备
@@ -2110,9 +2184,9 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h2 id="_15">数据结构说明</h2>
-				<p>被绑定的设备的基础信息。</p>
-				<pre><code class="java">public class ACUserDevice {
+<h2 id="_15">数据结构说明</h2>
+<p>被绑定的设备的基础信息。</p>
+<pre><code class="java">public class ACUserDevice {
     private long id;                  // 设备的逻辑ID
     private String physicalId;        // 设备的物理ID
     private long owner;               // 设备的管理员ID
@@ -2147,8 +2221,8 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<p>绑定设备的用户的基础信息。</p>
-				<pre><code class="java">public class ACDeviceUser {
+<p>绑定设备的用户的基础信息。</p>
+<pre><code class="java">public class ACDeviceUser {
     public static final long NORMAL = 0;
     public static final long OWNER = 1;
 
@@ -2174,10 +2248,10 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h1 id="_16">存储相关接口</h1>
-				<p>AbleCloud存储服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。</p>
-				<h2 id="_17">获取方式</h2>
-				<pre><code class="java">ACStore store = ac.store(String className, ACContext contexte);
+<h1 id="_16">存储相关接口</h1>
+<p>AbleCloud存储服务为开发者提供了一个通用的key-value存储系统服务。开发者可用此服务存储自定义数据。</p>
+<h2 id="_17">获取方式</h2>
+<pre><code class="java">ACStore store = ac.store(String className, ACContext contexte);
 </code></pre>
 
 <blockquote>
@@ -2257,14 +2331,12 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color="red">注意</font>：此处使用开发者或用户上下文都可以。</p>
-					<p>
-						<font color="red">注意</font>：在同一级filter,and的优先级要高于or。</p>
-				</blockquote>
-				<p>接口定义如下：</p>
-				<pre><code class="java">public class ACFilter {
+<blockquote>
+<p><font color="red">注意</font>：此处使用开发者或用户上下文都可以。</p>
+<p><font color="red">注意</font>：在同一级filter,and的优先级要高于or。</p>
+</blockquote>
+<p>接口定义如下：</p>
+<pre><code class="java">public class ACFilter {
     // 各种关系连接符
     public static long INVALID          = 0;
     public static long EQUAL            = 1;  // 等于
@@ -2346,8 +2418,8 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<h3 id="acstore">ACStore:</h3>
-				<pre><code class="java">public abstract class ACStore {
+<h3 id="acstore">ACStore:</h3>
+<pre><code class="java">public abstract class ACStore {
 
     // 各数据类型
     public static long INVALID_TYPE= 0;
@@ -2614,11 +2686,10 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<p>
-					<font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序</p>
-				<h3 id="aciterator">ACIterator：</h3>
-				<p>FullScan操作的游标。</p>
-				<pre><code class="java">public class ACIterator {
+<p><font color=red>务必注意</font>：全表扫描FullScan操作非常消耗资源，建议只在后台做离线的定时任务用。为了保证在线用户数据访问的高可用性，会限制线上服务直接使用这样的接口；另外，全表数据扫描接口FullScan只能保证扫描结果在分区内的是有序的，而不能保证其在全局内有序</p>
+<h3 id="aciterator">ACIterator：</h3>
+<p>FullScan操作的游标。</p>
+<pre><code class="java">public class ACIterator {
     // 从游标中取出下一份数据结果集，每一份结果集对应一个分区键
     public List&lt;ACObject&gt; next() throws Exception;
 
@@ -2627,13 +2698,12 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<blockquote>
-					<p>
-						<font color=red>注意</font>：ACIterator仅用于分区数据集。对于未分区的数据集，请直接使用Scan接口。</p>
-				</blockquote>
-				<h2 id="_21">单元测试接口说明</h2>
-				<p>测试过程如果用到了AbleCloud云端存储，也会在云端存储中存储一些测试用的数据。在每次单元测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），可对测试数据进行清理。该类便提供了创建/删除数据集（类似于table）的功能。接口定义如下：</p>
-				<pre><code class="java">public interface ACStoreForTest {
+<blockquote>
+<p><font color=red>注意</font>：ACIterator仅用于分区数据集。对于未分区的数据集，请直接使用Scan接口。</p>
+</blockquote>
+<h2 id="_21">单元测试接口说明</h2>
+<p>测试过程如果用到了AbleCloud云端存储，也会在云端存储中存储一些测试用的数据。在每次单元测试执行前（junit的@Before或@BeforClass）或执行后（junit的@After或@AfterClass），可对测试数据进行清理。该类便提供了创建/删除数据集（类似于table）的功能。接口定义如下：</p>
+<pre><code class="java">public interface ACStoreForTest {
     /**
      * 创建一个class
      */
@@ -2655,7 +2725,7 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
      * @param className     要创建的class名
      * @return
      */
-    public abstract ACStoreForTest.CreateClass createClass(String className);
+    public andbstract ACStoreForTest.CreateClass createClass(String className);
 
     /**
      * 删除一个class
@@ -2677,77 +2747,6 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 <p><font color="red">注意</font>：此处传开发者上下文，即<code>ac.newContext()</code>。</p>
 </blockquote>
 <h2 id="_24">接口说明</h2>
-<h3 id="acrankingvalue">ACRankingValue</h3>
-<p>排行榜中某个key在特定时间段的一条记录</p>
-<pre><code class="java">public class ACRankingValue {
-    // 某个时间段的起始时间戳，格式：
-    //  interval: minute, timestamp: 2016-06-01 15:04
-    //  interval: hour, timestamp: 2016-06-01 15
-    //  interval: day, timestamp: 2016-06-01
-    //  interval: week, timestamp: 2016-05-30 (周一算做一周的开始）
-    //  interval: month, timestamp: 2016-06
-    private String timestamp;
-    // key
-    private String key;
-    // value
-    private double value;
-    // 排名
-    private int place;
-
-    public ACRankingValue(String timestamp, String key, double value, int place) {
-        this.timestamp = timestamp;
-        this.key = key;
-        this.value = value;
-        this.place = place;
-    }
-
-    public String getTimestamp() { return this.timestamp; }
-    public String getKey() { return this.key; }
-    public double getValue() { return this.value; }
-    public int getPlace() { return this.place; }
-}
-</code></pre>
-
-<h3 id="acrankingcount">ACRankingCount</h3>
-<p>排行榜中在特定时间段内满足条件的key的数量</p>
-<pre><code class="java">public class ACRankingCount {
-    //某个时间段的起始时间戳，格式：
-    //  interval: minute, timestamp: 2016-06-01 15:04
-    //  interval: hour, timestamp: 2016-06-01 15
-    //  interval: day, timestamp: 2016-06-01
-    //  interval: week, timestamp: 2016-05-30 (周一算做一周的开始）
-    //  interval: month, timestamp: 2016-06
-    private String timestamp;
-    // 数量
-    private int count;
-
-    public ACRankingCount(String timestamp, int count) {
-        this.timestamp = timestamp;
-        this.count = count;
-    }
-
-    public String getTimestamp() { return this.timestamp; }
-    public int getCount() { return this.count; }
-}
-</code></pre>
-
-<h3 id="acranking">ACRanking</h3>
-<p>排行榜中用到的一些常量</p>
-<pre><code class="java">public class ACRanking {
-    // 排行榜时间间隔
-    public static final String MINUTE = &quot;minute&quot;;
-    public static final String HOUR = &quot;hour&quot;;
-    public static final String DAY = &quot;day&quot;;
-    public static final String WEEK = &quot;week&quot;;
-    public static final String MONTH = &quot;month&quot;;
-    public static final String QUARTER = &quot;quarter&quot;;
-
-    // 排行榜排序顺序
-    public static final String ASC = &quot;ASC&quot;;
-    public static final String DESC = &quot;DESC&quot;;
-}
-</code></pre>
-
 <h3 id="acrankingmgr">ACRankingMgr</h3>
 <p>排行榜接口</p>
 <pre><code class="java">public interface ACRankingMgr {
@@ -2756,7 +2755,7 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
      *
      * @param key       key
      * @param value     value
-     * @param timestamp UTC时间戳，相对于1970间的秒数
+     * @param timestamp UTC时间戳，相对于1970年的秒数
      * @throws Exception
      */
     void insert(String key, double value, long timestamp) throws Exception;
@@ -2774,66 +2773,122 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
     /**
      * 具体时间段的数据总量
      *
+     * @param timestamp 时间段内的任意时间点，如果为0，则表示是当前时间段
      * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
      * @return          指定时间段内的数据总量
      * @throws Exception
      */
-    ACRankingCount totalCount(String interval, String timestamp, int offset) throws Exception;
+    ACRankingCount totalCount(long timestamp, String interval) throws Exception;
 
     /**
      * 具体时间段内指定范围内的数据总量
      *
+     * @param timestamp 时间段内的任意时间点，如果为0，则表示是当前时间段
      * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
      * @param start     开始值，包含start
      * @param end       结束值，包含end
      * @return          具体时间段内指定范围内的数据总量
      * @throws Exception
      */
-    ACRankingCount rangeCount(String interval, String timestamp, int offset, double start, double end) throws Exception;
+    ACRankingCount rangeCount(long timestamp, String interval, double start, double end) throws Exception;
 
     /**
      * 获取某个key在具体时间段内的value和排名
      *
-     * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
-     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
      * @param key
+     * @param timestamp 时间段内的任意时间点，如果为0，则表示是当前时间段
+     * @param interval  时间间隔（minute,hour,day,week,month)
+     * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
      * @return          某个key在具体时间段内的value和排名
      * @throws Exception
      */
-    ACRankingValue get(String interval, String timestamp, int offset, String order, String key) throws Exception;
+    ACRankingValue get(String key, long timestamp, String interval, String order) throws Exception;
 
     /**
      * 获取具体时间段内，某个排名范围内的数据
      *
+     * @param timestamp 时间段内的任意时间点，如果为0，则表示是当前时间段
      * @param interval  时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为null，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
      * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
      * @param start     开始排名
      * @param end       结束排名
      * @return          具体时间段内，某个排名范围内的数据
      * @throws Exception
      */
-    List&lt;ACRankingValue&gt; scan(String interval, String timestamp, int offset, String order, int start, int end) throws Exception;
+    List&lt;ACRankingValue&gt; scan(long timestamp, String interval, String order, long start, lon end) throws Exception;
 
     /**
      * 获取某个key在连续多个时间段内的value和排名
      *
-     * @param inteval   时间间隔（minute,hour,day,week,month)
-     * @param timestamp 时间段内的任意时间点（时区为控制台定义的时区），格式为2016-01-02 15:04:05，如果为nil，则表示是当前时间段
-     * @param offset    0表示是timestamp指定的当前时间段，正数表示timestamp之前的第offset个时间段
+     * @param timestamp 时间段内的任意时间点，如果为0，则表示是当前时间段
+     * @param interval   时间间隔（minute,hour,day,week,month)
      * @param order     排序方式: ACRanking::ASC(正序）， ACRanking::DESC(逆序）
      * @param count     基于(timestamp, offset)向前取count个值
      * @return          某个key在连续多个时间段内的value和排名
      * @throws Exception
      */
-    List&lt;ACRankingValue&gt; ranks(String inteval, String timestamp, int offset, String order, int count, String key) throws Exception;
+    List&lt;ACRankingValue&gt; ranks(String key, long timestamp, String interval, String order, long count) throws Exception;
+}
+</code></pre>
+
+<h3 id="acrankingvalue">ACRankingValue</h3>
+<p>排行榜中某个key在特定时间段的一条记录</p>
+<pre><code class="java">public class ACRankingValue {
+    // 某个时间段的起始时间戳
+    private long timestamp;
+    // key
+    private String key;
+    // value
+    private double value;
+    // 排名
+    private long place;
+
+    public ACRankingValue(String key, double value, long place, long timestamp) {
+        this.timestamp = timestamp;
+        this.key = key;
+        this.value = value;
+        this.place = place;
+    }
+
+    public String getTimestamp() { return this.timestamp; }
+    public String getKey() { return this.key; }
+    public double getValue() { return this.value; }
+    public long getPlace() { return this.place; }
+}
+</code></pre>
+
+<h3 id="acrankingcount">ACRankingCount</h3>
+<p>排行榜中在特定时间段内满足条件的key的数量</p>
+<pre><code class="java">public class ACRankingCount {
+    //某个时间段的起始时间戳
+    private long timestamp;
+    // 数量
+    private long count;
+
+    public ACRankingCount(String timestamp, long count) {
+        this.timestamp = timestamp;
+        this.count = count;
+    }
+
+    public String getTimestamp() { return this.timestamp; }
+    public long getCount() { return this.count; }
+}
+</code></pre>
+
+<h3 id="acranking">ACRanking</h3>
+<p>排行榜中用到的一些常量</p>
+<pre><code class="java">public class ACRanking {
+    // 排行榜时间间隔
+    public static final String MINUTE = &quot;minute&quot;;
+    public static final String HOUR = &quot;hour&quot;;
+    public static final String DAY = &quot;day&quot;;
+    public static final String WEEK = &quot;week&quot;;
+    public static final String MONTH = &quot;month&quot;;
+    public static final String QUARTER = &quot;quarter&quot;;
+
+    // 排行榜排序顺序
+    public static final String ASC = &quot;ASC&quot;;
+    public static final String DESC = &quot;DESC&quot;;
 }
 </code></pre>
 
@@ -3542,8 +3597,8 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<p>空气质量相关信息的结构说明:</p>
-				<pre><code class="java">public class ACAQI {
+<p>空气质量相关信息的结构说明:</p>
+<pre><code class="java">public class ACAQI {
     /**
      * 时间,字符串格式
      *
@@ -3568,8 +3623,8 @@ ACMsg resp = client.send(req);                          // 发送请求并返回
 }
 </code></pre>
 
-				<p>温湿度相关信息的结构说明:</p>
-				<pre><code class="java">public class ACWeather {
+<p>温湿度相关信息的结构说明:</p>
+<pre><code class="java">public class ACWeather {
     /**
      * 时间,字符串格式
      *
@@ -3828,8 +3883,8 @@ public class ACDeviceInfo {
 }
 </code></pre>
 
-				<p>其中，timestamp精确到秒；nonce是一个随机字符串（一般选则长度为16个字符）。如：</p>
-				<pre><code class="java">long timestamp = System.currentTimeMillis() / 1000;
+<p>其中，timestamp精确到秒；nonce是一个随机字符串（一般选则长度为16个字符）。如：</p>
+<pre><code class="java">long timestamp = System.currentTimeMillis() / 1000;
 String nonce = genNonce(timestamp, 16);
 public static String genNonce(long seed, int length) {
     String base = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYAC0123456789&quot;;

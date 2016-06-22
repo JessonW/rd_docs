@@ -1360,20 +1360,14 @@ ac.rankingMgr(context, "run_set").inc("key1", 1, 1463732401);
 ###用法一 
 查询2016-05-20 16:00:00~2016-05-20 17:00:00 key1的排名(反序)和值
 ```java
-ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, "key1");
+ACRankingValue value = ac.rankingMgr(context, "run_set").get("key1", 1463731200, ACRanking::HOUR, ACRanking::DESC);
 ```
 
 ###用法二
 
 查询当前小时，key1的排名（反序）和值
 ```java
-ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 0, ACRanking::DESC,  "key1");
-```
-
-###用法三
-查询上一个小时，key1的排名（反序）和值
-```java
-ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, null, 1, ACRanking::DESC,  "key1");
+ACRankingValue value = ac.rankingMgr(context, "run_set").get("key1", 0, ACRanking::HOUR, ACRanking::DESC);
 ```
 
 ##Scan
@@ -1381,39 +1375,27 @@ ACRankingValue value = ac.rankingMgr(context, "run_set").get(ACRanking::HOUR, nu
 ###用法一
 查询2016-05-20 16:00:00~2016-05-20 17:00:00 前十名(反序)
 ```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 10);
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(1463731200, ACRanking::HOUR, ACRanking::DESC, 1, 10);
 ```
 
 ###用法二
 查询当前小时，前十名（反序）
 ```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 10);
-```
-
-###用法三
-查询上一个小时，前十名（反序）
-```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 10);
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").scan(0, ACRanking::HOUR, ACRanking::DESC, 1, 10);
 ```
 
 ##Ranks
 
 ###用法一
-查询2016-05-20 16:00:00前3个小时(包含2016-05-20 16:00:00这个小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+查询2016-05-20 16:00:00和前2个小时(包含2016-05-20 16:00:00这个小时)，key1在各个小时的排名，如果值不存在，则排名为-1
 ```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, "2016-05-20 16:00:00", 0, ACRanking::DESC, 1, 3, "key1");
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks("key1", 1463731200, ACRanking::HOUR, ACRanking::DESC, 3);
 ```
 
 ###用法二
-查询当前小时前3个小时(包含当前小时)，key1在各个小时的排名，如果值不存在，则排名为-1
+查询当前小时和前3个小时(包含当前小时)，key1在各个小时的排名，如果值不存在，则排名为-1
 ```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 0, ACRanking::DESC, 1, 3, "key1");
-```
-
-###用法三
-查询上一个小时前3个小时（包含上一个小时），keys在各个小时的排名，如果值不存在，则排名为-1
-```java
-List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking::HOUR, null, 1, ACRanking::DESC, 1, 3, "key1");
+List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks("key1", 0, ACRanking::HOUR, ACRanking::DESC, 3);
 ```
 
 ##TotalCount
@@ -1421,19 +1403,13 @@ List<ACRankingValue> values = ac.rankingMgr(context, "run_set").ranks(ACRanking:
 ###用法一
 查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时的数据总量
 ```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0);
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(1463731200, ACRanking::HOUR);
 ```
 
 ###用法二
 查询当前小时的数据总量
 ```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 0);
-```
-
-###用法三
-查询上一个小时的数据总量
-```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::HOUR, null, 1);
+ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(1463731200, ACRanking::HOUR);
 ```
 
 ##RangeCount
@@ -1441,19 +1417,13 @@ ACRankingCount count = ac.rankingMgr(context, "run_set").totalCount(ACRanking::H
 ###用法一
 查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时，值在1和3这个范围的数据总量
 ```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, "2016-05-20 16:00:00", 0, 1, 3);
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(1463731200, ACRanking::HOUR, 1, 3);
 ```
 
 ###用法二
 查询当前小时,值在1和3这个范围的数据总量
 ```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 0, 1, 3);
-```
-
-###用法三
-查询上个小时,值在1和3这个范围的数据总量
-```java
-ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(ACRanking::HOUR, null, 1, 1, 3);
+ACRankingCount count = ac.rankingMgr(context, "run_set").rangeCount(0, ACRanking::HOUR, 1, 3);
 ```
 
 #UDS访问外网示例
