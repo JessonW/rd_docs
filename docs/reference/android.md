@@ -926,6 +926,14 @@ public class AC {
     public static ACFileMgr fileMgr() {}
 
     /**
+     * 获取排行版管理器
+     * 可以调用ACRankingMgr提供的各个通用接口
+     *
+     * @return 排行版管理器
+     */
+    public static ACRankingMgr rankingMgr() {}
+    
+    /**
      * 为便于测试，开发者可实现一个服务的桩，并添加到AC框架中
      * 在测试模式下，服务桩可以模拟真实服务对APP的请求做出响应
      *
@@ -934,7 +942,6 @@ public class AC {
      */
     public static void addServiceStub(String name, ACService stub) {}
 ```
-
 
 ##用户帐号管理
 
@@ -2234,6 +2241,100 @@ public class ACACL {
 ```
 ><font color="red">**规则**：</font>优先判断黑名单，黑名单命中后其他设置无效，其次判断白名单，最后判断全局设置属性。例如同时设置userId为1的用户为黑名单和白名单，则设置的白名单无效。
 
+##排行榜
+除了存储服务之外，AbleCloud还提供了丰富的排行榜功能，支持对多用户不同时间段进行排行操作。具体接口定义如下：
+
+```java
+public interface ACRankingMgr {
+
+    /**
+     * 增加或减少当前用户的分值(原有分值进行累加),如果存在多个排行周期,全部累加更新
+     * 用于数据累积类排行榜,比如记步,游戏积分等,不能和覆盖类排行榜的set接口混用.
+     *
+     * @param name      排行榜名称
+     * @param timestamp 时间点,如果为0,则表示当前时间(单位秒,UTC时间戳，相对于1970年的秒数)
+     * @param score     当前用户增加/减少的分值
+     */
+    void inc(String name, long timestamp, double score, VoidCallback callback);
+
+    /**
+     * 设置更新当前用户分值(原有分值会被覆盖),如果存在多个排行周期,都会只保留最后一次分值
+     * 用于数据覆盖类排行榜,比如空气质量,体重测量等,不能和累积类排行榜的inc接口混用.
+     *
+     * @param name      排行榜名称
+     * @param timestamp 时间点,如果为0,则表示当前时间(单位秒,UTC时间戳，相对于1970年的秒数)
+     * @param score     更新分值
+     */
+    void set(String name, long timestamp, double score, VoidCallback callback);
+
+    /**
+     * 获取当前用户指定排行周期内(比如当天)的分值和排名
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  当前用户某一时间点所在排行周期的分值和排名
+     */
+    void get(String name, String period, long timestamp, String order, PayloadCallback<ACRankingValue> callback);
+
+    /**
+     * 批量获取当前用户连续多排行周期内(比如上周每天)分值和排名等历史数据
+     * </p>
+     * 如取当前用户最近5天的排行数据(value以正序方式排名),则使用 ranks("ranking", "day", 0, 5, "ASC", ...)
+     * 如取当前用户上一周每天的排行数据,则使用 ranks("ranking", "day", (System.currentTimeMillis() / 1000 - 7 * 24 * 60 * 60L), 7, "ASC", ...)
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param count     向前取连续count个period周期
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  当前用户在指定周期内的历史排行
+     */
+    void ranks(String name, String period, long timestamp, long count, String order, PayloadCallback<List<ACRankingValue>> callback);
+
+    /**
+     * 获取指定某个排行周期内(比如当天)的所有参与排行的用户总数
+     * <p/>
+     * 如totalCount("ranking", "day", 0, ...) 代表查询当天的用户总数
+     * 如当前时间为12:30, totalCount("ranking", "hour", 0, ...) 代表查询12:00-13:00的用户总数
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期(day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param callback  所有参与排行的用户总数
+     */
+    void totalCount(String name, String period, long timestamp, PayloadCallback<ACRankingCount> callback);
+
+    /**
+     * 获取指定排行周期内(比如当天)所有用户的score分值和rank排名等数据
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param startRank 排名的起始名次 (闭区间,包含startRank)
+     * @param endRank   排名的结束名次 (闭区间,包含endRank)
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  某一时间点所在排行周期，某个排名范围内的数据
+     */
+    void scan(String name, String period, long timestamp, long startRank, long endRank, String order, PayloadCallback<List<ACRankingValue>> callback);
+
+    /**
+     * 获取指定某个排行周期(比如当天)符合分值范围内所有用户的总数
+     * <p/>
+     * 如 rangeCount("ranking", "day", 0, 100, 200, ...) 代表查询当天value在100-200的用户总数
+     *
+     * @param name       排行榜名称
+     * @param period     排行榜周期 (day, week, month)
+     * @param timestamp  时间点，如果为0，则表示当前时间所在排行榜(单位秒,UTC时间戳,相对于1970年的秒数)
+     * @param startScore 分值起始值 (闭区间,包含startScore)
+     * @param endScore   分值结束值 (闭区间,包含endScore)
+     * @param callback   所有符合分值范围用户总数
+     */
+    void rangeCount(String name, String period, long timestamp, double startScore, double endScore, PayloadCallback<ACRankingCount> callback);
+}
+```
+
 ##辅助功能
 除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。
 ####用户意见反馈
@@ -2840,7 +2941,102 @@ public class ACACL {
     public void unsetUserDeny(OpType opType, long userId);
 }
 ```
-##8、辅助功能
+
+##8、排行榜
+除了存储服务之外，AbleCloud还提供了丰富的排行榜功能，支持对多用户不同时间段进行排行操作。具体接口定义如下：
+
+```java
+public interface ACRankingMgr {
+
+    /**
+     * 增加或减少当前用户的分值(原有分值进行累加),如果存在多个排行周期,全部累加更新
+     * 用于数据累积类排行榜,比如记步,游戏积分等,不能和覆盖类排行榜的set接口混用.
+     *
+     * @param name      排行榜名称
+     * @param timestamp 时间点,如果为0,则表示当前时间(单位秒,UTC时间戳，相对于1970年的秒数)
+     * @param score     当前用户增加/减少的分值
+     */
+    void inc(String name, long timestamp, double score, VoidCallback callback);
+
+    /**
+     * 设置更新当前用户分值(原有分值会被覆盖),如果存在多个排行周期,都会只保留最后一次分值
+     * 用于数据覆盖类排行榜,比如空气质量,体重测量等,不能和累积类排行榜的inc接口混用.
+     *
+     * @param name      排行榜名称
+     * @param timestamp 时间点,如果为0,则表示当前时间(单位秒,UTC时间戳，相对于1970年的秒数)
+     * @param score     更新分值
+     */
+    void set(String name, long timestamp, double score, VoidCallback callback);
+
+    /**
+     * 获取当前用户指定排行周期内(比如当天)的分值和排名
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  当前用户某一时间点所在排行周期的分值和排名
+     */
+    void get(String name, String period, long timestamp, String order, PayloadCallback<ACRankingValue> callback);
+
+    /**
+     * 批量获取当前用户连续多排行周期内(比如上周每天)分值和排名等历史数据
+     * </p>
+     * 如取当前用户最近5天的排行数据(value以正序方式排名),则使用 ranks("ranking", "day", 0, 5, "ASC", ...)
+     * 如取当前用户上一周每天的排行数据,则使用 ranks("ranking", "day", (System.currentTimeMillis() / 1000 - 7 * 24 * 60 * 60L), 7, "ASC", ...)
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param count     向前取连续count个period周期
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  当前用户在指定周期内的历史排行
+     */
+    void ranks(String name, String period, long timestamp, long count, String order, PayloadCallback<List<ACRankingValue>> callback);
+
+    /**
+     * 获取指定某个排行周期内(比如当天)的所有参与排行的用户总数
+     * <p/>
+     * 如totalCount("ranking", "day", 0, ...) 代表查询当天的用户总数
+     * 如当前时间为12:30, totalCount("ranking", "hour", 0, ...) 代表查询12:00-13:00的用户总数
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期(day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param callback  所有参与排行的用户总数
+     */
+    void totalCount(String name, String period, long timestamp, PayloadCallback<ACRankingCount> callback);
+
+    /**
+     * 获取指定排行周期内(比如当天)所有用户的score分值和rank排名等数据
+     *
+     * @param name      排行榜名称
+     * @param period    排行榜周期 (day, week, month)
+     * @param timestamp 时间点，如果为0，则表示当前时间所在排行榜(UTC时间戳，相对于1970年的秒数)
+     * @param startRank 排名的起始名次 (闭区间,包含startRank)
+     * @param endRank   排名的结束名次 (闭区间,包含endRank)
+     * @param order     排序方式: ASC(正序), DESC(逆序）
+     * @param callback  某一时间点所在排行周期，某个排名范围内的数据
+     */
+    void scan(String name, String period, long timestamp, long startRank, long endRank, String order, PayloadCallback<List<ACRankingValue>> callback);
+
+    /**
+     * 获取指定某个排行周期(比如当天)符合分值范围内所有用户的总数
+     * <p/>
+     * 如 rangeCount("ranking", "day", 0, 100, 200, ...) 代表查询当天value在100-200的用户总数
+     *
+     * @param name       排行榜名称
+     * @param period     排行榜周期 (day, week, month)
+     * @param timestamp  时间点，如果为0，则表示当前时间所在排行榜(单位秒,UTC时间戳,相对于1970年的秒数)
+     * @param startScore 分值起始值 (闭区间,包含startScore)
+     * @param endScore   分值结束值 (闭区间,包含endScore)
+     * @param callback   所有符合分值范围用户总数
+     */
+    void rangeCount(String name, String period, long timestamp, double startScore, double endScore, PayloadCallback<ACRankingCount> callback);
+}
+```
+
+##9、辅助功能
 除以上基础功能外，AbleCloud SDK还提供了一些额外的辅助功能，如用户的意见反馈以及室外天气状况获取。
 ####用户意见反馈
 
