@@ -1838,67 +1838,67 @@ while ((zos = it.next(limit)) != null) {
 <p><img alt="" src="../../pic/develop_guide/ranking_create.png" /></p>
 <h2 id="insert">Insert</h2>
 <p>插入一条数据，如果在同一个时间段内，下一条数据会覆盖上一条数据。</p>
-<pre><code class="java">ac.rankingMgr(context, &quot;run_set&quot;).insert(&quot;key1&quot;, 1, 1463732401);
+<pre><code class="java">ac.rankingMgr(context, &quot;run_set&quot;).insert(&quot;key1&quot;, 1463732401, 1);
 </code></pre>
 
 <h2 id="inc">Inc</h2>
 <p>更新一条数据，如果在同一个时间段内，下一条数据会累加到上一条数据。</p>
-<pre><code class="java">ac.rankingMgr(context, &quot;run_set&quot;).inc(&quot;key1&quot;, 1, 1463732401);
+<pre><code class="java">ac.rankingMgr(context, &quot;run_set&quot;).inc(&quot;key1&quot;, 1463732401, 1);
 </code></pre>
 
 <h2 id="get">Get</h2>
 <h3 id="_26">用法一</h3>
 <p>查询2016-05-20 16:00:00~2016-05-20 17:00:00 key1的排名(反序)和值</p>
-<pre><code class="java">ACRankingValue value = ac.rankingMgr(context, &quot;run_set&quot;).get(&quot;key1&quot;, 1463731200, ACRanking::HOUR, ACRanking::DESC);
+<pre><code class="java">ACRankingValue value = ac.rankingMgr(context, &quot;run_set&quot;).get(&quot;key1&quot;, ACRanking.HOUR, 1463731200, ACRanking.DESC);
 </code></pre>
 
 <h3 id="_27">用法二</h3>
 <p>查询当前小时，key1的排名（反序）和值</p>
-<pre><code class="java">ACRankingValue value = ac.rankingMgr(context, &quot;run_set&quot;).get(&quot;key1&quot;, 0, ACRanking::HOUR, ACRanking::DESC);
+<pre><code class="java">ACRankingValue value = ac.rankingMgr(context, &quot;run_set&quot;).get(&quot;key1&quot;, ACRanking.HOUR, 0, ACRanking.DESC);
 </code></pre>
 
 <h2 id="scan_1">Scan</h2>
 <h3 id="_28">用法一</h3>
 <p>查询2016-05-20 16:00:00~2016-05-20 17:00:00 前十名(反序)</p>
-<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).scan(1463731200, ACRanking::HOUR, ACRanking::DESC, 1, 10);
+<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).scan(ACRanking.HOUR, 1463731200, 1, 10, ACRanking.DESC);
 </code></pre>
 
 <h3 id="_29">用法二</h3>
 <p>查询当前小时，前十名（反序）</p>
-<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).scan(0, ACRanking::HOUR, ACRanking::DESC, 1, 10);
+<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).scan(ACRanking.HOUR, 0, 1, 10, ACRanking.DESC);
 </code></pre>
 
 <h2 id="ranks">Ranks</h2>
 <h3 id="_30">用法一</h3>
 <p>查询2016-05-20 16:00:00和前2个小时(包含2016-05-20 16:00:00这个小时)，key1在各个小时的排名，如果值不存在，则排名为-1</p>
-<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).ranks(&quot;key1&quot;, 1463731200, ACRanking::HOUR, ACRanking::DESC, 3);
+<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).ranks(&quot;key1&quot;, ACRanking.HOUR, 1463731200, 3, ACRanking.DESC);
 </code></pre>
 
 <h3 id="_31">用法二</h3>
 <p>查询当前小时和前3个小时(包含当前小时)，key1在各个小时的排名，如果值不存在，则排名为-1</p>
-<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).ranks(&quot;key1&quot;, 0, ACRanking::HOUR, ACRanking::DESC, 3);
+<pre><code class="java">List&lt;ACRankingValue&gt; values = ac.rankingMgr(context, &quot;run_set&quot;).ranks(&quot;key1&quot;, ACRanking.HOUR, 0, 3, ACRanking.DESC);
 </code></pre>
 
 <h2 id="totalcount">TotalCount</h2>
 <h3 id="_32">用法一</h3>
 <p>查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时的数据总量</p>
-<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).totalCount(1463731200, ACRanking::HOUR);
+<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).totalCount(ACRanking.HOUR, 1463731200);
 </code></pre>
 
 <h3 id="_33">用法二</h3>
 <p>查询当前小时的数据总量</p>
-<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).totalCount(1463731200, ACRanking::HOUR);
+<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).totalCount(ACRanking.HOUR, 1463731200);
 </code></pre>
 
 <h2 id="rangecount">RangeCount</h2>
 <h3 id="_34">用法一</h3>
 <p>查询2016-05-20 16:00:00~2016-05-20 17:00:00这个小时，值在1和3这个范围的数据总量</p>
-<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).rangeCount(1463731200, ACRanking::HOUR, 1, 3);
+<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).rangeCount(ACRanking.HOUR, 1463731200, ACRanking.HOUR, 1, 3);
 </code></pre>
 
 <h3 id="_35">用法二</h3>
 <p>查询当前小时,值在1和3这个范围的数据总量</p>
-<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).rangeCount(0, ACRanking::HOUR, 1, 3);
+<pre><code class="java">ACRankingCount count = ac.rankingMgr(context, &quot;run_set&quot;).rangeCount(ACRanking.HOUR, 0, 1, 3);
 </code></pre>
 
 <h1 id="uds_2">UDS访问外网示例</h1>
