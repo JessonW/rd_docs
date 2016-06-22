@@ -711,6 +711,38 @@ public class ACWeather {
 }
 ```
 
+####ACRankingCount
+说明：用来表示排行榜用户总数，定义如下：
+
+```java
+public class ACRankingCount {
+    // 时间段的起始时间戳
+    private long timestamp;
+    // 数量
+    private long count;
+
+    public ACRankingCount(long timestamp, long count) {}
+}
+```
+
+####ACRankingValue
+说明：用来表示排行榜的值与排名，定义如下：
+
+```java
+public class ACRankingValue {
+    // 时间段的起始时间戳
+    private long timestamp;
+    // 用户ID
+    private String key;
+    // 用户的value
+    private double value;
+    // 用户的排名 -1代表在这个时间段内不存在数据
+    private long place;
+
+    public ACRankingValue(String key, double value, long place, long timestamp) {}
+}
+```
+
 ####ACException
 说明：用来表示所有错误信息，定义如下：
 
