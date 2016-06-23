@@ -22,7 +22,7 @@ AbleCloud提供了PHP语言SDK，包括访问AbleCloud云端服务的API，以�
 
     本SDK使用了PHP v5.6及其后续版本才支持的不定长参数。使用v5.6之前版本PHP的开发者可以修改文件 ablecloud/services/ACStoreScanner.php 第45行及第123行，分别去掉行中函数select及函数groupBy参数列表里的'...'符号，并在调用此两行所对应的函数时使用字符串数组作为参数。
 
-下文是PHP SDK (v1.7.x)的API说明。
+下文是PHP SDK (v1.8.x)的API说明。
 
 #对接微信#
 
@@ -559,7 +559,7 @@ class ACUserSignature {
 }
 ```
 
-#AbleCloud配置#
+#配置#
 
 ##ACConfig##
 
@@ -577,7 +577,7 @@ class ACConfig {
 }
 ```
 
-#AbleCloud客户端#
+#客户端#
 
 ##ACClient##
 
@@ -648,6 +648,18 @@ class ACClient {
   	public static function getWarehouseMgr();
 
     /**
+  	 * AbleCloud产品服务。
+  	 * @return ACProductMgr 返回ACProductMgr对象。
+  	 */
+  	public static function getProductMgr();
+
+  	/**
+  	 * AbleCloud用户反馈服务。
+  	 * @return ACFeedbackMgr 返回ACFeedbackMgr对象。
+  	 */
+  	public static function getFeedbackMgr();
+
+    /**
      * 取访问AbleCloud远程服务的环境信息。
      * @return 返回ACContext对象，表示访问AbleCloud远程服务的环境信息。
      */
@@ -696,7 +708,7 @@ class ACService {
 }
 ```
 
-#AbleCloud帐号服务#
+#帐号接口#
 
 ##ACUser##
 
@@ -982,86 +994,8 @@ class ACAccountMgr extends ACService {
     public function clearUsers();
 }
 ```
-#AbleCloud文件存储服务#
 
-##ACACL##
-
-```php
-/**
- * AbleCloud文件存储服务中文件的访问权限。
- */
-class ACACL {
-    /**
-     * 构造函数。
-     * @param $allowPublicRead  bool    是否可读。不可读的文件不能被访问。
-     * @param $allowPublicWrite bool    是否可写。不可写的文件上传后不能被修改。
-     */
-    function __construct($allowPublicRead = true, $allowPublicWrite = true);
-
-    /**
-     * 设置是否可读。
-     * @param $allow    bool    布尔值，是否可读。
-     * @return $this            返回本对象。
-     */
-    public function allowPublicRead($allow);
-
-    /**
-     * 检查是否允许读。
-     * @return bool 返回TRUE表示可读，否则表示不可读。
-     */
-    public function isPublicReadAllowed();
-
-    /**
-     * 设置是否可写。
-     * @param $allow    bool    布尔值，是否可写。
-     * @return $this            返回本对象。
-     */
-    public function allowPublicWrite($allow);
-
-    /**
-     * 检查是否允许写。
-     * @return bool 返回TRUE表示可写，否则表示不可写。
-     */
-    public function isPublicWriteAllowed();
-}
-```
-
-##ACFileMgr##
-```php
-/**
- * AbleCloud文件存储服务。
- */
-class ACFileMgr extends ACService {
-    /**
-     * 构造函数。
-     * @param $name     string      AbleCloud文件存储服务的名字。
-     * @param $version  int         AbleCloud文件存储服务的版本。
-     * @param $context  ACContext   ACContext对象，表示访问该远程服务所依赖的环境信息。
-     */
-    function __construct($name, $version, $context);
-
-    /**
-     * 获取文件的访问/下载URL。
-     * @param $bucket       string  要访问/下载的文件在云端所属的类别的名字。
-     * @param $name         string  要访问/下载的文件在云端的名字。
-     * @param $expireTime   int     所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
-     * @return              string  返回指定文件的访问/下载URL。返回空字符串时表示操作失败，可以调用getLastError()获取错误信息。
-     */
-    public function getDownloadUrl($bucket, $name, $expireTime = 0);
-
-    /**
-     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
-     * @param $filePath     string  要被上传的文件的本地路径。
-     * @param $bucket       string  文件上传后在云端所属的类别的名字。
-     * @param $name         string  文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
-     * @param $acl          ACACL   文件的访问权限。如果为NULL，则使用缺省值。
-     * @return              bool    操作成功是返回TRUE，否则表示操作失败。失败时可以调用getLastError()获取错误信息。
-     */
-    public function uploadFile($filePath, $bucket, $name, $acl = NULL);
-}
-```
-
-#AbleCloud设备管理服务#
+#设备绑定接口#
 
 ##ACDevice##
 
@@ -1111,7 +1045,7 @@ class ACDevice {
 
 ```php
 /**
- * AbleCloud设备管理服务。
+ * AbleCloud设备绑定管理服务。
  */
 class ACBindMgr extends ACService {
     /**
@@ -1272,6 +1206,14 @@ class ACBindMgr extends ACService {
      * @return 返回TRUE表示设备在线；返回FALSE表示设备不在线或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备不在线；否则表示操作出错，设备的状态为未知。
      */
     public function isDeviceOnlineByPhysicalId($subDomain, $physicalId);
+
+    /**
+  	 * 检查设备是否已经被用户绑定了。
+  	 * @param $subDomain	string	是设备所属的子域的名字。
+  	 * @param $physicalId	string	要被检查的设备的物理ID。
+  	 * @return				    bool	  返回TRUE表示设备已被绑定；返回FALSE表示设备未被绑定或状态未知。返回FALSE时，需要调用getLastError()方法检查状态。如果errCode为0，则表示设备未被绑定；否则表示操作出错，设备的状态为未知。
+  	 */
+  	public function isDeviceBound($subDomain, $physicalId);
 
     /**
      * 取设备的逻辑ID。
@@ -1542,7 +1484,153 @@ class ACHome {
 }
 ```
 
-#AbleCloud OTA服务#
+#文件存储接口#
+
+##ACACL##
+
+```php
+/**
+ * AbleCloud文件存储服务中文件的访问权限。
+ */
+class ACACL {
+    /**
+     * 构造函数。
+     * @param $allowPublicRead  bool    是否可读。不可读的文件不能被访问。
+     * @param $allowPublicWrite bool    是否可写。不可写的文件上传后不能被修改。
+     */
+    function __construct($allowPublicRead = true, $allowPublicWrite = true);
+
+    /**
+     * 设置是否可读。
+     * @param $allow    bool    布尔值，是否可读。
+     * @return $this            返回本对象。
+     */
+    public function allowPublicRead($allow);
+
+    /**
+     * 检查是否允许读。
+     * @return bool 返回TRUE表示可读，否则表示不可读。
+     */
+    public function isPublicReadAllowed();
+
+    /**
+     * 设置是否可写。
+     * @param $allow    bool    布尔值，是否可写。
+     * @return $this            返回本对象。
+     */
+    public function allowPublicWrite($allow);
+
+    /**
+     * 检查是否允许写。
+     * @return bool 返回TRUE表示可写，否则表示不可写。
+     */
+    public function isPublicWriteAllowed();
+}
+```
+
+##ACFileMgr##
+```php
+/**
+ * AbleCloud文件存储服务。
+ */
+class ACFileMgr extends ACService {
+    /**
+     * 构造函数。
+     * @param $name     string      AbleCloud文件存储服务的名字。
+     * @param $version  int         AbleCloud文件存储服务的版本。
+     * @param $context  ACContext   ACContext对象，表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 获取文件的访问/下载URL。
+     * @param $bucket       string  要访问/下载的文件在云端所属的类别的名字。
+     * @param $name         string  要访问/下载的文件在云端的名字。
+     * @param $expireTime   int     所获取的访问/下载URL的有效时长。单位为秒。如果取值为小于或等于0,表示不限定有效期。
+     * @return              string  返回指定文件的访问/下载URL。返回空字符串时表示操作失败，可以调用getLastError()获取错误信息。
+     */
+    public function getDownloadUrl($bucket, $name, $expireTime = 0);
+
+    /**
+     * 上传文件至云端。云端使用七牛或AWS由所对应的AC-BlobStore服务决定。
+     * @param $filePath     string  要被上传的文件的本地路径。
+     * @param $bucket       string  文件上传后在云端所属的类别的名字。
+     * @param $name         string  文件上传后在云端所使用的文件名（包括文件扩展名）。如不指定（null或空字符串），则表示使用从filePath中提取的文件名字。
+     * @param $acl          ACACL   文件的访问权限。如果为NULL，则使用缺省值。
+     * @return              bool    操作成功是返回TRUE，否则表示操作失败。失败时可以调用getLastError()获取错误信息。
+     */
+    public function uploadFile($filePath, $bucket, $name, $acl = NULL);
+}
+```
+
+#用户反馈接口#
+
+##ACFeedbackColumn##
+
+```php
+/**
+ * 反馈消息的列定义。
+ */
+class ACFeedbackColumn {
+    public $columnName = '';    ///< 列的名字。
+    public $columnType = 0;     ///< 列的类型：1（整数），2（浮点数），3（布尔），4（字符串），5（图片）。
+    public $columnLength = 0;   ///< 列的值的长度。
+    public $description = '';   ///< 列的描述信息。
+
+    public static function fromObject($obj);
+}
+```
+
+##ACFeedbackMgr##
+
+```php
+/**
+ * AbleCloud客户反馈消息服务。
+ */
+class ACFeedbackMgr extends ACService {
+    /**
+     * 构造函数。
+     * @param $name     string    AbleCloud产品服务的名字。
+     * @param $version  int       AbleCloud产品服务的主版本号。
+     * @param $context  ACContext 表示访问该远程服务所依赖的环境信息。
+     */
+    function __construct($name, $version, $context);
+
+    /**
+     * 取用户反馈信息的列信息。
+     * @return array 操作成功时返回ACFeedbackColumn对象的数组。操作失败时返回NULL，并可调用方法getLastError()获取错误信息。
+     */
+    public function listColumns();
+
+    /**
+     * 查询用户反馈记录的数目。
+     * @param $startTime            string  指定查询条件的起始时刻：YYYY-MM-DD HH:MM:SS。为空表示不指定该条件。
+     * @param $endTime              string  指定查询条件的截止时刻：YYYY-MM-DD HH:MM:SS。为空表示不指定该条件。
+     * @param $productSubDomainName string  所查询产品所属的子域的名字。为空表示不指定该条件。APP应用对应的名字为'app'。
+     * @param $productModel         string  所查询产品的型号。为空表示不指定该条件。
+     * @param $status               int     指定反馈记录的状态：1（开放）；2（关闭）。为0表示不指定该条件。
+     * @return                      int     返回非负的整数表示符合条件的记录的数目。返回负数表示查询失败，可以调用方法getLastError()获取错误信息。
+     */
+    public function getFeedbacksCount($startTime = '', $endTime = '', $productSubDomainName = '', $productModel = '', $status = 0);
+
+    /**
+     * 查询用户反馈记录。
+     * @param $startTime            string  指定查询条件的起始时刻：YYYY-MM-DD HH:MM:SS。为空表示不指定该条件。
+     * @param $endTime              string  指定查询条件的截止时刻：YYYY-MM-DD HH:MM:SS。为空表示不指定该条件。
+     * @param $productSubDomainName string  所查询产品所属的子域的名字。为空表示不指定该条件。APP应用对应的名字为'app'。
+     * @param $productModel         string  所查询产品的型号。为空表示不指定该条件。
+     * @param $status               int     指定反馈记录的状态：1（开放）；2（关闭）。为0表示不指定该条件。
+     * @param $offset               int     $offset与$limit参数用于实现分页查询的效果。$offset是从0开始的偏移量，表示返回记录集中从第offset位置开始的共limit条记录的信息。
+     * @param $limit                int     $offset与$limit参数用于实现分页查询的效果。$limit是正整数，表示返回记录集中从第offset位置开始的共limit条记录的信息。
+     * @param $orderByASC           bool    是否以记录的创建时间的升序排序。
+     * @return                      array   操作成功时，返回一个数组表示查询的结果。数组中的每个元素为由键值对组成的关联数组，表示对应的反馈记录。
+     *                                      操作失败时返回NULL，可以调用方法getLastError()获取错误信息。
+     */
+    public function scanFeedbacks($startTime = '', $endTime = '', $productSubDomainName = '', $productModel = '', $status = 0, $offset = 0, $limit = 0, $orderByASC = false);
+}
+```
+
+#OTA接口#
 
 ##ACOtaMgr##
 
@@ -1621,7 +1709,67 @@ class ACOtaVersion {
 }
 ```
 
-#AbleCloud数据库服务#
+#产品接口#
+
+##ACProduct##
+
+```php
+/**
+ * 产品信息。
+ */
+class ACProduct {
+    public $domainId = '';          ///< 字符串，主域ID。
+    public $domainName = '';        ///< 字符串，主域名字。
+    public $subDomainId = '';       ///< 字符串，子域ID。
+    public $subDomainName = '';     ///< 字符串，子域名字。
+    public $name = '';              ///< 字符串，产品的名字。
+    public $type = '';              ///< 字符串，产品类型，如独立设备、网关设备、安卓设备、子设备等。
+    public $dataProtocol = '';      ///< 字符串，产品的通信数据格式，如JSON、KLV、二进制等。
+    public $transportProtocol = ''; ///< 字符串，产品的数据传输协议，如tcp、simple tcp、mqtt、http等。
+    public $model = '';             ///< 字符串，产品的型号。
+    public $os = '';                ///< 字符串，设备的操作系统名。
+    public $connectProtocol = '';   ///< 字符串，设备的连接协议，如wifi、bluetooth、ethernet、cellular等。
+    public $description = '';       ///< 字符串，产品的描述信息。
+    public $thirdCloud = '';        ///< 字符串，设备对接的物联网云平台的名字。
+    public $secType = '';           ///< 字符串，数据加密方式，如RSA、DES等。
+    public $category = 0;           ///< 整数，标记产品的品类，如智能家居、可穿戴设备等。
+    public $deviceMode = 0;         ///< 整数，设备的管理模式：0（非绑定模式），1（管理员绑定模式），2（普通绑定模式）。
+    public $taskMode = 0;           ///< 整数，设备定时模式：0（无定时），1（云端定时），2（设备定时(支持云端定时)）。
+    public $taskUpdatePolicy = 0;   ///< 整数，定时任务删除机制：1（普通用户解绑不删除定时任务，管理员解绑删除所有定时任务），2（用户解绑删除定时任务）。
+
+    /**
+     * 从关联数组对象构造ACProduct对象。
+     * @param $obj  array               保存了设备信息的对象。
+     * @return      ACProduct | NULL    构造的ACProduct对象或者NULL。
+     */
+    public static function fromObject($obj);
+}
+```
+
+##ACProductMgr##
+
+```php
+/**
+ * AbleCloud产品服务。
+ */
+class ACProductMgr extends ACService {
+    /**
+     * 构造函数。
+     * @param $name     string    AbleCloud产品服务的名字。
+     * @param $version  int       AbleCloud产品服务的主版本号。
+     * @param $context  ACContext 表示访问该远程服务所依赖的环境信息。
+     */
+	  function __construct($name, $version, $context);
+
+    /**
+     * 获取开发者的产品列表。
+     * @return array 操作成功时返回ACProduct对象的数组。操作失败时返回NULL，并可调用方法getLastError()获取错误信息。
+     */
+    public function getDomainProducts();
+}
+```
+
+#数据库接口#
 
 ##ACStoreClassColumn##
 
@@ -2329,7 +2477,7 @@ class ACStore extends ACService {
 }
 ```
 
-#AbleCloud定时任务#
+#定时任务接口#
 
 ##ACTimerTask##
 
@@ -2433,7 +2581,7 @@ class ACTimerTaskMgr extends ACService {
 }
 ```
 
-#AbleCloud数据分析服务#
+#数据分析接口#
 
 ##ACAnalysisMgr##
 
@@ -2853,7 +3001,7 @@ class ACQETimeInterval {
 }
 ```
 
-#Ablecloud设备管理服务#
+#设备管理接口#
 
 ##ACDeviceInfo##
 ```php

@@ -134,6 +134,14 @@ public abstract class ACConfig {
     public String getWarehouseServiceName();
 
     public int getWarehouseServiceVersion();
+
+    public String getProductServiceName();
+
+    public int getProductServiceVersion();
+
+    public String getFeedbackServiceName();
+
+    public int getFeedbackServiceVersion();
     //@}
 }
 ```
@@ -632,6 +640,22 @@ public abstract class AC {
     public abstract ACWarehouseMgr warehouseMgr(ACContext context);
 
     /**
+     * 取产品管理器。
+     *
+     * @param context 开发者的context
+     * @return ACProductMgr实例。
+     */
+    public abstract ACProductMgr productMgr(ACContext context);
+
+    /**
+     * 取用户反馈意见管理器。
+     *
+     * @param context 开发者的context
+     * @return ACFeedbackMgr实例。
+     */
+    public abstract ACFeedbackMgr feedbackMgr(ACContext context);
+
+    /**
      * 为便于测试，开发者可实现一个服务的桩
      * 在框架中添加一个服务桩
      *
@@ -1082,6 +1106,16 @@ public interface ACBindMgr {
      * @throws Exception
      */
     public boolean isDeviceOnline(String subDomain, String physicalDeviceId) throws Exception;
+
+    /**
+     * 检查设备是否已经被用户绑定了。
+     *
+     * @param subDomain         设备所属的子域的名字。
+     * @param physicalDeviceId  要被检查的设备的物理ID。
+     * @return 返回true表示设备已被绑定；返回true表示设备未被绑定。
+     * @throws Exception
+     */
+    public boolean isDeviceBound(String subDomain, String physicalDeviceId) throws Exception;
 
     /**
      * 根据设备物理Id查询逻辑Id
@@ -2432,6 +2466,234 @@ public class ACACL {
 }
 ```
 
+#用户反馈接口
+该服务用于获取用户的反馈信息。
+
+##获取方式
+```java
+ACFeedbackMgr feedbackMgr = ac.feedbackMgr(ac.newContext());
+```
+><font color="red">注意</font>：此处使用开发者上下文，即`ac.newContext()`。
+
+##接口说明
+```java
+/**
+ * AbleCloud用户反馈管理器。
+ */
+public interface ACFeedbackMgr {
+
+    /**
+     * 取用户反馈信息的列定义信息。
+     *
+     * @return 用户反馈信息的列定义。
+     * @throws Exception
+     */
+    public List<ACFeedbackColumn> listColumns() throws Exception;
+
+    /**
+     * 查询用户反馈记录的数目。
+     *
+     * @param startTime             指定查询条件的起始时刻：YYYY-MM-DD HH:MM:SS。为null或空字符串时表示不指定该条件。
+     * @param endTime               指定查询条件的截止时刻：YYYY-MM-DD HH:MM:SS。为null或空字符串时表示不指定该条件。
+     * @param productSubDomainName  所查询产品所属的子域的名字。为null或空字符串时表示不指定该条件。APP应用对应的名字为'app'。
+     * @param productModel          所查询产品的型号。为null或空字符串时表示不指定该条件。
+     * @param status                指定反馈记录的状态：1（开放）；2（关闭）。为0表示不指定该条件。
+     * @return                      返回非负的整数表示符合条件的记录的数目。
+     * @throws Exception
+     */
+    public long getFeedbacksCount(String startTime, String endTime, String productSubDomainName, String productModel, long status) throws Exception;
+
+    /**
+     * 查询用户反馈记录。
+     *
+     * @param startTime             指定查询条件的起始时刻：YYYY-MM-DD HH:MM:SS。为null或空字符串时表示不指定该条件。
+     * @param endTime               指定查询条件的截止时刻：YYYY-MM-DD HH:MM:SS。为null或空字符串时表示不指定该条件。
+     * @param productSubDomainName  所查询产品所属的子域的名字。为null或空字符串时表示不指定该条件。APP应用对应的名字为'app'。
+     * @param productModel          所查询产品的型号。为null或空字符串时表示不指定该条件。
+     * @param status                指定反馈记录的状态：1（开放）；2（关闭）。为0表示不指定该条件。
+     * @param offset                offset与limit参数用于实现分页查询的效果。offset是从0开始的偏移量，表示返回记录集中从第offset位置开始的共limit条记录的信息。
+     * @param limit                 offset与limit参数用于实现分页查询的效果。limit是正整数，表示返回记录集中从第offset位置开始的共limit条记录的信息。
+     * @param orderByASC            是否以记录的创建时间的升序排序。
+     * @return                      用户反馈记录的数组。
+     * @throws Exception
+     */
+    public List<ACObject> scanFeedbacks(String startTime, String endTime, String productSubDomainName, String productModel, long status, long offset, long limit, boolean orderByASC) throws Exception;
+}
+```
+
+##数据结构说明
+
+用户反馈的消息的列定义。
+```java
+/**
+ * 用户反馈的消息的列定义。
+ */
+public class ACFeedbackColumn {
+
+    /**
+     * 设置列的名字。
+     * @param name  列的名字。
+     */
+    public void setName(String name);
+
+    /**
+     * 取列的名字。
+     * @return 列的名字。
+     */
+    public String getName();
+
+    /**
+     * 设置列的数据类型。
+     * @param type 列的数据类型：1（整数），2（浮点数），3（布尔），4（字符串），5（图片）。
+     */
+    public void setType(int type);
+
+    /**
+     * 取列的数据类型。
+     * @return 列的数据类型：1（整数），2（浮点数），3（布尔），4（字符串），5（图片）。
+     */
+    public int getType();
+
+    /**
+     * 设置列的值的最大长度。
+     * @param length 列的值的最大长度。
+     */
+    public void setLength(int length);
+
+    /**
+     * 取列的值的最大长度。
+     * @return 值的最大长度。
+     */
+    public int getLength();
+
+    /**
+     * 设置列的说明信息。
+     * @param description 列的说明信息。
+     */
+    public void setDescription(String description);
+
+    /**
+     * 取列的说明信息。
+     * @return 列的说明信息。
+     */
+    public String getDescription();
+
+    private String name;    ///< 列的名字
+    private int type;       ///< 列的数据类型：1（整数），2（浮点数），3（布尔），4（字符串），5（图片）。
+    private int length;     ///< 列的值的长度。
+    private String description; ///< 列的描述信息。
+}
+```
+
+#产品管理接口
+该服务用于管理开发者在云端注册的产品信息。
+
+##获取方式
+```java
+ACProductMgr productMgr = ac.productMgr(ac.newContext());
+```
+><font color="red">注意</font>：此处使用开发者上下文，即`ac.newContext()`。
+
+##接口说明
+```java
+/**
+ * AbleCloud产品管理器。
+ */
+public interface ACProductMgr {
+
+    /**
+     * 获取开发者的产品列表。
+     * @return 开发者在云端注册的产品的列表。
+     * @throws Exception
+     */
+    public List<ACProduct> getDomainProducts() throws Exception;
+}
+```
+
+##数据结构说明
+
+开发者在云端注册的产品的信息。
+```java
+/**
+ * 产品信息。
+ */
+public class ACProduct {
+    public ACProduct();
+
+    /// 主域ID
+    public void setDomainId(String domainId);
+    public String getDomainId();
+
+    /// 主域名字
+    public void setDomainName(String domainName);
+    public String getDomainName();
+
+    /// 子域ID
+    public void setSubDomainId(String subDomainId);
+    public String getSubDomainId();
+
+    /// 子域名字
+    public void setSubDomainName(String subDomainName);
+    public String getSubDomainName();
+
+    /// 产品名字
+    public void setName(String name);
+    public String getName();
+
+    /// 产品类型，如独立设备、网关设备、安卓设备、子设备等。
+    public void setType(String type);
+    public String getType();
+
+    /// 产品的通信数据格式，如JSON、KLV、二进制等。
+    public void setDataProtocol(String protocol);
+    public String getDataProtocol();
+
+    /// 产品的数据传输协议，如tcp、simple tcp、mqtt、http等。
+    public void setTransportProtocol(String protocol);
+    public String getTransportProtocol();
+
+    /// 产品的型号。
+    public void setModel(String model);
+    public String getModel();
+
+    /// 设备的操作系统名。
+    public void setOS(String os);
+    public String getOS();
+
+    /// 设备的连接协议，如wifi、bluetooth、ethernet、cellular等。
+    public void setConnectProtocol(String protocol);
+    public String getConnectProtocol();
+
+    /// 产品的描述信息。
+    public void setDescription(String description);
+    public String getDescription();
+
+    /// 设备对接的物联网云平台的名字。
+    public void setThirdCloud(String cloud);
+    public String getThirdCloud();
+
+    /// 数据加密方式，如RSA、DES等。
+    public void setSecType(String secType);
+    public String getSecType();
+
+    /// 标记产品的品类，如智能家居、可穿戴设备等。
+    public void setCatetory(int category);
+    public int getCategory();
+
+    /// 设备的管理模式：0（非绑定模式），1（管理员绑定模式），2（普通绑定模式）。
+    public void setDeviceMode(int mode);
+    public int getDeviceMode();
+
+    /// 设备定时模式：0（无定时），1（云端定时），2（设备定时(支持云端定时)）。
+    public void setTaskMode(int mode);
+    public int getTaskMode();
+
+    /// 定时任务删除机制：1（普通用户解绑不删除定时任务，管理员解绑删除所有定时任务），2（用户解绑删除定时任务）。
+    public void setTaskUpdatePolicy(int policy);
+    public int getTaskUpdatePolicy();
+}
+```
+
 #短信服务接口
 该服务用于向当前注册用户发送短信消息。
 ##获取方式
@@ -3225,5 +3487,3 @@ curl -v -X POST -H "Content-Type:application/x-zc-object" -H "X-Zc-Major-Domain:
 
 #Error Code
 参考[Reference-Error Code](./error_code.md)。
-
-
